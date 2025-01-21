@@ -1,0 +1,103 @@
+{
+  "PageView1": {
+    "title": "مرحبًا بك في بوابة أولياء الأمور",
+    "subtitle": "قم بمراقبة احتياجات طفلك بسهولة وإدارة جميع التفاصيل الخاصة به من مكان واحد، لتوفير تجربة سلسة ومتكاملة.",
+    "button": "التالي"
+  },
+  "PageView2": {
+    "title": "سهولة التحكم",
+    "subtitle": "قم بتحديد الميزانية اليومية لطفلك وتتبع أنشطته لضمان إدارة سلسة وفعالة.",
+    "button": "التالي"
+  },
+  "PageView3": {
+    "title": "ابقَ على اتصال",
+    "subtitle": "تلّقَ تقارير فورية وتحديثات منتظمة حول إنفاق طفلك لتظل على اطلاع وتحكم دائم.",
+    "button": "ابدا"
+  },
+  "Login": {
+    "title": "تسجيل الدخول إلى حسابك",
+    "labelUserName": "اسم المستخدم",
+    "userEmailHintText": "ادخل بريدك الالكتروني",
+    "labelPassword": "كلمة المرور",
+    "passwordHintText": "أدخل كلمة المرور الخاصة بك",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "button": "تسجيل الدخول"
+  },
+  "valdation": {
+    "valdationText": "رجاء املاء الحقل المطلوب"
+  },
+  "SendCode": {
+    "forgotPassword": "نسيت كلمة المرور",
+    "subtitle": "لا تقلق، هذا يحدث. يرجى إدخال البريد الإلكتروني المرتبط بحسابك.",
+    "email": "البريد الإلكتروني",
+    "emailHint": "أدخل بريدك الإلكتروني",
+    "button": "إرسال الرمز"
+  },
+  "VerifyCode": {
+    "checkEmail": "يرجى التحقق من بريدك الإلكتروني",
+    "description": "أدخل رمز التحقق الذي تم إرساله إلى بريدك الإلكتروني",
+    "button": "تحقق",
+    "resend": "إرسال الرمز مرة أخرى",
+    "time": "٠٠:٢٠"
+  },
+  "ForgotPassword": {
+    "title": "يرجى إدخال كلمة مرور جديدة",
+    "subtitle": "يجب أن تكون هذه الكلمة مختلفة عن كلمة المرور السابقة",
+    "newPassword": "كلمة المرور الجديدة",
+    "newPasswordHint": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordHint": "تأكيد كلمة المرور",
+    "button": "إعادة تعيين كلمة المرور"
+  },
+  "bottomNavigationBar": {
+    "home": "الصفحة الرئيسية",
+    "family": "الاولياء الأمور",
+    "attendance": "الحضور والغياب",
+    "wallet": "المحفظة"
+  },
+  "homeView": {
+    "appBarTitle": "صباح الخير،",
+    "appBarName": "عمر",
+    "nameShahd": "شهد",
+    "priceShahd1": "١٠٠ جنيه",
+    "priceShahd2": "١٥٠ جنيه",
+    "nameAhmed": "أحمد",
+    "priceAhmed": "١٠٠ جنيه",
+    "status": "حالة المخزون",
+    "family": "عائلتي"
+  },
+  "balanceCardDetails": {
+    "balance": "الرصيد",
+    "balancePrice": "١٬٢٩٩٫٣٣ جنيه"
+  },
+  "transactions": {
+    "transactions": "المعاملات",
+    "title": "تحويل من محفظتك إلى شهد",
+    "subTitle": "المتوفر في محفظة شهد ١٠٠ جنيه",
+    "price": "١٠ جنيه"
+  },
+  "Settings": {
+    "name": "محمد امين",
+    "settings": "الاعدادات",
+    "accountSettings": "اعدادات الحساب",
+    "editProfile": "تعديل الملف الشخصي",
+    "changePassword": "تغيير كلمة المرور",
+    "darkMode": "الوضع الليلي",
+    "language": "اللغة",
+    "more": "المزيد",
+    "termsAndConditions": "شروط الخدمة",
+    "privacyPolicy": "سياسة الخصوصية",
+    "logout": "تسجيل الخروج",
+    "save": "حفظ"
+  },
+  "editProfile": {
+    "editProfile": "تعديل الملف الشخصي",
+    "name": "  الاسم",
+    "phone": "  رقم الجوال",
+    "email": "البريد الإلكتروني",
+    "save": "  حفظ"
+  },
+  "policy": {
+   "ok": "حسنا"
+  }
+}

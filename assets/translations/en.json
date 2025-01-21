@@ -1,0 +1,103 @@
+{
+    "PageView1": {
+        "title": "Welcome to the Parent Portal",
+        "subtitle": "Easily monitor your child’s needs and manage all their details from one place, providing a seamless and integrated experience .",
+        "button": "Next"
+    },
+    "PageView2": {
+        "title": "Easy to Control",
+        "subtitle": "Set daily budget for your child and track their activities to ensure smooth and effective management.",
+        "button": "Next"
+    },
+    "PageView3": {
+        "title": "Stay Connected",
+        "subtitle": "Receive instant reports and regular updates about your child’s spending to stay informed and in control at all time.",
+        "button": "GetStarted"
+    },
+    "Login": {
+        "title": "Login to your Account",
+        "labelUserName": "User Name",
+        "userEmailHintText": "Enter your email",
+        "labelPassword": "Password",
+        "passwordHintText": "Enter your password",
+        "forgotPassword": "Forgot Password?",
+        "button": "Login"
+    },
+    "valdation": {
+        "valdationText": "Please enter some text"
+    },
+    "SendCode": {
+        "forgotPassword": "Forgot password",
+        "subtitle": "Don’t worry it happens . PLease enter the\nemail associated with your account",
+        "email": "Email",
+        "emailHint": "Enter your email",
+        "button": "Send Code"
+    },
+    "VerifyCode": {
+        "checkEmail": "Please Check your email",
+        "description": "Enter The verification code that has been \nentered into your email",
+        "button": "Verify",
+        "resend": "Send code again",
+        "time": "00:20"
+    },
+    "ForgotPassword": {
+        "title": "Please  enter a new password",
+        "subtitle": "This password should be different from the previous password",
+        "newPassword": "New password",
+        "newPasswordHint": "New password",
+        "confirmPassword": "Confirm password",
+        "confirmPasswordHint": "Confirm password",
+        "button": "Reset Password"
+    },
+    "bottomNavigationBar": {
+        "home": "Home",
+        "family": "Family",
+        "attendance": "Attendance",
+        "wallet": "Wallet"
+    },
+    "homeView": {
+        "appBarTitle": "Good Morning,",
+        "appBarName": "Omar",
+        "nameShahd": "Shahd",
+        "priceShahd1": "100 EGP",
+        "priceShahd2": "150 EGP",
+        "nameAhmed": "Ahmed",
+        "priceAhmed": "100 EGP",
+        "status": "Inventory Status",
+        "family": "My Family"
+    },
+    "balanceCardDetails": {
+        "balance": "Balance",
+        "balancePrice": "1,299.33 EGP"
+    },
+    "transactions": {
+        "transactions": "Transactions",
+        "title": "Transfer from your wallet to Shahd",
+        "subTitle": "Available in wallet Shahd 100 EGP",
+        "price": "10 EGP"
+    },
+    "Settings": {
+        "name": "mohamed ammen",
+        "settings": "Settings",
+        "accountSettings": "Account Settings",
+        "editProfile": "Edit profile",
+        "changePassword": "Change password",
+        "darkMode": "Dark Mode",
+        "language": "Language",
+        "more": "More",
+        "termsAndConditions": "Terms and Conditions",
+        "privacyPolicy": "Privacy Policy",
+        "logout": "Logout",
+        "save": "Save"
+    },
+    "editProfile":{
+     "editProfile": "Edit Profile",
+      "name" : "Name",
+      "phone" : "Phone",
+      "email": "Email",
+      "save": "Save"
+    },
+    "policy": {
+        "ok": "Ok"
+       }
+}
