@@ -35,7 +35,7 @@ class SectionTextFiledForAddChild extends StatelessWidget {
           controller: controller,
           hintText: hintText,
           prefixIcon: Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsetsDirectional.all(15),
             child: Image.asset(
               image,
               color: imageColor,
@@ -46,14 +46,6 @@ class SectionTextFiledForAddChild extends StatelessWidget {
           borderRaduis: 5,
           obsure: false,
           keyboardType: keyboardType,
-          shadows: [
-            BoxShadow(
-              color: const Color(0x00000000).withOpacity(0.05),
-              blurRadius: 6,
-              offset: const Offset(2, 2),
-              spreadRadius: 0,
-            )
-          ],
         ),
       ],
     );

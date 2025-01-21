@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
 import 'package:smartsystemforschools/core/widgets/custom_bottom_container.dart';
 import 'package:smartsystemforschools/features/family/presentation/widgets/custom_text_field.dart';
-import '../../../../core/functions/showDialog.dart';
+import '../../../../core/methods/showDialog.dart';
+import '../../../../core/methods/show_scaffold_messanger.dart';
+import '../../../../core/models/child_details_model.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
+import '../../data/manager/add_child_cubit/add_child_cubit.dart';
 import '../widgets/upload_image.dart';
 
 class AddChildView extends StatefulWidget {
@@ -21,7 +25,6 @@ class _AddChildViewState extends State<AddChildView> {
   TextEditingController StudentID = TextEditingController();
   TextEditingController Name = TextEditingController();
   TextEditingController SchoolName = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +37,7 @@ class _AddChildViewState extends State<AddChildView> {
         },
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 18),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Form(
@@ -45,7 +48,11 @@ class _AddChildViewState extends State<AddChildView> {
                 const SizedBox(
                   height: 35,
                 ),
-                const CustomUploadImageWidget(),
+                CustomUploadImageWidget(
+                  onTap: () {
+                    context.read<AddChildCubit>().pickImage();
+                  },
+                ),
                 const SizedBox(
                   height: 35,
                 ),
@@ -83,20 +90,38 @@ class _AddChildViewState extends State<AddChildView> {
                   height: 30,
                 ),
                 CustomButton(
-                  padding: const EdgeInsets.only(
-                      top: 15, bottom: 18, right: 123, left: 124),
+                  padding: const EdgeInsetsDirectional.only(
+                      top: 15, bottom: 18, end: 123, start: 124),
                   text: 'Add',
                   textStyle: AppStyles.styleSemiBold14(),
                   borderRadius: 20,
                   onPressed: () {
-                    if (formState.currentState!.validate()) {
+                    if (context.read<AddChildCubit>().image == null) {
+                      dispalySnackBar(context,
+                          title: 'Please Upload Image',
+                          titleActionButton: "OK",
+                          color: Colors.red);
+                    } else if (formState.currentState!.validate() &&
+                        context.read<AddChildCubit>().image != null) {
                       ShowDialogForAddedAndTransfer(
                         context: context,
                         borderRadius: 20,
                         borderRadiusButton: 5,
                         buttonText: 'Close',
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          context.read<AddChildCubit>().addedChild(
+                                childDetailsModel: ChildDetailsModel(
+                                  imagePath:
+                                      context.read<AddChildCubit>().image,
+                                  name: Name.text,
+                                  price: SchoolName.text,
+                                ),
+                              );
+                          Navigator.pop(context);
+                          dispalySnackBar(context,
+                              title: 'Added',
+                              titleActionButton: "OK",
+                              color: Colors.green);
                         },
                         buttonTextStyle: AppStyles.styleRegular16(),
                         imagePath: Assets.imagesSuccess,
@@ -111,7 +136,9 @@ class _AddChildViewState extends State<AddChildView> {
                 const SizedBox(
                   height: 172,
                 ),
-                const CustomBottomContainer(color: Colors.black),
+                const CustomBottomContainer(
+                  color: Colors.black,
+                ),
                 const SizedBox(
                   height: 8,
                 ),

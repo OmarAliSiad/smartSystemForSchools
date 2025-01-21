@@ -1,26 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/assets.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
+import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
 import 'package:smartsystemforschools/features/family/presentation/views/add_child_view.dart';
 import '../../../main_screen/presentation/views/main_screen.dart';
 import '../widgets/custom_card_family_widget.dart';
 
 class FamilyView extends StatelessWidget {
-  static List<Map<String, dynamic>> list = [
-    {'imagePath': Assets.imagesShahdImage, 'name': 'Shahd'},
-    {'imagePath': Assets.imagesAhmedImage, 'name': 'Ahmed'},
-    {'imagePath': Assets.imagesHodaImage, 'name': 'Hoda'},
-    {'imagePath': Assets.imagesShahdImage, 'name': 'Shahd'},
-    {'imagePath': Assets.imagesAhmedImage, 'name': 'Ahmed'},
-    {'imagePath': Assets.imagesHodaImage, 'name': 'Hoda'},
-    {'imagePath': Assets.imagesShahdImage, 'name': 'Shahd'},
-    {'imagePath': Assets.imagesAhmedImage, 'name': 'Ahmed'},
-    {'imagePath': Assets.imagesHodaImage, 'name': 'Hoda'},
-    {'imagePath': Assets.imagesShahdImage, 'name': 'Shahd'},
-    {'imagePath': Assets.imagesAhmedImage, 'name': 'Ahmed'},
-  ];
   static const String id = 'FamilyView';
   const FamilyView({super.key});
 
@@ -36,7 +24,7 @@ class FamilyView extends StatelessWidget {
         ThereIsicon: false,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 18, right: 22),
+        padding: const EdgeInsetsDirectional.only(start: 18, end: 22),
         child:
             CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
           const SliverToBoxAdapter(
@@ -44,31 +32,70 @@ class FamilyView extends StatelessWidget {
               height: 25,
             ),
           ),
-          SliverList.builder(
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              {
-                return Column(
-                  children: [
-                    CustomCardFaimlyWidget(
-                      imagePath: list[index]['imagePath'],
-                      name: list[index]['name'],
+          BlocBuilder<AddChildCubit, AddChildCubitState>(
+            builder: (context, state) {
+              if (state is AddChildCubitInitial) {
+                final childDetailsModel =
+                    context.read<AddChildCubit>().ListchildDetailsModel;
+                return SliverList.builder(
+                  itemCount: childDetailsModel.length,
+                  itemBuilder: (context, index) {
+                    {
+                      return Column(
+                        children: [
+                          CustomCardFaimlyWidget(
+                            childDetailsModel: childDetailsModel[index],
+                          ),
+                          SizedBox(
+                            height:
+                                index == childDetailsModel.length - 1 ? 30 : 25,
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                );
+              } else if (state is AddChildCubitLAddedSuccess) {
+                int length =
+                    context.read<AddChildCubit>().ListchildDetailsModel.length;
+                final childDetailsModel =
+                    context.read<AddChildCubit>().ListchildDetailsModel;
+                return SliverList.builder(
+                  itemCount: length,
+                  itemBuilder: (context, index) {
+                    {
+                      return Column(
+                        children: [
+                          CustomCardFaimlyWidget(
+                            childDetailsModel: childDetailsModel[index],
+                          ),
+                          SizedBox(
+                            height: index == length - 1 ? 30 : 25,
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                );
+              } else {
+                return SliverToBoxAdapter(
+                  child: Center(
+                    child: Text(
+                      'error no child added yet',
+                      style: AppStyles.styleMedium20(),
                     ),
-                    SizedBox(
-                      height: index == list.length - 1 ? 30 : 25,
-                    ),
-                  ],
+                  ),
                 );
               }
             },
           ),
           SliverToBoxAdapter(
             child: CustomButton(
-              padding: const EdgeInsets.only(
+              padding: const EdgeInsetsDirectional.only(
                 top: 15,
                 bottom: 18,
-                right: 123,
-                left: 124,
+                end: 123,
+                start: 124,
               ),
               text: 'Add Child',
               textStyle: AppStyles.styleSemiBold14(),

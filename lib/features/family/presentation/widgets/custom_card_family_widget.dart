@@ -1,21 +1,24 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../../core/models/child_details_model.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_button_transfer.dart';
 
 class CustomCardFaimlyWidget extends StatelessWidget {
-  final String imagePath;
-  final String name;
-  const CustomCardFaimlyWidget({super.key, required this.imagePath, required this.name});
+  final ChildDetailsModel childDetailsModel;
+  const CustomCardFaimlyWidget({
+    super.key,
+    required this.childDetailsModel,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
         final themeMode = context.read<ThemeModeCubit>().currentTheme;
-
         return ZoomIn(
           child: Container(
             decoration: ShapeDecoration(
@@ -23,11 +26,13 @@ class CustomCardFaimlyWidget extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              shadows: const <BoxShadow>[
+              shadows: <BoxShadow>[
                 BoxShadow(
-                  color: Color(0x3F000000),
+                  color: themeMode == ThemeMode.dark
+                      ? const Color(0xFFFFFFFF).withOpacity(.4)
+                      : const Color(0x3F000000),
                   blurRadius: 6,
-                  offset: Offset(0, 0),
+                  offset: const Offset(0, 0),
                   spreadRadius: 0,
                 )
               ],
@@ -36,26 +41,26 @@ class CustomCardFaimlyWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 15, top: 20, bottom: 25, right: 19),
+                  padding: const EdgeInsetsDirectional.only(
+                      start: 15, top: 20, bottom: 25, end: 19),
                   child: Column(
                     children: [
                       Image.asset(
-                      imagePath,
+                        childDetailsModel.imagePath,
                         fit: BoxFit.cover,
                         width: 52,
                         height: 52,
                       ),
                       Text(
-                        name,
+                        childDetailsModel.name,
                         style: AppStyles.styleMedium16(),
                       )
                     ],
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 21, bottom: 15, right: 37),
+                  padding: const EdgeInsetsDirectional.only(
+                      top: 21, bottom: 15, end: 37),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -82,7 +87,14 @@ class CustomCardFaimlyWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const CustomButtonTransfer(),
+                CustomButtonTransfer(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(ChildDetailsView.id, arguments: {
+                      'childDetailsModel': childDetailsModel,
+                    });
+                  },
+                ),
               ],
             ),
           ),
