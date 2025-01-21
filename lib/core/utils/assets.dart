@@ -2,6 +2,8 @@
 class Assets {
   Assets._();
   
+  static const String imagesAdd = "assets/images/add.png";
+
   static const String imagesAhmedImage = "assets/images/AhmedImage.png";
 
   static const String imagesAlert = "assets/images/alert.png";
@@ -18,8 +20,6 @@ class Assets {
 
   static const String imagesCamera = "assets/images/camera.png";
 
-  static const String imagesCart = "assets/images/cart.png";
-
   static const String imagesChocolate = "assets/images/chocolate.png";
 
   static const String imagesDarkMode = "assets/images/dark-mode.png";
@@ -34,9 +34,9 @@ class Assets {
 
   static const String imagesHome = "assets/images/home.png";
 
-  static const String imagesLogo = "assets/images/logo.png";
+  static const String imagesLogoColorWhite = "assets/images/logoColorWhite.png";
 
-  static const String imagesLogoColorWhite = "assets/images/LogoColorWhite.png";
+  static const String imagesLogoColorblue = "assets/images/logoColorblue.png";
 
   static const String imagesLogout = "assets/images/logout.png";
 
@@ -65,10 +65,13 @@ class Assets {
   static const String imagesProfileImage = "assets/images/profile_image.png";
 
   static const String imagesSettings = "assets/images/settings.png";
+  static const String imagesSettingsSvg = "assets/images/settings_svg.svg";
 
   static const String imagesShahdImage = "assets/images/shahdImage.png";
 
   static const String imagesShcoolName = "assets/images/ShcoolName.png";
+
+  static const String imagesShooping = "assets/images/shooping.png";
 
   static const String imagesSoftDrink = "assets/images/soft-drink.png";
 

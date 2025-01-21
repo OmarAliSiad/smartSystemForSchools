@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData lightTheme() {
   TextStyle blackedStyleColor = const TextStyle(color: Colors.black);
   return ThemeData(
+
     dialogTheme: const DialogTheme(
       backgroundColor: Colors.white,
     ),
@@ -14,6 +15,7 @@ ThemeData lightTheme() {
       backgroundColor: Colors.white,
       elevation: 0,
     ),
+    dialogBackgroundColor: Colors.white,
     textTheme: TextTheme(
       titleLarge: blackedStyleColor,
       titleMedium: blackedStyleColor,
@@ -30,7 +32,6 @@ ThemeData lightTheme() {
       labelLarge: blackedStyleColor,
       labelMedium: blackedStyleColor,
       labelSmall: blackedStyleColor,
-      
     ),
   );
 }

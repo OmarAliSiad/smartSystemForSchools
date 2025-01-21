@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
@@ -16,14 +18,15 @@ class CustomBalanceCardDetails extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 15, top: 18, bottom: 18),
+        padding:
+            const EdgeInsetsDirectional.only(start: 15, top: 18, bottom: 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Text(
-                  'Balance',
+                  LocaleKeys.balanceCardDetails_balance.tr(),
                   style:
                       AppStyles.styleMedium20().copyWith(color: Colors.white),
                 ),
@@ -39,7 +42,7 @@ class CustomBalanceCardDetails extends StatelessWidget {
               ],
             ),
             Text(
-              '1,299.33 EGP',
+              LocaleKeys.balanceCardDetails_balancePrice.tr(),
               style: AppStyles.styleBold24().copyWith(
                 color: Colors.white,
               ),

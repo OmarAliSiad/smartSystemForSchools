@@ -1,13 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/views/settings.view.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
+import '../../../../generated/locale_keys.g.dart';
 
 class CustomAppBarHomeView extends StatelessWidget
     implements PreferredSizeWidget {
-  const CustomAppBarHomeView({super.key});
+  final void Function() onTapSuffix;
+  final void Function()? onTapPrefix;
+  const CustomAppBarHomeView(
+      {super.key, required this.onTapSuffix, this.onTapPrefix});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +22,7 @@ class CustomAppBarHomeView extends StatelessWidget
         children: [
           InkWell(
             borderRadius: BorderRadius.circular(10),
-            onTap: () {
-              Navigator.of(context).pushNamed(SettingsView.id);
-            },
+            onTap: onTapPrefix,
             child: BlocBuilder<ChangeDataProfileCubit, ChangeDataProfileState>(
               builder: (context, state) {
                 final image = context.read<ChangeDataProfileCubit>().image;
@@ -49,7 +51,7 @@ class CustomAppBarHomeView extends StatelessWidget
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Good Morning,',
+                LocaleKeys.homeView_appBarTitle.tr(),
                 style: AppStyles.styleSemiBold20(),
               ),
               BlocBuilder<ChangeDataProfileCubit, ChangeDataProfileState>(
@@ -62,7 +64,7 @@ class CustomAppBarHomeView extends StatelessWidget
                     );
                   } else {
                     return Text(
-                      'Kari Colon',
+                      LocaleKeys.homeView_appBarName.tr(),
                       style: AppStyles.styleSemiBold20(),
                     );
                   }
@@ -71,11 +73,14 @@ class CustomAppBarHomeView extends StatelessWidget
             ],
           ),
           const Spacer(),
-          Image.asset(
-            Assets.imagesNotifications,
-            fit: BoxFit.cover,
-            width: 24,
-            height: 24,
+          InkWell(
+            onTap: onTapSuffix,
+            child: Image.asset(
+              Assets.imagesNotifications,
+              fit: BoxFit.cover,
+              width: 24,
+              height: 24,
+            ),
           ),
           const SizedBox(
             width: 10,

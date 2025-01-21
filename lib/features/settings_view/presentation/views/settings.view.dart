@@ -1,18 +1,25 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/views/edit_profile.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/views/privacy_view.dart';
+import 'package:smartsystemforschools/features/splash_feature/presenation/views/splash_view.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
 import '../manager/chage_data_profile/change_data_profile_cubit.dart';
 import '../manager/themeMode/theme_mode_cubit.dart';
 import '../widgets/custom_container_settings_widget.dart';
 
-class SettingsView extends StatelessWidget {
+class SettingsView extends StatefulWidget {
   static String id = "settings";
   const SettingsView({super.key});
+
+  @override
+  State<SettingsView> createState() => _SettingsViewState();
+}
+
+class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +27,7 @@ class SettingsView extends StatelessWidget {
         backgroundColor: Colors.transparent,
         scrolledUnderElevation: 0,
         leading: InkWell(
+            borderRadius: BorderRadius.circular(30),
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -67,7 +75,7 @@ class SettingsView extends StatelessWidget {
                         color: Color(0xff1A0F91),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(6),
+                        padding: const EdgeInsetsDirectional.all(6),
                         child: Image.asset(
                           Assets.imagesPen,
                         ),
@@ -105,7 +113,7 @@ class SettingsView extends StatelessWidget {
               height: 42,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 34),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 34),
               child: Column(
                 children: [
                   CustomContainerSettingsView(
@@ -122,7 +130,7 @@ class SettingsView extends StatelessWidget {
                     onTap: () {
                       showAboutDialog(
                         applicationIcon: Image.asset(
-                          Assets.imagesLogo,
+                          Assets.imagesLogoColorblue,
                           width: 100,
                           height: 100,
                           color: const Color(0xff191BA9),
@@ -151,6 +159,19 @@ class SettingsView extends StatelessWidget {
                     height: 16,
                   ),
                   CustomContainerSettingsView(
+                      onTap: () {
+                        if (context.locale == const Locale('en')) {
+                          context.setLocale(const Locale('ar'));
+                        } else {
+                          context.setLocale(const Locale('en'));
+                        }
+                      },
+                      icon: Icons.language,
+                      title: 'Localaziton'),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  CustomContainerSettingsView(
                     onTap: () {
                       context.read<ThemeModeCubit>().changeThemeMode();
                     },
@@ -163,7 +184,7 @@ class SettingsView extends StatelessWidget {
                   CustomContainerSettingsView(
                     onTap: () {
                       Navigator.of(context).pushNamedAndRemoveUntil(
-                          MainScreen.id, (context) => false);
+                          SplashView.id, (context) => false);
                     },
                     iconImage: Assets.imagesLogout,
                     title: 'Logout',

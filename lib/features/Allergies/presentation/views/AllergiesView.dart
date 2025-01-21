@@ -67,10 +67,13 @@ class _AllergiesViewState extends State<AllergiesView> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(left: 15, right: 14),
-              child: Text(
-                'Specify any allergies to help us tailor food options accordingly',
-                style: AppStyles.styleMedium13(),
+              padding: const EdgeInsetsDirectional.only(
+                  start: 15, end: 14),
+              child: FittedBox(
+                child: Text(
+                  'Specify any allergies to help us tailor food options accordingly',
+                  style: AppStyles.styleMedium13(),
+                ),
               ),
             ),
           ),
@@ -80,7 +83,8 @@ class _AllergiesViewState extends State<AllergiesView> {
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 25),
             sliver: SliverGrid.builder(
               itemCount: 6,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -116,13 +120,14 @@ class _AllergiesViewState extends State<AllergiesView> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
+              padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 20),
               child: CustomButton(
-                padding: const EdgeInsets.only(
+                padding: const EdgeInsetsDirectional.only(
                   top: 15,
                   bottom: 18,
-                  right: 123,
-                  left: 124,
+                  end: 123,
+                  start: 124,
                 ),
                 text: 'Confirm',
                 textStyle: AppStyles.styleSemiBold14(),
@@ -139,7 +144,9 @@ class _AllergiesViewState extends State<AllergiesView> {
             ),
           ),
           const SliverToBoxAdapter(
-              child: CustomBottomContainer(color: Colors.black)),
+              child: CustomBottomContainer(
+            color: Colors.black,
+          )),
           const SliverToBoxAdapter(
             child: SizedBox(
               height: 8,

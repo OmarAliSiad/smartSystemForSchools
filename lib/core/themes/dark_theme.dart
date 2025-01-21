@@ -7,6 +7,7 @@ ThemeData darkTheme() {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
     ),
+    dialogBackgroundColor: Colors.black,
     textTheme: TextTheme(
       titleLarge: whiteStyleColor,
       titleMedium: whiteStyleColor,

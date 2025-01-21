@@ -1,4 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../../core/methods/vaildate_email.dart';
+import '../../../../core/methods/vaildate_password.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
 import '../../../../core/widgets/custom_bottom_container.dart';
@@ -37,21 +41,21 @@ class _LogInState extends State<LogIn> {
                 height: 92,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30, right: 28),
+                padding: const EdgeInsetsDirectional.only(start: 30, end: 28),
                 child: Form(
                   key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Login to your Account',
+                        LocaleKeys.Login_title.tr(),
                         style: AppStyles.styleSemiBold20(),
                       ),
                       const SizedBox(
                         height: 32,
                       ),
                       OpcaityText(
-                        text: 'User Name',
+                        text: LocaleKeys.Login_labelUserName.tr(),
                         textStyle: AppStyles.styleRegular14(),
                         opacity: .7,
                       ),
@@ -59,20 +63,15 @@ class _LogInState extends State<LogIn> {
                         height: 9,
                       ),
                       CustomTextField(
+                        validator: (value) {
+                          return vaildateEmail(value, emailController);
+                        },
                         borderRaduis: 10,
-                        shadows: [
-                          BoxShadow(
-                            color: const Color(0x00000000).withOpacity(0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 1),
-                            spreadRadius: 0,
-                          )
-                        ],
                         controller: emailController,
                         obsure: false,
-                        hintText: 'Enter your userName',
+                        hintText: LocaleKeys.Login_userEmailHintText.tr(),
                         prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsetsDirectional.all(10),
                           child: Image.asset(
                             width: 20,
                             height: 20,
@@ -84,7 +83,7 @@ class _LogInState extends State<LogIn> {
                         height: 32,
                       ),
                       OpcaityText(
-                        text: 'Password',
+                        text: LocaleKeys.Login_labelPassword.tr(),
                         textStyle: AppStyles.styleRegular14(),
                         opacity: .7,
                       ),
@@ -92,15 +91,10 @@ class _LogInState extends State<LogIn> {
                         height: 9,
                       ),
                       CustomTextField(
+                        validator: (value) {
+                          return vaildatePassword(value, passwordController);
+                        },
                         borderRaduis: 10,
-                        shadows: [
-                          BoxShadow(
-                            color: const Color(0x00000000).withOpacity(0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 1),
-                            spreadRadius: 0,
-                          )
-                        ],
                         controller: passwordController,
                         obsure: isSecure,
                         suffixIcon: IconButton(
@@ -112,12 +106,12 @@ class _LogInState extends State<LogIn> {
                               ? const Icon(Icons.visibility_off)
                               : const Icon(Icons.visibility),
                         ),
-                        hintText: 'Enter your password',
+                        hintText: LocaleKeys.Login_passwordHintText.tr(),
                         prefixIcon: Padding(
-                          padding: const EdgeInsets.only(
+                          padding: const EdgeInsetsDirectional.only(
                             top: 13,
                             bottom: 18,
-                            left: 0,
+                            start: 0,
                           ),
                           child: Image.asset(
                             width: 16,
@@ -137,7 +131,7 @@ class _LogInState extends State<LogIn> {
                               Navigator.of(context).pushNamed(SendCode.id);
                             },
                             child: Text(
-                              'Forgot Password?',
+                              LocaleKeys.Login_forgotPassword.tr(),
                               style: AppStyles.styleRegular14().copyWith(
                                 fontSize: 16,
                                 color: const Color(0xff1A0F91),
@@ -157,14 +151,16 @@ class _LogInState extends State<LogIn> {
               ),
               CustomButtonLogIn(
                 formState: formKey,
-                text: 'Login',
+                text: LocaleKeys.Login_button.tr(),
                 email: emailController,
                 password: passwordController,
               ),
               const SizedBox(
                 height: 22,
               ),
-              const CustomBottomContainer(color: Colors.black),
+              const CustomBottomContainer(
+                color: Colors.black,
+              ),
             ],
           ),
         ],

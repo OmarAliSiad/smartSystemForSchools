@@ -16,9 +16,7 @@ class OpcaityText extends StatelessWidget {
       opacity: opacity,
       child: Text(
         text,
-        style: textStyle.copyWith(
-          color: Colors.black,
-        ),
+        style: textStyle.copyWith(),
       ),
     );
   }

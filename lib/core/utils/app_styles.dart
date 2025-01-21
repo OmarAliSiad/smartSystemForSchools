@@ -56,7 +56,13 @@ abstract class AppStyles {
       fontWeight: FontWeight.w400,
     );
   }
-
+ static TextStyle styleRegular18() {
+    return const TextStyle(
+      fontSize: 18,
+      fontFamily: 'Poppins',
+      fontWeight: FontWeight.w400,
+    );
+  }
   static TextStyle styleRegular10() {
     return const TextStyle(
       fontSize: 10,

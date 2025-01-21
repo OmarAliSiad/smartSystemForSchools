@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final TextStyle textStyle;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsDirectional padding;
   final double borderRadius;
-  final void Function() ?onPressed;
+  final void Function()? onPressed;
   const CustomButton({
     super.key,
     required this.padding,
     required this.text,
     required this.textStyle,
     required this.borderRadius,
-     this.onPressed,
+    this.onPressed,
   });
 
   @override

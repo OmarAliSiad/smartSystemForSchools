@@ -23,7 +23,7 @@ class TermsAndConditionView extends StatelessWidget {
         },
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 25),
         child: Column(
           children: [
             const SizedBox(
@@ -65,10 +65,10 @@ class TermsAndConditionView extends StatelessWidget {
               height: 95,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 100),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 100),
               child: CustomButton(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 39, vertical: 14.5),
+                padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 39, vertical: 14.5),
                 text: 'I’ve accepted',
                 textStyle: AppStyles.styleSemiBold14(),
                 borderRadius: 20,
@@ -85,10 +85,10 @@ class TermsAndConditionView extends StatelessWidget {
               height: 19,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 100),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 100),
               child: CustomButtonPrivacy(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 39, vertical: 14.5),
+                padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 39, vertical: 14.5),
                 text: 'Cancel',
                 textStyle: AppStyles.styleSemiBold14(),
                 borderRadius: 20,
@@ -99,7 +99,9 @@ class TermsAndConditionView extends StatelessWidget {
               ),
             ),
             const Expanded(child: SizedBox()),
-            const CustomBottomContainer(color: Colors.black),
+            const CustomBottomContainer(
+              color: Colors.black,
+            ),
           ],
         ),
       ),

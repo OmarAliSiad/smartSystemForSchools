@@ -1,30 +1,57 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:smartsystemforschools/core/themes/dark_theme.dart';
 import 'package:smartsystemforschools/core/themes/light_theme.dart';
-import 'package:smartsystemforschools/core/widgets/alertDialog.dart';
+import 'package:smartsystemforschools/features/Allergies/presentation/views/AllergiesView.dart';
+import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
+import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
+import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
+import 'package:smartsystemforschools/features/family/presentation/views/add_child_view.dart';
+import 'package:smartsystemforschools/features/family/presentation/views/family_view.dart';
 import 'package:smartsystemforschools/features/home/presentation/views/home_screen.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/forgot_password.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/log_in.dart';
+import 'package:smartsystemforschools/features/login/presenation/views/send_code.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/verfiy_code.dart';
 import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
-import 'package:smartsystemforschools/features/presenation/views/pageview.dart';
+import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
+import 'package:smartsystemforschools/features/onBoarding/views/pageview.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/views/edit_profile.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/views/privacy_view.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/views/settings.view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/views/terms_and_condition_view.dart';
-import 'package:smartsystemforschools/features/splash_feature/presenation/views/splash_view.dart';
-import 'package:smartsystemforschools/generated/l10n.dart';
-import 'core/themes/dark_theme.dart';
-import 'features/Allergies/presentation/views/AllergiesView.dart';
-import 'features/family/presentation/views/add_child_view.dart';
-import 'features/family/presentation/views/family_view.dart';
-import 'features/login/presenation/views/send_code.dart';
-import 'features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
-import 'features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:smartsystemforschools/generated/codegen_loader.g.dart';
+import 'package:smartsystemforschools/features/settings/presentation/widgets/change_password_page.dart';
+import 'features/settings_view/presentation/views/settings.view.dart';
+import 'features/splash_feature/presenation/views/splash_view.dart';
+import 'features/settings/presentation/views/settings_view.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  // ? code for device preview
+  // runApp(
+  //   DevicePreview(
+  //     enabled: !kReleaseMode,
+  //     builder: (context) => const MyApp(), // Wrap your app
+  //   ),
+  // );
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path:
+          'assets/translations', // <-- change the path of the translation files
+      fallbackLocale: const Locale(
+        'ar',
+      ),
+      assetLoader: const CodegenLoader(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,19 +59,38 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => ThemeModeCubit()),
         BlocProvider(create: (context) => ChangeDataProfileCubit()),
+        BlocProvider(create: (context) => AddChildCubit()),
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
+          ThemeMode themeMode = ThemeMode.light; // Default theme
+          if (state is ThemeModeChanged) {
+            themeMode = state.themeMode;
+          }
           return MaterialApp(
-            locale: const Locale('en'),
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            scrollBehavior: const ScrollBehavior().copyWith(dragDevices: {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+              PointerDeviceKind.stylus,
+              PointerDeviceKind.unknown,
+            }),
+            // locale: DevicePreview.locale(context),
+            // builder: DevicePreview.appBuilder,
             debugShowCheckedModeBanner: false,
-            themeMode: context.read<ThemeModeCubit>().currentTheme,
+            themeMode: themeMode,
             theme: lightTheme(),
             darkTheme: darkTheme(),
+            // locale: context.read<LocalizationCubit>().local,
             routes: {
               SplashView.id: (context) => const SplashView(),
               LogIn.id: (context) => const LogIn(),
@@ -52,6 +98,7 @@ class MyApp extends StatelessWidget {
               ForgotPassword.id: (context) => const ForgotPassword(),
               VerifyCode.id: (context) => const VerifyCode(),
               PagesScreen.id: (context) => const PagesScreen(),
+              SettingsHomeView.id: (context) => const SettingsHomeView(),
               SettingsView.id: (context) => const SettingsView(),
               MainScreen.id: (context) => const MainScreen(),
               HomeView.id: (context) => const HomeView(),
@@ -62,14 +109,11 @@ class MyApp extends StatelessWidget {
               FamilyView.id: (context) => const FamilyView(),
               AddChildView.id: (context) => const AddChildView(),
               AllergiesView.id: (context) => const AllergiesView(),
+              ChildDetailsView.id: (context) => const ChildDetailsView(),
+              AttendanceView.id: (context) => const AttendanceView(),
+              NotificationView.id: (context) => const NotificationView(),
+              ChangePasswordPage.id: (context) => const ChangePasswordPage(),
             },
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
             initialRoute: MainScreen.id,
           );
         },

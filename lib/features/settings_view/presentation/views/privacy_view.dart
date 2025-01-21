@@ -21,9 +21,9 @@ class PrivacyView extends StatelessWidget {
         },
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          left: 27,
-          right: 23,
+        padding: const EdgeInsetsDirectional.only(
+          start: 27,
+          end: 23,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,8 +53,8 @@ We don’t share any personally identifying \ninformation publicly or with third
             ),
             const Spacer(),
             CustomButtonPrivacy(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 98, vertical: 14.5),
+              padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 98, vertical: 14.5),
               text: 'I’ve agree with this',
               textStyle: AppStyles.styleSemiBold14()
                   .copyWith(color: const Color(0xff1A0F91)),
@@ -66,7 +66,9 @@ We don’t share any personally identifying \ninformation publicly or with third
             const SizedBox(
               height: 12,
             ),
-            const CustomBottomContainer(color: Colors.black),
+            const CustomBottomContainer(
+              color: Colors.black,
+            ),
           ],
         ),
       ),

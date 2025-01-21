@@ -4,13 +4,13 @@ import 'package:smartsystemforschools/features/settings_view/presentation/manage
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
   final bool ThereIsicon;
   final Function()? onTap;
   const CustomAppBar({
     super.key,
     this.title,
-    required this.textStyle,
+    this.textStyle,
     required this.ThereIsicon,
     this.onTap,
   });
@@ -24,6 +24,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         builder: (context, state) {
           final state = context.read<ThemeModeCubit>().currentTheme;
           return IconButton(
+            style: ButtonStyle(
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              ),
+            ),
             icon: Icon(
               Icons.arrow_back_ios,
               color: state == ThemeMode.dark ? Colors.white : Colors.black,

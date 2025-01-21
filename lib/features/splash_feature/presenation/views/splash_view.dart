@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../widgets/splash_view_body.dart';
 
 class SplashView extends StatelessWidget {
@@ -7,9 +9,16 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF191BA9),
-      body: SplashViewBody(),
+    return BlocBuilder<ThemeModeCubit, ThemeModeState>(
+      builder: (context, state) {
+        final themeMode = context.read<ThemeModeCubit>().currentTheme;
+        return Scaffold(
+          backgroundColor: themeMode == ThemeMode.dark
+              ? Colors.black
+              : const Color(0xFF191BA9),
+          body: const SplashViewBody(),
+        );
+      },
     );
   }
 }

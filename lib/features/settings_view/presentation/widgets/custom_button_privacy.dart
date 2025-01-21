@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomButtonPrivacy extends StatelessWidget {
   final String text;
   final TextStyle textStyle;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsDirectional padding;
   final double borderRadius;
   final void Function() onPressed;
   const CustomButtonPrivacy({

@@ -7,12 +7,17 @@ class UserInfo extends StatelessWidget {
   final String hintText;
   final bool obsure;
   final TextEditingController controller;
-  const UserInfo(
-      {super.key,
-      required this.title,
-      required this.hintText,
-      required this.obsure,
-      required this.controller});
+  final String? Function(String?)? validator;
+  final Widget? suffixIcon;
+  const UserInfo({
+    super.key,
+    required this.title,
+    required this.hintText,
+    required this.obsure,
+    required this.controller,
+    required this.validator,
+    this.suffixIcon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +25,18 @@ class UserInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 2),
+          padding: const EdgeInsetsDirectional.only(start: 2),
           child: Text(
             title,
-            style: AppStyles.styleRegular14().copyWith(
-              color: Colors.black.withOpacity(.70),
-            ),
+            style: AppStyles.styleRegular14().copyWith(),
           ),
         ),
         const SizedBox(
           height: 9,
         ),
         CustomTextField(
+          suffixIcon: suffixIcon,
+          validator: validator,
           borderRaduis: 10,
           hintText: hintText,
           obsure: obsure,

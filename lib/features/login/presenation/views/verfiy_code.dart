@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/forgot_password.dart';
+import 'package:smartsystemforschools/features/login/presenation/views/otp_code.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_button.dart';
 import '../../../../core/widgets/custom_bottom_container.dart';
@@ -15,8 +17,9 @@ class VerifyCode extends StatefulWidget {
 }
 
 class _VerifyCodeState extends State<VerifyCode> {
+  TextEditingController otpController = TextEditingController();
   String code = '';
-  bool _onEditing = false;
+  final bool _onEditing = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,21 +36,20 @@ class _VerifyCodeState extends State<VerifyCode> {
                 height: 92,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30),
+                padding: const EdgeInsetsDirectional.only(start: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'Please Check your email',
+                      LocaleKeys.VerifyCode_checkEmail.tr(),
                       style: AppStyles.styleSemiBold20(),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     Text(
-                      'Enter The verification code that has been \nentered into your email',
+                      LocaleKeys.VerifyCode_description.tr(),
                       style: AppStyles.styleMedium12().copyWith(
-                        color: Colors.black.withOpacity(.80),
                         fontSize: 13,
                       ),
                     ),
@@ -58,37 +60,20 @@ class _VerifyCodeState extends State<VerifyCode> {
                 height: 12,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: VerificationCode(
-                  fullBorder: true,
-                  textStyle: AppStyles.styleMedium18(),
-                  keyboardType: TextInputType.number,
-                  underlineColor: Colors.blue,
-                  length: 4,
-                  margin: const EdgeInsets.only(right: 15),
-                  itemSize: 65,
-                  cursorColor: Colors.blue,
-                  onCompleted: (String value) {
-                    setState(() {
-                      code = value;
-                    });
-                  },
-                  onEditing: (bool value) {
-                    setState(() {
-                      _onEditing = value;
-                    });
-                    if (!_onEditing) FocusScope.of(context).unfocus();
-                  },
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
+                child: PinCodeWidget(
+                  otpController: otpController,
                 ),
               ),
               const SizedBox(
                 height: 29,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 14),
                 child: CustomButton(
-                  padding: const EdgeInsets.symmetric(vertical: 14.5),
-                  text: 'Verify',
+                  padding:
+                      const EdgeInsetsDirectional.symmetric(vertical: 14.5),
+                  text: LocaleKeys.VerifyCode_button.tr(),
                   textStyle: AppStyles.styleSemiBold14(),
                   borderRadius: 20,
                   onPressed: () {
@@ -103,7 +88,7 @@ class _VerifyCodeState extends State<VerifyCode> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Send code again',
+                    LocaleKeys.VerifyCode_resend.tr(),
                     style: AppStyles.styleMedium12().copyWith(
                       fontSize: 13,
                     ),
@@ -112,18 +97,20 @@ class _VerifyCodeState extends State<VerifyCode> {
                     width: 10,
                   ),
                   Text(
-                    '00:20',
+                    LocaleKeys.VerifyCode_time.tr(),
                     style: AppStyles.styleMedium12().copyWith(
                       fontSize: 13,
-                      color: Colors.black.withOpacity(.63),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 206),
               Transform.translate(
-                  offset: const Offset(0, 30),
-                  child: const CustomBottomContainer(color: Colors.black)),
+                offset: const Offset(0, 30),
+                child: const CustomBottomContainer(
+                  color: Colors.black,
+                ),
+              ),
             ],
           ),
         ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
 class CustomBottomContainer extends StatelessWidget {
   final Color color;
@@ -6,14 +8,20 @@ class CustomBottomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 18),
-        width: 134,
-        height: 5,
-        decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(30)),
-      ),
+    return BlocBuilder<ThemeModeCubit, ThemeModeState>(
+      builder: (context, state) {
+        final themeMode = context.read<ThemeModeCubit>().currentTheme;
+        return Center(
+          child: Container(
+            margin: const EdgeInsetsDirectional.only(bottom: 18),
+            width: 134,
+            height: 5,
+            decoration: BoxDecoration(
+                color: themeMode == ThemeMode.dark ? Colors.white : color,
+                borderRadius: BorderRadius.circular(30)),
+          ),
+        );
+      },
     );
   }
 }

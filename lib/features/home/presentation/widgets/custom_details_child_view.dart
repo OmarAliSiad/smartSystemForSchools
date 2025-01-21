@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../../core/models/child_details_model.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_button_transfer.dart';
-import '../../data/models/child_details_model.dart';
 
 class CustomDetailsChildView extends StatelessWidget {
   final ChildDetailsModel childDetailsModel;
@@ -21,11 +23,13 @@ class CustomDetailsChildView extends StatelessWidget {
           decoration: BoxDecoration(
             color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color(0x3F000000),
+                color: themeMode == ThemeMode.dark
+                    ? const Color(0xFFFFFFFF).withOpacity(.4)
+                    : const Color(0x3F000000),
                 blurRadius: 6,
-                offset: Offset(0, 0),
+                offset: const Offset(0, 0),
                 spreadRadius: 0,
               )
             ],
@@ -34,7 +38,8 @@ class CustomDetailsChildView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 15, left: 15, bottom: 10),
+                padding: const EdgeInsetsDirectional.only(
+                    start: 15, top: 15, bottom: 10),
                 child: Image.asset(
                   childDetailsModel.imagePath,
                   fit: BoxFit.cover,
@@ -46,7 +51,7 @@ class CustomDetailsChildView extends StatelessWidget {
                 width: 16,
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 18),
+                padding: const EdgeInsetsDirectional.only(top: 15, bottom: 18),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -58,7 +63,7 @@ class CustomDetailsChildView extends StatelessWidget {
                       height: 3,
                     ),
                     Text(
-                      childDetailsModel.price,
+                      childDetailsModel.price.tr(),
                       style: AppStyles.styleSemiBold14()
                           .copyWith(color: const Color(0xff1A0F91)),
                     )
@@ -66,7 +71,12 @@ class CustomDetailsChildView extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              const CustomButtonTransfer()
+              CustomButtonTransfer(
+                onTap: () {
+                  Navigator.of(context).pushNamed(ChildDetailsView.id,
+                      arguments: {'childDetailsModel': childDetailsModel});
+                },
+              )
             ],
           ),
         );

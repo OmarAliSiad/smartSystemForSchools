@@ -24,7 +24,8 @@ class CustomButtonAlertDailog extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 32),
+          padding: const EdgeInsetsDirectional.symmetric(
+              vertical: 11, horizontal: 32),
           child: Text(
             title,
             style: AppStyles.styleRegular14().copyWith(color: colorFont),

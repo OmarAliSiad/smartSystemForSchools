@@ -1,21 +1,23 @@
-
 import 'package:flutter/material.dart';
 import 'package:smartsystemforschools/core/utils/assets.dart';
 
 class CustomButtonTransfer extends StatelessWidget {
+  final void Function()? onTap;
   const CustomButtonTransfer({
     super.key,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       borderRadius: BorderRadius.circular(10),
       child: Padding(
-        padding: const EdgeInsets.only(top: 19, right: 15, bottom: 22),
+        padding: const EdgeInsetsDirectional.only(
+            end: 15, top: 19, bottom: 22),
         child: Container(
-          padding: const EdgeInsets.symmetric(
+          padding: const EdgeInsetsDirectional.symmetric(
             horizontal: 10,
             vertical: 6,
           ),

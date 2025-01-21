@@ -1,10 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
+import 'package:smartsystemforschools/features/login/presenation/views/verfiy_code.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
 import '../../../../core/widgets/custom_bottom_container.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../family/presentation/views/family_view.dart';
 import '../../../home/presentation/views/home_screen.dart';
 
@@ -25,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
     FamilyView(
       key: UniqueKey(),
     ),
-    HomeView(
+    AttendanceView(
       key: UniqueKey(),
     ),
     ProductView(
@@ -79,7 +82,7 @@ class _MainScreenState extends State<MainScreen> {
                       width: 24.5,
                       height: 24.5,
                     ),
-                    label: 'Home',
+                    label: LocaleKeys.bottomNavigationBar_home.tr(),
                   ),
                   BottomNavigationBarItem(
                     icon: Image.asset(
@@ -90,7 +93,7 @@ class _MainScreenState extends State<MainScreen> {
                       width: 24.5,
                       height: 24.5,
                     ),
-                    label: 'Family',
+                    label: LocaleKeys.bottomNavigationBar_family.tr(),
                   ),
                   BottomNavigationBarItem(
                     icon: Image.asset(
@@ -101,7 +104,7 @@ class _MainScreenState extends State<MainScreen> {
                       width: 24.5,
                       height: 24.5,
                     ),
-                    label: 'Attendance',
+                    label: LocaleKeys.bottomNavigationBar_attendance.tr(),
                   ),
                   BottomNavigationBarItem(
                     icon: Image.asset(
@@ -112,14 +115,16 @@ class _MainScreenState extends State<MainScreen> {
                       width: 24.5,
                       height: 24.5,
                     ),
-                    label: 'Wallet',
+                    label: LocaleKeys.bottomNavigationBar_wallet.tr(),
                   ),
                 ],
               ),
               const SizedBox(
                 height: 4,
               ),
-              const CustomBottomContainer(color: Colors.black)
+              const CustomBottomContainer(
+                color: Colors.black,
+              )
             ],
           ),
         );

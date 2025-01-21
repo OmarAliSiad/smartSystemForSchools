@@ -11,7 +11,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final int? maxLength;
   final Widget? suffixIcon;
-  final List<BoxShadow>? shadows;
+  final String? Function(String?)? validator;
   final double borderRaduis;
   const CustomTextField({
     super.key,
@@ -23,49 +23,47 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.maxLength,
     this.suffixIcon,
-    this.shadows,
     required this.borderRaduis,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRaduis),
-        boxShadow: shadows,
-      ),
-      child: Card(
+      decoration: ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRaduis),
-          side: BorderSide.none,
         ),
-        child: TextFormField(
-          style: const TextStyle(color: Colors.black),
-          maxLength: maxLength,
-          keyboardType: keyboardType,
-          controller: controller,
-          maxLines: obsure ? 1 : maxLines,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
-          },
-          obscureText: obsure,
-          cursorColor: Colors.black,
-          decoration: InputDecoration(
-            hintFadeDuration: const Duration(milliseconds: 400),
-            hintText: hintText,
-            hintStyle: AppStyles.styleRegular14().copyWith(
-              color: const Color(0xFF000000).withOpacity(0.5),
-            ),
-            prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
-            border: BuildOutlineBorder(),
-            enabledBorder: BuildOutlineBorder(),
-            focusedBorder: BuildOutlineBorder(),
+        shadows: const [
+          BoxShadow(
+            color: Color(0x3F000000),
+            blurRadius: 4,
+            offset: Offset(0, 1),
+            spreadRadius: 0,
+          )
+        ],
+      ),
+      child: TextFormField(
+        style: const TextStyle(color: Colors.black),
+        maxLength: maxLength,
+        keyboardType: keyboardType,
+        controller: controller,
+        maxLines: obsure ? 1 : maxLines,
+        validator: validator,
+        obscureText: obsure,
+        cursorColor: Colors.black,
+        decoration: InputDecoration(
+          hintFadeDuration: const Duration(milliseconds: 400),
+          hintText: hintText,
+          hintStyle: AppStyles.styleRegular14().copyWith(
+            color: const Color(0xFF000000).withOpacity(0.5),
           ),
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+          border: BuildOutlineBorder(),
+          enabledBorder: BuildOutlineBorder(),
+          focusedBorder: BuildOutlineBorder(),
         ),
       ),
     );

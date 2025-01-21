@@ -1,7 +1,9 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
-
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/methods/show_scaffold_messanger.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
@@ -27,7 +29,7 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Edit Profile',
+        title: LocaleKeys.editProfile_editProfile.tr(),
         textStyle: AppStyles.styleSemiBold20(),
         ThereIsicon: true,
         onTap: () {
@@ -42,56 +44,58 @@ class _EditProfileState extends State<EditProfile> {
               const SizedBox(
                 height: 30,
               ),
-              Stack(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      context.read<ChangeDataProfileCubit>().pickImage();
-                    },
-                    child: BlocBuilder<ChangeDataProfileCubit,
-                        ChangeDataProfileState>(
-                      builder: (context, state) {
-                        if (state is DataProfileLoaded) {
-                          return state.profileDataModel.image != ''
-                              ? Image.file(
-                                  state.profileDataModel.image!,
-                                  width: 100,
-                                  height: 100,
-                                )
-                              : Image.asset(
-                                  Assets.imagesProfileImage,
-                                  width: 100,
-                                  height: 100,
-                                );
-                        } else {
-                          return Image.asset(
-                            Assets.imagesProfileImage,
-                            width: 100,
-                            height: 100,
-                          );
-                        }
+              BounceInDown(
+                child: Stack(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        context.read<ChangeDataProfileCubit>().pickImage();
                       },
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      width: 27,
-                      height: 27,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xff1A0F91),
+                      child: BlocBuilder<ChangeDataProfileCubit,
+                          ChangeDataProfileState>(
+                        builder: (context, state) {
+                          if (state is DataProfileLoaded) {
+                            return state.profileDataModel.image != ''
+                                ? Image.file(
+                                    state.profileDataModel.image!,
+                                    width: 100,
+                                    height: 100,
+                                  )
+                                : Image.asset(
+                                    Assets.imagesProfileImage,
+                                    width: 100,
+                                    height: 100,
+                                  );
+                          } else {
+                            return Image.asset(
+                              Assets.imagesProfileImage,
+                              width: 100,
+                              height: 100,
+                            );
+                          }
+                        },
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: Image.asset(
-                          Assets.imagesPen,
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 27,
+                        height: 27,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xff1A0F91),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.all(6),
+                          child: Image.asset(
+                            Assets.imagesPen,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 21,
@@ -99,36 +103,41 @@ class _EditProfileState extends State<EditProfile> {
               Form(
                 key: formKey,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 29, left: 26),
+                  padding: const EdgeInsetsDirectional.only(end: 29, start: 26),
                   child: Column(
                     children: [
-                      CustomTextFieldEditProfile(
-                        length: 10,
-                        controller: context.read<ChangeDataProfileCubit>().Name,
-                        hintText: 'Enter Name',
-                        keyboardType: TextInputType.name,
-                        title: 'Name',
+                      SlideInRight(
+                        child: CustomTextFieldEditProfile(
+                          controller:
+                              context.read<ChangeDataProfileCubit>().Name,
+                          hintText: 'Enter Name',
+                          keyboardType: TextInputType.name,
+                          title: LocaleKeys.editProfile_name.tr(),
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      CustomTextFieldEditProfile(
-                        length: 12,
-                        controller:
-                            context.read<ChangeDataProfileCubit>().Phone,
-                        hintText: 'Enter Phone Number',
-                        keyboardType: TextInputType.number,
-                        title: 'Phone',
+                      SlideInLeft(
+                        child: CustomTextFieldEditProfile(
+                          controller:
+                              context.read<ChangeDataProfileCubit>().Phone,
+                          hintText: 'Enter Phone Number',
+                          keyboardType: TextInputType.number,
+                          title: LocaleKeys.editProfile_phone.tr(),
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      CustomTextFieldEditProfile(
-                        controller:
-                            context.read<ChangeDataProfileCubit>().Email,
-                        hintText: 'Enter Email',
-                        keyboardType: TextInputType.emailAddress,
-                        title: 'Email',
+                      SlideInRight(
+                        child: CustomTextFieldEditProfile(
+                          controller:
+                              context.read<ChangeDataProfileCubit>().Email,
+                          hintText: 'Enter Email',
+                          keyboardType: TextInputType.emailAddress,
+                          title: LocaleKeys.editProfile_email.tr(),
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
@@ -141,72 +150,81 @@ class _EditProfileState extends State<EditProfile> {
                 height: 191,
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 23,
-                  right: 22,
+                padding: const EdgeInsetsDirectional.only(
+                  start: 23,
+                  end: 22,
                 ),
-                child: CustomButton(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  text: 'Save',
-                  textStyle: AppStyles.styleSemiBold14(),
-                  borderRadius: 20,
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      if (context.read<ChangeDataProfileCubit>().image ==
-                          null) {
-                        showDialogProfile(
-                          buttonCancelTitle: 'Cancel',
-                          buttonOkTitle: 'Ok',
-                          context: context,
-                          subTitle: 'Please Select Image',
-                          title: 'Error',
-                        );
-                      } else if (context.read<ChangeDataProfileCubit>().image !=
-                              null &&
+                child: BounceInDown(
+                  child: CustomButton(
+                    padding:
+                        const EdgeInsetsDirectional.symmetric(vertical: 15),
+                    text: LocaleKeys.editProfile_save.tr(),
+                    textStyle: AppStyles.styleSemiBold14(),
+                    borderRadius: 20,
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        if (context.read<ChangeDataProfileCubit>().image ==
+                            null) {
+                          showDialogProfile(
+                            buttonCancelTitle: 'Cancel',
+                            buttonOkTitle: 'Ok',
+                            context: context,
+                            subTitle: 'Please Select Image',
+                            title: 'Error',
+                          );
+                        } else if (context
+                                    .read<ChangeDataProfileCubit>()
+                                    .image !=
+                                null &&
+                            context
+                                .read<ChangeDataProfileCubit>()
+                                .image!
+                                .path
+                                .isNotEmpty) {
                           context
                               .read<ChangeDataProfileCubit>()
-                              .image!
-                              .path
-                              .isNotEmpty) {
-                        context.read<ChangeDataProfileCubit>().saveProfileData(
-                              ProfileDataModel(
-                                image: context
-                                    .read<ChangeDataProfileCubit>()
-                                    .image!,
-                                name: context
-                                    .read<ChangeDataProfileCubit>()
-                                    .Name
-                                    .text,
-                                phone: context
-                                    .read<ChangeDataProfileCubit>()
-                                    .Phone
-                                    .text,
-                                email: context
-                                    .read<ChangeDataProfileCubit>()
-                                    .Email
-                                    .text,
-                              ),
-                            );
-                        context
-                            .read<ChangeDataProfileCubit>()
-                            .loadProfileData();
-                        dispalySnackBar(
-                          context,
-                          color: Colors.green,
-                          title: 'Profile Updated Successfully',
-                          titleActionButton: 'Edited',
-                        );
-                        Navigator.of(context).pop();
+                              .saveProfileData(
+                                ProfileDataModel(
+                                  image: context
+                                      .read<ChangeDataProfileCubit>()
+                                      .image!,
+                                  name: context
+                                      .read<ChangeDataProfileCubit>()
+                                      .Name
+                                      .text,
+                                  phone: context
+                                      .read<ChangeDataProfileCubit>()
+                                      .Phone
+                                      .text,
+                                  email: context
+                                      .read<ChangeDataProfileCubit>()
+                                      .Email
+                                      .text,
+                                ),
+                              );
+                          context
+                              .read<ChangeDataProfileCubit>()
+                              .loadProfileData();
+                          dispalySnackBar(
+                            context,
+                            color: Colors.green,
+                            title: 'Profile Updated Successfully',
+                            titleActionButton: 'Success',
+                          );
+                          Navigator.of(context).pop();
+                        }
                       }
-                    }
-                  },
+                    },
+                  ),
                 ),
               ),
               const SizedBox(
                 height: 12,
               ),
-              const CustomBottomContainer(
-                color: Colors.black,
+              BounceInDown(
+                child: const CustomBottomContainer(
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
