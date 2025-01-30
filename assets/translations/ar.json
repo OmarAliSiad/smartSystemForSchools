@@ -95,9 +95,21 @@
     "name": "  الاسم",
     "phone": "  رقم الجوال",
     "email": "البريد الإلكتروني",
+    "hintName": "ادخال الاسم",
+    "hintPhone": "ادخال رقم التليفون ",
+    "hintEmail": "ادخال الايميل",
     "save": "  حفظ"
   },
   "policy": {
-   "ok": "حسنا"
+    "ok": "حسنا"
+  },
+  "wallet": {
+    "wallet": "المحفظة",
+    "cardNumber": "Card number",
+    "expiry": "Expiry",
+    "CVC": "CVC",
+    "country": "Country",
+    "postalCode": "Postal code",
+    "Transfer": "تحويل"
   }
 }

@@ -90,14 +90,26 @@
         "logout": "Logout",
         "save": "Save"
     },
-    "editProfile":{
-     "editProfile": "Edit Profile",
-      "name" : "Name",
-      "phone" : "Phone",
-      "email": "Email",
-      "save": "Save"
+    "editProfile": {
+        "editProfile": "Edit Profile",
+        "name": "Name",
+        "hintName":"Enter Name",
+        "phone": "Phone",
+        "hintPhone":"Enter Phone Number",
+        "email": "Email",
+        "hintEmail":"Enter Email",
+        "save": "Save"
     },
     "policy": {
         "ok": "Ok"
-       }
+    },
+    "wallet": {
+        "wallet": "Wallet",
+        "cardNumber": "Card number",
+        "expiry": "Expiry",
+        "CVC": "CVC",
+        "country": "Country",
+        "postalCode": "Postal code",
+        "Transfer": "Transfer"
+    }
 }
