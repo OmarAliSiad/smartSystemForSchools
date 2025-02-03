@@ -67,8 +67,7 @@ class _AllergiesViewState extends State<AllergiesView> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsetsDirectional.only(
-                  start: 15, end: 14),
+              padding: const EdgeInsetsDirectional.only(start: 15, end: 14),
               child: FittedBox(
                 child: Text(
                   'Specify any allergies to help us tailor food options accordingly',
@@ -83,8 +82,7 @@ class _AllergiesViewState extends State<AllergiesView> {
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsetsDirectional.symmetric(
-                horizontal: 25),
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 25),
             sliver: SliverGrid.builder(
               itemCount: 6,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -120,8 +118,7 @@ class _AllergiesViewState extends State<AllergiesView> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 20),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
               child: CustomButton(
                 padding: const EdgeInsetsDirectional.only(
                   top: 15,

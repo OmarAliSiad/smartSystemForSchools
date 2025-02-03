@@ -3,8 +3,7 @@ part of 'get_user_data_cubit.dart';
 @immutable
 sealed class GetUserDataState {}
 
-final class GetUserDataInitial extends GetUserDataState {
-}
+final class GetUserDataInitial extends GetUserDataState {}
 
 final class Loading extends GetUserDataState {}
 

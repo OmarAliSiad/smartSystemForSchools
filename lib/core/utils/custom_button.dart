@@ -6,6 +6,7 @@ class CustomButton extends StatelessWidget {
   final EdgeInsetsDirectional padding;
   final double borderRadius;
   final void Function()? onPressed;
+  final bool? isLoading;
   const CustomButton({
     super.key,
     required this.padding,
@@ -13,6 +14,7 @@ class CustomButton extends StatelessWidget {
     required this.textStyle,
     required this.borderRadius,
     this.onPressed,
+    this.isLoading,
   });
 
   @override
@@ -26,14 +28,21 @@ class CustomButton extends StatelessWidget {
         onPressed: onPressed,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius)),
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: textStyle.copyWith(color: Colors.white),
-          ),
-        ),
+        child: isLoading ?? false == true
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  backgroundColor: Colors.blue,
+                ),
+              )
+            : FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  text,
+                  style: textStyle.copyWith(color: Colors.white),
+                ),
+              ),
       ),
     );
   }

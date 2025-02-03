@@ -19,84 +19,82 @@ class CustomCardFaimlyWidget extends StatelessWidget {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
         final themeMode = context.read<ThemeModeCubit>().currentTheme;
-        return ZoomIn(
-          child: Container(
-            decoration: ShapeDecoration(
-              color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+        return Container(
+          decoration: ShapeDecoration(
+            color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            shadows: <BoxShadow>[
+              BoxShadow(
+                color: themeMode == ThemeMode.dark
+                    ? const Color(0xFFFFFFFF).withOpacity(.4)
+                    : const Color(0x3F000000),
+                blurRadius: 6,
+                offset: const Offset(0, 0),
+                spreadRadius: 0,
+              )
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsetsDirectional.only(
+                    start: 15, top: 20, bottom: 25, end: 19),
+                child: Column(
+                  children: [
+                    Image.asset(
+                      childDetailsModel.imagePath,
+                      fit: BoxFit.cover,
+                      width: 52,
+                      height: 52,
+                    ),
+                    Text(
+                      childDetailsModel.name,
+                      style: AppStyles.styleMedium16(),
+                    )
+                  ],
+                ),
               ),
-              shadows: <BoxShadow>[
-                BoxShadow(
-                  color: themeMode == ThemeMode.dark
-                      ? const Color(0xFFFFFFFF).withOpacity(.4)
-                      : const Color(0x3F000000),
-                  blurRadius: 6,
-                  offset: const Offset(0, 0),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(
-                      start: 15, top: 20, bottom: 25, end: 19),
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        childDetailsModel.imagePath,
-                        fit: BoxFit.cover,
-                        width: 52,
-                        height: 52,
+              Padding(
+                padding: const EdgeInsetsDirectional.only(
+                    top: 21, bottom: 15, end: 37),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Balance',
+                      style: AppStyles.styleRegular16(),
+                    ),
+                    Text(
+                      '100 EGP',
+                      style: AppStyles.styleMedium16().copyWith(
+                        color: const Color(0xFF5CC2F2),
                       ),
-                      Text(
-                        childDetailsModel.name,
-                        style: AppStyles.styleMedium16(),
-                      )
-                    ],
-                  ),
+                    ),
+                    Text(
+                      'Daily spending limit',
+                      style: AppStyles.styleMedium16(),
+                    ),
+                    Text(
+                      '40 EGP',
+                      style: AppStyles.styleMedium16().copyWith(
+                        color: const Color(0xFF5CC2F2),
+                      ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(
-                      top: 21, bottom: 15, end: 37),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Balance',
-                        style: AppStyles.styleRegular16(),
-                      ),
-                      Text(
-                        '100 EGP',
-                        style: AppStyles.styleMedium16().copyWith(
-                          color: const Color(0xFF5CC2F2),
-                        ),
-                      ),
-                      Text(
-                        'Daily spending limit',
-                        style: AppStyles.styleMedium16(),
-                      ),
-                      Text(
-                        '40 EGP',
-                        style: AppStyles.styleMedium16().copyWith(
-                          color: const Color(0xFF5CC2F2),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                CustomButtonTransfer(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(ChildDetailsView.id, arguments: {
-                      'childDetailsModel': childDetailsModel,
-                    });
-                  },
-                ),
-              ],
-            ),
+              ),
+              CustomButtonTransfer(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(ChildDetailsView.id, arguments: {
+                    'childDetailsModel': childDetailsModel,
+                  });
+                },
+              ),
+            ],
           ),
         );
       },

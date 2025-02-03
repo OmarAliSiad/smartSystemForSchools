@@ -3,8 +3,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:smartsystemforschools/core/themes/dark_theme.dart';
 import 'package:smartsystemforschools/core/themes/light_theme.dart';
+import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/features/Allergies/presentation/views/AllergiesView.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
 import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
@@ -38,6 +40,7 @@ void main() async {
   //     builder: (context) => const MyApp(), // Wrap your app
   //   ),
   // );
+  Stripe.publishableKey = ApiKeys.stripePublishableKey;
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   runApp(
@@ -88,9 +91,8 @@ class MyApp extends StatelessWidget {
             // builder: DevicePreview.appBuilder,
             debugShowCheckedModeBanner: false,
             themeMode: themeMode,
-            theme: lightTheme(),
-            darkTheme: darkTheme(),
-            // locale: context.read<LocalizationCubit>().local,
+            theme: lightTheme(context),
+            darkTheme: darkTheme(context),
             routes: {
               SplashView.id: (context) => const SplashView(),
               LogIn.id: (context) => const LogIn(),

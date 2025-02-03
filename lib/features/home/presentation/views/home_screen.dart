@@ -53,7 +53,7 @@ class HomeView extends StatelessWidget {
               ),
             ),
             SliverToBoxAdapter(
-              child: ZoomIn(
+              child: BounceInDown(
                 child: const CustomBalanceCardDetails(),
               ),
             ),
@@ -78,11 +78,17 @@ class HomeView extends StatelessWidget {
               itemBuilder: (context, index) => Padding(
                 padding:
                     EdgeInsetsDirectional.only(bottom: index == 2 ? 0 : 13),
-                child: ZoomIn(
-                  child: CustomDetailsChildView(
-                    childDetailsModel: childDetails[index],
-                  ),
-                ),
+                child: index % 2 == 0
+                    ? SlideInRight(
+                        child: CustomDetailsChildView(
+                          childDetailsModel: childDetails[index],
+                        ),
+                      )
+                    : SlideInLeft(
+                        child: CustomDetailsChildView(
+                          childDetailsModel: childDetails[index],
+                        ),
+                      ),
               ),
             ),
             const SliverToBoxAdapter(
@@ -103,8 +109,7 @@ class HomeView extends StatelessWidget {
             ),
             SliverList.builder(
               itemBuilder: (context, index) => Padding(
-                padding:
-                    EdgeInsetsDirectional.only(bottom: index == 2 ? 0 : 13),
+                padding: const EdgeInsetsDirectional.only(bottom: 13),
                 child: ZoomIn(child: const CustomCardTransactions()),
               ),
               itemCount: 10,

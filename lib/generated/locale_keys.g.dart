@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const PageView1_title = 'PageView1.title';
   static const PageView1_subtitle = 'PageView1.subtitle';
   static const PageView1_button = 'PageView1.button';
@@ -38,14 +38,18 @@ abstract class  LocaleKeys {
   static const ForgotPassword_title = 'ForgotPassword.title';
   static const ForgotPassword_subtitle = 'ForgotPassword.subtitle';
   static const ForgotPassword_newPassword = 'ForgotPassword.newPassword';
-  static const ForgotPassword_newPasswordHint = 'ForgotPassword.newPasswordHint';
-  static const ForgotPassword_confirmPassword = 'ForgotPassword.confirmPassword';
-  static const ForgotPassword_confirmPasswordHint = 'ForgotPassword.confirmPasswordHint';
+  static const ForgotPassword_newPasswordHint =
+      'ForgotPassword.newPasswordHint';
+  static const ForgotPassword_confirmPassword =
+      'ForgotPassword.confirmPassword';
+  static const ForgotPassword_confirmPasswordHint =
+      'ForgotPassword.confirmPasswordHint';
   static const ForgotPassword_button = 'ForgotPassword.button';
   static const ForgotPassword = 'ForgotPassword';
   static const bottomNavigationBar_home = 'bottomNavigationBar.home';
   static const bottomNavigationBar_family = 'bottomNavigationBar.family';
-  static const bottomNavigationBar_attendance = 'bottomNavigationBar.attendance';
+  static const bottomNavigationBar_attendance =
+      'bottomNavigationBar.attendance';
   static const bottomNavigationBar_wallet = 'bottomNavigationBar.wallet';
   static const bottomNavigationBar = 'bottomNavigationBar';
   static const homeView_appBarTitle = 'homeView.appBarTitle';
@@ -59,7 +63,8 @@ abstract class  LocaleKeys {
   static const homeView_family = 'homeView.family';
   static const homeView = 'homeView';
   static const balanceCardDetails_balance = 'balanceCardDetails.balance';
-  static const balanceCardDetails_balancePrice = 'balanceCardDetails.balancePrice';
+  static const balanceCardDetails_balancePrice =
+      'balanceCardDetails.balancePrice';
   static const balanceCardDetails = 'balanceCardDetails';
   static const transactions_transactions = 'transactions.transactions';
   static const transactions_title = 'transactions.title';
@@ -83,9 +88,19 @@ abstract class  LocaleKeys {
   static const editProfile_name = 'editProfile.name';
   static const editProfile_phone = 'editProfile.phone';
   static const editProfile_email = 'editProfile.email';
+  static const editProfile_hintName = 'editProfile.hintName';
+  static const editProfile_hintPhone = 'editProfile.hintPhone';
+  static const editProfile_hintEmail = 'editProfile.hintEmail';
   static const editProfile_save = 'editProfile.save';
   static const editProfile = 'editProfile';
   static const policy_ok = 'policy.ok';
   static const policy = 'policy';
-
+  static const wallet_wallet = 'wallet.wallet';
+  static const wallet_cardNumber = 'wallet.cardNumber';
+  static const wallet_expiry = 'wallet.expiry';
+  static const wallet_CVC = 'wallet.CVC';
+  static const wallet_country = 'wallet.country';
+  static const wallet_postalCode = 'wallet.postalCode';
+  static const wallet_Transfer = 'wallet.Transfer';
+  static const wallet = 'wallet';
 }

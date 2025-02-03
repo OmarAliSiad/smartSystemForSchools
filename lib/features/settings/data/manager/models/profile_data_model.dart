@@ -4,7 +4,7 @@ class ProfileDataModel {
   final String name;
   final String email;
   final String phone;
-  final File ? image;
+  final File? image;
 
   ProfileDataModel({
     required this.name,

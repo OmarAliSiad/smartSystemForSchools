@@ -110,7 +110,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: CustomTextFieldEditProfile(
                           controller:
                               context.read<ChangeDataProfileCubit>().Name,
-                          hintText: 'Enter Name',
+                          hintText: LocaleKeys.editProfile_hintName.tr(),
                           keyboardType: TextInputType.name,
                           title: LocaleKeys.editProfile_name.tr(),
                         ),
@@ -122,7 +122,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: CustomTextFieldEditProfile(
                           controller:
                               context.read<ChangeDataProfileCubit>().Phone,
-                          hintText: 'Enter Phone Number',
+                          hintText: LocaleKeys.editProfile_hintPhone.tr(),
                           keyboardType: TextInputType.number,
                           title: LocaleKeys.editProfile_phone.tr(),
                         ),
@@ -134,7 +134,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: CustomTextFieldEditProfile(
                           controller:
                               context.read<ChangeDataProfileCubit>().Email,
-                          hintText: 'Enter Email',
+                          hintText: LocaleKeys.editProfile_hintEmail.tr(),
                           keyboardType: TextInputType.emailAddress,
                           title: LocaleKeys.editProfile_email.tr(),
                         ),

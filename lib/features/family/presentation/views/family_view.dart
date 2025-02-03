@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
@@ -43,9 +44,17 @@ class FamilyView extends StatelessWidget {
                     {
                       return Column(
                         children: [
-                          CustomCardFaimlyWidget(
-                            childDetailsModel: childDetailsModel[index],
-                          ),
+                          index % 2 == 0
+                              ? SlideInRight(
+                                  child: CustomCardFaimlyWidget(
+                                    childDetailsModel: childDetailsModel[index],
+                                  ),
+                                )
+                              : SlideInLeft(
+                                  child: CustomCardFaimlyWidget(
+                                    childDetailsModel: childDetailsModel[index],
+                                  ),
+                                ),
                           SizedBox(
                             height:
                                 index == childDetailsModel.length - 1 ? 30 : 25,
@@ -90,19 +99,21 @@ class FamilyView extends StatelessWidget {
             },
           ),
           SliverToBoxAdapter(
-            child: CustomButton(
-              padding: const EdgeInsetsDirectional.only(
-                top: 15,
-                bottom: 18,
-                end: 123,
-                start: 124,
+            child: BounceInDown(
+              child: CustomButton(
+                padding: const EdgeInsetsDirectional.only(
+                  top: 15,
+                  bottom: 18,
+                  end: 123,
+                  start: 124,
+                ),
+                text: 'Add Child',
+                textStyle: AppStyles.styleSemiBold14(),
+                borderRadius: 20,
+                onPressed: () {
+                  Navigator.of(context).pushNamed(AddChildView.id);
+                },
               ),
-              text: 'Add Child',
-              textStyle: AppStyles.styleSemiBold14(),
-              borderRadius: 20,
-              onPressed: () {
-                Navigator.of(context).pushNamed(AddChildView.id);
-              },
             ),
           ),
           const SliverToBoxAdapter(

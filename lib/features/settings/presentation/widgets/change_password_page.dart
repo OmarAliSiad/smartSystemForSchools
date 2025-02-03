@@ -50,7 +50,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               SlideInRight(
                 child: CustomTextField(
                   borderRaduis: 10,
-                  obsure:true,
+                  obsure: true,
                   controller: passwordController,
                   validator: (password) {
                     if (password == null || password.isEmpty) {
@@ -61,8 +61,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     }
                     return null;
                   },
-                  hintText: 'enter password',
-                      // LocaleKeys.authentication_consumer_hintTextPassword.tr(),
+                  hintText: LocaleKeys.ForgotPassword_confirmPassword.tr(),
                   keyboardType: TextInputType.name,
                 ),
               ),

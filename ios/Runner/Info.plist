@@ -51,6 +51,10 @@
     <string>ar</string>
 	</array>
 	<key>CFBundleLocalizations</key>
+	<key>NSCameraUsageDescription</key>
+	<string>Scan your card to add it automatically</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To scan cards</string>
 	<array>
 		<string>en</string>
 		<string>ar</string>

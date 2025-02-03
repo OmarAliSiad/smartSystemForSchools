@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/verfiy_code.dart';
+import 'package:smartsystemforschools/features/payment/presentation/views/payment_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
@@ -31,7 +31,7 @@ class _MainScreenState extends State<MainScreen> {
     AttendanceView(
       key: UniqueKey(),
     ),
-    ProductView(
+    PaymentView(
       key: UniqueKey(),
     )
   ];
@@ -122,22 +122,10 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(
                 height: 4,
               ),
-              const CustomBottomContainer(
-                color: Colors.black,
-              )
             ],
           ),
         );
       },
     );
-  }
-}
-
-class ProductView extends StatelessWidget {
-  const ProductView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

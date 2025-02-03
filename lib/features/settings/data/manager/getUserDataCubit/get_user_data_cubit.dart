@@ -13,7 +13,7 @@ class GetUserDataCubit extends Cubit<GetUserDataState> {
       //     .collection(Constants.userAppCollection)
       //     .get();
       // data.addAll(querySnapshot.docs);
-      emit(UserDataLoaded(/*data: data*/ ));
+      emit(UserDataLoaded(/*data: data*/));
     } on Exception catch (e) {
       emit(UserDataFailure(errorMessage: e.toString()));
     }

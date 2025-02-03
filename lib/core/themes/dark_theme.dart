@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-ThemeData darkTheme() {
+ThemeData darkTheme(BuildContext context) {
   TextStyle whiteStyleColor = const TextStyle(color: Colors.white);
   return ThemeData(
+    fontFamily: context.locale.toString() == 'ar' ? 'Cairo' : 'Poppins',
     brightness: Brightness.dark,
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,

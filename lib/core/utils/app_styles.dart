@@ -4,7 +4,6 @@ abstract class AppStyles {
   static TextStyle styleLight14() {
     return const TextStyle(
       fontSize: 14,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w300,
     );
   }
@@ -12,7 +11,6 @@ abstract class AppStyles {
   static TextStyle styleMedium18() {
     return const TextStyle(
       fontSize: 18,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w500,
     );
   }
@@ -20,7 +18,6 @@ abstract class AppStyles {
   static TextStyle styleMedium16() {
     return const TextStyle(
       fontSize: 16,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w500,
     );
   }
@@ -28,7 +25,6 @@ abstract class AppStyles {
   static TextStyle styleMedium12() {
     return const TextStyle(
       fontSize: 12,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w500,
     );
   }
@@ -36,7 +32,6 @@ abstract class AppStyles {
   static TextStyle styleMedium13() {
     return const TextStyle(
       fontSize: 13,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w500,
     );
   }
@@ -44,7 +39,6 @@ abstract class AppStyles {
   static TextStyle styleMedium20() {
     return const TextStyle(
       fontSize: 20,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w500,
     );
   }
@@ -52,21 +46,20 @@ abstract class AppStyles {
   static TextStyle styleRegular14() {
     return const TextStyle(
       fontSize: 14,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w400,
     );
   }
- static TextStyle styleRegular18() {
+
+  static TextStyle styleRegular18() {
     return const TextStyle(
       fontSize: 18,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w400,
     );
   }
+
   static TextStyle styleRegular10() {
     return const TextStyle(
       fontSize: 10,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w400,
     );
   }
@@ -74,7 +67,6 @@ abstract class AppStyles {
   static TextStyle styleRegular12() {
     return const TextStyle(
       fontSize: 12,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w400,
     );
   }
@@ -82,7 +74,6 @@ abstract class AppStyles {
   static TextStyle styleRegular16() {
     return const TextStyle(
       fontSize: 16,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w400,
     );
   }
@@ -91,7 +82,6 @@ abstract class AppStyles {
     return const TextStyle(
       color: Color(0xFF1A0F91),
       fontSize: 20,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w400,
     );
   }
@@ -99,7 +89,6 @@ abstract class AppStyles {
   static TextStyle styleSemiBold20() {
     return const TextStyle(
       fontSize: 20,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w600,
     );
   }
@@ -107,7 +96,6 @@ abstract class AppStyles {
   static TextStyle styleBold20() {
     return const TextStyle(
       fontSize: 20,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w700,
     );
   }
@@ -115,7 +103,6 @@ abstract class AppStyles {
   static TextStyle styleSemiBold14() {
     return const TextStyle(
       fontSize: 14,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w600,
     );
   }
@@ -123,7 +110,6 @@ abstract class AppStyles {
   static TextStyle styleBold14() {
     return const TextStyle(
       fontSize: 14,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w700,
     );
   }
@@ -131,7 +117,6 @@ abstract class AppStyles {
   static TextStyle styleBold24() {
     return const TextStyle(
       fontSize: 24,
-      fontFamily: 'Poppins',
       fontWeight: FontWeight.w700,
     );
   }

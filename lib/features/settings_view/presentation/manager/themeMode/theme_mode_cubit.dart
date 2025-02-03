@@ -12,7 +12,8 @@ class ThemeModeCubit extends Cubit<ThemeModeState> {
   ThemeMode currentTheme = ThemeMode.light;
   Future<void> _loadThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
-    final themeIndex = prefs.getInt('themeMode') ?? 0; // 0 for light, 1 for dark
+    final themeIndex =
+        prefs.getInt('themeMode') ?? 0; // 0 for light, 1 for dark
     currentTheme = (themeIndex == 1) ? ThemeMode.dark : ThemeMode.light;
     emit(ThemeModeChanged(themeMode: currentTheme));
   }

@@ -14,8 +14,7 @@ class CustomButtonTransfer extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(10),
       child: Padding(
-        padding: const EdgeInsetsDirectional.only(
-            end: 15, top: 19, bottom: 22),
+        padding: const EdgeInsetsDirectional.only(end: 15, top: 19, bottom: 22),
         child: Container(
           padding: const EdgeInsetsDirectional.symmetric(
             horizontal: 10,

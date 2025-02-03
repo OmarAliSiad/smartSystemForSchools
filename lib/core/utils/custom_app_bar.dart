@@ -18,6 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      forceMaterialTransparency: true,
       elevation: 0,
       scrolledUnderElevation: 0,
       leading: BlocBuilder<ThemeModeCubit, ThemeModeState>(

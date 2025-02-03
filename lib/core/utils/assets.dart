@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_single_quotes
 class Assets {
   Assets._();
-  
+
+  static const String imagesAMEX = "assets/images/AMEX.svg";
+
   static const String imagesAdd = "assets/images/add.png";
 
   static const String imagesAhmedImage = "assets/images/AhmedImage.png";
@@ -24,6 +26,8 @@ class Assets {
 
   static const String imagesDarkMode = "assets/images/dark-mode.png";
 
+  static const String imagesDiscover = "assets/images/Discover.svg";
+
   static const String imagesFamily = "assets/images/family.png";
 
   static const String imagesGluten = "assets/images/gluten.png";
@@ -34,7 +38,7 @@ class Assets {
 
   static const String imagesHome = "assets/images/home.png";
 
-  static const String imagesLogoColorWhite = "assets/images/logoColorWhite.png";
+  static const String imagesLogoColorWhite = "assets/images/LogoColorWhite.png";
 
   static const String imagesLogoColorblue = "assets/images/logoColorblue.png";
 
@@ -44,17 +48,23 @@ class Assets {
 
   static const String imagesNotifications = "assets/images/notifications.png";
 
-  static const String imagesNotificationsWithBackGround = "assets/images/NotificationsWithBackGround.png";
+  static const String imagesNotificationsWithBackGround =
+      "assets/images/NotificationsWithBackGround.png";
 
   static const String imagesNuts = "assets/images/nuts.png";
 
-  static const String imagesOnBoardingImageOne = "assets/images/onBoardingImageOne.png";
+  static const String imagesOnBoardingImageOne =
+      "assets/images/onBoardingImageOne.png";
 
-  static const String imagesOnBoardingImageThree = "assets/images/onBoardingImageThree.png";
+  static const String imagesOnBoardingImageThree =
+      "assets/images/onBoardingImageThree.png";
 
-  static const String imagesOnBoardingImageTwo = "assets/images/onBoardingImageTwo.png";
+  static const String imagesOnBoardingImageTwo =
+      "assets/images/onBoardingImageTwo.png";
 
   static const String imagesPassword = "assets/images/password.png";
+
+  static const String imagesPaypal = "assets/images/paypal.svg";
 
   static const String imagesPen = "assets/images/pen.png";
 
@@ -65,6 +75,7 @@ class Assets {
   static const String imagesProfileImage = "assets/images/profile_image.png";
 
   static const String imagesSettings = "assets/images/settings.png";
+
   static const String imagesSettingsSvg = "assets/images/settings_svg.svg";
 
   static const String imagesShahdImage = "assets/images/shahdImage.png";
@@ -85,6 +96,7 @@ class Assets {
 
   static const String imagesUploadImage = "assets/images/uploadImage.png";
 
+  static const String imagesVisa = "assets/images/visa.svg";
+
   static const String imagesWallet = "assets/images/wallet.png";
 }
-

@@ -29,7 +29,7 @@ class AttendanceView extends StatelessWidget {
     ChildAttendceModel(
         imagePath1: Assets.imagesShahdImage,
         imagePath2: Assets.imagesArrowRightRed,
-        text1: 'Ahmed Arrived',
+        text1: 'Shadh Arrived',
         text2: 'School',
         text3: '2:00 PM'),
   ];
@@ -49,8 +49,7 @@ class AttendanceView extends StatelessWidget {
         },
       ),
       body: Padding(
-        padding:
-            const EdgeInsetsDirectional.only(start: 18, end: 22),
+        padding: const EdgeInsetsDirectional.only(start: 18, end: 22),
         child: Column(
           children: [
             const SizedBox(
