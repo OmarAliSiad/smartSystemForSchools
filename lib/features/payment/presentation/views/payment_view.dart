@@ -1,16 +1,15 @@
 import 'dart:developer';
 import 'package:animate_do/animate_do.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
-import 'package:smartsystemforschools/core/widgets/show_dialog.dart';
+import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
 import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
@@ -108,8 +107,12 @@ class _PaymentViewState extends State<PaymentView> {
                             },
                             child: SlideInLeft(
                               child: PaymentOption(
-                                title: 'EPS',
-                                image: SvgPicture.asset(Assets.imagesPaypal),
+                                width: 45,
+                                title: 'Paypal',
+                                image: SvgPicture.asset(
+                                  Assets.imagesPaypal,
+                                  fit: BoxFit.scaleDown,
+                                ),
                                 isSelected: isSelected[1],
                               ),
                             ),
@@ -180,8 +183,11 @@ class _PaymentViewState extends State<PaymentView> {
                                     SvgPicture.asset(Assets.imagesVisa,
                                         width: 24, height: 16),
                                     const SizedBox(width: 4),
-                                    SvgPicture.asset(Assets.imagesPaypal,
-                                        width: 24, height: 16),
+                                    SvgPicture.asset(
+                                      Assets.imagesMasteCard,
+                                      width: 24,
+                                      height: 16,
+                                    ),
                                     const SizedBox(width: 4),
                                     SvgPicture.asset(Assets.imagesAMEX,
                                         width: 24, height: 16),
@@ -485,17 +491,93 @@ class _PaymentViewState extends State<PaymentView> {
                           ),
                           borderRadius: 20,
                           onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              // Pass data to payment logic
-                              context.read<PaymentCubit>().makePayment(
-                                    paymentIntentInputModel:
-                                        PaymentIntentInputModel(
-                                      amount: '3000',
-                                      currency: 'EGP',
-                                      customerId: ApiKeys.customerId,
-                                    ),
-                                    context: context,
-                                  );
+                            if (isSelected[0]) {
+                              if (formKey.currentState!.validate()) {
+                                // Pass data to payment logic
+                                context.read<PaymentCubit>().makePayment(
+                                      paymentIntentInputModel:
+                                          PaymentIntentInputModel(
+                                        amount: '3000',
+                                        currency: 'EGP',
+                                        customerId: ApiKeys.customerId,
+                                      ),
+                                      context: context,
+                                    );
+                              }
+                            } else if (isSelected[1]) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      PaypalCheckout(
+                                    sandboxMode: true,
+                                    clientId:
+                                        ApiKeys.paypalClientId, //"CLIENT_ID",
+                                    secretKey:
+                                        ApiKeys.paypalSecretKey, //"SECRET_KEY",
+                                    returnURL: "success.snippetcoder.com",
+                                    cancelURL: "cancel.snippetcoder.com",
+                                    transactions: const [
+                                      {
+                                        "amount": {
+                                          "total": '70',
+                                          "currency": "USD",
+                                          "details": {
+                                            "subtotal": '70',
+                                            "shipping": '0',
+                                            "shipping_discount": 0
+                                          }
+                                        },
+                                        "description":
+                                            "The payment transaction description.",
+                                        "item_list": {
+                                          "items": [
+                                            {
+                                              "name": "Apple",
+                                              "quantity": 4,
+                                              "price": '5',
+                                              "currency": "USD"
+                                            },
+                                            {
+                                              "name": "Pineapple",
+                                              "quantity": 5,
+                                              "price": '10',
+                                              "currency": "USD"
+                                            }
+                                          ],
+                                          // shipping address is Optional
+                                          // "shipping_address": {
+                                          //   "recipient_name": "Raman Singh",
+                                          //   "line1": "Delhi",
+                                          //   "line2": "",
+                                          //   "city": "Delhi",
+                                          //   "country_code": "IN",
+                                          //   "postal_code": "11001",
+                                          //   "phone": "+00000000",
+                                          //   "state": "Texas"
+                                          // },
+                                        }
+                                      }
+                                    ],
+                                    note: "PAYMENT_NOTE",
+                                    onSuccess: (Map params) async {
+                                      log("onSuccess: $params");
+                                    },
+                                    onError: (error) {
+                                      log("onError: $error");
+                                      Navigator.pop(context);
+                                    },
+                                    onCancel: () {
+                                      log('cancelled:');
+                                      dispalySnackBar(
+                                        context,
+                                        title: 'Payment canceled by the user.',
+                                        titleActionButton: 'ok',
+                                        color: Colors.orange,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
                             }
                           },
                         ),

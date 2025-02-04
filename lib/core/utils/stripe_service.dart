@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/core/utils/api_service.dart';
+import 'package:smartsystemforschools/core/widgets/show_dialog.dart';
 import 'package:smartsystemforschools/features/payment/data/models/payment_intent_model/payment_intent_input_model.dart';
 import 'package:smartsystemforschools/features/payment/data/models/payment_intent_model/payment_intent_model.dart';
 import 'package:smartsystemforschools/features/payment/data/models/ephemeral_key_model/ephmeral_key_model.dart';
@@ -129,11 +131,11 @@ class StripeService {
       await displayPaymentSheet();
 
       // If the payment is successful, show a success message
-      dispalySnackBar(
-        context,
+      showAswemoDialog(
+        dialogType: DialogType.success,
+        context: context,
         title: 'Payment successful!',
-        titleActionButton: 'ok',
-        color: Colors.green,
+        desc: 'Your payment has been processed successfully.',
       );
       return true;
     } on StripeException catch (e) {

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_single_quotes
 class Assets {
   Assets._();
-
+  
   static const String imagesAMEX = "assets/images/AMEX.svg";
 
   static const String imagesAdd = "assets/images/add.png";
@@ -44,23 +44,21 @@ class Assets {
 
   static const String imagesLogout = "assets/images/logout.png";
 
+  static const String imagesMasteCard = "assets/images/maste_card.svg";
+
   static const String imagesMilk = "assets/images/milk.png";
 
   static const String imagesNotifications = "assets/images/notifications.png";
 
-  static const String imagesNotificationsWithBackGround =
-      "assets/images/NotificationsWithBackGround.png";
+  static const String imagesNotificationsWithBackGround = "assets/images/NotificationsWithBackGround.png";
 
   static const String imagesNuts = "assets/images/nuts.png";
 
-  static const String imagesOnBoardingImageOne =
-      "assets/images/onBoardingImageOne.png";
+  static const String imagesOnBoardingImageOne = "assets/images/onBoardingImageOne.png";
 
-  static const String imagesOnBoardingImageThree =
-      "assets/images/onBoardingImageThree.png";
+  static const String imagesOnBoardingImageThree = "assets/images/onBoardingImageThree.png";
 
-  static const String imagesOnBoardingImageTwo =
-      "assets/images/onBoardingImageTwo.png";
+  static const String imagesOnBoardingImageTwo = "assets/images/onBoardingImageTwo.png";
 
   static const String imagesPassword = "assets/images/password.png";
 
@@ -84,6 +82,8 @@ class Assets {
 
   static const String imagesShooping = "assets/images/shooping.png";
 
+  static const String imagesSmartSchool32 = "assets/images/smart-school-32.png";
+
   static const String imagesSoftDrink = "assets/images/soft-drink.png";
 
   static const String imagesStudentId = "assets/images/studentId.png";
@@ -100,3 +100,4 @@ class Assets {
 
   static const String imagesWallet = "assets/images/wallet.png";
 }
+

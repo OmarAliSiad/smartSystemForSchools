@@ -93,11 +93,11 @@
     "editProfile": {
         "editProfile": "Edit Profile",
         "name": "Name",
-        "hintName":"Enter Name",
+        "hintName": "Enter Name",
         "phone": "Phone",
-        "hintPhone":"Enter Phone Number",
+        "hintPhone": "Enter Phone Number",
         "email": "Email",
-        "hintEmail":"Enter Email",
+        "hintEmail": "Enter Email",
         "save": "Save"
     },
     "policy": {
@@ -111,5 +111,36 @@
         "country": "Country",
         "postalCode": "Postal code",
         "Transfer": "Transfer"
+    },
+    "allegries": {
+        "chocolate": "Chocolate",
+        "biscuit": "Biscuit",
+        "milk": "Milk",
+        "softDrinks": "SoftDrinks",
+        "banana": "Banana",
+        "nuts": "Nuts"
+    },
+    "addedChild": {
+        "appBarText": "Add child",
+        "studentID": "Student ID",
+        "name": "Name",
+        "hintName": "Your Name",
+        "schoolName": "School Name",
+        "added": "Added",
+        "buttonText": "Add",
+        "addedSuccessfully": "Added Successfully",
+        "uploadImage": {
+            "pleaseUploadImage": "Please Upload Image",
+            "oK": "OK"
+        }
+    },
+    "notifacation": {
+        "appBarText": "Notifications",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "lastWeek": "LastWeek",
+        "7h": "7h ago",
+        "5h": "5h ago",
+        "des": "Ahmed Khalid attempted a purchase,\nbut the balance was in sufficient"
     }
 }

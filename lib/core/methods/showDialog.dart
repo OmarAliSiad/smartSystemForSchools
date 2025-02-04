@@ -65,9 +65,6 @@ Future<dynamic> ShowDialogForRecharge({
             containerColor: buttonOkColor,
             title: buttonOkTitle,
           ),
-          const SizedBox(
-            width: 20,
-          ),
           CustomButtonAlertDailog(
             onPressed: () => Navigator.pop(context),
             colorFont: Colors.white,

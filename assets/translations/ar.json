@@ -111,5 +111,36 @@
     "country": "Country",
     "postalCode": "Postal code",
     "Transfer": "تحويل"
+  },
+  "allegries": {
+    "chocolate": "شوكولاتة",
+    "biscuit": "بسكويت",
+    "milk": "حليب",
+    "softDrinks": "مشروبات غازية",
+    "banana": "موز",
+    "nuts": "مكسرات"
+  },
+  "addedChild": {
+    "appBarText": "إضافة طفل",
+    "studentID": "رقم الطالب",
+    "name": "الاسم",
+    "hintName": "اسمك",
+    "schoolName": "اسم المدرسة",
+    "added": "تمت الإضافة",
+    "buttonText": "إضافة",
+    "addedSuccessfully": "تمت الإضافة بنجاح",
+    "uploadImage": {
+      "pleaseUploadImage": "يرجى تحميل الصورة",
+      "oK": "موافق"
+    }
+  },
+  "notifacation": {
+    "appBarText": "الإشعارات",
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "lastWeek": "الأسبوع الماضي",
+    "7h": "منذ 7 ساعات",
+    "5h": "منذ 5 ساعات",
+    "des": "حاول أحمد خالد إجراء عملية شراء،\nلكن الرصيد غير كافٍ"
   }
 }

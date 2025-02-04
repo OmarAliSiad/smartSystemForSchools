@@ -18,10 +18,7 @@ class NotificationView extends StatelessWidget {
         leading: InkWell(
             borderRadius: BorderRadius.circular(30),
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                MainScreen.id,
-                (context) => false,
-              );
+              Navigator.of(context).pop();
             },
             child: const Icon(Icons.arrow_back_ios)),
       ),
