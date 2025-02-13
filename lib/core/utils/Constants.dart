@@ -7,4 +7,6 @@ class Constants {
   static const Color grey = Color(0xFFE7E8EA);
   static const Color lightBlue = Color(0xffE5EFFD);
   static const Color lightGrey = Color(0xffE1E1E1);
+  static const String intergrationId = '4949968'; // for paymob
+  
 }

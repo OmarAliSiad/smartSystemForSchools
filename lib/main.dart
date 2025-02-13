@@ -116,7 +116,7 @@ class MyApp extends StatelessWidget {
               NotificationView.id: (context) => const NotificationView(),
               ChangePasswordPage.id: (context) => const ChangePasswordPage(),
             },
-            initialRoute: SplashView.id,
+            initialRoute: MainScreen.id,
           );
         },
       ),

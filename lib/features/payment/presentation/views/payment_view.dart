@@ -4,12 +4,12 @@ import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
-import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
 import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
@@ -34,6 +34,7 @@ class _PaymentViewState extends State<PaymentView> {
   TextEditingController postalCodeController = TextEditingController();
   List<bool> isSelected = [false, false, false];
   String selectedCountry = 'Egypt';
+
   OutlineInputBorder buildOutlineBorder() {
     return const OutlineInputBorder(
       borderSide: BorderSide(
@@ -129,8 +130,10 @@ class _PaymentViewState extends State<PaymentView> {
                             },
                             child: SlideInRight(
                               child: PaymentOption(
-                                title: 'Giropay',
-                                image: SvgPicture.asset(Assets.imagesDiscover),
+                                title: 'Paymob',
+                                image: Image.asset(
+                                  Assets.imagesPaymob,
+                                ),
                                 isSelected: isSelected[2],
                               ),
                             ),
@@ -494,7 +497,9 @@ class _PaymentViewState extends State<PaymentView> {
                             if (isSelected[0]) {
                               if (formKey.currentState!.validate()) {
                                 // Pass data to payment logic
-                                context.read<PaymentCubit>().makePayment(
+                                context
+                                    .read<PaymentCubit>()
+                                    .makePaymenStripeService(
                                       paymentIntentInputModel:
                                           PaymentIntentInputModel(
                                         amount: '3000',
@@ -578,6 +583,10 @@ class _PaymentViewState extends State<PaymentView> {
                                   ),
                                 ),
                               );
+                            } else if (isSelected[2]) {
+                              context
+                                  .read<PaymentCubit>()
+                                  .makePaymentWithPaymob();
                             }
                           },
                         ),

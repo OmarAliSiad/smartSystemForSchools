@@ -32,7 +32,7 @@ class _CustomButtonPageViewState extends State<CustomButtonPageView> {
             curve: Curves.easeInOut,
           );
         } else {
-          Navigator.pushReplacementNamed(context, LogIn.id);
+          Navigator.pushNamed(context, LogIn.id);
         }
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

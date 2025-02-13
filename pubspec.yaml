@@ -53,6 +53,8 @@ dependencies:
   http: ^1.0.0 # Updated to resolve the conflict
   flutter_paypal_checkout: ^1.0.1
   flutter_inappwebview: ^5.3.0
+  url_launcher: ^6.3.1
+  webview_flutter: ^4.10.0
 
 
 dependency_overrides:

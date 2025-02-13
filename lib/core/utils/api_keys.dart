@@ -10,4 +10,7 @@ class ApiKeys {
       'AWaOm6zDoBdba9NHBsh5bZio615CZEK47MKeBU8ykyjcRgYOcSfm7uvk80T6hYljIeXzkHdFWS9pVO-K';
   static const String paypalSecretKey =
       'EEtRKn1Dl5OziYBFlKeQguXqcWSectSU4dC8HzdVpNyUxnc3HcPU4IFxOoGu3j6Mu9RLEpkeJSwHxtSg';
+
+  static const String paymobApiKeys =
+      'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TVRBeU16QTJNU3dpYm1GdFpTSTZJbWx1YVhScFlXd2lmUS5qQVBKdnZiSmZmUnc0SGl2UW5hRlltRTlmRldJb3J5bE55dGVCSU83Tkt4VWZHMFNhWkpTanJnYUtPLWU0cHFIbWNNWVBaV2RWcnBxZWlpNDBpS0tOdw==';
 }

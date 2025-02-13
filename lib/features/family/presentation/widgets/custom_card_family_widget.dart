@@ -41,7 +41,7 @@ class CustomCardFaimlyWidget extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsetsDirectional.only(
-                    start: 15, top: 20, bottom: 25, end: 19),
+                    start: 15, top: 20, bottom: 25, end: 10),
                 child: Column(
                   children: [
                     Image.asset(
@@ -88,10 +88,12 @@ class CustomCardFaimlyWidget extends StatelessWidget {
               ),
               CustomButtonTransfer(
                 onTap: () {
-                  Navigator.of(context)
-                      .pushNamed(ChildDetailsView.id, arguments: {
-                    'childDetailsModel': childDetailsModel,
-                  });
+                  Navigator.of(context).pushNamed(
+                    ChildDetailsView.id,
+                    arguments: {
+                      'childDetailsModel': childDetailsModel,
+                    },
+                  );
                 },
               ),
             ],
