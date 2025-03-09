@@ -1,14 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import '../../../../core/models/child_details_model.dart';
+import '../../../../core/models/get_child_details/result.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_button_transfer.dart';
 
 class CustomDetailsChildView extends StatelessWidget {
-  final ChildDetailsModel childDetailsModel;
+  final ResultForChildDetails childDetailsModel;
   const CustomDetailsChildView({
     super.key,
     required this.childDetailsModel,
@@ -37,33 +36,34 @@ class CustomDetailsChildView extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.only(
-                    start: 15, top: 15, bottom: 10),
-                child: Image.asset(
-                  childDetailsModel.imagePath,
-                  fit: BoxFit.cover,
-                  width: 52,
-                  height: 52,
-                ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
+              // Padding(
+              //   padding: const EdgeInsetsDirectional.only(
+              //       start: 15, top: 15, bottom: 10),
+              //   child: Image.asset(
+              //     childDetailsModel.,
+              //     fit: BoxFit.cover,
+              //     width: 52,
+              //     height: 52,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   width: 16,
+              // ),
               Padding(
                 padding: const EdgeInsetsDirectional.only(top: 15, bottom: 18),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      childDetailsModel.name,
+                      childDetailsModel.fullName!,
                       style: AppStyles.styleRegular16(),
                     ),
                     const SizedBox(
                       height: 3,
                     ),
+                    //price
                     Text(
-                      childDetailsModel.price.tr(),
+                      '50',
                       style: AppStyles.styleSemiBold14()
                           .copyWith(color: const Color(0xff1A0F91)),
                     )

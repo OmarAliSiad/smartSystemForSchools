@@ -69,7 +69,11 @@ class _SendCodeState extends State<SendCode> {
                 obsure: false,
                 controller: emailController,
                 validator: (value) {
-                  return vaildateEmail(value, emailController);
+                  return vaildateEmail(
+                    value,
+                    emailController,
+                    LocaleKeys.Auth_userEmailHintText.tr(),
+                  );
                 },
               ),
             ),

@@ -1,11 +1,13 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
-void showAswemoDialog(
-    {required DialogType dialogType,
-    required BuildContext context,
-    required String title,
-    required String desc}) {
+void showAswemoDialog({
+  required DialogType dialogType,
+  required BuildContext context,
+  required String title,
+  required String desc,
+  void Function()? onExcute,
+}) {
   AwesomeDialog(
     dialogBackgroundColor: Theme.of(context).colorScheme.surface,
     context: context,
@@ -16,5 +18,9 @@ void showAswemoDialog(
     desc: desc,
     btnCancelOnPress: () {},
     btnOkOnPress: () {},
-  ).show();
+  ).show().then(
+    (_) {
+      onExcute ?? () {};
+    },
+  );
 }

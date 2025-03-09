@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_single_quotes
 class Assets {
   Assets._();
-  
+
   static const String imagesAMEX = "assets/images/AMEX.svg";
 
   static const String imagesAdd = "assets/images/add.png";
@@ -38,6 +38,8 @@ class Assets {
 
   static const String imagesHome = "assets/images/home.png";
 
+  static const String imagesLogo = "assets/images/logo.png";
+
   static const String imagesLogoColorWhite = "assets/images/LogoColorWhite.png";
 
   static const String imagesLogoColorblue = "assets/images/logoColorblue.png";
@@ -50,15 +52,19 @@ class Assets {
 
   static const String imagesNotifications = "assets/images/notifications.png";
 
-  static const String imagesNotificationsWithBackGround = "assets/images/NotificationsWithBackGround.png";
+  static const String imagesNotificationsWithBackGround =
+      "assets/images/NotificationsWithBackGround.png";
 
   static const String imagesNuts = "assets/images/nuts.png";
 
-  static const String imagesOnBoardingImageOne = "assets/images/onBoardingImageOne.png";
+  static const String imagesOnBoardingImageOne =
+      "assets/images/onBoardingImageOne.png";
 
-  static const String imagesOnBoardingImageThree = "assets/images/onBoardingImageThree.png";
+  static const String imagesOnBoardingImageThree =
+      "assets/images/onBoardingImageThree.png";
 
-  static const String imagesOnBoardingImageTwo = "assets/images/onBoardingImageTwo.png";
+  static const String imagesOnBoardingImageTwo =
+      "assets/images/onBoardingImageTwo.png";
 
   static const String imagesPassword = "assets/images/password.png";
 
@@ -74,6 +80,8 @@ class Assets {
 
   static const String imagesProfileImage = "assets/images/profile_image.png";
 
+  static const String imagesRafiki = "assets/images/rafiki.png";
+
   static const String imagesSettings = "assets/images/settings.png";
 
   static const String imagesSettingsSvg = "assets/images/settings_svg.svg";
@@ -83,8 +91,6 @@ class Assets {
   static const String imagesShcoolName = "assets/images/ShcoolName.png";
 
   static const String imagesShooping = "assets/images/shooping.png";
-
-  static const String imagesSmartSchool32 = "assets/images/smart-school-32.png";
 
   static const String imagesSoftDrink = "assets/images/soft-drink.png";
 
@@ -102,4 +108,3 @@ class Assets {
 
   static const String imagesWallet = "assets/images/wallet.png";
 }
-

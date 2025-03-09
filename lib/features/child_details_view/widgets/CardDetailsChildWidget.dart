@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
 import 'package:smartsystemforschools/features/child_details_view/widgets/CustomSpendingDailyLimitWidget.dart';
 import 'package:smartsystemforschools/features/child_details_view/widgets/custom_balance_widget.dart';
-import '../../../core/models/child_details_model.dart';
 import '../../../core/utils/app_styles.dart';
 
 class CardDetailsChildWidget extends StatelessWidget {
@@ -10,7 +10,7 @@ class CardDetailsChildWidget extends StatelessWidget {
     required this.receviedData,
   });
 
-  final ChildDetailsModel receviedData;
+  final ResultForChildDetails receviedData;
 
   @override
   Widget build(BuildContext context) {
@@ -22,23 +22,23 @@ class CardDetailsChildWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.only(
-                top: 15.0, start: 15, end: 15, bottom: 35.0),
-            child: Image.asset(
-              receviedData.imagePath,
-              height: 52,
-              width: 52,
-              fit: BoxFit.cover,
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsetsDirectional.only(
+          //       top: 15.0, start: 15, end: 15, bottom: 35.0),
+          //   child: Image.asset(
+          //     receviedData.imagePath,
+          //     height: 52,
+          //     width: 52,
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsetsDirectional.only(top: 15, start: 20),
                 child: Text(
-                  receviedData.name,
+                  receviedData.fullName ?? 'Unknown Child',
                   style:
                       AppStyles.styleMedium20().copyWith(color: Colors.white),
                 ),
@@ -49,11 +49,10 @@ class CardDetailsChildWidget extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 19),
-                    child: CustomBalanceWidget(
-                      price: receviedData.price,
-                    ),
+                  const Padding(
+                    padding: EdgeInsetsDirectional.only(start: 19),
+                    child: CustomBalanceWidget(price: '50' //,
+                        ),
                   ),
                   const SizedBox(
                     width: 25,

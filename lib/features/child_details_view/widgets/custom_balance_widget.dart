@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 
 import '../../../core/utils/app_styles.dart';
 
@@ -23,7 +25,7 @@ class CustomBalanceWidget extends StatelessWidget {
           height: 6,
         ),
         Text(
-          'Balance',
+          LocaleKeys.balanceCardDetails_balance.tr(),
           style: AppStyles.styleRegular12().copyWith(color: Colors.white),
         ),
       ],

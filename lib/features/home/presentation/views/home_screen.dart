@@ -1,34 +1,70 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smartsystemforschools/core/utils/assets.dart';
 import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
-import '../../../../core/models/child_details_model.dart';
+import '../../../../core/models/get_child_details/result.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/school_service.dart';
 import '../../../settings/presentation/views/settings_view.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_balance_card_details.dart';
 import '../widgets/custom_card_transactions.dart';
 import '../widgets/custom_details_child_view.dart';
+import 'dart:developer';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   static const String id = 'HomeView';
-  static List<ChildDetailsModel> childDetails = [
-    ChildDetailsModel(
-        imagePath: Assets.imagesShahdImage,
-        name: LocaleKeys.homeView_nameShahd.tr(),
-        price: LocaleKeys.homeView_priceShahd1.tr()),
-    ChildDetailsModel(
-        imagePath: Assets.imagesHodaImage,
-        name: LocaleKeys.homeView_nameShahd.tr(),
-        price: LocaleKeys.homeView_priceShahd2.tr()),
-    ChildDetailsModel(
-        imagePath: Assets.imagesAhmedImage,
-        name: LocaleKeys.homeView_nameAhmed.tr(),
-        price: LocaleKeys.homeView_priceAhmed.tr()),
-  ];
+
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  List<ResultForChildDetails> childDetails = [];
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadChildDetails();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Refresh data when the screen is shown
+    loadChildDetails();
+  }
+
+  Future<void> loadChildDetails() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Use the new method that returns a list of children
+      final results = await SchoolService().getAllChildDetails();
+
+      setState(() {
+        // Clear the list and add all new children
+        childDetails.clear();
+        childDetails.addAll(results);
+        _isLoading = false;
+      });
+
+      log("Loaded ${results.length} children in HomeView");
+    } catch (e) {
+      log("Error loading children in HomeView: $e");
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,24 +109,56 @@ class HomeView extends StatelessWidget {
                 height: 15,
               ),
             ),
-            SliverList.builder(
-              itemCount: childDetails.length,
-              itemBuilder: (context, index) => Padding(
-                padding:
-                    EdgeInsetsDirectional.only(bottom: index == 2 ? 0 : 13),
-                child: index % 2 == 0
-                    ? SlideInRight(
-                        child: CustomDetailsChildView(
-                          childDetailsModel: childDetails[index],
+            _isLoading
+                ? SliverToBoxAdapter(
+                    child: Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: Colors.blue.shade900,
+                        size: 50,
+                      ),
+                    ),
+                  )
+                : childDetails.isEmpty
+                    ? SliverToBoxAdapter(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.family_restroom,
+                                  size: 50,
+                                  color: Colors.grey[400],
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  'No children added yet',
+                                  style: AppStyles.styleRegular16(),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       )
-                    : SlideInLeft(
-                        child: CustomDetailsChildView(
-                          childDetailsModel: childDetails[index],
+                    : SliverList.builder(
+                        itemCount: childDetails.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: EdgeInsetsDirectional.only(
+                              bottom:
+                                  index == childDetails.length - 1 ? 0 : 13),
+                          child: index % 2 == 0
+                              ? SlideInRight(
+                                  child: CustomDetailsChildView(
+                                    childDetailsModel: childDetails[index],
+                                  ),
+                                )
+                              : SlideInLeft(
+                                  child: CustomDetailsChildView(
+                                    childDetailsModel: childDetails[index],
+                                  ),
+                                ),
                         ),
                       ),
-              ),
-            ),
             const SliverToBoxAdapter(
               child: SizedBox(
                 height: 15,

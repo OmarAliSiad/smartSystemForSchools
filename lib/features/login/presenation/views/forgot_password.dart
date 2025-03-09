@@ -89,7 +89,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           : const Icon(Icons.visibility_off),
                     ),
                     validator: (value) {
-                      return vaildatePassword(value, passwordController);
+                      return vaildatePassword(
+                        value,
+                        passwordController,
+                        LocaleKeys.Auth_confirmPasswordHintText.tr(),
+                      );
                     },
                   ),
                   const SizedBox(
@@ -112,7 +116,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           : const Icon(Icons.visibility_off),
                     ),
                     validator: (value) {
-                      return vaildatePassword(value, confirmPasswordController);
+                      return vaildatePassword(
+                        value,
+                        confirmPasswordController,
+                        LocaleKeys.Auth_confirmPasswordHintText.tr(),
+                      );
                     },
                   ),
                 ],

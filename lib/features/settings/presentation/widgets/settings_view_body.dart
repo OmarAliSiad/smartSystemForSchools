@@ -1,11 +1,17 @@
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/models/get_all_schools/result.dart';
+import 'package:smartsystemforschools/core/utils/auth_service.dart';
+import 'package:smartsystemforschools/core/utils/school_service.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/log_in.dart';
+import 'package:smartsystemforschools/features/schools/presentation/views/schools_screen.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/views/edit_profile.dart';
 import '../../../../core/methods/policy_dialog.dart';
+import '../../../../core/models/get_school_details_by_id/get_school_details_by_id.dart';
+import '../../../login/data/models/user_info_model.dart';
+import '../../../schools/presentation/views/school_view_details.dart';
 import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'change_password_page.dart';
 import 'custom_settings_widget.dart';
@@ -23,9 +29,28 @@ class SettingsViewBody extends StatefulWidget {
 class _SettingsViewBodyState extends State<SettingsViewBody> {
   bool isActiveTheme = false;
   bool isActiveLanguage = false;
+  UserInfoModel? userInfo;
+  SchoolDetails? school;
+
   @override
   void initState() {
     super.initState();
+    getUserInfoAndSchoolDetails();
+  }
+
+  Future<void> getUserInfoAndSchoolDetails() async {
+    // Assuming you have a method to fetch user info
+    userInfo = await AuthService().getUserInfo();
+    if (userInfo != null) {
+      SchoolDetails info = await SchoolService().getSchoolById(
+        userInfo!.schoolTenantId.toString(),
+      );
+      setState(() {
+        school = info;
+      });
+      log(school?.result?.schoolTenantId.toString() ??
+          'School details not available');
+    }
   }
 
   @override
@@ -49,6 +74,40 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
           LocaleKeys.Settings_accountSettings.tr(),
           style: AppStyles.styleRegular18().copyWith(
             color: const Color(0xFFADADAD),
+          ),
+        ),
+        const SizedBox(
+          height: 32,
+        ),
+        CustomSettingsWidget(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) {
+                  log(school!.result!.schoolTenantId.toString());
+                  return SchoolViewDetails(
+                    showButton: false,
+                    school: ResultForAllSchools(
+                      schoolTenantId: userInfo!.schoolTenantId.toString(),
+                      name: school!.result!.name,
+                      description: school!.result!.description,
+                      address: school!.result!.address,
+                      country: school!.result!.country,
+                      phoneNumber: school!.result!.phoneNumber,
+                      email: school!.result!.email,
+                      createdOn: school!.result!.createdOn,
+                      schoolLogo: school!.result!.schoolLogo,
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+          settingsName: 'school details',
+          style: AppStyles.styleRegular18(),
+          suffixWidget: const Icon(
+            Icons.arrow_forward_ios,
+            size: 20,
           ),
         ),
         const SizedBox(
@@ -190,6 +249,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
             // GoogleSignIn googleSignIn = GoogleSignIn();
             // googleSignIn.disconnect();
             // FirebaseAuth.instance.signOut();
+            AuthService().logout();
             Navigator.of(context).pushNamedAndRemoveUntil(
               LogIn.id,
               (route) => false,

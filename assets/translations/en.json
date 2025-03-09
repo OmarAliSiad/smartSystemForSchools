@@ -14,14 +14,20 @@
         "subtitle": "Receive instant reports and regular updates about your child’s spending to stay informed and in control at all time.",
         "button": "GetStarted"
     },
-    "Login": {
+    "Auth": {
         "title": "Login to your Account",
+        "register": "register to your Account",
         "labelUserName": "User Name",
+        "email": "email",
+        "confirmPassword": "confirm password",
+        "userNameHintText": "Enter your user name",
         "userEmailHintText": "Enter your email",
         "labelPassword": "Password",
         "passwordHintText": "Enter your password",
+        "confirmPasswordHintText": "Confirm your password",
         "forgotPassword": "Forgot Password?",
-        "button": "Login"
+        "login": "Login",
+        "singup": "SingUp"
     },
     "valdation": {
         "valdationText": "Please enter some text"
@@ -59,10 +65,7 @@
         "appBarTitle": "Good Morning,",
         "appBarName": "Omar",
         "nameShahd": "Shahd",
-        "priceShahd1": "100 EGP",
-        "priceShahd2": "150 EGP",
         "nameAhmed": "Ahmed",
-        "priceAhmed": "100 EGP",
         "status": "Inventory Status",
         "family": "My Family"
     },
@@ -113,18 +116,21 @@
         "Transfer": "Transfer"
     },
     "allegries": {
+        "Allergies": "Allergies",
         "chocolate": "Chocolate",
         "biscuit": "Biscuit",
         "milk": "Milk",
         "softDrinks": "SoftDrinks",
         "banana": "Banana",
-        "nuts": "Nuts"
+        "nuts": "Nuts",
+        "headline": "Specify any allergies to help us tailor food options accordingly.",
+        "button": "Confirm",
+        "des": "Manage your child’s allergy information to ensure\n safe and suitable food choices."
     },
     "addedChild": {
-        "appBarText": "Add child",
         "studentID": "Student ID",
         "name": "Name",
-        "hintName": "Your Name",
+        "hintName": "Enter Name",
         "schoolName": "School Name",
         "added": "Added",
         "buttonText": "Add",
@@ -142,5 +148,33 @@
         "7h": "7h ago",
         "5h": "5h ago",
         "des": "Ahmed Khalid attempted a purchase,\nbut the balance was in sufficient"
+    },
+    "childDetails": {
+        "dailySpendingLimit": "Daily Spending Limit",
+        "dailyLimit": "Daily limit",
+        "price": "Price",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "recharge": "Recharge",
+        "rechargeButton": "Recharge",
+        "close": "Close",
+        "addedSuccessfully": "Added Successfully"
+    },
+    "tracking": {
+        "title": "Student Tracking",
+        "studentLocation": "Student Location",
+        "bottomNavLabel": "Tracking"
+    },
+    "family": {
+        "AddChild": "Add child",
+        "family": "Family",
+        "Balance": "Balance",
+        "dailySpendingLimit": "Daily Spending Limit"
+    },
+    "account": {
+        "donotHaveAccount": "If you donot have account? ",
+        "haveAccount": "Have Account ",
+        "singup": "SingUp",
+        "login": "LogIn"
     }
 }

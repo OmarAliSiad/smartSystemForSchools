@@ -11,8 +11,8 @@ class SettingsHomeView extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: ConstrainedBox(
-          constraints:
-              BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+          constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height + 30),
           child: const IntrinsicHeight(
             child: Stack(
               children: [

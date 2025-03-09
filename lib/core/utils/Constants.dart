@@ -7,6 +7,17 @@ class Constants {
   static const Color grey = Color(0xFFE7E8EA);
   static const Color lightBlue = Color(0xffE5EFFD);
   static const Color lightGrey = Color(0xffE1E1E1);
+  static const String token = 'token';
   static const String intergrationId = '4949968'; // for paymob
-  
+  static const isAuthenticated = 'isAuthenticated';
+  static const username = 'username';
+  static const email = 'email';
+  static const id = 'id';
+  static const phoneNumber = 'phonenumber';
+  static const roles = 'roles';
+  static const address = 'address';
+  static const gender = 'gender';
+  static const userId = 'userId';
+  static const phone = 'phone';
+  static const schoolTenantId = 'schoolTenantId';
 }

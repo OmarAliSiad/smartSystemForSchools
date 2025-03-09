@@ -33,14 +33,20 @@ class CodegenLoader extends AssetLoader {
           "تلّقَ تقارير فورية وتحديثات منتظمة حول إنفاق طفلك لتظل على اطلاع وتحكم دائم.",
       "button": "ابدا"
     },
-    "Login": {
+    "Auth": {
       "title": "تسجيل الدخول إلى حسابك",
       "labelUserName": "اسم المستخدم",
+      "register": "انشاء حساب",
+      "email": "البريد الإلكتروني",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "userNameHintText": "أدخل اسم المستخدم الخاص بك",
       "userEmailHintText": "ادخل بريدك الالكتروني",
       "labelPassword": "كلمة المرور",
       "passwordHintText": "أدخل كلمة المرور الخاصة بك",
+      "confirmPasswordHintText": "تأكيد كلمة المرور الخاصة بك",
       "forgotPassword": "نسيت كلمة المرور؟",
-      "button": "تسجيل الدخول"
+      "login": "تسجيل الدخول",
+      "singup": "انشاء حساب"
     },
     "valdation": {"valdationText": "رجاء املاء الحقل المطلوب"},
     "SendCode": {
@@ -77,10 +83,7 @@ class CodegenLoader extends AssetLoader {
       "appBarTitle": "صباح الخير،",
       "appBarName": "عمر",
       "nameShahd": "شهد",
-      "priceShahd1": "١٠٠ جنيه",
-      "priceShahd2": "١٥٠ جنيه",
       "nameAhmed": "أحمد",
-      "priceAhmed": "١٠٠ جنيه",
       "status": "حالة المخزون",
       "family": "عائلتي"
     },
@@ -127,6 +130,66 @@ class CodegenLoader extends AssetLoader {
       "country": "Country",
       "postalCode": "Postal code",
       "Transfer": "تحويل"
+    },
+    "allegries": {
+      "Allergies": "حساسية",
+      "chocolate": "شوكولاتة",
+      "biscuit": "بسكويت",
+      "milk": "حليب",
+      "softDrinks": "مشروبات غازية",
+      "banana": "موز",
+      "nuts": "مكسرات",
+      "headline":
+          "يرجى تحديد أي حساسية لديك لمساعدتنا في تخصيص خيارات الطعام وفقًا لذلك.",
+      "des": "قم بإدارة معلومات حساسية طفلك لضمان اختيارات طعام آمنة ومناسبة.",
+      "button": "تأكيد"
+    },
+    "addedChild": {
+      "studentID": "رقم الطالب",
+      "name": "الاسم",
+      "hintName": "أدخل الاسم",
+      "schoolName": "اسم المدرسة",
+      "added": "تمت الإضافة",
+      "buttonText": "إضافة",
+      "addedSuccessfully": "تمت الإضافة بنجاح",
+      "uploadImage": {"pleaseUploadImage": "يرجى تحميل الصورة", "oK": "موافق"}
+    },
+    "notifacation": {
+      "appBarText": "الإشعارات",
+      "today": "اليوم",
+      "yesterday": "أمس",
+      "lastWeek": "الأسبوع الماضي",
+      "7h": "منذ 7 ساعات",
+      "5h": "منذ 5 ساعات",
+      "des": "حاول أحمد خالد إجراء عملية شراء،\nلكن الرصيد غير كافٍ"
+    },
+    "childDetails": {
+      "dailySpendingLimit": "حد الإنفاق اليومي",
+      "dailyLimit": "الحد اليومي",
+      "price": "السعر",
+      "cancel": "إلغاء",
+      "edit": "تعديل",
+      "recharge": "إعادة الشحن",
+      "rechargeButton": "إعادة الشحن",
+      "close": "إغلاق",
+      "addedSuccessfully": "تمت الإضافة بنجاح"
+    },
+    "tracking": {
+      "title": "تتبع الطالب",
+      "studentLocation": "موقع الطالب",
+      "bottomNavLabel": "التتبع"
+    },
+    "family": {
+      "AddChild": "إضافة طفل",
+      "family": "العائلة",
+      "Balance": "الرصيد",
+      "dailySpendingLimit": "حد الإنفاق اليومي"
+    },
+    "account": {
+      "donotHaveAccount": " إذا لم يكن لديك حساب؟",
+      "haveAccount": "لديك حساب؟ ",
+      "singup": "انشاء حساب",
+      "login": "تسجيل الدخول"
     }
   };
   static const Map<String, dynamic> en = {
@@ -148,14 +211,20 @@ class CodegenLoader extends AssetLoader {
           "Receive instant reports and regular updates about your child’s spending to stay informed and in control at all time.",
       "button": "GetStarted"
     },
-    "Login": {
+    "Auth": {
       "title": "Login to your Account",
+      "register": "register to your Account",
       "labelUserName": "User Name",
+      "email": "email",
+      "confirmPassword": "confirm password",
+      "userNameHintText": "Enter your user name",
       "userEmailHintText": "Enter your email",
       "labelPassword": "Password",
       "passwordHintText": "Enter your password",
+      "confirmPasswordHintText": "Confirm your password",
       "forgotPassword": "Forgot Password?",
-      "button": "Login"
+      "login": "Login",
+      "singup": "SingUp"
     },
     "valdation": {"valdationText": "Please enter some text"},
     "SendCode": {
@@ -194,10 +263,7 @@ class CodegenLoader extends AssetLoader {
       "appBarTitle": "Good Morning,",
       "appBarName": "Omar",
       "nameShahd": "Shahd",
-      "priceShahd1": "100 EGP",
-      "priceShahd2": "150 EGP",
       "nameAhmed": "Ahmed",
-      "priceAhmed": "100 EGP",
       "status": "Inventory Status",
       "family": "My Family"
     },
@@ -244,6 +310,68 @@ class CodegenLoader extends AssetLoader {
       "country": "Country",
       "postalCode": "Postal code",
       "Transfer": "Transfer"
+    },
+    "allegries": {
+      "Allergies": "Allergies",
+      "chocolate": "Chocolate",
+      "biscuit": "Biscuit",
+      "milk": "Milk",
+      "softDrinks": "SoftDrinks",
+      "banana": "Banana",
+      "nuts": "Nuts",
+      "headline":
+          "Specify any allergies to help us tailor food options accordingly.",
+      "button": "Confirm",
+      "des":
+          "Manage your child’s allergy information to ensure\n safe and suitable food choices."
+    },
+    "addedChild": {
+      "studentID": "Student ID",
+      "name": "Name",
+      "hintName": "Enter Name",
+      "schoolName": "School Name",
+      "added": "Added",
+      "buttonText": "Add",
+      "addedSuccessfully": "Added Successfully",
+      "uploadImage": {"pleaseUploadImage": "Please Upload Image", "oK": "OK"}
+    },
+    "notifacation": {
+      "appBarText": "Notifications",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "lastWeek": "LastWeek",
+      "7h": "7h ago",
+      "5h": "5h ago",
+      "des":
+          "Ahmed Khalid attempted a purchase,\nbut the balance was in sufficient"
+    },
+    "childDetails": {
+      "dailySpendingLimit": "Daily Spending Limit",
+      "dailyLimit": "Daily limit",
+      "price": "Price",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "recharge": "Recharge",
+      "rechargeButton": "Recharge",
+      "close": "Close",
+      "addedSuccessfully": "Added Successfully"
+    },
+    "tracking": {
+      "title": "Student Tracking",
+      "studentLocation": "Student Location",
+      "bottomNavLabel": "Tracking"
+    },
+    "family": {
+      "AddChild": "Add child",
+      "family": "Family",
+      "Balance": "Balance",
+      "dailySpendingLimit": "Daily Spending Limit"
+    },
+    "account": {
+      "donotHaveAccount": "If you donot have account? ",
+      "haveAccount": "Have Account ",
+      "singup": "SingUp",
+      "login": "LogIn"
     }
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {

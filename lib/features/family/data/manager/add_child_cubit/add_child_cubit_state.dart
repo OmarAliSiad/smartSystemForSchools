@@ -5,6 +5,8 @@ sealed class AddChildCubitState {}
 
 final class AddChildCubitInitial extends AddChildCubitState {}
 
+final class AddChildCubitLoading extends AddChildCubitState {}
+
 final class AddChildCubitLAddedSuccess extends AddChildCubitState {}
 
 final class AddChildCubitAddedFailure extends AddChildCubitState {

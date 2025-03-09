@@ -9,13 +9,17 @@ class CustomTextFieldEditProfile extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final int? length;
+  final bool enable;
+  final String? vaildatorMessage;
   const CustomTextFieldEditProfile(
       {super.key,
       required this.title,
       required this.hintText,
       this.controller,
       this.keyboardType,
-      this.length});
+      this.length,
+      required this.enable,
+      this.vaildatorMessage});
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +38,15 @@ class CustomTextFieldEditProfile extends StatelessWidget {
           height: 10,
         ),
         TextFormField(
+          enabled: enable,
           maxLength: length,
-          style: const TextStyle(color: Colors.black),
+          style: TextStyle(color: !enable ? Colors.grey : Colors.black),
           keyboardType: keyboardType,
           controller: controller,
           maxLines: 1,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter some text';
+              return vaildatorMessage;
             }
             return null;
           },
@@ -60,12 +65,14 @@ class CustomTextFieldEditProfile extends StatelessWidget {
   }
 }
 
-OutlineInputBorder buildOutlineBorder() {
-  return const OutlineInputBorder(
+OutlineInputBorder buildOutlineBorder({
+  double borderRadius = 20,
+}) {
+  return OutlineInputBorder(
       borderRadius: BorderRadius.all(
-        Radius.circular(20),
+        Radius.circular(borderRadius),
       ),
-      borderSide: BorderSide(
+      borderSide: const BorderSide(
         color: Colors.grey,
       ));
 }

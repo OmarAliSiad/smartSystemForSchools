@@ -8,7 +8,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> dispalySnackBar(
     required Color color}) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 2000),
       backgroundColor: color,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

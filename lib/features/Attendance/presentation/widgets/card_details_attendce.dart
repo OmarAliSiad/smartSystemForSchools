@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/Attendance/data/models/child_attendce_model.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../data/models/child_attendance_model.dart';
 
 class CardDetailsAttendenceWidget extends StatelessWidget {
   final ChildAttendceModel childAttendceModel;

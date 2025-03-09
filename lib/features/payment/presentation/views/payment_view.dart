@@ -4,7 +4,6 @@ import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
@@ -586,7 +585,7 @@ class _PaymentViewState extends State<PaymentView> {
                             } else if (isSelected[2]) {
                               context
                                   .read<PaymentCubit>()
-                                  .makePaymentWithPaymob();
+                                  .makePaymentWithPaymob(context: context);
                             }
                           },
                         ),

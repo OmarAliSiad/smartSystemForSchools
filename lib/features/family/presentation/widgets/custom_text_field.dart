@@ -9,6 +9,7 @@ class SectionTextFiledForAddChild extends StatelessWidget {
   final Color imageColor;
   final String image;
   final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
   const SectionTextFiledForAddChild({
     super.key,
     required this.controller,
@@ -17,6 +18,7 @@ class SectionTextFiledForAddChild extends StatelessWidget {
     required this.imageColor,
     required this.image,
     this.keyboardType,
+    this.validator,
   });
 
   @override
@@ -34,6 +36,7 @@ class SectionTextFiledForAddChild extends StatelessWidget {
         CustomTextField(
           controller: controller,
           hintText: hintText,
+          validator: validator,
           prefixIcon: Padding(
             padding: const EdgeInsetsDirectional.all(15),
             child: Image.asset(

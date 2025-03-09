@@ -17,6 +17,7 @@ class LowerSettingsImportantSection extends StatelessWidget {
       left: 0,
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
+          final theme = context.read<ThemeModeCubit>().currentTheme;
           return FadeInUp(
             child: Center(
               child: Container(
@@ -31,12 +32,14 @@ class LowerSettingsImportantSection extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   shadows: [
-                    BoxShadow(
-                      color: Colors.grey.shade400,
-                      blurRadius: 16,
-                      offset: const Offset(0, 2),
-                      spreadRadius: 0,
-                    )
+                    theme == ThemeMode.dark
+                        ? const BoxShadow(
+                            color: Color(0xFFBDBDBD),
+                            blurRadius: 16,
+                            offset: Offset(0, 2),
+                            spreadRadius: 0,
+                          )
+                        : const BoxShadow(),
                   ],
                 ),
                 child: const Padding(

@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/app_styles.dart';
+import '../../../generated/locale_keys.g.dart';
 
 class CustomSpendingDailyLimitWidget extends StatelessWidget {
   final String price;
@@ -23,7 +25,7 @@ class CustomSpendingDailyLimitWidget extends StatelessWidget {
           height: 6,
         ),
         Text(
-          'Daily spending limit',
+          LocaleKeys.childDetails_dailyLimit.tr(),
           style: AppStyles.styleRegular12().copyWith(color: Colors.white),
         ),
       ],

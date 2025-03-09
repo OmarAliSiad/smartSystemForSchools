@@ -1,10 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/core/widgets/custom_bottom_container.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../core/methods/showDialog.dart';
-import '../../../core/models/child_details_model.dart';
 import '../../../core/utils/app_styles.dart';
 import '../../../core/utils/assets.dart';
 import '../widgets/CardDetailsChildWidget.dart';
@@ -23,7 +25,7 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
   @override
   Widget build(BuildContext context) {
     final receviedData = ModalRoute.of(context)!.settings.arguments
-        as Map<String, ChildDetailsModel>;
+        as Map<String, ResultForChildDetails>;
     return Scaffold(
       appBar: CustomAppBar(
         ThereIsicon: false,
@@ -49,10 +51,10 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
             child: Column(
               children: [
                 CustomCardForSpendingAndRecharge(
-                  title: 'Daily Spending Limit',
+                  title: LocaleKeys.childDetails_dailySpendingLimit.tr(),
                   price: '40 EGP',
                   imagePath: Assets.imagesShooping,
-                  titleButton: 'Daily limit',
+                  titleButton: LocaleKeys.childDetails_dailyLimit.tr(),
                   onPressed: () {
                     ShowDialogForDailyLimit(
                       borderSideColor:
@@ -61,11 +63,11 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
                               ? Colors.white
                               : Colors.black.withOpacity(.20),
                       context: context,
-                      hintText: 'Price',
+                      hintText: LocaleKeys.childDetails_price.tr(),
                       hintTextStyle: AppStyles.styleRegular12(),
-                      buttonCancelTitle: 'Cancel',
-                      buttonOkTitle: 'Edit',
-                      title: 'Daily Limit',
+                      buttonCancelTitle: LocaleKeys.childDetails_cancel.tr(),
+                      buttonOkTitle: LocaleKeys.childDetails_edit.tr(),
+                      title: LocaleKeys.childDetails_dailyLimit.tr(),
                       buttonOkColor: const Color(0xff1A0F91),
                       buttonCancelColor: const Color(0xffFF0000),
                       titleTextStyle: AppStyles.styleMedium18(),
@@ -78,10 +80,10 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
                 BlocBuilder<ThemeModeCubit, ThemeModeState>(
                   builder: (context, state) {
                     return CustomCardForSpendingAndRecharge(
-                      title: 'Recharge',
+                      title: LocaleKeys.childDetails_recharge.tr(),
                       price: '100 EGP',
                       imagePath: Assets.imagesTrasnfer,
-                      titleButton: 'Recharge',
+                      titleButton: LocaleKeys.childDetails_rechargeButton.tr(),
                       onPressed: () {
                         ShowDialogForRecharge(
                           borderSideColor:
@@ -96,23 +98,26 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
                               context: context,
                               borderRadius: 20,
                               borderRadiusButton: 5,
-                              buttonText: 'Close',
+                              buttonText: LocaleKeys.childDetails_close.tr(),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
                               buttonTextStyle: AppStyles.styleRegular16(),
                               imagePath: Assets.imagesSuccess,
-                              title: 'Added Successfully',
+                              title: LocaleKeys.childDetails_addedSuccessfully
+                                  .tr(),
                               titleTextStyle: AppStyles.styleMedium16(),
                               height: 46,
                               width: 46,
                             );
                           },
-                          hintText: 'Price',
+                          hintText: LocaleKeys.childDetails_price.tr(),
                           hintTextStyle: AppStyles.styleRegular12(),
-                          buttonCancelTitle: 'Cancel',
-                          buttonOkTitle: 'Recharge',
-                          title: 'Recharge',
+                          buttonCancelTitle:
+                              LocaleKeys.childDetails_cancel.tr(),
+                          buttonOkTitle:
+                              LocaleKeys.childDetails_rechargeButton.tr(),
+                          title: LocaleKeys.childDetails_recharge.tr(),
                           buttonOkColor: const Color(0xff1A0F91),
                           buttonCancelColor: const Color(0xffFF0000),
                           titleTextStyle: AppStyles.styleMedium18(),

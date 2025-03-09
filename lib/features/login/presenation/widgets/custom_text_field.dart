@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
   final double borderRaduis;
+  final bool? isReadOnly;
   const CustomTextField({
     super.key,
     this.prefixIcon,
@@ -25,13 +26,14 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     required this.borderRaduis,
     this.validator,
+    this.isReadOnly,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: ShapeDecoration(
-        color: Colors.white,
+        color: isReadOnly == true ? Colors.grey.shade200 : Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRaduis),
         ),
@@ -45,6 +47,7 @@ class CustomTextField extends StatelessWidget {
         ],
       ),
       child: TextFormField(
+        readOnly: isReadOnly ?? false,
         style: const TextStyle(color: Colors.black),
         maxLength: maxLength,
         keyboardType: keyboardType,

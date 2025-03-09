@@ -22,8 +22,7 @@ class NotificationCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(6),
             color: themeMode == ThemeMode.dark ? null : Colors.white,
             border: Border.all(
-              color:
-                  themeMode == ThemeMode.dark ? Colors.white : Colors.white,
+              color: themeMode == ThemeMode.dark ? Colors.white : Colors.white,
             ),
             boxShadow: [
               themeMode == ThemeMode.light
@@ -64,8 +63,8 @@ class NotificationCard extends StatelessWidget {
                       children: [
                         Text(
                           'Failed transaction : ',
-                          style: AppStyles.styleMedium16()
-                              .copyWith(fontSize: 14),
+                          style:
+                              AppStyles.styleMedium16().copyWith(fontSize: 14),
                         ),
                         const SizedBox(
                           width: 72,
@@ -87,8 +86,7 @@ class NotificationCard extends StatelessWidget {
                     ),
                     Text(
                       'Ahmed Khalid attempted a purchase,\nbut the balance was in sufficient',
-                      style:
-                          AppStyles.styleRegular14().copyWith(fontSize: 13),
+                      style: AppStyles.styleRegular14().copyWith(fontSize: 13),
                     )
                   ],
                 )

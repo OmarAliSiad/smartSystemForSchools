@@ -1,9 +1,10 @@
 import 'dart:developer';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
 import 'package:smartsystemforschools/core/widgets/custom_bottom_container.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
 import '../widgets/custom_allergies_card.dart';
@@ -17,21 +18,22 @@ class AllergiesView extends StatefulWidget {
 
 class _AllergiesViewState extends State<AllergiesView> {
   List<Map<String, bool>> isSelected = [
-    {"Chocolate": false},
-    {"Biscuit": false},
-    {"Milk": false},
-    {"Soft Drinks": false},
-    {"Banana": false},
-    {"Nuts": false},
+    {LocaleKeys.allegries_chocolate.tr(): false},
+    {LocaleKeys.allegries_biscuit.tr(): false},
+    {LocaleKeys.allegries_milk.tr(): false},
+    {LocaleKeys.allegries_softDrinks.tr(): false},
+    {LocaleKeys.allegries_banana.tr(): false},
+    {LocaleKeys.allegries_nuts.tr(): false},
   ];
   List<Map> data = [
-    {"Chocolate": Assets.imagesChocolate},
-    {"Biscuit": Assets.imagesBiscuit},
-    {"Milk": Assets.imagesMilk},
-    {"Soft Drinks": Assets.imagesSoftDrink},
-    {"Banana": Assets.imagesBanana},
-    {"Nuts": Assets.imagesNuts},
+    {LocaleKeys.allegries_chocolate.tr(): Assets.imagesChocolate},
+    {LocaleKeys.allegries_biscuit.tr(): Assets.imagesBiscuit},
+    {LocaleKeys.allegries_milk.tr(): Assets.imagesMilk},
+    {LocaleKeys.allegries_softDrinks.tr(): Assets.imagesSoftDrink},
+    {LocaleKeys.allegries_banana.tr(): Assets.imagesBanana},
+    {LocaleKeys.allegries_nuts.tr(): Assets.imagesNuts},
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +42,7 @@ class _AllergiesViewState extends State<AllergiesView> {
         slivers: [
           SliverToBoxAdapter(
             child: CustomAppBar(
-              title: "Allergies",
+              title: LocaleKeys.allegries_Allergies.tr(),
               textStyle: AppStyles.styleSemiBold20(),
               ThereIsicon: false,
               onTap: () => Navigator.pop(context),
@@ -70,7 +72,7 @@ class _AllergiesViewState extends State<AllergiesView> {
               padding: const EdgeInsetsDirectional.only(start: 15, end: 14),
               child: FittedBox(
                 child: Text(
-                  'Specify any allergies to help us tailor food options accordingly',
+                  LocaleKeys.allegries_headline.tr(),
                   style: AppStyles.styleMedium13(),
                 ),
               ),
@@ -94,7 +96,6 @@ class _AllergiesViewState extends State<AllergiesView> {
                 return InkWell(
                   onTap: () {
                     setState(() {
-                      // Toggle the selection state
                       isSelected[index][isSelected[index].entries.first.key] =
                           !isSelected[index]
                               [isSelected[index].entries.first.key]!;
@@ -126,7 +127,7 @@ class _AllergiesViewState extends State<AllergiesView> {
                   end: 123,
                   start: 124,
                 ),
-                text: 'Confirm',
+                text: LocaleKeys.allegries_button.tr(),
                 textStyle: AppStyles.styleSemiBold14(),
                 borderRadius: 20,
                 onPressed: () {

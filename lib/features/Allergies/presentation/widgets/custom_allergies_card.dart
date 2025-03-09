@@ -57,12 +57,14 @@ class CustomAllergiesCard extends StatelessWidget {
                     start: 18,
                     bottom: 26,
                   ),
-                  child: Text(
-                    text,
-                    style: AppStyles.styleRegular20().copyWith(
-                      color: themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : Colors.black,
+                  child: FittedBox(
+                    child: Text(
+                      text,
+                      style: AppStyles.styleRegular20().copyWith(
+                        color: themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
                     ),
                   ),
                 )

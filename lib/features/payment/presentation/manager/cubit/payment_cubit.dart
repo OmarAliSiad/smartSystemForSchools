@@ -1,13 +1,11 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:meta/meta.dart';
 import 'package:smartsystemforschools/core/utils/stripe_service.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../../../core/utils/paymobService.dart';
 import '../../../data/models/payment_intent_model/payment_intent_input_model.dart';
+import '../../views/payment_webView.dart';
 
 part 'payment_state.dart';
 
@@ -34,14 +32,20 @@ class PaymentCubit extends Cubit<PaymentState> {
     }
   }
 
-  void makePaymentWithPaymob() async {
+  void makePaymentWithPaymob({required BuildContext context}) async {
     emit(PaymentLoading());
     await PaymobService()
         .getPaymentKey(amount: 10, currency: "EGP")
         .then((paymentKey) async {
-      await launchUrl(
-        Uri.parse(
-            'https://accept.paymob.com/api/acceptance/iframes/899682?payment_token=$paymentKey'),
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return PaymentWebview(
+              url: Uri.parse(
+                  'https://accept.paymob.com/api/acceptance/iframes/899682?payment_token=$paymentKey'),
+            );
+          },
+        ),
       );
       emit(PaymentSuccess());
     }).catchError((e) {

@@ -54,10 +54,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   controller: passwordController,
                   validator: (password) {
                     if (password == null || password.isEmpty) {
-                      return 'enter password';
-                      // return  LocaleKeys
-                      //     .authentication_consumer_errorTextPassword
-                      //     .tr();
+                      return LocaleKeys.Auth_confirmPasswordHintText.tr();
                     }
                     return null;
                   },

@@ -14,14 +14,20 @@
     "subtitle": "تلّقَ تقارير فورية وتحديثات منتظمة حول إنفاق طفلك لتظل على اطلاع وتحكم دائم.",
     "button": "ابدا"
   },
-  "Login": {
+  "Auth": {
     "title": "تسجيل الدخول إلى حسابك",
     "labelUserName": "اسم المستخدم",
+    "register": "انشاء حساب",
+    "email": "البريد الإلكتروني",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "userNameHintText": "أدخل اسم المستخدم الخاص بك",
     "userEmailHintText": "ادخل بريدك الالكتروني",
     "labelPassword": "كلمة المرور",
     "passwordHintText": "أدخل كلمة المرور الخاصة بك",
+    "confirmPasswordHintText": "تأكيد كلمة المرور الخاصة بك",
     "forgotPassword": "نسيت كلمة المرور؟",
-    "button": "تسجيل الدخول"
+    "login": "تسجيل الدخول",
+    "singup": "انشاء حساب"
   },
   "valdation": {
     "valdationText": "رجاء املاء الحقل المطلوب"
@@ -59,10 +65,7 @@
     "appBarTitle": "صباح الخير،",
     "appBarName": "عمر",
     "nameShahd": "شهد",
-    "priceShahd1": "١٠٠ جنيه",
-    "priceShahd2": "١٥٠ جنيه",
     "nameAhmed": "أحمد",
-    "priceAhmed": "١٠٠ جنيه",
     "status": "حالة المخزون",
     "family": "عائلتي"
   },
@@ -113,18 +116,21 @@
     "Transfer": "تحويل"
   },
   "allegries": {
+    "Allergies": "حساسية",
     "chocolate": "شوكولاتة",
     "biscuit": "بسكويت",
     "milk": "حليب",
     "softDrinks": "مشروبات غازية",
     "banana": "موز",
-    "nuts": "مكسرات"
+    "nuts": "مكسرات",
+    "headline": "يرجى تحديد أي حساسية لديك لمساعدتنا في تخصيص خيارات الطعام وفقًا لذلك.",
+    "des": "قم بإدارة معلومات حساسية طفلك لضمان اختيارات طعام آمنة ومناسبة.",
+    "button": "تأكيد"
   },
   "addedChild": {
-    "appBarText": "إضافة طفل",
     "studentID": "رقم الطالب",
     "name": "الاسم",
-    "hintName": "اسمك",
+    "hintName": "أدخل الاسم",
     "schoolName": "اسم المدرسة",
     "added": "تمت الإضافة",
     "buttonText": "إضافة",
@@ -142,5 +148,33 @@
     "7h": "منذ 7 ساعات",
     "5h": "منذ 5 ساعات",
     "des": "حاول أحمد خالد إجراء عملية شراء،\nلكن الرصيد غير كافٍ"
+  },
+  "childDetails": {
+    "dailySpendingLimit": "حد الإنفاق اليومي",
+    "dailyLimit": "الحد اليومي",
+    "price": "السعر",
+    "cancel": "إلغاء",
+    "edit": "تعديل",
+    "recharge": "إعادة الشحن",
+    "rechargeButton": "إعادة الشحن",
+    "close": "إغلاق",
+    "addedSuccessfully": "تمت الإضافة بنجاح"
+  },
+  "tracking": {
+    "title": "تتبع الطالب",
+    "studentLocation": "موقع الطالب",
+    "bottomNavLabel": "التتبع"
+  },
+  "family": {
+    "AddChild": "إضافة طفل",
+    "family": "العائلة",
+    "Balance": "الرصيد",
+    "dailySpendingLimit": "حد الإنفاق اليومي"
+  },
+  "account": {
+    "donotHaveAccount": " إذا لم يكن لديك حساب؟",
+    "haveAccount": "لديك حساب؟ ",
+    "singup": "انشاء حساب",
+    "login": "تسجيل الدخول"
   }
 }

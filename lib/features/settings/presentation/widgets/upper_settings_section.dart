@@ -19,9 +19,9 @@ class UpperSettingsSection extends StatelessWidget {
         child: Container(
           width: 411,
           height: 294,
-          decoration: ShapeDecoration(
-            color: Colors.blue.shade900,
-            shape: const RoundedRectangleBorder(
+          decoration: const ShapeDecoration(
+            color: Color(0xFF0D47A1),
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(12),
                 bottomRight: Radius.circular(12),

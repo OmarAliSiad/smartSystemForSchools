@@ -1,38 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
-import 'package:smartsystemforschools/features/Attendance/data/models/child_attendce_model.dart';
 import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/assets.dart';
 import '../widgets/card_details_attendce.dart';
 
 class AttendanceView extends StatelessWidget {
-  static List<ChildAttendceModel> childs = [
-    ChildAttendceModel(
-        imagePath1: Assets.imagesShahdImage,
-        imagePath2: Assets.imagesArrowRightBlue,
-        text1: 'Shahd Arrived',
-        text2: 'School',
-        text3: '8:15 AM'),
-    ChildAttendceModel(
-        imagePath1: Assets.imagesHodaImage,
-        imagePath2: Assets.imagesArrowRightBlue,
-        text1: 'Hoda Arrived',
-        text2: 'School',
-        text3: '8:15 AM'),
-    ChildAttendceModel(
-        imagePath1: Assets.imagesAhmedImage,
-        imagePath2: Assets.imagesArrowRightBlue,
-        text1: 'Ahmed Arrived',
-        text2: 'School',
-        text3: '8:15 AM'),
-    ChildAttendceModel(
-        imagePath1: Assets.imagesShahdImage,
-        imagePath2: Assets.imagesArrowRightRed,
-        text1: 'Shadh Arrived',
-        text2: 'School',
-        text3: '2:00 PM'),
-  ];
   static const String id = 'AttendanceView';
   const AttendanceView({super.key});
 

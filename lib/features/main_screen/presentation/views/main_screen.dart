@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
 import 'package:smartsystemforschools/features/payment/presentation/views/payment_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:smartsystemforschools/features/tracking/presentation/views/tracking_view.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
-import '../../../../core/widgets/custom_bottom_container.dart';
 import '../../../../generated/locale_keys.g.dart';
 import '../../../family/presentation/views/family_view.dart';
 import '../../../home/presentation/views/home_screen.dart';
@@ -21,19 +21,15 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentPage = 0;
-  List<Widget> screens = [
-    HomeView(
-      key: UniqueKey(),
-    ),
-    FamilyView(
-      key: UniqueKey(),
-    ),
-    AttendanceView(
-      key: UniqueKey(),
-    ),
-    PaymentView(
-      key: UniqueKey(),
-    )
+  final List<Widget> screens = [
+    HomeView(key: UniqueKey()),
+    FamilyView(key: UniqueKey()),
+    AttendanceView(key: UniqueKey()),
+    PaymentView(key: UniqueKey()),
+    TrackingView(
+        onLocationSelected: (p0) {},
+        initialLocations: const [],
+        key: UniqueKey()),
   ];
 
   @override
@@ -44,7 +40,10 @@ class _MainScreenState extends State<MainScreen> {
         return Scaffold(
           backgroundColor:
               themeMode == ThemeMode.dark ? Colors.black : Colors.white,
-          body: screens[currentPage],
+          body: IndexedStack(
+            index: currentPage,
+            children: screens,
+          ),
           bottomNavigationBar: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -67,7 +66,7 @@ class _MainScreenState extends State<MainScreen> {
                 type: BottomNavigationBarType.fixed,
                 currentIndex: currentPage,
                 selectedItemColor: const Color(0xff1A0F91),
-                onTap: (i) async {
+                onTap: (i) {
                   setState(() {
                     currentPage = i;
                   });
@@ -116,6 +115,16 @@ class _MainScreenState extends State<MainScreen> {
                       height: 24.5,
                     ),
                     label: LocaleKeys.bottomNavigationBar_wallet.tr(),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.location_on,
+                      color: (currentPage == 4)
+                          ? const Color(0xff1A0F91)
+                          : Colors.grey,
+                      size: 24.5,
+                    ),
+                    label: LocaleKeys.tracking_bottomNavLabel.tr(),
                   ),
                 ],
               ),

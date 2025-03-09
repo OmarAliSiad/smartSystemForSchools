@@ -4,12 +4,13 @@ class PaymentOption extends StatelessWidget {
   final String title;
   final bool isSelected;
   final Widget image;
-final double ?width; 
+  final double? width;
   const PaymentOption({
     required this.title,
     this.isSelected = false,
     super.key,
-    required this.image,  this.width,
+    required this.image,
+    this.width,
   });
 
   @override
@@ -37,13 +38,13 @@ final double ?width;
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: width ??16,
+            width: width ?? 16,
             child: image,
           ),
           Text(
             title,
             style: TextStyle(
-              color: isSelected 
+              color: isSelected
                   ? const Color(0xFF1A0F91)
                   : Colors.black.withOpacity(0.5),
               fontSize: 13,

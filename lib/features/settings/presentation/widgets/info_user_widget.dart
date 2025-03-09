@@ -1,7 +1,8 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
+import '../../../../core/utils/auth_service.dart';
+import '../../../login/data/models/user_info_model.dart';
 
 class InfoUserRowWidget extends StatefulWidget {
   const InfoUserRowWidget({super.key});
@@ -11,9 +12,19 @@ class InfoUserRowWidget extends StatefulWidget {
 }
 
 class _InfoUserRowWidgetState extends State<InfoUserRowWidget> {
+  late UserInfoModel userInfo;
   @override
   void initState() {
     super.initState();
+    getUserInfo();
+  }
+
+  Future<void> getUserInfo() async {
+    UserInfoModel info = await AuthService().getUserInfo();
+    setState(() {
+      userInfo = info;
+    });
+    log(userInfo.username.toString());
   }
 
   @override
@@ -26,15 +37,10 @@ class _InfoUserRowWidgetState extends State<InfoUserRowWidget> {
         const SizedBox(
           width: 12,
         ),
-        BlocBuilder<ChangeDataProfileCubit, ChangeDataProfileState>(
-          builder: (context, state) {
-            final text = context.read<ChangeDataProfileCubit>().Name.text;
-            return Text(
-              text.isEmpty ? 'omar' : text,
-              style: AppStyles.styleMedium18(),
-            );
-          },
-        )
+        Text(
+          userInfo.username!,
+          style: AppStyles.styleMedium18(),
+        ),
       ],
     );
   }

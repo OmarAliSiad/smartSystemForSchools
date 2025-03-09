@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 
 import '../../../core/utils/app_styles.dart';
 import '../../../core/utils/assets.dart';
@@ -40,15 +42,15 @@ class CustomAllergiesWidget extends StatelessWidget {
                     height: 15,
                   ),
                   Text(
-                    'Allergies',
+                    LocaleKeys.allegries_Allergies.tr(),
                     style: AppStyles.styleMedium16(),
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   Text(
-                    'Manage your child’s allergy information to ensure\n safe and suitable food choices.',
-                    style: AppStyles.styleRegular10(),
+                    LocaleKeys.allegries_des.tr(),
+                    style: AppStyles.styleRegular10().copyWith(fontSize: 12),
                   ),
                   const SizedBox(
                     height: 5,
