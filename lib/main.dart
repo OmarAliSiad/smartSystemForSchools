@@ -8,6 +8,7 @@ import 'package:smartsystemforschools/core/themes/dark_theme.dart';
 import 'package:smartsystemforschools/core/themes/light_theme.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/features/Allergies/presentation/views/AllergiesView.dart';
+import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
 import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
 import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ThemeModeCubit()),
         BlocProvider(create: (context) => ChangeDataProfileCubit()),
         BlocProvider(create: (context) => AddChildCubit()),
+        BlocProvider(create: (context) => AttendanceCubit()),
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
@@ -106,7 +108,7 @@ class MyApp extends StatelessWidget {
                 ForgotPassword.id: (context) => const ForgotPassword(),
                 VerifyCode.id: (context) => const VerifyCode(),
                 PagesScreen.id: (context) => const PagesScreen(),
-                SettingsHomeView.id: (context) => SettingsHomeView(),
+                SettingsHomeView.id: (context) => const SettingsHomeView(),
                 MainScreen.id: (context) => const MainScreen(),
                 HomeView.id: (context) => const HomeView(),
                 PrivacyView.id: (context) => const PrivacyView(),

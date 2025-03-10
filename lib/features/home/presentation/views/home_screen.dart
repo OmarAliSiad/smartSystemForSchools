@@ -2,7 +2,6 @@ import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smartsystemforschools/core/utils/assets.dart';
 import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/get_child_details/result.dart';

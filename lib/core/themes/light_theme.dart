@@ -17,6 +17,23 @@ ThemeData lightTheme(BuildContext context) {
       backgroundColor: Colors.white,
       elevation: 0,
     ),
+    datePickerTheme: DatePickerThemeData(
+      todayBackgroundColor: const WidgetStatePropertyAll(Colors.transparent),
+      backgroundColor: Colors.white,
+      todayForegroundColor: const WidgetStatePropertyAll<Color>(Colors.black),
+      todayBorder: const BorderSide(width: 1),
+      dayStyle: const TextStyle(color: Colors.black),
+      yearStyle: const TextStyle(color: Colors.black),
+      headerBackgroundColor: Colors.white,
+      cancelButtonStyle: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all(
+            Colors.black), // Cancel button text in black
+      ),
+      confirmButtonStyle: ButtonStyle(
+        foregroundColor:
+            WidgetStateProperty.all(Colors.black), // OK button text in black
+      ),
+    ),
     dialogBackgroundColor: Colors.white,
     textTheme: TextTheme(
       titleLarge: blackedStyleColor,

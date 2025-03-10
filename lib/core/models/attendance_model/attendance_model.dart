@@ -1,22 +1,28 @@
-class ChildAttendceModel {
+import 'result.dart';
+
+class AttendanceModel {
   int? statusCode;
   bool? isSuccess;
   String? message;
-  String? result;
+  List<Result>? result;
+  String? resultForVaction;
 
-  ChildAttendceModel({
+  AttendanceModel({
     this.statusCode,
     this.isSuccess,
     this.message,
     this.result,
+    this.resultForVaction,
   });
 
-  factory ChildAttendceModel.fromJson(Map<String, dynamic> json) {
-    return ChildAttendceModel(
+  factory AttendanceModel.fromJson(Map<String, dynamic> json) {
+    return AttendanceModel(
       statusCode: json['statusCode'] as int?,
       isSuccess: json['isSuccess'] as bool?,
       message: json['message'] as String?,
-      result: json['result'] as String?,
+      result: json['result'] != null
+          ? List<Result>.from(json['result'].map((x) => Result.fromJson(x)))
+          : null,
     );
   }
 
@@ -24,6 +30,6 @@ class ChildAttendceModel {
         'statusCode': statusCode,
         'isSuccess': isSuccess,
         'message': message,
-        'result': result,
+        'result': result?.map((e) => e.toJson()).toList(),
       };
 }

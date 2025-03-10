@@ -9,6 +9,21 @@ ThemeData darkTheme(BuildContext context) {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
     ),
+    datePickerTheme: DatePickerThemeData(
+      backgroundColor: Colors.black,
+      todayForegroundColor: const WidgetStatePropertyAll<Color>(Colors.white),
+      todayBorder: const BorderSide(width: 1),
+      dayStyle: const TextStyle(color: Colors.black),
+      yearStyle: const TextStyle(color: Colors.white),
+      todayBackgroundColor: const WidgetStatePropertyAll(Colors.transparent),
+      headerBackgroundColor: Colors.black,
+      cancelButtonStyle: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all(Colors.white),
+      ),
+      confirmButtonStyle: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all(Colors.white),
+      ),
+    ),
     dialogBackgroundColor: Colors.black,
     textTheme: TextTheme(
       titleLarge: whiteStyleColor,

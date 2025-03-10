@@ -36,6 +36,11 @@ class CustomDetailsChildView extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const Padding(
+                padding:
+                    EdgeInsetsDirectional.only(start: 15, top: 15, bottom: 10),
+                child: SizedBox(),
+              ),
               // Padding(
               //   padding: const EdgeInsetsDirectional.only(
               //       start: 15, top: 15, bottom: 10),
@@ -46,9 +51,9 @@ class CustomDetailsChildView extends StatelessWidget {
               //     height: 52,
               //   ),
               // ),
-              // const SizedBox(
-              //   width: 16,
-              // ),
+              const SizedBox(
+                width: 16,
+              ),
               Padding(
                 padding: const EdgeInsetsDirectional.only(top: 15, bottom: 18),
                 child: Column(

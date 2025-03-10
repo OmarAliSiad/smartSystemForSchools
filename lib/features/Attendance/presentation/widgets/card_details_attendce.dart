@@ -2,15 +2,19 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../../core/models/attendance_model/attendance_model.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../data/models/child_attendance_model.dart';
 
 class CardDetailsAttendenceWidget extends StatelessWidget {
-  final ChildAttendceModel childAttendceModel;
+  final AttendanceModel childAttendceModel;
+  final int childIndex;
+  final bool isAbsent;
 
   const CardDetailsAttendenceWidget({
     super.key,
     required this.childAttendceModel,
+    required this.childIndex,
+    this.isAbsent = false,
   });
 
   @override
@@ -41,37 +45,69 @@ class CardDetailsAttendenceWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Image.asset(
-                    childAttendceModel.imagePath1,
-                    fit: BoxFit.cover,
-                    width: 52,
-                    height: 52,
+                  CircleAvatar(
+                    backgroundColor:
+                        isAbsent ? Colors.red.shade100 : Colors.green.shade100,
+                    radius: 26,
+                    child: Icon(
+                      isAbsent ? Icons.person_off : Icons.person,
+                      color: isAbsent ? Colors.red : Colors.green,
+                      size: 28,
+                    ),
                   ),
                   const SizedBox(
                     width: 11,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(childAttendceModel.text1,
-                          style: AppStyles.styleMedium16()),
-                      Text(childAttendceModel.text2,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          childAttendceModel.result![childIndex].fullName
+                              .toString(),
+                          style: AppStyles.styleMedium16(),
+                        ),
+                        Text(
+                          isAbsent
+                              ? "Absent today"
+                              : "Present at: ${childAttendceModel.result![childIndex].attendances![0].attendanceDate.toString()}",
+                          style: AppStyles.styleMedium16().copyWith(
+                            fontSize: 15,
+                            color: isAbsent ? Colors.red : Colors.green,
+                          ),
+                        ),
+                        Text(
+                          childAttendceModel.result![childIndex].city
+                              .toString(),
                           style:
-                              AppStyles.styleMedium16().copyWith(fontSize: 15)),
-                      Text(childAttendceModel.text3,
-                          style:
-                              AppStyles.styleMedium13().copyWith(fontSize: 14)),
-                    ],
+                              AppStyles.styleMedium13().copyWith(fontSize: 14),
+                        ),
+                      ],
+                    ),
                   ),
-                  const Spacer(),
-                  Image.asset(
-                    childAttendceModel.imagePath2,
-                    fit: BoxFit.cover,
-                    width: 35,
-                    height: 35,
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: isAbsent
+                          ? Colors.red.withOpacity(0.1)
+                          : Colors.green.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      isAbsent ? 'ABSENT' : 'PRESENT',
+                      style: TextStyle(
+                        color: isAbsent ? Colors.red : Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
-                  const SizedBox(
-                    width: 15,
+                  const SizedBox(width: 10),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: Colors.grey.shade600,
                   ),
                 ],
               ),
