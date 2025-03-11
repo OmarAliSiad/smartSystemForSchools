@@ -148,11 +148,13 @@ class _HomeViewState extends State<HomeView> {
                           child: index % 2 == 0
                               ? SlideInRight(
                                   child: CustomDetailsChildView(
+                                    index: index,
                                     childDetailsModel: childDetails[index],
                                   ),
                                 )
                               : SlideInLeft(
                                   child: CustomDetailsChildView(
+                                    index: index,
                                     childDetailsModel: childDetails[index],
                                   ),
                                 ),

@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smartsystemforschools/core/models/attendance_model/attendance_model.dart';
@@ -7,6 +8,7 @@ import 'package:smartsystemforschools/core/models/attendance_model/result.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/attendance_service.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
 class AttendanceDetailsView extends StatefulWidget {
   static const String id = 'AttendanceDetailsView';
@@ -200,7 +202,10 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Card(
-                    color: Colors.white,
+                    color: context.read<ThemeModeCubit>().currentTheme ==
+                            ThemeMode.light
+                        ? Colors.white
+                        : Colors.black,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -288,7 +293,10 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
                   SizedBox(
                     height: 200,
                     child: Card(
-                      color: Colors.white,
+                      color: context.read<ThemeModeCubit>().currentTheme ==
+                              ThemeMode.light
+                          ? Colors.white
+                          : Colors.black,
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -311,7 +319,10 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
                   SizedBox(
                     height: 200,
                     child: Card(
-                      color: Colors.white,
+                      color: context.read<ThemeModeCubit>().currentTheme ==
+                              ThemeMode.light
+                          ? Colors.white
+                          : Colors.black,
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -359,7 +370,10 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
                   SizedBox(
                     height: 200,
                     child: Card(
-                      color: Colors.white,
+                      color: context.read<ThemeModeCubit>().currentTheme ==
+                              ThemeMode.light
+                          ? Colors.white
+                          : Colors.black,
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),

@@ -26,10 +26,10 @@ class _MainScreenState extends State<MainScreen> {
     FamilyView(key: UniqueKey()),
     AttendanceView(key: UniqueKey()),
     PaymentView(key: UniqueKey()),
-    TrackingView(
-        onLocationSelected: (p0) {},
-        initialLocations: const [],
-        key: UniqueKey()),
+    // TrackingView(
+    //     onLocationSelected: (p0) {},
+    //     initialLocations: const [],
+    //     key: UniqueKey()),
   ];
 
   @override
@@ -116,16 +116,16 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     label: LocaleKeys.bottomNavigationBar_wallet.tr(),
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.location_on,
-                      color: (currentPage == 4)
-                          ? const Color(0xff1A0F91)
-                          : Colors.grey,
-                      size: 24.5,
-                    ),
-                    label: LocaleKeys.tracking_bottomNavLabel.tr(),
-                  ),
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(
+                  //     Icons.location_on,
+                  //     color: (currentPage == 4)
+                  //         ? const Color(0xff1A0F91)
+                  //         : Colors.grey,
+                  //     size: 24.5,
+                  //   ),
+                  //   label: LocaleKeys.tracking_bottomNavLabel.tr(),
+                  // ),
                 ],
               ),
               const SizedBox(

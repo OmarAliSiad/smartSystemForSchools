@@ -18,6 +18,7 @@ ThemeData lightTheme(BuildContext context) {
       elevation: 0,
     ),
     datePickerTheme: DatePickerThemeData(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       todayBackgroundColor: const WidgetStatePropertyAll(Colors.transparent),
       backgroundColor: Colors.white,
       todayForegroundColor: const WidgetStatePropertyAll<Color>(Colors.black),

@@ -7,6 +7,7 @@ import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_details_view.dart';
 import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../widgets/card_details_attendce.dart';
 
@@ -93,110 +94,129 @@ class _AttendanceViewState extends State<AttendanceView> {
               .pushNamedAndRemoveUntil(MainScreen.id, (context) => false);
         },
       ),
-      body: Padding(
-        padding: const EdgeInsetsDirectional.only(start: 18, end: 22, top: 20),
-        child: Column(
-          children: [
-            // Date selector
-            GestureDetector(
-              onTap: () => _selectDate(context),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade100,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.blue.shade300),
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          // Date selector
+          BlocBuilder<ThemeModeCubit, ThemeModeState>(
+            builder: (context, state) {
+              final state = context.read<ThemeModeCubit>().currentTheme;
+              return Padding(
+                padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 16,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Date: $formattedDate',
-                      style: AppStyles.styleMedium16(),
+                child: GestureDetector(
+                  onTap: () => _selectDate(context),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: state == ThemeMode.dark
+                          ? Colors.black
+                          : Colors.blue.shade100,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                          color: state == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.blue.shade300),
                     ),
-                    const Icon(Icons.calendar_today, color: Colors.blue),
-                  ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Date: $formattedDate',
+                          style: AppStyles.styleMedium16(),
+                        ),
+                        Icon(Icons.calendar_today,
+                            color: state == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.blue),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 25),
+              );
+            },
+          ),
+          const SizedBox(height: 25),
 
-            // Attendance data
-            Expanded(
-              child: BlocBuilder<AttendanceCubit, AttendanceState>(
-                builder: (context, state) {
-                  if (state is AttendanceLoading || isLoading) {
-                    return Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: Colors.blue.shade900,
-                        size: 50,
-                      ),
-                    );
-                  }
-                  if (state is AttendanceLoaded) {
-                    if (attendances.isEmpty ||
-                        attendances[0].result == null ||
-                        attendances[0].result!.isEmpty) {
-                      if (attendances[0].resultForVaction != null &&
-                          attendances[0].resultForVaction!.isNotEmpty) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.warning_amber_rounded,
-                                  size: 60, color: Colors.amber),
-                              const SizedBox(height: 16),
-                              Text(
-                                attendances[0].resultForVaction.toString(),
-                                style: AppStyles.styleMedium16(),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 8),
-                              ElevatedButton(
-                                onPressed: () => _selectDate(context),
-                                child: const Text('Select Another Date'),
-                              ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.warning_amber_rounded,
-                                  size: 60, color: Colors.amber),
-                              const SizedBox(height: 16),
-                              Text(
-                                'No attendance records found for this date',
-                                style: AppStyles.styleMedium16(),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 8),
-                              ElevatedButton(
-                                onPressed: () => _selectDate(context),
-                                child: const Text('Select Another Date'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
+          // Attendance data
+          Expanded(
+            child: BlocBuilder<AttendanceCubit, AttendanceState>(
+              builder: (context, state) {
+                if (state is AttendanceLoading || isLoading) {
+                  return Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: Colors.blue.shade900,
+                      size: 50,
+                    ),
+                  );
+                }
+                if (state is AttendanceLoaded) {
+                  if (attendances.isEmpty ||
+                      attendances[0].result == null ||
+                      attendances[0].result!.isEmpty) {
+                    if (attendances[0].resultForVaction != null &&
+                        attendances[0].resultForVaction!.isNotEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.warning_amber_rounded,
+                                size: 60, color: Colors.amber),
+                            const SizedBox(height: 16),
+                            Text(
+                              attendances[0].resultForVaction.toString(),
+                              style: AppStyles.styleMedium16(),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            ElevatedButton(
+                              onPressed: () => _selectDate(context),
+                              child: const Text('Select Another Date'),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.warning_amber_rounded,
+                                size: 60, color: Colors.amber),
+                            const SizedBox(height: 16),
+                            Text(
+                              'No attendance records found for this date',
+                              style: AppStyles.styleMedium16(),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            ElevatedButton(
+                              onPressed: () => _selectDate(context),
+                              child: const Text('Select Another Date'),
+                            ),
+                          ],
+                        ),
+                      );
                     }
-                    return ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: attendances[0].result?.length ?? 0,
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 20,
-                      ),
-                      itemBuilder: (context, index) {
-                        final childData = attendances[0].result![index];
-
-                        // Check if child is absent (no attendance records for the day)
-                        final bool isAbsent = childData.attendances == null ||
-                            childData.attendances!.isEmpty;
-
-                        return GestureDetector(
+                  }
+                  return ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: attendances[0].result?.length ?? 0,
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 20,
+                    ),
+                    itemBuilder: (context, index) {
+                      final childData = attendances[0].result![index];
+                      // Check if child is absent (no attendance records for the day)
+                      final bool isAbsent = childData.attendances == null ||
+                          childData.attendances!.isEmpty;
+                      return InkWell(
+                        child: CardDetailsAttendanceWidget(
+                          childAttendanceModel: attendances[0],
                           onTap: () {
                             Navigator.push(
                               context,
@@ -209,49 +229,46 @@ class _AttendanceViewState extends State<AttendanceView> {
                               ),
                             );
                           },
-                          child: CardDetailsAttendenceWidget(
-                            childAttendceModel: attendances[0],
-                            childIndex: index,
-                            isAbsent: isAbsent,
-                          ),
-                        );
-                      },
-                    );
-                  }
-                  if (state is AttendanceFailure) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.error_outline,
-                              size: 60, color: Colors.red),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Failed to load attendance data',
-                            style: AppStyles.styleMedium16(),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            state.errMessage,
-                            style: AppStyles.styleRegular14(),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () => loadAttendances(formattedDate),
-                            child: const Text('Try Again'),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
+                          childIndex: index,
+                          isAbsent: isAbsent,
+                        ),
+                      );
+                    },
+                  );
+                }
+                if (state is AttendanceFailure) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.error_outline,
+                            size: 60, color: Colors.red),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Failed to load attendance data',
+                          style: AppStyles.styleMedium16(),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          state.errMessage,
+                          style: AppStyles.styleRegular14(),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () => loadAttendances(formattedDate),
+                          child: const Text('Try Again'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
