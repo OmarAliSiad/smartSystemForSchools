@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/models/get_child_details/result.dart';
@@ -21,110 +22,11 @@ class CustomDetailsChildView extends StatefulWidget {
 }
 
 class _CustomDetailsChildViewState extends State<CustomDetailsChildView> {
-  List<String> images = [
-    'https://image.pollinations.ai/prompt/child,boy,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,10-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,12-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,13-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,12-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,14-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,14-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,10-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,10-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,12-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,14-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,13-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,13-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,10-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,14-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,10-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,14-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,boy,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,14-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,14-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,14-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,14-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,12-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,10-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,13-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,12-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,12-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,9-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,8-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,10-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,11-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,14-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-    'https://image.pollinations.ai/prompt/child,girl,15-years-old?width=200&height=200&nologo=true',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
+        log(widget.childDetailsModel.id.toString());
         final themeMode = context.read<ThemeModeCubit>().currentTheme;
         return Container(
           decoration: BoxDecoration(
@@ -149,45 +51,45 @@ class _CustomDetailsChildViewState extends State<CustomDetailsChildView> {
                     EdgeInsetsDirectional.only(start: 15, top: 15, bottom: 10),
                 child: SizedBox(),
               ),
-              Padding(
-                padding: const EdgeInsetsDirectional.only(
-                    start: 0, top: 15, bottom: 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.network(
-                    images[widget.index],
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: LoadingAnimationWidget.hexagonDots(
-                            color: Colors.blue,
-                            size: 15,
-                          ),
-                        );
-                      }
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey[200],
-                        child: Center(
-                          child: Icon(
-                            Icons.school_outlined,
-                            size: 50,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      );
-                    },
-                    width: 52,
-                    height: 52,
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsetsDirectional.only(
+              //       start: 0, top: 15, bottom: 10),
+              //   child: ClipRRect(
+              //     borderRadius: BorderRadius.circular(100),
+              //     child: Image.network(
+              //       widget.childDetailsModel.studentImage.toString(),
+              //       fit: BoxFit.cover,
+              //       loadingBuilder: (context, child, loadingProgress) {
+              //         if (loadingProgress == null) {
+              //           return child;
+              //         } else {
+              //           return SizedBox(
+              //             height: 20,
+              //             width: 20,
+              //             child: LoadingAnimationWidget.hexagonDots(
+              //               color: Colors.blue,
+              //               size: 15,
+              //             ),
+              //           );
+              //         }
+              //       },
+              //       errorBuilder: (context, error, stackTrace) {
+              //         return Container(
+              //           color: Colors.grey[200],
+              //           child: Center(
+              //             child: Icon(
+              //               Icons.school_outlined,
+              //               size: 50,
+              //               color: Colors.grey[400],
+              //             ),
+              //           ),
+              //         );
+              //       },
+              //       width: 52,
+              //       height: 52,
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 width: 16,
               ),
@@ -215,10 +117,13 @@ class _CustomDetailsChildViewState extends State<CustomDetailsChildView> {
               const Spacer(),
               CustomButtonTransfer(
                 onTap: () {
-                  Navigator.of(context).pushNamed(ChildDetailsView.id,
-                      arguments: {
-                        'childDetailsModel': widget.childDetailsModel
-                      });
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: 
+                    (context){
+                      return ChildDetailsView(resultForChildDetails:     widget.childDetailsModel,);
+                    }),
+                  );
+                  
                 },
               )
             ],

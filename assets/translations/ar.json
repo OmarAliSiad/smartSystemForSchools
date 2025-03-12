@@ -116,6 +116,18 @@
     "Transfer": "تحويل"
   },
   "allegries": {
+    "allegries_Allergies": "الحساسية",
+    "allegries_headline": "يرجى تحديد جميع أنواع الحساسية التي تنطبق على طفلك. سيتم استخدام هذه المعلومات للمساعدة في الحفاظ على سلامة طفلك والتأكد من تجنبه لأي مسببات للحساسية.",
+    "allegries_button": "تأكيد",
+    "allegries_saving": "جاري الحفظ...",
+    "allegries_success": "تم حفظ الحساسية بنجاح",
+    "allegries_no_selection": "الرجاء تحديد فئة حساسية واحدة على الأقل",
+    "loading_categories": "جاري تحميل فئات الحساسية...",
+    "retry": "إعادة المحاولة",
+    "no_allergies_found": "لم يتم العثور على فئات الحساسية",
+    "student_details": "تفاصيل الطالب",
+    "edit": "تعديل",
+    "no_allergies": "لا توجد حساسية مسجلة",
     "Allergies": "حساسية",
     "chocolate": "شوكولاتة",
     "biscuit": "بسكويت",

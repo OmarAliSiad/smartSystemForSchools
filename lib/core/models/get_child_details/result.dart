@@ -8,6 +8,8 @@ class ResultForChildDetails {
   String? birthDate;
   String? rfidTagId;
   DateTime? createdOn;
+  // String? studentImage;
+  String? schoolTenantId;
 
   ResultForChildDetails({
     this.id,
@@ -19,6 +21,8 @@ class ResultForChildDetails {
     this.birthDate,
     this.rfidTagId,
     this.createdOn,
+    // this.studentImage,
+    this.schoolTenantId,
   });
 
   factory ResultForChildDetails.fromJson(Map<String, dynamic> json) =>
@@ -34,6 +38,8 @@ class ResultForChildDetails {
         createdOn: json['createdOn'] == null
             ? null
             : DateTime.parse(json['createdOn'] as String),
+        // studentImage: json['studentImage'] as String?,
+        schoolTenantId: json['schoolTenantId'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,5 +52,7 @@ class ResultForChildDetails {
         'birthDate': birthDate,
         'rfidTag_Id': rfidTagId,
         'createdOn': createdOn?.toIso8601String(),
+        // 'studentImage': studentImage,
+        'schoolTenantId': schoolTenantId,
       };
 }

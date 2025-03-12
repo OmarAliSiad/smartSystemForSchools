@@ -5,26 +5,32 @@ import '../../../../core/utils/app_styles.dart';
 
 class CustomAllergiesCard extends StatelessWidget {
   final bool isSelected;
-  final String image;
   final String text;
+
   const CustomAllergiesCard({
     super.key,
-    required this.image,
     required this.text,
     required this.isSelected,
   });
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
         final themeMode = context.read<ThemeModeCubit>().currentTheme;
         return Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(
+              color: isSelected ? Colors.blue : Colors.transparent,
+              width: isSelected ? 2 : 0,
+            ),
+          ),
           child: Container(
             decoration: ShapeDecoration(
               color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
               shape: RoundedRectangleBorder(
-                side:
-                    BorderSide(color: isSelected ? Colors.blue : Colors.white),
                 borderRadius: BorderRadius.circular(10),
               ),
               shadows: [
@@ -39,15 +45,18 @@ class CustomAllergiesCard extends StatelessWidget {
               ],
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
                   height: 26,
                 ),
-                Image.asset(
-                  image,
-                  width: 45,
-                  height: 45,
-                ),
+                // Selection indicator
+                if (isSelected)
+                  const Icon(
+                    Icons.check_circle,
+                    color: Colors.blue,
+                    size: 30,
+                  ),
                 const SizedBox(
                   height: 2,
                 ),

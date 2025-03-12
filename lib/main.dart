@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
 import 'package:smartsystemforschools/core/themes/dark_theme.dart';
 import 'package:smartsystemforschools/core/themes/light_theme.dart';
+import 'package:smartsystemforschools/core/utils/allegris_service.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
+import 'package:smartsystemforschools/features/Allergies/data/manager/cubit/get_all_catogries_cubit.dart';
 import 'package:smartsystemforschools/features/Allergies/presentation/views/AllergiesView.dart';
 import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
@@ -15,7 +18,6 @@ import 'package:smartsystemforschools/features/family/data/manager/add_child_cub
 import 'package:smartsystemforschools/features/family/presentation/views/add_child_view.dart';
 import 'package:smartsystemforschools/features/family/presentation/views/family_view.dart';
 import 'package:smartsystemforschools/features/home/presentation/views/home_screen.dart';
-import 'package:smartsystemforschools/features/login/data/models/user_info_model.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/forgot_password.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/log_in.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/send_code.dart';
@@ -24,7 +26,6 @@ import 'package:smartsystemforschools/features/login/presenation/views/verfiy_co
 import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
 import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
 import 'package:smartsystemforschools/features/onBoarding/views/pageview.dart';
-import 'package:smartsystemforschools/features/schools/presentation/views/choose_country.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/views/edit_profile.dart';
@@ -33,6 +34,7 @@ import 'package:smartsystemforschools/features/settings_view/presentation/views/
 import 'package:smartsystemforschools/generated/codegen_loader.g.dart';
 import 'package:smartsystemforschools/features/settings/presentation/widgets/change_password_page.dart';
 import 'core/utils/auth_service.dart';
+import 'features/Allergies/data/manager/assing_allegris/allegris.dart';
 import 'features/splash_feature/presenation/views/splash_view.dart';
 import 'features/settings/presentation/views/settings_view.dart';
 
@@ -77,6 +79,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ChangeDataProfileCubit()),
         BlocProvider(create: (context) => AddChildCubit()),
         BlocProvider(create: (context) => AttendanceCubit()),
+        BlocProvider(create: (context) => GetAllCatogriesCubit()),
+        BlocProvider(create: (context) => AllergiesCubit(AllergiesService())),
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
@@ -117,8 +121,12 @@ class MyApp extends StatelessWidget {
                     const TermsAndConditionView(),
                 FamilyView.id: (context) => const FamilyView(),
                 AddChildView.id: (context) => const AddChildView(),
-                AllergiesView.id: (context) => const AllergiesView(),
-                ChildDetailsView.id: (context) => const ChildDetailsView(),
+                AllergiesView.id: (context) => const AllergiesView(
+                      studentId: '',
+                    ),
+                ChildDetailsView.id: (context) => ChildDetailsView(
+                      resultForChildDetails: ResultForChildDetails(),
+                    ),
                 AttendanceView.id: (context) => const AttendanceView(),
                 NotificationView.id: (context) => const NotificationView(),
                 ChangePasswordPage.id: (context) => const ChangePasswordPage(),

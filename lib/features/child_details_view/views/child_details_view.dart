@@ -15,7 +15,8 @@ import '../widgets/custom_allgeries_widget.dart';
 
 class ChildDetailsView extends StatefulWidget {
   static const String id = 'ChildDetailsView';
-  const ChildDetailsView({super.key});
+  final ResultForChildDetails  resultForChildDetails;
+  const ChildDetailsView({super.key, required this.resultForChildDetails});
 
   @override
   State<ChildDetailsView> createState() => _ChildDetailsViewState();
@@ -24,8 +25,6 @@ class ChildDetailsView extends StatefulWidget {
 class _ChildDetailsViewState extends State<ChildDetailsView> {
   @override
   Widget build(BuildContext context) {
-    final receviedData = ModalRoute.of(context)!.settings.arguments
-        as Map<String, ResultForChildDetails>;
     return Scaffold(
       appBar: CustomAppBar(
         ThereIsicon: false,
@@ -41,7 +40,7 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
           Padding(
             padding: const EdgeInsetsDirectional.only(start: 18, end: 19),
             child: CardDetailsChildWidget(
-                receviedData: receviedData['childDetailsModel']!),
+                receviedData:widget.resultForChildDetails),
           ),
           const SizedBox(
             height: 28,
@@ -129,7 +128,9 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
                 const SizedBox(
                   height: 26,
                 ),
-                const CustomAllergiesWidget(),
+                 CustomAllergiesWidget(
+                  childDetails:widget.resultForChildDetails,
+                ),
               ],
             ),
           ),

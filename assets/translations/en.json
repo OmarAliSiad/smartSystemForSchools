@@ -116,6 +116,18 @@
         "Transfer": "Transfer"
     },
     "allegries": {
+        "allegries_Allergies": "Allergies",
+        "allegries_headline": "Please select all the allergies that apply to your child. This information will be used to help keep your child safe and ensure they avoid any allergens.",
+        "allegries_button": "Confirm",
+        "allegries_saving": "Saving...",
+        "allegries_success": "Allergies saved successfully",
+        "allegries_no_selection": "Please select at least one allergy category",
+        "loading_categories": "Loading allergy categories...",
+        "retry": "Retry",
+        "no_allergies_found": "No allergy categories found",
+        "student_details": "Student Details",
+        "edit": "Edit",
+        "no_allergies": "No allergies registered",
         "Allergies": "Allergies",
         "chocolate": "Chocolate",
         "biscuit": "Biscuit",

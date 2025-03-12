@@ -1,15 +1,40 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smartsystemforschools/core/models/allegry_details/allegry_details.dart';
+import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
+import 'package:smartsystemforschools/features/Allergies/data/manager/assing_allegris/allegris.dart';
+import 'package:smartsystemforschools/features/Allergies/data/manager/assing_allegris/allegris_state.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
-
 import '../../../core/utils/app_styles.dart';
 import '../../../core/utils/assets.dart';
 import '../../Allergies/presentation/views/AllergiesView.dart';
 
-class CustomAllergiesWidget extends StatelessWidget {
-  const CustomAllergiesWidget({super.key});
+class CustomAllergiesWidget extends StatefulWidget {
+  final ResultForChildDetails childDetails;
+  const CustomAllergiesWidget({super.key, required this.childDetails});
+
+  @override
+  State<CustomAllergiesWidget> createState() => _CustomAllergiesWidgetState();
+}
+
+class _CustomAllergiesWidgetState extends State<CustomAllergiesWidget> {
+  @override
+  initState() {
+    super.initState();
+    loadAllegrisForStudent();
+  }
+
+  Future<void> loadAllegrisForStudent() async {
+    log(widget.childDetails.id.toString());
+    await context
+        .read<AllergiesCubit>()
+        .getAllegrisForStudent(widget.childDetails.id.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +84,73 @@ class CustomAllergiesWidget extends StatelessWidget {
                     padding: const EdgeInsetsDirectional.only(
                         end: 15, bottom: 15.65),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        BlocBuilder<AllergiesCubit, AllergiesState>(
+                          builder: (context, state) {
+                            if (state is GetAllergiesLoading) {
+                              return Center(
+                                child: LoadingAnimationWidget.staggeredDotsWave(
+                                  color: Colors.blue.shade900,
+                                  size: 50,
+                                ),
+                              );
+                            } else if (state is GetAllergiesLoaded) {
+                              AllegryDetails allegryDetails =
+                                  state.allergyItems;
+                              return SizedBox(
+                                height: 50,
+                                width: 250,
+                                child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    width: 10,
+                                  ),
+                                  itemCount: allegryDetails.result!.length,
+                                  itemBuilder: (context, index) {
+                                    return _buildAllergyChip(allegryDetails
+                                        .result![index].category!.name
+                                        .toString());
+                                  },
+                                ),
+                              );
+                            } else if (state is GetAllergiesFailure) {
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.warning_amber_rounded,
+                                        size: 60, color: Colors.amber),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      state.errMessage.toString(),
+                                      style: AppStyles.styleMedium16(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return const SizedBox();
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          width: 30,
+                        ),
                         InkWell(
                           onTap: () {
-                            Navigator.of(context).pushNamed(AllergiesView.id);
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return AllergiesView(
+                                studentId: widget.childDetails.id.toString(),
+                              );
+                            })).then((result) {
+                              if (result == true) {
+                                // Reload allergies data
+                                loadAllegrisForStudent();
+                              }
+                            });
                           },
                           child: Card(
                             color: Colors.white,
@@ -103,6 +190,37 @@ class CustomAllergiesWidget extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildAllergyChip(String name) {
+    final isDark =
+        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: isDark
+            ? const Color(0xff1A0F91).withOpacity(0.2)
+            : const Color(0xff1A0F91).withOpacity(0.08),
+        border: Border.all(
+          color: const Color(0xff1A0F91).withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            name,
+            style: AppStyles.styleMedium16().copyWith(
+              fontSize: 14,
+              color: isDark ? Colors.white : const Color(0xff1A0F91),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

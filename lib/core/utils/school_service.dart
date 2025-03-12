@@ -96,11 +96,13 @@ class SchoolService {
         };
       }
       log('Attempting to add child with ID: $id');
+      log('Request URL: https://school-api.runasp.net/api/Parent/AddChild/$id');
       Response response = await dio.post(
         'https://school-api.runasp.net/api/Parent/AddChild/$id',
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json', // Add if required
           },
         ),
       );
@@ -109,6 +111,17 @@ class SchoolService {
 
       if (response.statusCode == 404) {
         return {'isSuccess': false, 'message': 'API endpoint not found'};
+      }
+
+      if (response.statusCode == 400) {
+        String errorMessage = 'Bad request: ';
+        if (response.data is Map<String, dynamic>) {
+          errorMessage += response.data['message'] ?? 'Invalid request data';
+        } else {
+          errorMessage += 'Please check your input and try again';
+        }
+        log('Bad request details: ${response.data}'); // Log full response
+        return {'isSuccess': false, 'message': errorMessage};
       }
 
       if (response.statusCode! >= 400) {

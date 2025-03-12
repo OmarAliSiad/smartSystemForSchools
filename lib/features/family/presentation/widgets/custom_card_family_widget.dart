@@ -99,12 +99,11 @@ class CustomCardFaimlyWidget extends StatelessWidget {
           ),
           CustomButtonTransfer(
             onTap: () {
-              Navigator.of(context).pushNamed(
-                ChildDetailsView.id,
-                arguments: {
-                  'childDetailsModel': childDetailsModel,
-                },
-              );
+              Navigator.of(context).push(MaterialPageRoute(builder: (contex) {
+                return ChildDetailsView(
+                  resultForChildDetails:childDetailsModel,
+                );
+              }));
             },
           ),
         ],
