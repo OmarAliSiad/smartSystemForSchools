@@ -11,11 +11,8 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> dispalySnackBar(
       duration: const Duration(milliseconds: 2000),
       backgroundColor: color,
       behavior: SnackBarBehavior.floating,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-        ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
       ),
       content: Text(
         title,
