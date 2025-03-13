@@ -15,7 +15,7 @@ import '../widgets/custom_allgeries_widget.dart';
 
 class ChildDetailsView extends StatefulWidget {
   static const String id = 'ChildDetailsView';
-  final ResultForChildDetails  resultForChildDetails;
+  final ResultForChildDetails resultForChildDetails;
   const ChildDetailsView({super.key, required this.resultForChildDetails});
 
   @override
@@ -40,7 +40,7 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
           Padding(
             padding: const EdgeInsetsDirectional.only(start: 18, end: 19),
             child: CardDetailsChildWidget(
-                receviedData:widget.resultForChildDetails),
+                receviedData: widget.resultForChildDetails),
           ),
           const SizedBox(
             height: 28,
@@ -128,8 +128,8 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
                 const SizedBox(
                   height: 26,
                 ),
-                 CustomAllergiesWidget(
-                  childDetails:widget.resultForChildDetails,
+                CustomAllergiesWidget(
+                  childDetails: widget.resultForChildDetails,
                 ),
               ],
             ),
