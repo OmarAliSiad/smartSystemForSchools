@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/utils/app_styles.dart';
 import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
-class buildAllergyChip extends StatefulWidget {
+class BuildAllergyChip extends StatefulWidget {
   final String? name;
-  const buildAllergyChip({super.key, required this.name});
+  const BuildAllergyChip({super.key, required this.name});
   @override
-  State<buildAllergyChip> createState() => _buildAllergyChipState();
+  State<BuildAllergyChip> createState() => _BuildAllergyChipState();
 }
 
-class _buildAllergyChipState extends State<buildAllergyChip> {
+class _BuildAllergyChipState extends State<BuildAllergyChip> {
   bool isdelete = false;
   @override
   Widget build(BuildContext context) {
