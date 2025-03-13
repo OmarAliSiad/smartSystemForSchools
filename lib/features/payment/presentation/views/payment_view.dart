@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
+import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
 import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
@@ -14,7 +15,6 @@ import 'package:smartsystemforschools/features/settings_view/presentation/manage
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
-import '../../../../core/utils/custom_app_bar.dart';
 import '../../data/models/payment_intent_model/payment_intent_input_model.dart';
 import '../widgets/payment_option.dart';
 
@@ -56,8 +56,10 @@ class _PaymentViewState extends State<PaymentView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        ThereIsicon: false,
+      appBar: AnimatedCustomAppBar(
+        waveColor: Colors.blue.shade700,
+        backgroundColor: Colors.blue.shade900,
+        thereIsIcon: false,
         title: LocaleKeys.wallet_wallet.tr(),
         textStyle: AppStyles.styleSemiBold20(),
       ),
@@ -479,118 +481,126 @@ class _PaymentViewState extends State<PaymentView> {
                   BlocBuilder<PaymentCubit, PaymentState>(
                     builder: (context, state) {
                       return BounceInDown(
-                        child: CustomButton(
-                          isLoading: state is PaymentLoading ? true : false,
-                          padding: const EdgeInsetsDirectional.only(
-                            start: 124,
-                            end: 123,
-                            top: 15,
-                            bottom: 18,
-                          ),
-                          text: LocaleKeys.wallet_Transfer.tr(),
-                          textStyle: AppStyles.styleSemiBold14().copyWith(
-                            height: 1.36,
-                          ),
-                          borderRadius: 20,
-                          onPressed: () {
-                            if (isSelected[0]) {
-                              if (formKey.currentState!.validate()) {
-                                // Pass data to payment logic
-                                context
-                                    .read<PaymentCubit>()
-                                    .makePaymenStripeService(
-                                      paymentIntentInputModel:
-                                          PaymentIntentInputModel(
-                                        amount: '3000',
-                                        currency: 'EGP',
-                                        customerId: ApiKeys.customerId,
-                                      ),
-                                      context: context,
-                                    );
-                              }
-                            } else if (isSelected[1]) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      PaypalCheckout(
-                                    sandboxMode: true,
-                                    clientId:
-                                        ApiKeys.paypalClientId, //"CLIENT_ID",
-                                    secretKey:
-                                        ApiKeys.paypalSecretKey, //"SECRET_KEY",
-                                    returnURL: "success.snippetcoder.com",
-                                    cancelURL: "cancel.snippetcoder.com",
-                                    transactions: const [
-                                      {
-                                        "amount": {
-                                          "total": '70',
-                                          "currency": "USD",
-                                          "details": {
-                                            "subtotal": '70',
-                                            "shipping": '0',
-                                            "shipping_discount": 0
-                                          }
-                                        },
-                                        "description":
-                                            "The payment transaction description.",
-                                        "item_list": {
-                                          "items": [
-                                            {
-                                              "name": "Apple",
-                                              "quantity": 4,
-                                              "price": '5',
-                                              "currency": "USD"
+                        child: Column(
+                          children: [
+                            CustomButton(
+                              isLoading: state is PaymentLoading ? true : false,
+                              padding: const EdgeInsetsDirectional.only(
+                                start: 124,
+                                end: 123,
+                                top: 15,
+                                bottom: 18,
+                              ),
+                              text: LocaleKeys.wallet_Transfer.tr(),
+                              textStyle: AppStyles.styleSemiBold14().copyWith(
+                                height: 1.36,
+                              ),
+                              borderRadius: 20,
+                              onPressed: () {
+                                if (isSelected[0]) {
+                                  if (formKey.currentState!.validate()) {
+                                    // Pass data to payment logic
+                                    context
+                                        .read<PaymentCubit>()
+                                        .makePaymenStripeService(
+                                          paymentIntentInputModel:
+                                              PaymentIntentInputModel(
+                                            amount: '3000',
+                                            currency: 'EGP',
+                                            customerId: ApiKeys.customerId,
+                                          ),
+                                          context: context,
+                                        );
+                                  }
+                                } else if (isSelected[1]) {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          PaypalCheckout(
+                                        sandboxMode: true,
+                                        clientId: ApiKeys
+                                            .paypalClientId, //"CLIENT_ID",
+                                        secretKey: ApiKeys
+                                            .paypalSecretKey, //"SECRET_KEY",
+                                        returnURL: "success.snippetcoder.com",
+                                        cancelURL: "cancel.snippetcoder.com",
+                                        transactions: const [
+                                          {
+                                            "amount": {
+                                              "total": '70',
+                                              "currency": "USD",
+                                              "details": {
+                                                "subtotal": '70',
+                                                "shipping": '0',
+                                                "shipping_discount": 0
+                                              }
                                             },
-                                            {
-                                              "name": "Pineapple",
-                                              "quantity": 5,
-                                              "price": '10',
-                                              "currency": "USD"
+                                            "description":
+                                                "The payment transaction description.",
+                                            "item_list": {
+                                              "items": [
+                                                {
+                                                  "name": "Apple",
+                                                  "quantity": 4,
+                                                  "price": '5',
+                                                  "currency": "USD"
+                                                },
+                                                {
+                                                  "name": "Pineapple",
+                                                  "quantity": 5,
+                                                  "price": '10',
+                                                  "currency": "USD"
+                                                }
+                                              ],
+                                              // shipping address is Optional
+                                              // "shipping_address": {
+                                              //   "recipient_name": "Raman Singh",
+                                              //   "line1": "Delhi",
+                                              //   "line2": "",
+                                              //   "city": "Delhi",
+                                              //   "country_code": "IN",
+                                              //   "postal_code": "11001",
+                                              //   "phone": "+00000000",
+                                              //   "state": "Texas"
+                                              // },
                                             }
-                                          ],
-                                          // shipping address is Optional
-                                          // "shipping_address": {
-                                          //   "recipient_name": "Raman Singh",
-                                          //   "line1": "Delhi",
-                                          //   "line2": "",
-                                          //   "city": "Delhi",
-                                          //   "country_code": "IN",
-                                          //   "postal_code": "11001",
-                                          //   "phone": "+00000000",
-                                          //   "state": "Texas"
-                                          // },
-                                        }
-                                      }
-                                    ],
-                                    note: "PAYMENT_NOTE",
-                                    onSuccess: (Map params) async {
-                                      log("onSuccess: $params");
-                                    },
-                                    onError: (error) {
-                                      log("onError: $error");
-                                      Navigator.pop(context);
-                                    },
-                                    onCancel: () {
-                                      log('cancelled:');
-                                      dispalySnackBar(
-                                        context,
-                                        title: 'Payment canceled by the user.',
-                                        titleActionButton: 'ok',
-                                        color: Colors.orange,
-                                      );
-                                    },
-                                  ),
-                                ),
-                              );
-                            } else if (isSelected[2]) {
-                              context
-                                  .read<PaymentCubit>()
-                                  .makePaymentWithPaymob(context: context);
-                            }
-                          },
+                                          }
+                                        ],
+                                        note: "PAYMENT_NOTE",
+                                        onSuccess: (Map params) async {
+                                          log("onSuccess: $params");
+                                        },
+                                        onError: (error) {
+                                          log("onError: $error");
+                                          Navigator.pop(context);
+                                        },
+                                        onCancel: () {
+                                          log('cancelled:');
+                                          dispalySnackBar(
+                                            context,
+                                            title:
+                                                'Payment canceled by the user.',
+                                            titleActionButton: 'ok',
+                                            color: Colors.orange,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                } else if (isSelected[2]) {
+                                  context
+                                      .read<PaymentCubit>()
+                                      .makePaymentWithPaymob(context: context);
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       );
                     },
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                 ],
               ),
