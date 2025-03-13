@@ -42,4 +42,24 @@ class AllergiesCubit extends Cubit<AllergiesState> {
       emit(GetAllergiesFailure(e.toString()));
     }
   }
+
+  Future<AllegryDetails> deleteAllegris(
+      String studentId, List<int> allergyCategories) async {
+    log('studet id :$studentId  , allergyCategories : $allergyCategories ');
+    emit(deleteAllergiesLoading());
+    try {
+      late AllegryDetails result;
+      // We'll need to make a call for each selected category
+      for (int categoryId in allergyCategories) {
+        final allergies =
+            await allergiesService.deleteAllegris(studentId, categoryId);
+        result = allergies;
+      }
+      emit(AllergiesDeleted());
+      return result;
+    } catch (e) {
+      emit(AssignAllergiesFailure(e.toString()));
+      return AllegryDetails(message: e.toString());
+    }
+  }
 }

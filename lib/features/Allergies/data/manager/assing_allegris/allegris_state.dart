@@ -6,8 +6,10 @@ abstract class AllergiesState {}
 class AssignAllergiesInitial extends AllergiesState {}
 
 class AssignAllergiesLoading extends AllergiesState {}
+
 class GetAllergiesLoading extends AllergiesState {}
 
+class deleteAllergiesLoading extends AllergiesState {}
 
 class AssignAllergiesLoaded extends AllergiesState {
   final AllegryDetails allergyItems;
@@ -19,12 +21,14 @@ class GetAllergiesLoaded extends AllergiesState {
   GetAllergiesLoaded(this.allergyItems);
 }
 
-
 class AssignAllergiesFailure extends AllergiesState {
   final String errMessage;
   AssignAllergiesFailure(this.errMessage);
 }
+
 class GetAllergiesFailure extends AllergiesState {
   final String errMessage;
   GetAllergiesFailure(this.errMessage);
 }
+
+class AllergiesDeleted extends AllergiesState {}
