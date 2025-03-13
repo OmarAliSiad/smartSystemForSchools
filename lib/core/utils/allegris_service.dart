@@ -65,6 +65,38 @@ class AllergiesService {
     }
   }
 
+  Future<AllegryDetails> deleteAllegris(
+      String studentId, int allergiesCategory) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(Constants.token);
+      final response = await dio.delete(
+        'https://school-api.runasp.net/api/Parent/RemoveAllergies',
+        queryParameters: {
+          'studentId': studentId,
+          'allergiesCategory': allergiesCategory,
+        },
+        options: Options(
+            validateStatus: (status) => status != null && status < 500,
+            headers: {
+              'accept': '*/*',
+              'Authorization': 'Bearer $token',
+            }),
+      );
+      if (response.statusCode == 200) {
+        log('assing allegris');
+        AllegryDetails allegryDetails = AllegryDetails.fromJson(response.data);
+        return allegryDetails;
+      } else {
+        log('Failed to load allergies: ${response.statusCode}');
+        return AllegryDetails(message: response.data['message']);
+      }
+    } catch (e) {
+      log('Error fetching allergies: $e');
+      return AllegryDetails(message: 'Error fetching allergies: $e');
+    }
+  }
+
   Future<CatgoryDetails> getAllCategory() async {
     try {
       final prefs = await SharedPreferences.getInstance();
