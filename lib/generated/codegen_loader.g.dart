@@ -132,6 +132,11 @@ class CodegenLoader extends AssetLoader{
     "Transfer": "تحويل"
   },
   "allegries": {
+    "allegries_des": "إدارة حساسية طفلك والحالات الطبية",
+    "allegries_Remove": "إزالة الحساسية",
+    "allegries_RemoveConfirm": "هل أنت متأكد أنك تريد إزالة الحساسية",
+    "cancel": "إلغاء",
+    "remove": "إزالة",
     "allegries_Allergies": "الحساسية",
     "allegries_headline": "يرجى تحديد جميع أنواع الحساسية التي تنطبق على طفلك. سيتم استخدام هذه المعلومات للمساعدة في الحفاظ على سلامة طفلك والتأكد من تجنبه لأي مسببات للحساسية.",
     "allegries_button": "تأكيد",
@@ -324,6 +329,11 @@ static const Map<String,dynamic> en = {
     "Transfer": "Transfer"
   },
   "allegries": {
+    "allegries_des": "Manage your child's allergies and medical conditions",
+    "allegries_Remove": "Remove Allergy",
+    "allegries_RemoveConfirm": "Are you sure you want to remove the allergy",
+    "cancel": "Cancel",
+    "remove": "Remove",
     "allegries_Allergies": "Allergies",
     "allegries_headline": "Please select all the allergies that apply to your child. This information will be used to help keep your child safe and ensure they avoid any allergens.",
     "allegries_button": "Confirm",

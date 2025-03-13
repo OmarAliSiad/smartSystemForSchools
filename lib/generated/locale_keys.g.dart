@@ -101,6 +101,11 @@ abstract class  LocaleKeys {
   static const wallet_postalCode = 'wallet.postalCode';
   static const wallet_Transfer = 'wallet.Transfer';
   static const wallet = 'wallet';
+  static const allegries_allegries_des = 'allegries.allegries_des';
+  static const allegries_allegries_Remove = 'allegries.allegries_Remove';
+  static const allegries_allegries_RemoveConfirm = 'allegries.allegries_RemoveConfirm';
+  static const allegries_cancel = 'allegries.cancel';
+  static const allegries_remove = 'allegries.remove';
   static const allegries_allegries_Allergies = 'allegries.allegries_Allergies';
   static const allegries_allegries_headline = 'allegries.allegries_headline';
   static const allegries_allegries_button = 'allegries.allegries_button';

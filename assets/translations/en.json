@@ -116,6 +116,11 @@
         "Transfer": "Transfer"
     },
     "allegries": {
+        "allegries_des": "Manage your child's allergies and medical conditions",
+        "allegries_Remove": "Remove Allergy",
+        "allegries_RemoveConfirm": "Are you sure you want to remove the allergy",
+        "cancel": "Cancel",
+        "remove": "Remove",
         "allegries_Allergies": "Allergies",
         "allegries_headline": "Please select all the allergies that apply to your child. This information will be used to help keep your child safe and ensure they avoid any allergens.",
         "allegries_button": "Confirm",
