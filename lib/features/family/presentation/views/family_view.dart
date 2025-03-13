@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
@@ -54,7 +57,6 @@ class _FamilyViewState extends State<FamilyView> with WidgetsBindingObserver {
     setState(() {
       _isLoading = true;
     });
-
     await context.read<AddChildCubit>().refreshChildData();
 
     setState(() {
@@ -65,13 +67,15 @@ class _FamilyViewState extends State<FamilyView> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        onTap: () {
+      appBar: AnimatedCustomAppBar(
+        waveColor: Colors.blue.shade700,
+        backgroundColor: Colors.blue.shade900,
+        onTapBack: () {
           Navigator.of(context).pushReplacementNamed(MainScreen.id);
         },
         textStyle: AppStyles.styleSemiBold20(),
         title: LocaleKeys.family_family.tr(),
-        ThereIsicon: false,
+        thereIsIcon: false,
       ),
       body: RefreshIndicator(
         backgroundColor: Colors.white,
@@ -237,9 +241,12 @@ class _FamilyViewState extends State<FamilyView> with WidgetsBindingObserver {
                     onPressed: () {
                       Navigator.of(context)
                           .pushNamed(AddChildView.id)
-                          .then((_) {
+                          .then((dynamic result) {
+                        log('the result returned from childView : $result');
                         // Refresh data when returning from AddChildView
-                        loadChildDetails();
+                        if (result != null) {
+                          loadChildDetails();
+                        }
                       });
                     },
                   ),
