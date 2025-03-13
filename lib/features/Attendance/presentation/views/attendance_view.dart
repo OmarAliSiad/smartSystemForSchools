@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smartsystemforschools/core/models/attendance_model/attendance_model.dart';
+import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_details_view.dart';
@@ -85,11 +86,13 @@ class _AttendanceViewState extends State<AttendanceView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        ThereIsicon: false,
+      appBar: AnimatedCustomAppBar(
+        waveColor: Colors.blue.shade700,
+        backgroundColor: Colors.blue.shade900,
+        thereIsIcon: false,
         title: 'Attendance',
         textStyle: AppStyles.styleSemiBold20(),
-        onTap: () {
+        onTapBack: () {
           Navigator.of(context)
               .pushNamedAndRemoveUntil(MainScreen.id, (context) => false);
         },
