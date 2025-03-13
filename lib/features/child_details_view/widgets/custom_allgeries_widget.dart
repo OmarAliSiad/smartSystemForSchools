@@ -8,6 +8,7 @@ import 'package:smartsystemforschools/core/models/allegry_details/allegry_detail
 import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
 import 'package:smartsystemforschools/features/Allergies/data/manager/assing_allegris/allegris.dart';
 import 'package:smartsystemforschools/features/Allergies/data/manager/assing_allegris/allegris_state.dart';
+import 'package:smartsystemforschools/features/child_details_view/widgets/buildAllegryChip.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../core/utils/app_styles.dart';
@@ -108,9 +109,11 @@ class _CustomAllergiesWidgetState extends State<CustomAllergiesWidget> {
                                   ),
                                   itemCount: allegryDetails.result!.length,
                                   itemBuilder: (context, index) {
-                                    return _buildAllergyChip(allegryDetails
-                                        .result![index].category!.name
-                                        .toString());
+                                    return buildAllergyChip(
+                                        name: allegryDetails
+                                                .result?[index].category?.name
+                                                .toString() ??
+                                            '');
                                   },
                                 ),
                               );
@@ -190,37 +193,6 @@ class _CustomAllergiesWidgetState extends State<CustomAllergiesWidget> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildAllergyChip(String name) {
-    final isDark =
-        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: isDark
-            ? const Color(0xff1A0F91).withOpacity(0.2)
-            : const Color(0xff1A0F91).withOpacity(0.08),
-        border: Border.all(
-          color: const Color(0xff1A0F91).withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            name,
-            style: AppStyles.styleMedium16().copyWith(
-              fontSize: 14,
-              color: isDark ? Colors.white : const Color(0xff1A0F91),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
