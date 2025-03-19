@@ -5,7 +5,7 @@ import 'package:smartsystemforschools/core/models/get_school_details_by_id/get_s
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
 import 'package:smartsystemforschools/core/utils/school_service.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/sign_up_screen.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class SchoolViewDetails extends StatefulWidget {
   static const String id = 'SchoolViewDetails';
@@ -21,16 +21,35 @@ class SchoolViewDetails extends StatefulWidget {
   State<SchoolViewDetails> createState() => _SchoolViewDetailsState();
 }
 
-class _SchoolViewDetailsState extends State<SchoolViewDetails> {
+class _SchoolViewDetailsState extends State<SchoolViewDetails>
+    with SingleTickerProviderStateMixin {
   bool _isLoading = true;
   String _errorMessage = '';
   SchoolDetails? _schoolDetails;
   final SchoolService _schoolService = SchoolService();
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
     _loadSchoolDetails();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadSchoolDetails() async {
@@ -46,6 +65,7 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
         _schoolDetails = details;
         _isLoading = false;
       });
+      _animationController.forward();
     } catch (e) {
       setState(() {
         _errorMessage = e.toString();
@@ -56,42 +76,56 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF1A0F91)),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          widget.school.name ?? 'School Details',
-          style: AppStyles.styleSemiBold20().copyWith(
-            color: const Color(0xFF1A0F91),
-          ),
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final primaryColor =
+        isDarkMode ? const Color(0xFF536DFE) : const Color(0xFF1A0F91);
+    final backgroundColor =
+        isDarkMode ? const Color(0xFF121212) : const Color(0xFFF5F7FA);
+    final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
+    final textColor = isDarkMode ? Colors.white : Colors.black;
+    final secondaryTextColor = isDarkMode ? Colors.grey[400] : Colors.grey[700];
+
+    return Theme(
+      data: Theme.of(context).copyWith(
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: IconThemeData(color: primaryColor),
+          titleTextStyle:
+              AppStyles.styleSemiBold20().copyWith(color: primaryColor),
         ),
       ),
-      body: RefreshIndicator(
-        backgroundColor: Colors.white,
-        color: const Color(0xff1A0F91),
-        onRefresh: _loadSchoolDetails,
-        child: _isLoading
-            ? _buildLoadingView()
-            : _errorMessage.isNotEmpty
-                ? _buildErrorView()
-                : _buildSchoolDetailsView(),
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: Text(widget.school.name ?? 'School Details'),
+        ),
+        body: RefreshIndicator(
+          backgroundColor: cardColor,
+          color: primaryColor,
+          onRefresh: _loadSchoolDetails,
+          child: _isLoading
+              ? _buildLoadingView(primaryColor)
+              : _errorMessage.isNotEmpty
+                  ? _buildErrorView(primaryColor, textColor, secondaryTextColor)
+                  : _buildSchoolDetailsView(
+                      primaryColor, cardColor, textColor, secondaryTextColor),
+        ),
       ),
     );
   }
 
-  Widget _buildLoadingView() {
+  Widget _buildLoadingView(Color primaryColor) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           LoadingAnimationWidget.hexagonDots(
-            color: const Color(0xFF1A0F91),
+            color: primaryColor,
             size: 50,
           ),
           const SizedBox(height: 20),
@@ -104,7 +138,8 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
     );
   }
 
-  Widget _buildErrorView() {
+  Widget _buildErrorView(
+      Color primaryColor, Color textColor, Color? secondaryTextColor) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -117,14 +152,15 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
           const SizedBox(height: 20),
           Text(
             'Error Loading Details',
-            style: AppStyles.styleSemiBold20(),
+            style: AppStyles.styleSemiBold20().copyWith(color: textColor),
           ),
           const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Text(
               _errorMessage,
-              style: AppStyles.styleRegular14(),
+              style: AppStyles.styleRegular14()
+                  .copyWith(color: secondaryTextColor),
               textAlign: TextAlign.center,
             ),
           ),
@@ -132,7 +168,7 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
           ElevatedButton(
             onPressed: _loadSchoolDetails,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1A0F91),
+              backgroundColor: primaryColor,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -142,44 +178,69 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
               'Try Again',
               style: AppStyles.styleRegular14().copyWith(color: Colors.white),
             ),
-          ),
+          )
+              .animate()
+              .fade(duration: 600.ms)
+              .scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1)),
         ],
       ),
     );
   }
 
-  Widget _buildSchoolDetailsView() {
-    return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeaderImage(),
-          _buildSchoolInfo(),
-          _buildContactInfo(),
-          _buildAdditionalInfo(),
-          const SizedBox(height: 20),
-          _buildButton(
-            context,
-            showButton: widget.showButton ?? true,
-            schoolSelected: widget.school.name!,
-          ),
-        ],
+  Widget _buildSchoolDetailsView(Color primaryColor, Color cardColor,
+      Color textColor, Color? secondaryTextColor) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Hero(
+              tag: 'school-logo-${widget.school.schoolTenantId}',
+              child: _buildHeaderImage(cardColor),
+            ).animate().fade(duration: 600.ms).slideY(begin: 0.2, end: 0),
+            _buildSchoolInfo(cardColor, textColor, secondaryTextColor)
+                .animate()
+                .fade(duration: 600.ms)
+                .slideY(begin: 0.2, end: 0),
+            _buildContactInfo(
+                    primaryColor, cardColor, textColor, secondaryTextColor)
+                .animate()
+                .fade(duration: 600.ms, delay: 400.ms)
+                .slideY(begin: 0.2, end: 0),
+            _buildAdditionalInfo(
+                    primaryColor, cardColor, textColor, secondaryTextColor)
+                .animate()
+                .fade(duration: 600.ms, delay: 600.ms)
+                .slideY(begin: 0.2, end: 0),
+            const SizedBox(height: 20),
+            _buildButton(
+              context,
+              showButton: widget.showButton ?? true,
+              schoolSelected: widget.school.name!,
+              primaryColor: primaryColor,
+            )
+                .animate()
+                .fade(duration: 600.ms, delay: 800.ms)
+                .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1)),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildHeaderImage() {
+  Widget _buildHeaderImage(Color cardColor) {
     return Container(
       height: 200,
       width: double.infinity,
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 10,
             offset: const Offset(0, 2),
@@ -223,16 +284,17 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
     );
   }
 
-  Widget _buildSchoolInfo() {
+  Widget _buildSchoolInfo(
+      Color cardColor, Color textColor, Color? secondaryTextColor) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 5,
             offset: const Offset(0, 2),
@@ -244,13 +306,13 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
         children: [
           Text(
             'About School',
-            style: AppStyles.styleSemiBold20(),
+            style: AppStyles.styleSemiBold20().copyWith(color: textColor),
           ),
           const SizedBox(height: 10),
           Text(
             widget.school.description ?? 'No description available',
             style: AppStyles.styleRegular14().copyWith(
-              color: Colors.grey[600],
+              color: secondaryTextColor,
             ),
           ),
         ],
@@ -258,16 +320,17 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
     );
   }
 
-  Widget _buildContactInfo() {
+  Widget _buildContactInfo(Color primaryColor, Color cardColor, Color textColor,
+      Color? secondaryTextColor) {
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 5,
             offset: const Offset(0, 2),
@@ -279,31 +342,36 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
         children: [
           Text(
             'Contact Information',
-            style: AppStyles.styleSemiBold20(),
+            style: AppStyles.styleSemiBold20().copyWith(color: textColor),
           ),
           const SizedBox(height: 16),
-          _buildInfoRow(Icons.email_outlined, widget.school.email ?? 'N/A'),
+          _buildInfoRow(Icons.email_outlined, widget.school.email ?? 'N/A',
+              primaryColor, secondaryTextColor),
           const SizedBox(height: 12),
           _buildInfoRow(
-              Icons.phone_outlined, widget.school.phoneNumber ?? 'N/A'),
+              Icons.phone_outlined,
+              widget.school.phoneNumber ?? 'N/A',
+              primaryColor,
+              secondaryTextColor),
           const SizedBox(height: 12),
-          _buildInfoRow(
-              Icons.location_on_outlined, widget.school.address ?? 'N/A'),
+          _buildInfoRow(Icons.location_on_outlined,
+              widget.school.address ?? 'N/A', primaryColor, secondaryTextColor),
         ],
       ),
     );
   }
 
-  Widget _buildAdditionalInfo() {
+  Widget _buildAdditionalInfo(Color primaryColor, Color cardColor,
+      Color textColor, Color? secondaryTextColor) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 5,
             offset: const Offset(0, 2),
@@ -315,33 +383,42 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
         children: [
           Text(
             'Additional Information',
-            style: AppStyles.styleSemiBold20(),
+            style: AppStyles.styleSemiBold20().copyWith(color: textColor),
           ),
           const SizedBox(height: 16),
-          _buildInfoRow(Icons.calendar_today_outlined,
-              'Established: ${_getFormattedDate(widget.school.createdOn)}'),
+          _buildInfoRow(
+            Icons.calendar_today_outlined,
+            'Established: ${_getFormattedDate(widget.school.createdOn)}',
+            primaryColor,
+            secondaryTextColor,
+          ),
           const SizedBox(height: 12),
-          _buildInfoRow(Icons.location_city_outlined,
-              'Country: ${widget.school.country ?? 'N/A'}'),
+          _buildInfoRow(
+            Icons.location_city_outlined,
+            'Country: ${widget.school.country ?? 'N/A'}',
+            primaryColor,
+            secondaryTextColor,
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoRow(IconData icon, String text) {
+  Widget _buildInfoRow(
+      IconData icon, String text, Color iconColor, Color? textColor) {
     return Row(
       children: [
         Icon(
           icon,
           size: 20,
-          color: const Color(0xFF1A0F91),
+          color: iconColor,
         ),
         const SizedBox(width: 10),
         Expanded(
           child: Text(
             text,
             style: AppStyles.styleRegular14().copyWith(
-              color: Colors.grey[700],
+              color: textColor,
             ),
           ),
         ),
@@ -353,22 +430,26 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails> {
     if (date == null) return 'N/A';
     return '${date.day}/${date.month}/${date.year}';
   }
-}
 
-Widget _buildButton(BuildContext context,
-    {required bool showButton, required String schoolSelected}) {
-  return Padding(
-    padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-    child: showButton
-        ? CustomButton(
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-            text: 'confirm',
-            textStyle: AppStyles.styleMedium16(),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            borderRadius: 16,
-          )
-        : const SizedBox(),
-  );
+  Widget _buildButton(
+    BuildContext context, {
+    required bool showButton,
+    required String schoolSelected,
+    required Color primaryColor,
+  }) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+      child: showButton
+          ? CustomButton(
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+              text: 'Confirm',
+              textStyle: AppStyles.styleMedium16(),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              borderRadius: 16,
+            )
+          : const SizedBox(),
+    );
+  }
 }

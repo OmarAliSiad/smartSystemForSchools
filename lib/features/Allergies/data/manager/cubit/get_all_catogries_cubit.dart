@@ -5,7 +5,7 @@ import 'package:smartsystemforschools/core/models/catogry_details/catgory_detail
 import 'package:smartsystemforschools/core/utils/allegris_service.dart';
 
 part 'get_all_catogries_state.dart';
-  
+
 class GetAllCatogriesCubit extends Cubit<GetAllCatogriesState> {
   GetAllCatogriesCubit() : super(GetAllCatogriesInitial());
   Future<CatgoryDetails> getAllCatogries() async {
@@ -24,5 +24,4 @@ class GetAllCatogriesCubit extends Cubit<GetAllCatogriesState> {
       return CatgoryDetails();
     }
   }
-  
 }

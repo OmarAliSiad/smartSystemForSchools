@@ -118,12 +118,12 @@ class _CustomDetailsChildViewState extends State<CustomDetailsChildView> {
               CustomButtonTransfer(
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: 
-                    (context){
-                      return ChildDetailsView(resultForChildDetails:     widget.childDetailsModel,);
+                    MaterialPageRoute(builder: (context) {
+                      return ChildDetailsView(
+                        resultForChildDetails: widget.childDetailsModel,
+                      );
                     }),
                   );
-                  
                 },
               )
             ],

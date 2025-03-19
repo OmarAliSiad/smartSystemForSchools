@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const PageView1_title = 'PageView1.title';
   static const PageView1_subtitle = 'PageView1.subtitle';
   static const PageView1_button = 'PageView1.button';
@@ -44,14 +44,18 @@ abstract class  LocaleKeys {
   static const ForgotPassword_title = 'ForgotPassword.title';
   static const ForgotPassword_subtitle = 'ForgotPassword.subtitle';
   static const ForgotPassword_newPassword = 'ForgotPassword.newPassword';
-  static const ForgotPassword_newPasswordHint = 'ForgotPassword.newPasswordHint';
-  static const ForgotPassword_confirmPassword = 'ForgotPassword.confirmPassword';
-  static const ForgotPassword_confirmPasswordHint = 'ForgotPassword.confirmPasswordHint';
+  static const ForgotPassword_newPasswordHint =
+      'ForgotPassword.newPasswordHint';
+  static const ForgotPassword_confirmPassword =
+      'ForgotPassword.confirmPassword';
+  static const ForgotPassword_confirmPasswordHint =
+      'ForgotPassword.confirmPasswordHint';
   static const ForgotPassword_button = 'ForgotPassword.button';
   static const ForgotPassword = 'ForgotPassword';
   static const bottomNavigationBar_home = 'bottomNavigationBar.home';
   static const bottomNavigationBar_family = 'bottomNavigationBar.family';
-  static const bottomNavigationBar_attendance = 'bottomNavigationBar.attendance';
+  static const bottomNavigationBar_attendance =
+      'bottomNavigationBar.attendance';
   static const bottomNavigationBar_wallet = 'bottomNavigationBar.wallet';
   static const bottomNavigationBar = 'bottomNavigationBar';
   static const homeView_appBarTitle = 'homeView.appBarTitle';
@@ -62,7 +66,8 @@ abstract class  LocaleKeys {
   static const homeView_family = 'homeView.family';
   static const homeView = 'homeView';
   static const balanceCardDetails_balance = 'balanceCardDetails.balance';
-  static const balanceCardDetails_balancePrice = 'balanceCardDetails.balancePrice';
+  static const balanceCardDetails_balancePrice =
+      'balanceCardDetails.balancePrice';
   static const balanceCardDetails = 'balanceCardDetails';
   static const transactions_transactions = 'transactions.transactions';
   static const transactions_title = 'transactions.title';
@@ -103,7 +108,8 @@ abstract class  LocaleKeys {
   static const wallet = 'wallet';
   static const allegries_allegries_des = 'allegries.allegries_des';
   static const allegries_allegries_Remove = 'allegries.allegries_Remove';
-  static const allegries_allegries_RemoveConfirm = 'allegries.allegries_RemoveConfirm';
+  static const allegries_allegries_RemoveConfirm =
+      'allegries.allegries_RemoveConfirm';
   static const allegries_cancel = 'allegries.cancel';
   static const allegries_remove = 'allegries.remove';
   static const allegries_allegries_Allergies = 'allegries.allegries_Allergies';
@@ -111,7 +117,8 @@ abstract class  LocaleKeys {
   static const allegries_allegries_button = 'allegries.allegries_button';
   static const allegries_allegries_saving = 'allegries.allegries_saving';
   static const allegries_allegries_success = 'allegries.allegries_success';
-  static const allegries_allegries_no_selection = 'allegries.allegries_no_selection';
+  static const allegries_allegries_no_selection =
+      'allegries.allegries_no_selection';
   static const allegries_loading_categories = 'allegries.loading_categories';
   static const allegries_retry = 'allegries.retry';
   static const allegries_no_allergies_found = 'allegries.no_allergies_found';
@@ -136,7 +143,8 @@ abstract class  LocaleKeys {
   static const addedChild_added = 'addedChild.added';
   static const addedChild_buttonText = 'addedChild.buttonText';
   static const addedChild_addedSuccessfully = 'addedChild.addedSuccessfully';
-  static const addedChild_uploadImage_pleaseUploadImage = 'addedChild.uploadImage.pleaseUploadImage';
+  static const addedChild_uploadImage_pleaseUploadImage =
+      'addedChild.uploadImage.pleaseUploadImage';
   static const addedChild_uploadImage_oK = 'addedChild.uploadImage.oK';
   static const addedChild_uploadImage = 'addedChild.uploadImage';
   static const addedChild = 'addedChild';
@@ -148,7 +156,8 @@ abstract class  LocaleKeys {
   static const notifacation_5h = 'notifacation.5h';
   static const notifacation_des = 'notifacation.des';
   static const notifacation = 'notifacation';
-  static const childDetails_dailySpendingLimit = 'childDetails.dailySpendingLimit';
+  static const childDetails_dailySpendingLimit =
+      'childDetails.dailySpendingLimit';
   static const childDetails_dailyLimit = 'childDetails.dailyLimit';
   static const childDetails_price = 'childDetails.price';
   static const childDetails_cancel = 'childDetails.cancel';
@@ -156,7 +165,8 @@ abstract class  LocaleKeys {
   static const childDetails_recharge = 'childDetails.recharge';
   static const childDetails_rechargeButton = 'childDetails.rechargeButton';
   static const childDetails_close = 'childDetails.close';
-  static const childDetails_addedSuccessfully = 'childDetails.addedSuccessfully';
+  static const childDetails_addedSuccessfully =
+      'childDetails.addedSuccessfully';
   static const childDetails = 'childDetails';
   static const tracking_title = 'tracking.title';
   static const tracking_studentLocation = 'tracking.studentLocation';
@@ -172,5 +182,4 @@ abstract class  LocaleKeys {
   static const account_singup = 'account.singup';
   static const account_login = 'account.login';
   static const account = 'account';
-
 }

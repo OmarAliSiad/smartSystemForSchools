@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/features/Allergies/presentation/views/FoodAIView.dart';
+import 'package:smartsystemforschools/features/Attendance/presentation/views/AttendanceAIView.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
 import 'package:smartsystemforschools/features/payment/presentation/views/payment_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
@@ -24,6 +26,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     FamilyView(key: UniqueKey()),
     AttendanceView(key: UniqueKey()),
     PaymentView(key: UniqueKey()),
+    FoodAIView(key: UniqueKey()),
+    // AttendanceAIView(key: UniqueKey()),
     // TrackingView(
     //     onLocationSelected: (p0) {},
     //     initialLocations: const [],
@@ -43,7 +47,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   void _initAnimations() {
     // Initialize animation controllers for each tab
     _animationControllers = List.generate(
-      4,
+      5,
       (index) => AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 400),
@@ -78,8 +82,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       builder: (context, state) {
         final themeMode = context.read<ThemeModeCubit>().currentTheme;
         return Scaffold(
-          backgroundColor:
-              themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+          backgroundColor: themeMode == ThemeMode.dark
+              ? const Color(0xFF121212)
+              : Colors.white,
           body: IndexedStack(
             index: currentPage,
             children: screens,
@@ -155,6 +160,20 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   primaryColor,
                   secondaryColor,
                 ),
+                _buildNavItem(
+                  4,
+                  Assets.imagesAttendence,
+                  LocaleKeys.bottomNavigationBar_attendance.tr(),
+                  primaryColor,
+                  secondaryColor,
+                ),
+                // _buildNavItem(
+                //   5,
+                //   Assets.imagesWallet,
+                //   LocaleKeys.bottomNavigationBar_wallet.tr(),
+                //   primaryColor,
+                //   secondaryColor,
+                // ),
               ],
             ),
           ),
@@ -186,7 +205,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: 70,
+        width: 50,
         decoration: BoxDecoration(
           color:
               isSelected ? primaryColor.withOpacity(0.1) : Colors.transparent,

@@ -137,135 +137,142 @@ class _CustomAllergiesWidgetState extends State<CustomAllergiesWidget>
                                   ? const Expanded(
                                       child: SizedBox(),
                                     )
-                                  : SizedBox(
-                                      height: 50,
-                                      width: 250,
-                                      child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        separatorBuilder: (context, index) =>
-                                            const SizedBox(
-                                          width: 10,
-                                        ),
-                                        itemCount:
-                                            allegryDetails.result!.length,
-                                        itemBuilder: (context, index) {
-                                          final allergy =
-                                              allegryDetails.result![index];
-                                          final allergyName = allergy
-                                                  .category?.name
-                                                  ?.toString() ??
-                                              '';
-                                          final allergyId =
-                                              allergy.category?.id ?? 0;
+                                  : Expanded(
+                                      child: SizedBox(
+                                        height: 50,
+                                        child: ListView.separated(
+                                          clipBehavior: Clip.antiAlias,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(
+                                            width: 10,
+                                          ),
+                                          itemCount:
+                                              allegryDetails.result!.length,
+                                          itemBuilder: (context, index) {
+                                            final allergy =
+                                                allegryDetails.result![index];
+                                            final allergyName = allergy
+                                                    .category?.name
+                                                    ?.toString() ??
+                                                '';
+                                            final allergyId =
+                                                allergy.category?.id ?? 0;
 
-                                          // Check if this item is being removed
-                                          final isRemoving = _removingItems
-                                              .contains(allergyName);
+                                            // Check if this item is being removed
+                                            final isRemoving = _removingItems
+                                                .contains(allergyName);
 
-                                          return AnimatedOpacity(
-                                            opacity: isRemoving ? 0.0 : 1.0,
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            child: AnimatedSize(
+                                            return AnimatedOpacity(
+                                              opacity: isRemoving ? 0.0 : 1.0,
                                               duration: const Duration(
                                                   milliseconds: 300),
-                                              child: isRemoving
-                                                  ? const SizedBox(
-                                                      width:
-                                                          0) // Shrink to nothing when removing
-                                                  : GestureDetector(
-                                                      onLongPress: () {
-                                                        // Show confirmation dialog
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (context) =>
-                                                              AlertDialog(
-                                                            title: Text(LocaleKeys
-                                                                .allegries_allegries_Remove
-                                                                .tr()),
-                                                            content: Text(
-                                                              "${LocaleKeys.allegries_allegries_RemoveConfirm.tr()} '$allergyName'?",
-                                                            ),
-                                                            actions: [
-                                                              TextButton(
-                                                                onPressed: () =>
+                                              child: AnimatedSize(
+                                                duration: const Duration(
+                                                    milliseconds: 300),
+                                                child: isRemoving
+                                                    ? const SizedBox(
+                                                        width:
+                                                            0) // Shrink to nothing when removing
+                                                    : GestureDetector(
+                                                        onLongPress: () {
+                                                          // Show confirmation dialog
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                              title: Text(LocaleKeys
+                                                                  .allegries_allegries_Remove
+                                                                  .tr()),
+                                                              content: Text(
+                                                                "${LocaleKeys.allegries_allegries_RemoveConfirm.tr()} '$allergyName'?",
+                                                              ),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          context),
+                                                                  child: Text(
+                                                                      LocaleKeys
+                                                                          .allegries_cancel
+                                                                          .tr()),
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
                                                                     Navigator.pop(
-                                                                        context),
-                                                                child: Text(
+                                                                        context);
+                                                                    _removeAllergy(
+                                                                        allergyId,
+                                                                        allergyName);
+                                                                  },
+                                                                  child: Text(
                                                                     LocaleKeys
-                                                                        .allegries_cancel
-                                                                        .tr()),
-                                                              ),
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                  _removeAllergy(
-                                                                      allergyId,
-                                                                      allergyName);
-                                                                },
-                                                                child: Text(
-                                                                  LocaleKeys
-                                                                      .allegries_remove
-                                                                      .tr(),
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .red),
+                                                                        .allegries_remove
+                                                                        .tr(),
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .red),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        );
-                                                      },
-                                                      child: Stack(
-                                                        children: [
-                                                          BuildAllergyChip(
-                                                            childDetails: widget
-                                                                .childDetails,
-                                                            name: allergyName,
-                                                          ),
-                                                          // Add a small remove button overlay
-                                                          Positioned(
-                                                            right: 0,
-                                                            top: 0,
-                                                            child: InkWell(
-                                                              onTap: () =>
-                                                                  _removeAllergy(
-                                                                      allergyId,
-                                                                      allergyName),
-                                                              child: Container(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                  top: 2,
-                                                                  right: 2,
-                                                                  left: 2,
-                                                                  bottom: 10,
-                                                                ),
-                                                                decoration:
-                                                                    const BoxDecoration(
-                                                                  color: Colors
-                                                                      .red,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Stack(
+                                                          children: [
+                                                            BuildAllergyChip(
+                                                              childDetails: widget
+                                                                  .childDetails,
+                                                              name: allergyName,
+                                                            ),
+                                                            // Add a small remove button overlay
+                                                            Positioned(
+                                                              right: 0,
+                                                              top: 0,
+                                                              child: InkWell(
+                                                                onTap: () =>
+                                                                    _removeAllergy(
+                                                                        allergyId,
+                                                                        allergyName),
                                                                 child:
-                                                                    const Icon(
-                                                                  Icons
-                                                                      .minimize,
-                                                                  size: 12,
-                                                                  color: Colors
-                                                                      .white,
+                                                                    Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                    top: 2,
+                                                                    right: 2,
+                                                                    left: 2,
+                                                                    bottom: 10,
+                                                                  ),
+                                                                  decoration:
+                                                                      const BoxDecoration(
+                                                                    color: Colors
+                                                                        .red,
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                  ),
+                                                                  child:
+                                                                      const Icon(
+                                                                    Icons
+                                                                        .minimize,
+                                                                    size: 12,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                            ),
-                                          );
-                                        },
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
                                     );
                             } else if (state is GetAllergiesFailure) {

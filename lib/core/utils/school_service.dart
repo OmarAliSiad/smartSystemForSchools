@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartsystemforschools/core/models/get_school_details_by_id/get_school_details_by_id.dart';
+import 'package:smartsystemforschools/core/models/payment_checkout_model/payment_checkout_model.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
 import '../models/get_all_schools/get_all_schools.dart';
 import '../models/get_child_details/result.dart';
@@ -271,6 +272,65 @@ class SchoolService {
     } catch (e) {
       log("Exception when getting children details: $e");
       return [];
+    }
+  }
+
+  Future<PaymentCheckoutModel> checkPaymentStatus(
+      {required String studentId, required double amount}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(Constants.token);
+      if (token == null) {
+        log('No auth token found');
+      }
+      log(studentId.toString());
+      log((amount is double).toString());
+      log(amount.toString());
+      try {
+        Response response = await dio.post(
+          'https://school-api.runasp.net/api/Parent/Checkout',
+          data: {
+            "studentId": studentId.toString(),
+            "moneyAmount": amount,
+          },
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+          ),
+        );
+        log('Status code: ${response.statusCode}');
+        log('Headers: ${response.headers}');
+        log('response.data: ${response.data}');
+        // Handle server error (500) explicitly
+        if (response.statusCode == 500) {
+          return PaymentCheckoutModel(
+            statusCode: 500,
+            isSuccess: false,
+            message: response.data['Message'],
+          );
+        }
+
+        PaymentCheckoutModel paymentCheckoutModel =
+            PaymentCheckoutModel.fromJson(response.data);
+        log('Payment checkout response: ${paymentCheckoutModel.toJson().toString()}');
+        return paymentCheckoutModel;
+      } on DioException catch (e) {
+        log('DioException during payment checkout: ${e.message}');
+        return PaymentCheckoutModel(
+          statusCode: e.response?.statusCode ?? 0,
+          isSuccess: false,
+          message: 'Network error: ${e.message}',
+        );
+      }
+    } catch (e) {
+      log("Unexpected exception when checkout payment for child: $e");
+      return PaymentCheckoutModel(
+        statusCode: 0,
+        isSuccess: false,
+        message: 'An unexpected error occurred: $e',
+      );
     }
   }
 }

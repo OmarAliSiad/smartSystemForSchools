@@ -1,7 +1,10 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
+import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
 import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/get_child_details/result.dart';
@@ -69,6 +72,8 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBarHomeView(
+        waveColor: Colors.blue,
+        backgroundColor: Colors.blue.shade900,
         onTapPrefix: () {
           Navigator.of(context).pushNamed(SettingsHomeView.id);
         },
@@ -76,114 +81,111 @@ class _HomeViewState extends State<HomeView> {
           Navigator.of(context).pushNamed(NotificationView.id);
         },
       ),
-      body: Padding(
-        padding: const EdgeInsetsDirectional.only(start: 18, end: 19),
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          clipBehavior: Clip.none,
-          slivers: [
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 15,
+      body: RefreshIndicator(
+        backgroundColor: Colors.white,
+        color: Colors.blue.shade900,
+        onRefresh: loadChildDetails,
+        child: Padding(
+          padding: const EdgeInsetsDirectional.only(start: 18, end: 19),
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            clipBehavior: Clip.none,
+            slivers: [
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 15,
+                ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: BounceInDown(
-                child: const CustomBalanceCardDetails(),
+              SliverToBoxAdapter(
+                child: BounceInDown(
+                  child: const CustomBalanceCardDetails(),
+                ),
               ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 15,
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 15,
+                ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Text(
-                LocaleKeys.homeView_family.tr(),
-                style: AppStyles.styleMedium20(),
+              SliverToBoxAdapter(
+                child: Text(
+                  LocaleKeys.homeView_family.tr(),
+                  style: AppStyles.styleMedium20(),
+                ),
               ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 15,
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 15,
+                ),
               ),
-            ),
-            _isLoading
-                ? SliverToBoxAdapter(
-                    child: Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: Colors.blue.shade900,
-                        size: 50,
-                      ),
-                    ),
-                  )
-                : childDetails.isEmpty
-                    ? SliverToBoxAdapter(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.family_restroom,
-                                  size: 50,
-                                  color: Colors.grey[400],
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'No children added yet',
-                                  style: AppStyles.styleRegular16(),
-                                ),
-                              ],
+              _isLoading
+                  ? SliverToBoxAdapter(
+                      child: Center(child: buildLoadingView('childs', context)),
+                    )
+                  : childDetails.isEmpty
+                      ? SliverToBoxAdapter(
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.family_restroom,
+                                    size: 50,
+                                    color: Colors.grey[400],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'No children added yet',
+                                    style: AppStyles.styleRegular16(),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
+                        )
+                      : SliverList.builder(
+                          itemCount: childDetails.length,
+                          itemBuilder: (context, index) => Padding(
+                            padding: EdgeInsetsDirectional.only(
+                                bottom:
+                                    index == childDetails.length - 1 ? 0 : 13),
+                            child: CustomDetailsChildView(
+                              index: index,
+                              childDetailsModel: childDetails[index],
+                            )
+                                .animate()
+                                .fadeIn(
+                                    duration: 600.ms,
+                                    delay: Duration(milliseconds: 150 * index))
+                                .slideX(
+                                    begin: index % 2 == 0 ? .2 : -0.2, end: 0),
+                          ),
                         ),
-                      )
-                    : SliverList.builder(
-                        itemCount: childDetails.length,
-                        itemBuilder: (context, index) => Padding(
-                          padding: EdgeInsetsDirectional.only(
-                              bottom:
-                                  index == childDetails.length - 1 ? 0 : 13),
-                          child: index % 2 == 0
-                              ? SlideInRight(
-                                  child: CustomDetailsChildView(
-                                    index: index,
-                                    childDetailsModel: childDetails[index],
-                                  ),
-                                )
-                              : SlideInLeft(
-                                  child: CustomDetailsChildView(
-                                    index: index,
-                                    childDetailsModel: childDetails[index],
-                                  ),
-                                ),
-                        ),
-                      ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 15,
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 15,
+                ),
               ),
-            ),
-            SliverToBoxAdapter(
-              child: Text(
-                LocaleKeys.transactions_transactions.tr(),
-                style: AppStyles.styleMedium20(),
+              SliverToBoxAdapter(
+                child: Text(
+                  LocaleKeys.transactions_transactions.tr(),
+                  style: AppStyles.styleMedium20(),
+                ),
               ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 15,
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 15,
+                ),
               ),
-            ),
-            SliverList.builder(
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsetsDirectional.only(bottom: 13),
-                child: ZoomIn(child: const CustomCardTransactions()),
+              SliverList.builder(
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsetsDirectional.only(bottom: 13),
+                  child: ZoomIn(child: const CustomCardTransactions()),
+                ),
+                itemCount: 10,
               ),
-              itemCount: 10,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

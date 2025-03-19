@@ -1,13 +1,13 @@
 import 'dart:developer';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
+import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
 import 'package:smartsystemforschools/features/family/presentation/views/add_child_view.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
@@ -92,19 +92,11 @@ class _FamilyViewState extends State<FamilyView> with WidgetsBindingObserver {
                 ),
               ),
               _isLoading
-                  ? const SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor: Colors.blue,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                        ],
+                  ? SliverToBoxAdapter(
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: MediaQuery.sizeOf(context).height * 0.7,
+                        child: buildLoadingView('family', context),
                       ),
                     )
                   : BlocBuilder<AddChildCubit, AddChildCubitState>(
@@ -226,32 +218,36 @@ class _FamilyViewState extends State<FamilyView> with WidgetsBindingObserver {
                         }
                       },
                     ),
-              SliverToBoxAdapter(
-                child: BounceInDown(
-                  child: CustomButton(
-                    padding: const EdgeInsetsDirectional.only(
-                      top: 15,
-                      bottom: 18,
-                      end: 123,
-                      start: 124,
+              _isLoading
+                  ? const SliverToBoxAdapter(
+                      child: SizedBox(),
+                    )
+                  : SliverToBoxAdapter(
+                      child: BounceInDown(
+                        child: CustomButton(
+                          padding: const EdgeInsetsDirectional.only(
+                            top: 15,
+                            bottom: 18,
+                            end: 123,
+                            start: 124,
+                          ),
+                          text: LocaleKeys.family_AddChild.tr(),
+                          textStyle: AppStyles.styleSemiBold14(),
+                          borderRadius: 20,
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(AddChildView.id)
+                                .then((dynamic result) {
+                              log('the result returned from childView : $result');
+                              // Refresh data when returning from AddChildView
+                              if (result != null) {
+                                loadChildDetails();
+                              }
+                            });
+                          },
+                        ),
+                      ),
                     ),
-                    text: LocaleKeys.family_AddChild.tr(),
-                    textStyle: AppStyles.styleSemiBold14(),
-                    borderRadius: 20,
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(AddChildView.id)
-                          .then((dynamic result) {
-                        log('the result returned from childView : $result');
-                        // Refresh data when returning from AddChildView
-                        if (result != null) {
-                          loadChildDetails();
-                        }
-                      });
-                    },
-                  ),
-                ),
-              ),
               const SliverToBoxAdapter(
                 child: SizedBox(
                   height: 20,

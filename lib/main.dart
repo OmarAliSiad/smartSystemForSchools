@@ -9,8 +9,11 @@ import 'package:smartsystemforschools/core/themes/dark_theme.dart';
 import 'package:smartsystemforschools/core/themes/light_theme.dart';
 import 'package:smartsystemforschools/core/utils/allegris_service.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
+import 'package:smartsystemforschools/features/Allergies/data/food_ai_service.dart';
 import 'package:smartsystemforschools/features/Allergies/data/manager/cubit/get_all_catogries_cubit.dart';
+import 'package:smartsystemforschools/features/Allergies/data/manager/food_cubit/food_ai_cubit.dart';
 import 'package:smartsystemforschools/features/Allergies/presentation/views/AllergiesView.dart';
+import 'package:smartsystemforschools/features/Allergies/presentation/views/FoodAIView.dart';
 import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
 import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
@@ -39,6 +42,8 @@ import 'features/splash_feature/presenation/views/splash_view.dart';
 import 'features/settings/presentation/views/settings_view.dart';
 
 bool isLoggedIn = false;
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   // ? code for device preview
   // runApp(
@@ -81,6 +86,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AttendanceCubit()),
         BlocProvider(create: (context) => GetAllCatogriesCubit()),
         BlocProvider(create: (context) => AllergiesCubit(AllergiesService())),
+        // Add these new providers for AI features
+        BlocProvider(create: (context) => FoodAICubit(FoodAIService())),
+        // BlocProvider(
+        //     create: (context) => AttendanceAICubit(AttendanceAIService())),
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
@@ -130,10 +139,16 @@ class MyApp extends StatelessWidget {
                 AttendanceView.id: (context) => const AttendanceView(),
                 NotificationView.id: (context) => const NotificationView(),
                 ChangePasswordPage.id: (context) => const ChangePasswordPage(),
+                FoodAIView.id: (context) => const FoodAIView(),
               },
               initialRoute: isLoggedIn ? MainScreen.id : SplashView.id);
         },
       ),
     );
   }
+}
+
+class Get {
+  static BuildContext? get context => navigatorKey.currentContext;
+  static NavigatorState? get navigator => navigatorKey.currentState;
 }

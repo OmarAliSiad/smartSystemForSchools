@@ -9,6 +9,11 @@ ThemeData lightTheme(BuildContext context) {
     dialogTheme: const DialogTheme(
       backgroundColor: Colors.white,
     ),
+    pageTransitionsTheme: const PageTransitionsTheme(builders: {
+      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+      TargetPlatform.fuchsia: ZoomPageTransitionsBuilder(),
+    }),
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white,

@@ -56,7 +56,9 @@ class CustomCardFaimlyWidget extends StatelessWidget {
             child: Column(
               children: [
                 Image.asset(
-                  Assets.imagesAttendence,
+                  Assets.imagesPerson,
+                  color:
+                      themeMode == ThemeMode.dark ? Colors.white : Colors.black,
                   fit: BoxFit.cover,
                   width: 52,
                   height: 52,
@@ -101,7 +103,7 @@ class CustomCardFaimlyWidget extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (contex) {
                 return ChildDetailsView(
-                  resultForChildDetails:childDetailsModel,
+                  resultForChildDetails: childDetailsModel,
                 );
               }));
             },

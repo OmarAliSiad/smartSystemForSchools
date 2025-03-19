@@ -6,9 +6,15 @@ ThemeData darkTheme(BuildContext context) {
   return ThemeData(
     fontFamily: context.locale.toString() == 'ar' ? 'Cairo' : 'Poppins',
     brightness: Brightness.dark,
+    scaffoldBackgroundColor: const Color(0xFF121212),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
     ),
+    pageTransitionsTheme: const PageTransitionsTheme(builders: {
+      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+      TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+      TargetPlatform.fuchsia: ZoomPageTransitionsBuilder(),
+    }),
     datePickerTheme: DatePickerThemeData(
       backgroundColor: Colors.black,
       todayForegroundColor: const WidgetStatePropertyAll<Color>(Colors.white),
