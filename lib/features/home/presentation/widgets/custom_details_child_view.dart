@@ -51,45 +51,6 @@ class _CustomDetailsChildViewState extends State<CustomDetailsChildView> {
                     EdgeInsetsDirectional.only(start: 15, top: 15, bottom: 10),
                 child: SizedBox(),
               ),
-              // Padding(
-              //   padding: const EdgeInsetsDirectional.only(
-              //       start: 0, top: 15, bottom: 10),
-              //   child: ClipRRect(
-              //     borderRadius: BorderRadius.circular(100),
-              //     child: Image.network(
-              //       widget.childDetailsModel.studentImage.toString(),
-              //       fit: BoxFit.cover,
-              //       loadingBuilder: (context, child, loadingProgress) {
-              //         if (loadingProgress == null) {
-              //           return child;
-              //         } else {
-              //           return SizedBox(
-              //             height: 20,
-              //             width: 20,
-              //             child: LoadingAnimationWidget.hexagonDots(
-              //               color: Colors.blue,
-              //               size: 15,
-              //             ),
-              //           );
-              //         }
-              //       },
-              //       errorBuilder: (context, error, stackTrace) {
-              //         return Container(
-              //           color: Colors.grey[200],
-              //           child: Center(
-              //             child: Icon(
-              //               Icons.school_outlined,
-              //               size: 50,
-              //               color: Colors.grey[400],
-              //             ),
-              //           ),
-              //         );
-              //       },
-              //       width: 52,
-              //       height: 52,
-              //     ),
-              //   ),
-              // ),
               const SizedBox(
                 width: 16,
               ),
@@ -107,7 +68,7 @@ class _CustomDetailsChildViewState extends State<CustomDetailsChildView> {
                     ),
                     //price
                     Text(
-                      '50',
+                      widget.childDetailsModel.amountOfMoney.toString(),
                       style: AppStyles.styleSemiBold14()
                           .copyWith(color: const Color(0xff1A0F91)),
                     )

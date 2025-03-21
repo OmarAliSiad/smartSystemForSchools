@@ -5,10 +5,12 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> dispalySnackBar(
     context,
     {required String title,
     required String titleActionButton,
-    required Color color}) {
+    required Color color,
+    int duration = 2000, 
+    }) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      duration: const Duration(milliseconds: 2000),
+      duration:  Duration(milliseconds: duration),
       backgroundColor: color,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(

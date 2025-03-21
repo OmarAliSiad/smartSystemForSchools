@@ -505,7 +505,7 @@ class _PaymentViewState extends State<PaymentView> {
                                         .makePaymenStripeService(
                                           paymentIntentInputModel:
                                               PaymentIntentInputModel(
-                                            amount: '3000',
+                                            amount: '30',
                                             currency: 'EGP',
                                             customerId: ApiKeys.customerId,
                                           ),

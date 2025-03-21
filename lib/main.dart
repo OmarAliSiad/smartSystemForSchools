@@ -29,6 +29,7 @@ import 'package:smartsystemforschools/features/login/presenation/views/verfiy_co
 import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
 import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
 import 'package:smartsystemforschools/features/onBoarding/views/pageview.dart';
+import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/views/edit_profile.dart';
@@ -86,10 +87,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AttendanceCubit()),
         BlocProvider(create: (context) => GetAllCatogriesCubit()),
         BlocProvider(create: (context) => AllergiesCubit(AllergiesService())),
-        // Add these new providers for AI features
-        BlocProvider(create: (context) => FoodAICubit(FoodAIService())),
-        // BlocProvider(
-        //     create: (context) => AttendanceAICubit(AttendanceAIService())),
+        BlocProvider(create: (context) => PaymentCubit()),
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {

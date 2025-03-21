@@ -20,4 +20,5 @@ class Constants {
   static const userId = 'userId';
   static const phone = 'phone';
   static const schoolTenantId = 'schoolTenantId';
+  static const studentId = 'studentId';
 }

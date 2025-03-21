@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
@@ -13,6 +14,7 @@ import 'package:smartsystemforschools/features/payment/data/models/payment_inten
 import 'package:smartsystemforschools/features/payment/data/models/payment_intent_model/payment_intent_model.dart';
 import 'package:smartsystemforschools/features/payment/data/models/ephemeral_key_model/ephmeral_key_model.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StripeService {
   final String url = 'https://api.stripe.com/v1/payment_intents';
@@ -102,7 +104,7 @@ class StripeService {
     }
   }
 
-  // Make a Payment
+  // Make a Payment with direct PaymentIntent creation
   Future<bool> makePayment({
     required PaymentIntentInputModel paymentIntentInputModel,
     required BuildContext context,
@@ -189,6 +191,96 @@ class StripeService {
     } catch (e) {
       log('Error creating Customer: $e');
       rethrow;
+    }
+  }
+
+  // Make a Payment using session ID and public key from checkPaymentStatus
+
+  Future<bool> makePaymentWithSession({
+    required String sessionId,
+    required String pubKey,
+    required String secretKey,
+    required String sessionUrl,
+    required BuildContext context,
+  }) async {
+    try {
+      // Show a modal dialog with InAppWebView
+      final result = await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            insetPadding: EdgeInsets.zero,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: [
+                  AppBar(
+                    title: const Text('Complete Payment'),
+                    leading: IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(false),
+                    ),
+                    backgroundColor: Colors.blue,
+                    automaticallyImplyLeading: false,
+                  ),
+                  Expanded(
+                    child: InAppWebView(
+                      initialUrlRequest: URLRequest(
+                        url: Uri.parse(sessionUrl),
+                      ),
+                      initialOptions: InAppWebViewGroupOptions(
+                        crossPlatform: InAppWebViewOptions(
+                          javaScriptEnabled: true,
+                        ),
+                      ),
+                      onLoadStop: (controller, url) async {
+                        String urlRequest =
+                            'https${url.toString().split('http').last}';
+                        log('is success');
+                        final canLaunchit = await canLaunch(urlRequest);
+                        if (canLaunchit) {
+                          await launch(urlRequest).then(
+                            (value) => Navigator.of(context).pop(true),
+                          );
+                        } else {
+                          throw "Could not launch $url";
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+      if (result == true) {
+        showAswemoDialog(
+          dialogType: DialogType.success,
+          context: context,
+          title: 'Payment successful!',
+          desc: 'Your payment has been processed successfully in USD.',
+        );
+        return true;
+      } else {
+        dispalySnackBar(
+          context,
+          title: 'Payment canceled by the user.',
+          titleActionButton: 'ok',
+          color: Colors.orange,
+        );
+        return false;
+      }
+    } catch (e) {
+      dispalySnackBar(
+        context,
+        title: 'Error: $e',
+        titleActionButton: 'ok',
+        color: Colors.red,
+      );
+      return false;
     }
   }
 

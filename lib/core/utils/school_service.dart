@@ -275,8 +275,10 @@ class SchoolService {
     }
   }
 
-  Future<PaymentCheckoutModel> checkPaymentStatus(
-      {required String studentId, required double amount}) async {
+  Future<PaymentCheckoutModel> checkPaymentStatus({
+    required String studentId,
+    required double amount,
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString(Constants.token);

@@ -13,3 +13,18 @@ final class PaymentFailure extends PaymentState {
   final String errorMessage;
   PaymentFailure({required this.errorMessage});
 }
+
+
+final class CheckoutPaymentInitial extends PaymentState {}
+
+final class CheckoutPaymentLoading extends PaymentState {}
+
+final class CheckoutPaymentLoaded extends PaymentState {
+  final PaymentCheckoutModel?   CheckoutPaymentModel;
+  CheckoutPaymentLoaded({required this.CheckoutPaymentModel});
+}
+
+final class CheckoutPaymentFailure extends PaymentState {
+  final String errMessage;
+  CheckoutPaymentFailure({required this.errMessage});
+}

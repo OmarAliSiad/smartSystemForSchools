@@ -1,0 +1,751 @@
+import 'dart:developer';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
+import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
+import 'package:smartsystemforschools/core/models/payment_checkout_model/payment_checkout_model.dart';
+import 'package:smartsystemforschools/core/utils/Constants.dart';
+import 'package:smartsystemforschools/core/utils/api_keys.dart';
+import 'package:smartsystemforschools/core/utils/app_styles.dart';
+import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
+import 'package:smartsystemforschools/core/widgets/payment_bottom_sheet.dart';
+import 'package:smartsystemforschools/core/widgets/total_fees.dart';
+import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+
+class AccountScreen extends StatelessWidget {
+  final ResultForChildDetails resultForChildDetails;
+  const AccountScreen({super.key, required this.resultForChildDetails});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: const Text("Account"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Family Balance",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      resultForChildDetails.amountOfMoney.toString(),
+                      style: const TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      resultForChildDetails.fullName.toString(),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: context.read<ThemeModeCubit>().currentTheme ==
+                                ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black54,
+                      ),
+                    ),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => Builder(builder: (context) {
+                        return const PaymentMethodBottomSheet();
+                      }),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF00BCD4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  child: Text(
+                    "Recharge",
+                    style: const TextStyle(fontSize: 16)
+                        .copyWith(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 40),
+            const Text(
+              "Transactions",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                FilterButton(
+                  text: "All",
+                  isSelected: true,
+                  onPressed: () {},
+                ),
+                const SizedBox(width: 10),
+                FilterButton(
+                  text: "Phone",
+                  isSelected: false,
+                  onPressed: () {},
+                ),
+                const SizedBox(width: 10),
+                FilterButton(
+                  text: resultForChildDetails.fullName.toString(),
+                  isSelected: true,
+                  isPrimary: true,
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/search_person.png',
+                      height: 150,
+                      // If you don't have this asset, you can use a placeholder:
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.search,
+                          size: 80,
+                          color: Colors.grey,
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "No Transactions Found",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class RechargeScreen extends StatefulWidget {
+  const RechargeScreen({
+    super.key,
+  });
+
+  @override
+  State<RechargeScreen> createState() => _RechargeScreenState();
+}
+
+class _RechargeScreenState extends State<RechargeScreen> {
+  // final amountOptions = [200, 400, 600, 1000, 2000];
+  final amountOptions = [10, 20, 50, 100, 1000];
+  int? selectedAmount = 20;
+  final TextEditingController customAmountController = TextEditingController();
+  bool isCustomAmount = false;
+  late PaymentCheckoutModel checkoutPaymentModel;
+
+  double get processingFee {
+    final amount = selectedAmount ?? 0;
+    return 3 + (amount * 0.035);
+  }
+
+  double get total {
+    final amount = selectedAmount ?? 0;
+    return amount + processingFee;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: const BackButton(),
+        title: Text(
+          "Recharge",
+          style: AppStyles.styleMedium13(),
+        ),
+      ),
+      body: isCustomAmount
+          ? BlocConsumer<PaymentCubit, PaymentState>(
+              listener: (context, state) {
+                if (state is CheckoutPaymentFailure) {
+                  dispalySnackBar(context,
+                      color: Colors.red,
+                      title: state.errMessage.toString(),
+                      titleActionButton: 'ok');
+                } // In ChildDetailsView.dart, modify the listener section:
+                else if (state is CheckoutPaymentLoaded) {
+                  checkoutPaymentModel = state.CheckoutPaymentModel!;
+                  // Show success snackBar first
+                  dispalySnackBar(context,
+                          color: Colors.green,
+                          title: state.CheckoutPaymentModel!.message.toString(),
+                          duration: 500,
+                          titleActionButton: 'ok')
+                      .closed
+                      .then((_) {
+                    log('show stripe service with session');
+
+                    // Extract sessionId and pubKey from the response
+                    final sessionId =
+                        state.CheckoutPaymentModel!.result!.sessionId;
+                    final pubKey = state.CheckoutPaymentModel!.result!.pubKey;
+                    final sessionUrl =
+                        state.CheckoutPaymentModel!.result!.sessionUrl;
+
+                    log('sessionId: $sessionId , pubKey: $pubKey');
+                    log('length of session id : ${sessionId!.length}');
+
+                    if (pubKey != null) {
+                      // Use the session-based payment method
+                      context.read<PaymentCubit>().makePaymentWithSession(
+                            sessionId: sessionId.toString(),
+                            pubKey: pubKey.toString(),
+                            secretKey: ApiKeys.secretKey,
+                            sessionUrl: sessionUrl.toString(),
+                            context: context,
+                          );
+                    } else {
+                      dispalySnackBar(
+                        context,
+                        color: Colors.red,
+                        title: 'Missing payment session information',
+                        titleActionButton: 'ok',
+                      );
+                    }
+                  });
+                }
+              },
+              builder: (context, state) {
+                return Stack(
+                  children: [
+                    state is CheckoutPaymentLoading || state is PaymentLoading
+                        ? SizedBox(
+                            height: MediaQuery.sizeOf(context).height - 100,
+                            child: buildLoadingView('recharge', context))
+                        : _buildCustomAmountView(context),
+                  ],
+                );
+              },
+            )
+          : BlocConsumer<PaymentCubit, PaymentState>(
+              listener: (context, state) {
+                if (state is CheckoutPaymentFailure) {
+                  dispalySnackBar(context,
+                      color: Colors.red,
+                      title: state.errMessage.toString(),
+                      titleActionButton: 'ok');
+                } // In ChildDetailsView.dart, modify the listener section:
+                else if (state is CheckoutPaymentLoaded) {
+                  checkoutPaymentModel = state.CheckoutPaymentModel!;
+                  // Show success snackBar first
+                  dispalySnackBar(context,
+                          color: Colors.green,
+                          title: state.CheckoutPaymentModel!.message.toString(),
+                          duration: 500,
+                          titleActionButton: 'ok')
+                      .closed
+                      .then((_) {
+                    log('show stripe service with session');
+
+                    // Extract sessionId and pubKey from the response
+                    final sessionId =
+                        state.CheckoutPaymentModel!.result!.sessionId;
+                    final pubKey = state.CheckoutPaymentModel!.result!.pubKey;
+                    final sessionUrl =
+                        state.CheckoutPaymentModel!.result!.sessionUrl;
+
+                    log('sessionId: $sessionId , pubKey: $pubKey');
+                    log('length of session id : ${sessionId!.length}');
+
+                    if (pubKey != null) {
+                      // Use the session-based payment method
+                      context.read<PaymentCubit>().makePaymentWithSession(
+                            sessionId: sessionId.toString(),
+                            pubKey: pubKey.toString(),
+                            secretKey: ApiKeys.secretKey,
+                            sessionUrl: sessionUrl.toString(),
+                            context: context,
+                          );
+                    } else {
+                      dispalySnackBar(
+                        context,
+                        color: Colors.red,
+                        title: 'Missing payment session information',
+                        titleActionButton: 'ok',
+                      );
+                    }
+                  });
+                }
+              },
+              builder: (context, state) {
+                return Stack(children: [
+                  state is CheckoutPaymentLoading || state is PaymentLoading
+                      ? SizedBox(
+                          height: MediaQuery.sizeOf(context).height - 100,
+                          child: buildLoadingView('recharge', context))
+                      : _buildPredefinedAmountView()
+                ]);
+              },
+            ),
+    );
+  }
+
+  Widget _buildPredefinedAmountView() {
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // Amount options
+                GridView.count(
+                  crossAxisCount: 3,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  children: [
+                    ...amountOptions.map(
+                      (amount) => _buildAmountOption(amount)
+                          .animate()
+                          .fade(
+                              duration: 600.ms,
+                              delay: 200.ms * amountOptions.indexOf(amount))
+                          .slideY(begin: 0.2, end: 0),
+                    ),
+                    _buildAmountOption("other", isText: true)
+                        .animate()
+                        .fade(duration: 600.ms, delay: 1200.ms)
+                        .slideY(begin: 0.2, end: 0),
+                  ],
+                ),
+                TotalFees(
+                  total: total,
+                  selectedAmount: selectedAmount,
+                  processingFee: processingFee,
+                )
+                    .animate()
+                    .fade(duration: 600.ms, delay: 1400.ms)
+                    .slideY(begin: 0.2, end: 0),
+              ],
+            ),
+          ),
+        ),
+        // Terms and conditions
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Credit recharges are non-refundable.",
+                style: TextStyle(fontSize: 14),
+              ),
+              const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "By tapping recharge you agree to the",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  Text(
+                    "credit card load-up terms and conditions.",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF00BCD4),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              // Recharge button
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    SharedPreferences sharedPreferences =
+                        await SharedPreferences.getInstance();
+                    String studentId =
+                        sharedPreferences.getString(Constants.studentId)!;
+                    log('student id $studentId');
+                    context.read<PaymentCubit>().checkoutPayment(
+                          amount: total.toString(),
+                          studentId: studentId,
+                        );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF00BCD4),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text(
+                    "Recharge at Repton",
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+            .animate()
+            .fade(duration: 600.ms, delay: 1400.ms)
+            .slideY(begin: 0.2, end: 0),
+      ],
+    );
+  }
+
+  Widget _buildCustomAmountView(BuildContext context) {
+    final isDark =
+        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: const EdgeInsetsDirectional.symmetric(horizontal: 40),
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDark
+                              ? Colors.black.withOpacity(0.2)
+                              : Colors.grey.shade200,
+                          offset: const Offset(0.0, 1.0),
+                          blurRadius: 6.0,
+                        ),
+                      ]),
+                  child: TextFormField(
+                    cursorColor: isDark ? Colors.white : Colors.black,
+                    controller: customAmountController,
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(
+                      hintText: "Enter Amount",
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        final amount = int.tryParse(value);
+                        if (amount != null) {
+                          setState(() {
+                            selectedAmount = amount;
+                          });
+                        }
+                      } else {
+                        setState(() {
+                          selectedAmount = null;
+                        });
+                      }
+                    },
+                  ),
+                )
+                    .animate()
+                    .fade(duration: 600.ms, delay: 200.ms)
+                    .slideY(begin: 0.2, end: 0),
+                const SizedBox(height: 20),
+                const SizedBox(height: 20),
+                if (customAmountController.text.isEmpty ||
+                    (int.tryParse(customAmountController.text) ?? 0) < 1 ||
+                    (int.tryParse(customAmountController.text) ?? 0) > 2000)
+                  Container(
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      vertical: 30,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDark
+                              ? Colors.black.withOpacity(0.2)
+                              : Colors.grey.shade200,
+                          offset: const Offset(0.0, 1.0),
+                          blurRadius: 6.0,
+                        ),
+                      ],
+                    ),
+                    child: const Text(
+                      "Please enter a whole number between 1 and 2000",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.red,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                      .animate()
+                      .fade(duration: 600.ms, delay: 200.ms)
+                      .slideY(begin: 0.2, end: 0),
+                if (customAmountController.text.isNotEmpty &&
+                    (int.tryParse(customAmountController.text) ?? 0) >= 1 &&
+                    (int.tryParse(customAmountController.text) ?? 0) <= 2000)
+                  TotalFees(
+                    total: total,
+                    selectedAmount: selectedAmount,
+                    processingFee: processingFee,
+                  )
+                      .animate()
+                      .fade(duration: 600.ms, delay: 200.ms)
+                      .slideY(begin: 0.2, end: 0),
+              ],
+            ),
+          ),
+        ),
+        // Terms and conditions
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              const Text(
+                "Credit recharges are non-refundable.",
+                style: TextStyle(fontSize: 14),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "By tapping recharge you agree to the ",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // Open terms and conditions
+                    },
+                    child: const Text(
+                      "credit card load-up terms and conditions.",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF00BCD4),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              // Recharge button
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (customAmountController.text.isNotEmpty &&
+                        (int.tryParse(customAmountController.text) ?? 0) >= 1 &&
+                        (int.tryParse(customAmountController.text) ?? 0) <=
+                            2000) {
+                      SharedPreferences sharedPreferences =
+                          await SharedPreferences.getInstance();
+                      String studentId =
+                          sharedPreferences.getString(Constants.studentId)!;
+                      log('student id $studentId');
+                      context.read<PaymentCubit>().checkoutPayment(
+                            amount: total.toString(),
+                            studentId: studentId,
+                          );
+                    } else {
+                      dispalySnackBar(
+                        context,
+                        title: "Please enter a whole number between 1 and 2000",
+                        titleActionButton: "OK",
+                        color: Colors.red,
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF00BCD4),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text(
+                    "Recharge at Repton",
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              )
+            ],
+          )
+              .animate()
+              .fade(duration: 600.ms, delay: 400.ms)
+              .slideY(begin: 0.2, end: 0),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAmountOption(dynamic amount, {bool isText = false}) {
+    final isSelected = !isText && selectedAmount == amount;
+    final isDark =
+        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+    return GestureDetector(
+        onTap: () {
+          setState(() {
+            if (isText) {
+              isCustomAmount = true;
+            } else {
+              selectedAmount = amount;
+            }
+          });
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeIn,
+          decoration: BoxDecoration(
+            color: isSelected
+                ? const Color(0xFF00BCD4)
+                : isDark
+                    ? const Color(0xFF2A2A2A)
+                    : Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            isText ? amount.toString() : "\$${amount.toString()}",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: isSelected
+                  ? Colors.white
+                  : isDark
+                      ? Colors.white
+                      : Colors.black,
+            ),
+          ),
+        ));
+  }
+}
+
+Widget buildPaymentOption(String label, bool isSelected) {
+  return Row(
+    children: [
+      Container(
+        width: 20,
+        height: 20,
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF00BCD4) : Colors.transparent,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: isSelected ? const Color(0xFF00BCD4) : Colors.grey,
+            width: 2,
+          ),
+        ),
+        child: isSelected
+            ? const Icon(
+                Icons.check,
+                size: 12,
+                color: Colors.white,
+              )
+            : null,
+      ),
+      const SizedBox(width: 10),
+      Text(
+        label,
+        style: TextStyle(
+          fontSize: 14,
+          color: isSelected ? const Color(0xFF00BCD4) : Colors.grey,
+        ),
+      ),
+    ],
+  );
+}
+
+class FilterButton extends StatelessWidget {
+  final String text;
+  final bool isSelected;
+  final bool isPrimary;
+  final VoidCallback onPressed;
+
+  const FilterButton({
+    super.key,
+    required this.text,
+    required this.isSelected,
+    this.isPrimary = false,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isPrimary
+            ? const Color(0xFF00BCD4)
+            : (isSelected ? Colors.white : Colors.grey.shade200),
+        elevation: 0,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: isPrimary
+              ? BorderSide.none
+              : (isSelected
+                  ? const BorderSide(color: Colors.grey, width: 1)
+                  : BorderSide.none),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: isPrimary ? Colors.white : Colors.black,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+}

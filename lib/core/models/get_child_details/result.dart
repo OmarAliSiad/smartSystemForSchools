@@ -8,6 +8,7 @@ class ResultForChildDetails {
   String? birthDate;
   String? rfidTagId;
   DateTime? createdOn;
+  double? amountOfMoney;
   // String? studentImage;
   String? schoolTenantId;
 
@@ -22,6 +23,7 @@ class ResultForChildDetails {
     this.rfidTagId,
     this.createdOn,
     // this.studentImage,
+    this.amountOfMoney,
     this.schoolTenantId,
   });
 
@@ -40,6 +42,7 @@ class ResultForChildDetails {
             : DateTime.parse(json['createdOn'] as String),
         // studentImage: json['studentImage'] as String?,
         schoolTenantId: json['schoolTenantId'] as String?,
+        amountOfMoney: json['amountOfMoney'] as double?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -54,5 +57,6 @@ class ResultForChildDetails {
         'createdOn': createdOn?.toIso8601String(),
         // 'studentImage': studentImage,
         'schoolTenantId': schoolTenantId,
+        'amountOfMoney': amountOfMoney,
       };
 }
