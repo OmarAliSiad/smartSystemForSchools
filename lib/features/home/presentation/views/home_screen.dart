@@ -81,7 +81,7 @@ class _HomeViewState extends State<HomeView> {
       ),
       body: RefreshIndicator(
         backgroundColor: Colors.white,
-        color: Colors.blue.shade900,  
+        color: Colors.blue.shade900,
         onRefresh: loadChildDetails,
         child: Padding(
           padding: const EdgeInsetsDirectional.only(start: 18, end: 19),

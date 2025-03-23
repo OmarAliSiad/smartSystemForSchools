@@ -6,7 +6,7 @@ ThemeData darkTheme(BuildContext context) {
   return ThemeData(
     fontFamily: context.locale.toString() == 'ar' ? 'Cairo' : 'Poppins',
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: const Color(0xFF121212), //232524
+    scaffoldBackgroundColor: Colors.grey[900], //232524
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
     ),

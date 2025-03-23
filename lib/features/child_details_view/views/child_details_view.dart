@@ -297,7 +297,7 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+          color: isDarkMode ? Colors.black : Colors.white,
           boxShadow: [
             BoxShadow(
               color: themeMode == ThemeMode.dark

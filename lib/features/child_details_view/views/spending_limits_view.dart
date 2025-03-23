@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
+import 'package:smartsystemforschools/core/utils/Constants.dart';
 import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'dart:developer';
 import 'package:smartsystemforschools/features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
@@ -78,7 +79,7 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
                               ?.toString() ??
                           '';
                       dispalySnackBar(context,
-                          color: Colors.teal,
+                          color: Colors.green,
                           title: 'Spending limits loaded successfully',
                           titleActionButton: 'ok');
                     } else if (state is AddSpendingLimitFailure) {
@@ -91,11 +92,16 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
                     }
                   },
                   builder: (context, state) {
-                    return AbsorbPointer(
-                      absorbing: state is SpendingLimitLoading,
-                      child: Stack(
-                        children: [
-                          Container(
+                    return (state is SpendingLimitLoading)
+                        ? SizedBox(
+                            width: double.infinity,
+                            height: 650,
+                            child: buildLoadingView(
+                              'Spending limits',
+                              context,
+                            ),
+                          )
+                        : Container(
                             margin: const EdgeInsets.symmetric(vertical: 8),
                             decoration: BoxDecoration(
                               color: widget.isDarkMode
@@ -114,7 +120,7 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
                                     children: [
                                       const Icon(
                                         Icons.account_balance_wallet_outlined,
-                                        color: Colors.teal,
+                                        color: Constants.blue,
                                         size: 24,
                                       ),
                                       const SizedBox(width: 8),
@@ -209,7 +215,8 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
                                         _saveSpendingLimits(context);
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.teal,
+                                        backgroundColor:
+                                            const Color(0xFF1A0F91),
                                         foregroundColor: Colors.white,
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 16),
@@ -232,23 +239,7 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
                                 ],
                               ),
                             ),
-                          ),
-                          if (state is SpendingLimitLoading)
-                            Positioned(
-                              top: 200,
-                              bottom: 0,
-                              right: 0,
-                              left: 0,
-                              child: SizedBox(
-                                child: buildLoadingView(
-                                  'Limits',
-                                  context,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    );
+                          );
                   },
                 ),
               ),
@@ -315,7 +306,7 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
                   child: IconButton(
                     icon: Icon(
                       isExpanded ? Icons.close : Icons.add,
-                      color: Colors.teal,
+                      color: Colors.blue,
                       size: 20,
                     ),
                     onPressed: onToggle,
@@ -354,7 +345,7 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
                     ),
                     prefixIcon: const Icon(
                       Icons.attach_money,
-                      color: Colors.teal,
+                      color: Colors.blue,
                     ),
                     border: InputBorder.none,
                     contentPadding:
