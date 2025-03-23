@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smartsystemforschools/features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
 import 'package:smartsystemforschools/features/child_details_view/widgets/custom_button.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../core/utils/app_styles.dart';
@@ -11,13 +13,14 @@ class CustomCardForSpendingAndRecharge extends StatelessWidget {
   final String imagePath;
   final void Function()? onPressed;
 
-  const CustomCardForSpendingAndRecharge(
-      {super.key,
-      required this.title,
-      required this.price,
-      required this.titleButton,
-      required this.imagePath,
-      this.onPressed});
+  const CustomCardForSpendingAndRecharge({
+    super.key,
+    required this.title,
+    required this.price,
+    required this.titleButton,
+    required this.imagePath,
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +58,29 @@ class CustomCardForSpendingAndRecharge extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(title, style: AppStyles.styleMedium16()),
-                      Text(
-                        price,
-                        style: AppStyles.styleSemiBold14().copyWith(
-                            fontSize: 15, color: const Color(0xFF5CC2F2)),
+                      BlocBuilder<SpendingLimitCubit, SpendingLimitState>(
+                        builder: (context, state) {
+                          if (state is SpendingLimitLoading) {
+                            return Center(
+                              child: LoadingAnimationWidget.hexagonDots(
+                                color: Colors.blue.shade900,
+                                size: 40,
+                              ),
+                            );
+                          } else if (state is GetSpendingLimitSuccess) {
+                            return Text(
+                              price,
+                              style: AppStyles.styleSemiBold14().copyWith(
+                                  fontSize: 15, color: const Color(0xFF5CC2F2)),
+                            );
+                          } else {
+                            return Text(
+                              'no daily limit',
+                              style: AppStyles.styleSemiBold14().copyWith(
+                                  fontSize: 15, color: const Color(0xFF5CC2F2)),
+                            );
+                          }
+                        },
                       )
                     ],
                   ),

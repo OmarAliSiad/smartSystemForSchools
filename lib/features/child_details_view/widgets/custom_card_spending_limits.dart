@@ -1,0 +1,68 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/utils/app_styles.dart';
+import 'package:smartsystemforschools/core/utils/assets.dart';
+import 'package:smartsystemforschools/features/child_details_view/views/spending_limits_view.dart';
+import 'package:smartsystemforschools/features/child_details_view/widgets/custom_button.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+
+class CustomCardSpendingLimits extends StatelessWidget {
+  final String studentId;
+  const CustomCardSpendingLimits({super.key, required this.studentId});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ThemeModeCubit, ThemeModeState>(
+      builder: (context, state) {
+        final themeMode = context.read<ThemeModeCubit>().currentTheme;
+        return Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: themeMode == ThemeMode.dark
+                      ? const Color(0xFFFFFFFF).withOpacity(.4)
+                      : const Color(0xFF000000).withOpacity(.2),
+                  blurRadius: 6,
+                  offset: const Offset(0, 0),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 15.0, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('spending limits', style: AppStyles.styleMedium16()),
+                  CustomButtonChildDetails(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SpendingLimitsView(
+                            studentId: studentId,
+                            isDarkMode: themeMode == ThemeMode.dark,
+                          ),
+                        ),
+                      );
+                    },
+                    title: 'spending limits',
+                    padding: const EdgeInsetsDirectional.symmetric(
+                        horizontal: 10, vertical: 5),
+                    imagePath: Assets.imagesShooping,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

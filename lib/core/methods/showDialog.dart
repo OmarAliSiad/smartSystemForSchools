@@ -80,6 +80,7 @@ Future<dynamic> ShowDialogForRecharge({
 Future<dynamic> ShowDialogForDailyLimit({
   required BuildContext context,
   required String title,
+  required TextEditingController dailyLimitController,
   required String hintText,
   required TextStyle hintTextStyle,
   required TextStyle titleTextStyle,
@@ -88,6 +89,7 @@ Future<dynamic> ShowDialogForDailyLimit({
   required Color buttonOkColor,
   required Color buttonCancelColor,
   required Color borderSideColor,
+  void Function()? onPressed
 }) {
   return showDialog(
     barrierDismissible: true,
@@ -106,6 +108,7 @@ Future<dynamic> ShowDialogForDailyLimit({
             ),
             TextField(
               cursorColor: Colors.black,
+              controller:  dailyLimitController,
               decoration: InputDecoration(
                 hintText: hintText,
                 hintStyle: hintTextStyle,
@@ -121,9 +124,7 @@ Future<dynamic> ShowDialogForDailyLimit({
         ),
         actions: <Widget>[
           CustomButtonAlertDailog(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed:onPressed,
             colorFont: Colors.white,
             containerColor: buttonOkColor,
             title: buttonOkTitle,

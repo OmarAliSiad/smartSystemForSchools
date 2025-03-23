@@ -26,7 +26,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     FamilyView(key: UniqueKey()),
     AttendanceView(key: UniqueKey()),
     PaymentView(key: UniqueKey()),
-    FoodAIView(key: UniqueKey()),
     // AttendanceAIView(key: UniqueKey()),
     // TrackingView(
     //     onLocationSelected: (p0) {},

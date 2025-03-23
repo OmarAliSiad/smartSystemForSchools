@@ -5,11 +5,13 @@ class CustomButtonChildDetails extends StatelessWidget {
   final void Function()? onPressed;
   final String title;
   final String imagePath;
+  final EdgeInsetsDirectional? padding;
   const CustomButtonChildDetails(
       {super.key,
       this.onPressed,
       required this.title,
-      required this.imagePath});
+      required this.imagePath,
+      this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class CustomButtonChildDetails extends StatelessWidget {
           width: 15,
         ),
         MaterialButton(
-          padding: EdgeInsetsDirectional.zero,
+          padding: padding ?? EdgeInsetsDirectional.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

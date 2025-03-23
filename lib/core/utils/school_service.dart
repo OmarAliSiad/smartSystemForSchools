@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartsystemforschools/core/models/get_school_details_by_id/get_school_details_by_id.dart';
 import 'package:smartsystemforschools/core/models/payment_checkout_model/payment_checkout_model.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
+import 'package:smartsystemforschools/features/child_details_view/manager/models/get_sending_limit/get_sending_limit.dart';
 import '../models/get_all_schools/get_all_schools.dart';
 import '../models/get_child_details/result.dart';
 
@@ -333,6 +334,92 @@ class SchoolService {
         isSuccess: false,
         message: 'An unexpected error occurred: $e',
       );
+    }
+  }
+
+  Future<GetSendingLimit> getSpenddingLimit({
+    required String studentId,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(Constants.token);
+      if (token == null) {
+        log('No auth token found');
+      }
+      Response response = await dio.get(
+        'https://school-api.runasp.net/api/Parent/GetSpendingLimit',
+        queryParameters: {
+          "studentId": studentId,
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      log('Status code: ${response.statusCode}');
+      log('Headers: ${response.headers}');
+      log('response.data: ${response.data}');
+      if (response.statusCode == 500) {
+        return GetSendingLimit(
+          statusCode: 500,
+          isSuccess: false,
+          message: response.data['message'],
+        );
+      }
+      GetSendingLimit spenddingLimit = GetSendingLimit.fromJson(response.data);
+      if (spenddingLimit.isSuccess == true) {
+        return spenddingLimit;
+      } else {
+        throw Exception(spenddingLimit.message);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<Response> addSpendingLimit({
+    required String studentId,
+    double? dailySpendingLimit,
+    double? weeklySpendingLimit,
+    double? monthlySpendingLimit,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(Constants.token);
+      if (token == null) {
+        log('No auth token found');
+      }
+
+      // Create payload with explicit null values when needed
+      Map<String, dynamic> payload = {
+        "studentId": studentId,
+        "dailySpendingLimit": dailySpendingLimit,
+        "weeklySpendingLimit": weeklySpendingLimit,
+        "monthlySpendingLimit": monthlySpendingLimit
+      };
+
+      // Log the actual payload being sent
+      log('Sending payload: $payload');
+
+      Response response = await dio.post(
+        'https://school-api.runasp.net/api/Parent/AddSpendingLimit',
+        data: payload,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      log('Status code: ${response.statusCode}');
+      log('Response data: ${response.data}');
+      return response;
+    } catch (e) {
+      log('Error in addSpendingLimit: $e');
+      return Response(requestOptions: RequestOptions(path: ''), data: {
+        'message': 'An error occurred while adding spending limit: $e'
+      });
     }
   }
 }

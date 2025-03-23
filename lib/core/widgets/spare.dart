@@ -187,12 +187,14 @@ class _RechargeScreenState extends State<RechargeScreen> {
 
   double get processingFee {
     final amount = selectedAmount ?? 0;
-    return 3 + (amount * 0.035);
+    return amount + 0.000;
+    // 3 + (amount * 0.035);
   }
 
   double get total {
     final amount = selectedAmount ?? 0;
-    return amount + processingFee;
+    // return amount + processingFee;
+    return amount + 0.000;
   }
 
   @override

@@ -16,6 +16,7 @@ import 'package:smartsystemforschools/features/Allergies/presentation/views/Alle
 import 'package:smartsystemforschools/features/Allergies/presentation/views/FoodAIView.dart';
 import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
+import 'package:smartsystemforschools/features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
 import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
 import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
 import 'package:smartsystemforschools/features/family/presentation/views/add_child_view.dart';
@@ -88,6 +89,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => GetAllCatogriesCubit()),
         BlocProvider(create: (context) => AllergiesCubit(AllergiesService())),
         BlocProvider(create: (context) => PaymentCubit()),
+        BlocProvider(create: (context) => SpendingLimitCubit()),
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
@@ -137,7 +139,6 @@ class MyApp extends StatelessWidget {
                 AttendanceView.id: (context) => const AttendanceView(),
                 NotificationView.id: (context) => const NotificationView(),
                 ChangePasswordPage.id: (context) => const ChangePasswordPage(),
-                FoodAIView.id: (context) => const FoodAIView(),
               },
               initialRoute: isLoggedIn ? MainScreen.id : SplashView.id);
         },

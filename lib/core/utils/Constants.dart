@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static const kPrimaryColor = Colors.white;
+  static final primaryColorWT = Colors.grey[100];
+  static final primaryColorDT = Colors.grey[850];
   static const kTransitionDuration = Duration(seconds: 3);
   static const Color blue = Color(0xff0666EB);
   static const Color grey = Color(0xFFE7E8EA);

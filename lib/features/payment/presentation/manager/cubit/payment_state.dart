@@ -14,13 +14,12 @@ final class PaymentFailure extends PaymentState {
   PaymentFailure({required this.errorMessage});
 }
 
-
 final class CheckoutPaymentInitial extends PaymentState {}
 
 final class CheckoutPaymentLoading extends PaymentState {}
 
 final class CheckoutPaymentLoaded extends PaymentState {
-  final PaymentCheckoutModel?   CheckoutPaymentModel;
+  final PaymentCheckoutModel? CheckoutPaymentModel;
   CheckoutPaymentLoaded({required this.CheckoutPaymentModel});
 }
 
