@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartsystemforschools/core/utils/Constants.dart';
+import 'package:smartsystemforschools/core/utils/auth_service.dart';
 import 'package:smartsystemforschools/features/login/presenation/widgets/custom_text_field.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/custom_button.dart';
@@ -17,6 +22,7 @@ class ChangePasswordPage extends StatefulWidget {
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final _formKey = GlobalKey<FormState>();
+  bool _obscureText = true;
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -50,7 +56,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               SlideInRight(
                 child: CustomTextField(
                   borderRaduis: 10,
-                  obsure: true,
+                  obsure: _obscureText,
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.visibility,
+                        color: Colors.grey,
+                      )),
                   controller: passwordController,
                   validator: (password) {
                     if (password == null || password.isEmpty) {
@@ -72,12 +88,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       vertical: 10, horizontal: 70),
                   text: LocaleKeys.Settings_changePassword.tr(),
                   textStyle: AppStyles.styleMedium20(),
-                  onPressed: () {
+                  onPressed: () async {
+                    SharedPreferences sharedPreferences =
+                        await SharedPreferences.getInstance();
+                    String email =
+                        sharedPreferences.getString(Constants.email).toString();
+                    log(email);
                     if (_formKey.currentState!.validate()) {
-                      // AuthService().changePassword(
-                      //   context: context,
-                      //   password: passwordController.text,
-                      // );
+                      await AuthService()
+                          .forgotPassword(context: context, email: email);
                     }
                   },
                 ),

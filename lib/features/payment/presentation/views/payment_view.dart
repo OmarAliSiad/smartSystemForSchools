@@ -10,6 +10,7 @@ import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart'
 import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
+import 'package:smartsystemforschools/core/widgets/credit_card.dart';
 import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
@@ -33,6 +34,32 @@ class _PaymentViewState extends State<PaymentView> {
   TextEditingController postalCodeController = TextEditingController();
   List<bool> isSelected = [false, false, false];
   String selectedCountry = 'Egypt';
+  bool isTapped = false;
+  final List<CreditCardData> _cards = [
+    CreditCardData(
+      bankName: 'Puzzle Bank',
+      cardNumber: '4242 4242 4242 4242',
+      holderName: 'John Doe',
+      expiryDate: '12/24',
+      cvc: '123',
+    ),
+    CreditCardData(
+      bankName: 'Universal Bank',
+      cardNumber: '5555 5555 5555 4444',
+      holderName: 'Jane Smith',
+      expiryDate: '06/25',
+      cvc: '456',
+    ),
+    CreditCardData(
+      bankName: 'Global Bank',
+      cardNumber: '3714 4963 5398 431',
+      holderName: 'Alice Johnson',
+      expiryDate: '09/26',
+      cvc: '789',
+    ),
+  ];
+  CreditCardData? _selectedCard;
+  // Define the cards variable
 
   OutlineInputBorder buildOutlineBorder() {
     return const OutlineInputBorder(
@@ -74,7 +101,8 @@ class _PaymentViewState extends State<PaymentView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 20),
+                  // const SizedBox(height: 48),
                   // Payment Options
                   SizedBox(
                     height: 64,
@@ -141,6 +169,24 @@ class _PaymentViewState extends State<PaymentView> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    borderRadius: BorderRadius.circular(15),
+                    onTap: () {
+                      isTapped = !isTapped;
+                      setState(() {});
+                    },
+                    child: CreditCardCarousel(
+                      cards: _cards,
+                      isTapped: isTapped,
+                      colors: const [Colors.blue, Colors.red, Colors.green],
+                      onCardSelected: (selectedCard) {
+                        setState(() {
+                          _selectedCard = selectedCard;
+                        });
+                      },
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -312,7 +358,6 @@ class _PaymentViewState extends State<PaymentView> {
                     ],
                   ),
                   const SizedBox(height: 16),
-
                   // Country and Postal Code Inputs
                   Row(
                     children: [

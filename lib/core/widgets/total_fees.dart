@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartsystemforschools/core/utils/Constants.dart';
 
 class TotalFees extends StatelessWidget {
   final int? selectedAmount;
@@ -23,14 +24,14 @@ class TotalFees extends StatelessWidget {
               "Subtotal",
               style: TextStyle(
                 fontSize: 16,
-                color: Color(0xFF00BCD4),
+                color: Constants.blue, //Color(0xFF00BCD4),,
               ),
             ),
             Text(
               "${selectedAmount?.toStringAsFixed(2) ?? 0.0} USD",
               style: const TextStyle(
                 fontSize: 16,
-                color: Color(0xFF00BCD4),
+                color: Constants.blue, //Color(0xFF00BCD4),,
               ),
             ),
           ],
@@ -46,7 +47,7 @@ class TotalFees extends StatelessWidget {
                   "Processing Fees",
                   style: TextStyle(
                     fontSize: 16,
-                    color: Color(0xFF00BCD4),
+                    color: Constants.blue, //Color(0xFF00BCD4),,
                   ),
                 ),
                 const SizedBox(width: 4),
@@ -61,7 +62,7 @@ class TotalFees extends StatelessWidget {
               "${processingFee.toStringAsFixed(2)} USD",
               style: const TextStyle(
                 fontSize: 16,
-                color: Color(0xFF00BCD4),
+                color: Constants.blue, //Color(0xFF00BCD4),,
               ),
             ),
           ],
@@ -89,7 +90,7 @@ class TotalFees extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF00BCD4),
+                color: Constants.blue, //Color(0xFF00BCD4),,
               ),
             ),
             Text(
@@ -97,7 +98,7 @@ class TotalFees extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF00BCD4),
+                color: Constants.blue, //Color(0xFF00BCD4),,
               ),
             ),
           ],

@@ -1,26 +1,28 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:smartsystemforschools/core/models/attendance_model/attendance.dart';
 import 'package:smartsystemforschools/core/models/attendance_model/attendance_model.dart';
 import 'package:smartsystemforschools/core/models/attendance_model/result.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/attendance_service.dart';
 import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/animated_app_bar.dart';
+import '../../../main_screen/presentation/views/main_screen.dart';
 
 class AttendanceDetailsView extends StatefulWidget {
   static const String id = 'AttendanceDetailsView';
   final Result childData;
-  final String date;
+  final String dateFormated;
   final AttendanceModel attendanceModel;
 
   const AttendanceDetailsView({
     super.key,
     required this.childData,
-    required this.date,
+    required this.dateFormated,
     required this.attendanceModel,
   });
 
@@ -30,21 +32,15 @@ class AttendanceDetailsView extends StatefulWidget {
 
 class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
   bool isLoading = false;
+  late bool isAbsent;
+  late Attendance? todayAttendance;
+  List<AttendanceData> attendanceHistoryData = [];
   List<AttendanceModel> historicalAttendance = [];
-  Map<String, int> weeklyStats = {
-    'present': 0,
-    'absent': 0,
-  };
-  Map<String, int> monthlyStats = {
-    'present': 0,
-    'absent': 0,
-    'late': 0,
-  };
-  Map<String, int> arrivalTimeDistribution = {};
 
   @override
   void initState() {
     super.initState();
+    _prepareAttendanceData();
     _loadHistoricalData();
   }
 
@@ -52,87 +48,16 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
     await _loadHistoricalData();
   }
 
-  // Load one week worth of data
   Future<void> _loadHistoricalData() async {
     setState(() {
       isLoading = true;
     });
-
     try {
       final attendanceService = AttendanceService();
-
-      // Load data for the past 7 days
-      final now = DateTime.now();
-
-      for (int i = 6; i >= 0; i--) {
-        final date = now.subtract(Duration(days: i));
-        final formattedDate = DateFormat('yyyy/MM/dd').format(date);
-
-        final attendanceModel =
-            await attendanceService.getAttendanceByParent(date: formattedDate);
-
-        if (attendanceModel != null) {
-          historicalAttendance.add(attendanceModel);
-
-          // Find this child in the results
-          final childResult = attendanceModel.result?.firstWhere(
-            (result) => result.id == widget.childData.id,
-            orElse: () => Result(),
-          );
-
-          // Update weekly stats
-          if (childResult != null && childResult.id != null) {
-            final dayOfWeek = DateFormat('E').format(date);
-
-            bool isPresent = childResult.attendances != null &&
-                childResult.attendances!.isNotEmpty;
-
-            if (isPresent) {
-              weeklyStats['present'] = (weeklyStats['present'] ?? 0) + 1;
-
-              // Check if late (after 8:00 AM)
-              try {
-                final attendance = childResult.attendances![0];
-                if (attendance.attendanceDate != null) {
-                  final attendanceTime =
-                      DateTime.parse(attendance.attendanceDate!);
-                  final hour = attendanceTime.hour;
-                  final minute = attendanceTime.minute;
-
-                  // Consider late if after 8:00 AM
-                  if (hour > 8 || (hour == 8 && minute > 0)) {
-                    monthlyStats['late'] = (monthlyStats['late'] ?? 0) + 1;
-                  } else {
-                    // Track arrival time distribution
-                    String timeSlot;
-                    if (hour < 7 || (hour == 7 && minute < 30)) {
-                      timeSlot = 'Before 7:30';
-                    } else if (hour == 7 && minute >= 30 && minute < 45) {
-                      timeSlot = '7:30-7:45';
-                    } else if ((hour == 7 && minute >= 45) ||
-                        (hour == 8 && minute == 0)) {
-                      timeSlot = '7:45-8:00';
-                    } else {
-                      timeSlot = 'After 8:00';
-                    }
-                    arrivalTimeDistribution[timeSlot] =
-                        (arrivalTimeDistribution[timeSlot] ?? 0) + 1;
-                  }
-                }
-              } catch (e) {
-                // If date parsing fails, just count as present
-              }
-            } else {
-              weeklyStats['absent'] = (weeklyStats['absent'] ?? 0) + 1;
-            }
-          }
-        }
-      }
-
-      // For monthly stats, just multiply the weekly stats
-      monthlyStats['present'] =
-          (weeklyStats['present'] ?? 0) * 4; // Approximate
-      monthlyStats['absent'] = (weeklyStats['absent'] ?? 0) * 4; // Approximate
+      final attendanceModel = await attendanceService.getAttendanceByParent(
+          date: widget.dateFormated);
+      historicalAttendance.clear();
+      historicalAttendance.add(attendanceModel);
       setState(() {
         isLoading = false;
       });
@@ -143,361 +68,329 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
     }
   }
 
-  String _getAttendanceStatus() {
-    if (widget.childData.attendances == null ||
-        widget.childData.attendances!.isEmpty) {
-      return 'Absent';
-    } else {
-      // Check if there's leaving date
-      final attendance = widget.childData.attendances![0];
-      if (attendance.leavingDate != null &&
-          attendance.leavingDate!.isNotEmpty) {
-        return 'Present (Full Day)';
-      } else {
-        return 'Present (Not Left Yet)';
-      }
-    }
+  void _prepareAttendanceData() {
+    // Check if child has attendances
+    isAbsent = widget.childData.attendances == null ||
+        widget.childData.attendances!.isEmpty;
+
+    // Get today's attendance
+    todayAttendance = isAbsent ? null : widget.childData.attendances!.first;
+
+    // Prepare attendance history data
+    _generateAttendanceHistoryData();
   }
 
-  String _formatTimeFromDateTime(String? dateTimeStr) {
-    if (dateTimeStr == null || dateTimeStr.isEmpty) return 'N/A';
+  void _generateAttendanceHistoryData() {
+    // If no attendance data is available, create empty history
+    if (widget.attendanceModel.result == null ||
+        widget.attendanceModel.result!.isEmpty) {
+      return;
+    }
+
+    // Iterate through all results to create attendance history
+    attendanceHistoryData = widget.attendanceModel.result!.map((result) {
+      // Check if the result has any attendance records
+      bool isPresent =
+          result.attendances != null && result.attendances!.isNotEmpty;
+
+      // Use the date of the first attendance record or current date
+      String month =
+          result.attendances != null && result.attendances!.isNotEmpty
+              ? _extractMonthFromDate(result.attendances!.first.attendanceDate)
+              : _extractMonthFromDate(DateTime.now().toString());
+
+      return AttendanceData(month: month, isPresent: isPresent);
+    }).toList();
+  }
+
+  String _extractMonthFromDate(String? dateString) {
+    if (dateString == null) return 'N/A';
     try {
-      // Parse the datetime string according to its format
-      final dateTime = DateTime.parse(dateTimeStr);
-      return DateFormat('hh:mm a').format(dateTime);
+      DateTime date = DateTime.parse(dateString);
+      return DateFormat('MMM').format(date);
     } catch (e) {
-      // If we can't parse it, return as is
-      return dateTimeStr;
+      return 'N/A';
+    }
+  }
+
+  String _formatTime(String? timeString) {
+    if (timeString == null) return 'N/A';
+    try {
+      DateTime parsedTime = DateTime.parse(timeString);
+      return DateFormat('hh:mm a').format(parsedTime);
+    } catch (e) {
+      return timeString;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final isAbsent = widget.childData.attendances == null ||
-        widget.childData.attendances!.isEmpty;
-    final attendanceStatus = _getAttendanceStatus();
-    final arrivalTime = isAbsent
-        ? null
-        : _formatTimeFromDateTime(
-            widget.childData.attendances![0].attendanceDate);
-    final leavingTime = isAbsent ||
-            widget.childData.attendances![0].leavingDate == null
-        ? null
-        : _formatTimeFromDateTime(widget.childData.attendances![0].leavingDate);
-
-    // Calculate total sent and received for email chart
-    final int totalSent = weeklyStats['present'] ?? 0;
-    final int totalReceived = weeklyStats['absent'] ?? 0;
-
     return Scaffold(
-      appBar: CustomAppBar(
-        ThereIsicon: false,
+      appBar: AnimatedCustomAppBar(
+        waveColor: Colors.blue.shade700,
+        backgroundColor: Colors.blue.shade900,
+        thereIsIcon: false,
         title: 'Attendance Details',
-        textStyle: AppStyles.styleSemiBold20(),
-        onTap: () {
-          Navigator.pop(context);
+        textStyle: AppStyles.styleSemiBold20().copyWith(color: Colors.white),
+        onTapBack: () {
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(MainScreen.id, (context) => false);
         },
       ),
       body: isLoading
           ? buildLoadingView('attendance', context)
-          : RefreshIndicator(
-              backgroundColor: Colors.white,
-              color: Colors.blue.shade900,
-              onRefresh: refreshData,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Student Info Card
-                    Container(
-                      decoration: ShapeDecoration(
-                        color: context.read<ThemeModeCubit>().currentTheme ==
-                                ThemeMode.light
-                            ? Colors.white
-                            : const Color(0xFF1E1E1E),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        shadows: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 10,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: isAbsent
-                                      ? Colors.red.shade100
-                                      : Colors.green.shade100,
-                                  radius: 30,
-                                  child: Icon(
-                                    isAbsent ? Icons.person_off : Icons.person,
-                                    color: isAbsent ? Colors.red : Colors.green,
-                                    size: 32,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        widget.childData.fullName ?? 'Unknown',
-                                        style: AppStyles.styleSemiBold20(),
-                                      ),
-                                      Text(
-                                        'Grade: ${widget.childData.grade}',
-                                        style: AppStyles.styleMedium16(),
-                                      ),
-                                      Text(
-                                        'Date: ${widget.date}',
-                                        style: AppStyles.styleRegular14(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Divider(height: 24),
-                            // Status info
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: _buildStatusItem(
-                                    'Status',
-                                    attendanceStatus,
-                                    isAbsent ? Colors.red : Colors.green,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: _buildStatusItem(
-                                    'Arrival',
-                                    arrivalTime ?? 'N/A',
-                                    Colors.blue,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: _buildStatusItem(
-                                    'Departure',
-                                    leavingTime ?? 'Not yet',
-                                    Colors.blue,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                        .animate()
-                        .fade(duration: 600.ms)
-                        .slideY(begin: 0.2, end: 0),
-                    const SizedBox(height: 24),
-                    // Weekly Attendance Chart
-                    Text(
-                      'Weekly Attendance',
-                      style: AppStyles.styleSemiBold20(),
-                    )
-                        .animate()
-                        .fade(duration: 600.ms, delay: 400.ms)
-                        .slideY(begin: 0.2, end: 0),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 200,
-                      child: Container(
-                        decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          color: context.read<ThemeModeCubit>().currentTheme ==
-                                  ThemeMode.light
-                              ? Colors.white
-                              : const Color(0xFF1E1E1E),
-                          shadows: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: _buildWeeklyAttendanceChart(),
-                        ),
-                      ),
-                    )
-                        .animate()
-                        .fade(duration: 600.ms, delay: 200.ms)
-                        .slideY(begin: 0.2, end: 0),
+          : BlocBuilder<ThemeModeCubit, ThemeModeState>(
+              builder: (context, state) {
+                final themeMode = context.read<ThemeModeCubit>().currentTheme;
+                return RefreshIndicator(
+                  backgroundColor: Colors.white,
+                  color: Colors.blue.shade900,
+                  onRefresh: refreshData,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Attendance Status
+                          _buildAttendanceStatusCard()
+                              .animate()
+                              .fade(duration: 600.ms, delay: 200.ms)
+                              .slideX(begin: 0.1, end: 0),
 
-                    const SizedBox(height: 24),
+                          const SizedBox(height: 20),
 
-                    // Monthly Attendance Pie Chart
-                    Text(
-                      'Monthly Attendance Overview',
-                      style: AppStyles.styleSemiBold20(),
-                    )
-                        .animate()
-                        .fade(duration: 600.ms, delay: 400.ms)
-                        .slideY(begin: 0.2, end: 0),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 200,
-                      child: Container(
-                        decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          color: context.read<ThemeModeCubit>().currentTheme ==
-                                  ThemeMode.light
-                              ? Colors.white
-                              : const Color(0xFF1E1E1E),
-                          shadows: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: PieChart(
-                                PieChartData(
-                                  sectionsSpace: 2,
-                                  centerSpaceRadius: 40,
-                                  sections: _buildPieChartSections(),
+                          // Student Information Card
+                          _buildStudentInfoCard(themeMode)
+                              .animate()
+                              .fade(duration: 600.ms)
+                              .slideX(begin: -0.1, end: 0),
+                          const SizedBox(height: 20),
+                          Text(
+                            'Weekly Attendance',
+                            style: AppStyles.styleSemiBold20(),
+                          )
+                              .animate()
+                              .fade(duration: 600.ms, delay: 400.ms)
+                              .slideY(begin: 0.2, end: 0),
+                          const SizedBox(height: 8),
+                          SizedBox(
+                            height: 200,
+                            child: Container(
+                              decoration: ShapeDecoration(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _buildLegendItem(
-                                      'Present',
-                                      monthlyStats['present'] ?? 0,
-                                      Colors.green),
-                                  _buildLegendItem('Absent',
-                                      monthlyStats['absent'] ?? 0, Colors.red),
-                                  _buildLegendItem('Late',
-                                      monthlyStats['late'] ?? 0, Colors.orange),
+                                color: context
+                                            .read<ThemeModeCubit>()
+                                            .currentTheme ==
+                                        ThemeMode.light
+                                    ? Colors.white
+                                    : const Color(0xFF1E1E1E),
+                                shadows: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    spreadRadius: 1,
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 2),
+                                  ),
                                 ],
                               ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: _buildWeeklyAttendanceChart(),
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    )
-                        .animate()
-                        .fade(duration: 600.ms, delay: 400.ms)
-                        .slideY(begin: 0.2, end: 0),
+                          )
+                              .animate()
+                              .fade(duration: 600.ms, delay: 200.ms)
+                              .slideY(begin: 0.2, end: 0),
+                          const SizedBox(height: 20),
 
-                    const SizedBox(height: 24),
+                          // Attendance Charts
+                          AttendanceCharts(
+                                  themeMode: themeMode,
+                                  attendanceData: attendanceHistoryData)
+                              .animate()
+                              .fade(duration: 600.ms, delay: 400.ms)
+                              .slideX(begin: 0.1, end: 0),
 
-                    // Arrival Times Bar Chart
-                    Text(
-                      'Arrival Time Distribution',
-                      style: AppStyles.styleSemiBold20(),
-                    )
-                        .animate()
-                        .fade(duration: 600.ms, delay: 600.ms)
-                        .slideY(begin: 0.2, end: 0),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 200,
-                      child: Container(
-                        decoration: ShapeDecoration(
-                          color: context.read<ThemeModeCubit>().currentTheme ==
-                                  ThemeMode.light
-                              ? Colors.white
-                              : const Color(0xFF1E1E1E),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          shadows: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: _buildArrivalTimeBarChart(),
-                        ),
+                          const SizedBox(height: 20),
+
+                          // Detailed Attendance Information
+                          _buildDetailedAttendanceInfo(themeMode)
+                              .animate()
+                              .fade(duration: 600.ms, delay: 600.ms)
+                              .slideY(begin: 0.1, end: 0),
+                        ],
                       ),
-                    )
-                        .animate()
-                        .fade(duration: 600.ms, delay: 600.ms)
-                        .slideY(begin: 0.2, end: 0),
-                    const SizedBox(height: 16),
-                  ],
-                ),
-              ),
+                    ),
+                  ),
+                );
+              },
             ),
     );
   }
 
-  Widget _buildLegendItem(String label, int value, Color color) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          Container(
-            width: 16,
-            height: 16,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            '$label: $value',
-            style: AppStyles.styleRegular14(),
-          ),
+  Widget _buildStudentInfoCard(ThemeMode themeMode) {
+    return Container(
+      decoration: BoxDecoration(
+        color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: themeMode == ThemeMode.dark
+                ? const Color(0xFFFFFFFF).withOpacity(.4)
+                : const Color(0x3F000000),
+            blurRadius: 6,
+            offset: const Offset(0, 0),
+            spreadRadius: 0,
+          )
         ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Student Information',
+              style: AppStyles.styleSemiBold14().copyWith(fontSize: 18),
+            ),
+            const SizedBox(height: 10),
+            _buildInfoRow('Name', widget.childData.fullName ?? 'N/A'),
+            _buildInfoRow('Grade', widget.childData.grade?.toString() ?? 'N/A'),
+            _buildInfoRow('Gender', widget.childData.gender ?? 'N/A'),
+            _buildInfoRow('Date', widget.dateFormated),
+            _buildInfoRow('Birth Date', widget.childData.birthDate ?? 'N/A'),
+            _buildInfoRow('City', widget.childData.city ?? 'N/A'),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildStatusItem(String label, String value, Color color) {
-    return Column(
-      children: [
-        Text(
-          label,
-          style: AppStyles.styleRegular14().copyWith(color: Colors.grey),
+  Widget _buildAttendanceStatusCard() {
+    return Card(
+      color: isAbsent ? Colors.red.shade100 : Colors.green,
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            Icon(
+              isAbsent ? Icons.cancel_outlined : Icons.check_circle_outline,
+              color: isAbsent ? Colors.red : Colors.white,
+              size: 40,
+            ),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isAbsent ? 'Absent' : 'Present',
+                    style: AppStyles.styleSemiBold14().copyWith(
+                      color: isAbsent ? Colors.red : Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                  if (!isAbsent)
+                    Text(
+                      'Attendance recorded for the day',
+                      style: AppStyles.styleRegular12().copyWith(
+                        color: isAbsent ? Colors.red : Colors.white,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 4),
-        FittedBox(
-          child: Text(
-            value,
-            style: AppStyles.styleMedium16().copyWith(color: color),
+      ),
+    );
+  }
+
+  Widget _buildDetailedAttendanceInfo(ThemeMode themeMode) {
+    return Container(
+      decoration: BoxDecoration(
+        color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: themeMode == ThemeMode.dark
+                ? const Color(0xFFFFFFFF).withOpacity(.4)
+                : const Color(0x3F000000),
+            blurRadius: 6,
+            offset: const Offset(0, 0),
+            spreadRadius: 0,
+          )
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Attendance Details',
+              style: AppStyles.styleSemiBold14().copyWith(fontSize: 18),
+            ),
+            const SizedBox(height: 10),
+            if (isAbsent)
+              _buildInfoRow('Status', 'Absent for the day')
+            else ...[
+              _buildInfoRow('Status', 'Present'),
+              _buildInfoRow(
+                  'Arrival Time', _formatTime(todayAttendance?.attendanceDate)),
+              _buildInfoRow(
+                  'Leaving Time', _formatTime(todayAttendance?.leavingDate)),
+              if (todayAttendance?.leavingDate != null)
+                _buildDurationCalculation(),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDurationCalculation() {
+    if (todayAttendance?.attendanceDate == null ||
+        todayAttendance?.leavingDate == null) {
+      return const SizedBox.shrink();
+    }
+
+    try {
+      DateTime arrivalTime = DateTime.parse(todayAttendance!.attendanceDate!);
+      DateTime leavingTime = DateTime.parse(todayAttendance!.leavingDate!);
+      Duration duration = leavingTime.difference(arrivalTime);
+
+      return _buildInfoRow('Time Spent',
+          '${duration.inHours} hours ${duration.inMinutes % 60} minutes');
+    } catch (e) {
+      return const SizedBox.shrink();
+    }
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: AppStyles.styleMedium16(),
           ),
-        ),
-      ],
+          Text(
+            value,
+            style: AppStyles.styleRegular14(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -508,194 +401,66 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
       final date = now.subtract(Duration(days: 6 - index));
       return daysOfWeek[date.weekday - 1];
     });
-
-    return historicalAttendance.isEmpty
-        ? const Center(child: Text('No historical data available'))
-        : BarChart(
-            BarChartData(
-              alignment: BarChartAlignment.spaceAround,
-              maxY: 1,
-              barTouchData: BarTouchData(
-                enabled: true,
-                touchTooltipData: BarTouchTooltipData(
-                  tooltipBgColor: Colors.blueAccent.withOpacity(0.9),
-                  tooltipPadding: const EdgeInsets.all(8),
-                  tooltipMargin: 8,
-                  getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                    String status = 'No Data';
-                    if (groupIndex < historicalAttendance.length) {
-                      final model = historicalAttendance[groupIndex];
-                      final childResult = model.result?.firstWhere(
-                        (result) => result.id == widget.childData.id,
-                        orElse: () => Result(),
-                      );
-                      if (childResult != null && childResult.id != null) {
-                        status = (childResult.attendances != null &&
-                                childResult.attendances!.isNotEmpty)
-                            ? 'Present'
-                            : 'Absent';
-                      }
-                    }
-                    return BarTooltipItem(
-                      '${dayIndices[groupIndex]}\n$status',
-                      AppStyles.styleMedium16().copyWith(color: Colors.white),
-                    );
-                  },
-                ),
-              ),
-              titlesData: FlTitlesData(
-                show: true,
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    getTitlesWidget: (value, meta) {
-                      final index = value.toInt();
-                      if (index >= 0 && index < dayIndices.length) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            dayIndices[index],
-                            style: AppStyles.styleRegular14(),
-                          ),
-                        );
-                      }
-                      return const SizedBox();
-                    },
-                    reservedSize: 30,
-                  ),
-                ),
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                rightTitles: AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                topTitles: AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-              ),
-              borderData: FlBorderData(show: false),
-              gridData: FlGridData(show: false),
-              barGroups: List.generate(7, (index) {
-                bool? isPresent;
-
-                // If we have data for this day
-                if (index < historicalAttendance.length) {
-                  final model = historicalAttendance[index];
-
-                  // Find this child in the results
-                  final childResult = model.result?.firstWhere(
-                    (result) => result.id == widget.childData.id,
-                    orElse: () => Result(),
-                  );
-
-                  if (childResult != null && childResult.id != null) {
-                    isPresent = childResult.attendances != null &&
-                        childResult.attendances!.isNotEmpty;
-                  }
-                }
-
-                return BarChartGroupData(
-                  x: index,
-                  barRods: [
-                    BarChartRodData(
-                      toY: 1,
-                      color: isPresent == null
-                          ? Colors.grey.withOpacity(0.7)
-                          : isPresent
-                              ? Colors.green.withOpacity(0.8)
-                              : Colors.red.withOpacity(0.8),
-                      width: 25,
-                      borderRadius: BorderRadius.circular(8),
-                      backDrawRodData: BackgroundBarChartRodData(
-                        show: true,
-                        toY: 1,
-                        color: Colors.grey.withOpacity(0.1),
-                      ),
-                    )
-                  ],
-                );
-              }),
+    // Debug output to verify data
+    if (historicalAttendance.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.bar_chart_outlined, size: 48, color: Colors.grey),
+            const SizedBox(height: 8),
+            Text(
+              'No attendance data available for this week',
+              style: AppStyles.styleRegular14().copyWith(color: Colors.grey),
+              textAlign: TextAlign.center,
             ),
-          );
-  }
-
-  List<PieChartSectionData> _buildPieChartSections() {
-    final total = (monthlyStats['present'] ?? 0) +
-        (monthlyStats['absent'] ?? 0) +
-        (monthlyStats['late'] ?? 0);
-
-    if (total == 0) return [];
-
-    return [
-      PieChartSectionData(
-        color: Colors.green,
-        value: monthlyStats['present']?.toDouble() ?? 0,
-        title: '${(((monthlyStats['present'] ?? 0) / total) * 100).round()}%',
-        radius: 50,
-        titleStyle: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
+          ],
         ),
-      ),
-      PieChartSectionData(
-        color: Colors.red,
-        value: monthlyStats['absent']?.toDouble() ?? 0,
-        title: '${(((monthlyStats['absent'] ?? 0) / total) * 100).round()}%',
-        radius: 50,
-        titleStyle: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-      PieChartSectionData(
-        color: Colors.orange,
-        value: monthlyStats['late']?.toDouble() ?? 0,
-        title: '${(((monthlyStats['late'] ?? 0) / total) * 100).round()}%',
-        radius: 50,
-        titleStyle: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    ];
-  }
-
-  Widget _buildArrivalTimeBarChart() {
-    if (arrivalTimeDistribution.isEmpty) {
-      return const Center(child: Text('No arrival time data available'));
+      );
     }
 
-    // Define the standard time slots
-    final standardTimeSlots = [
-      'Before 7:30',
-      '7:30-7:45',
-      '7:45-8:00',
-      'After 8:00'
-    ];
+    // Create a map to track attendance for each day
+    final Map<int, bool?> attendanceByDay = {};
 
-    // Create a list of entries sorted by time
-    final sortedEntries = standardTimeSlots
-        .map((slot) => MapEntry(slot, arrivalTimeDistribution[slot] ?? 0))
-        .toList();
+    // Process the attendance data
+    for (int i = 0; i < historicalAttendance.length; i++) {
+      final model = historicalAttendance[i];
+      final childResult = model.result?.firstWhere(
+        (result) => result.id == widget.childData.id,
+        orElse: () => Result(),
+      );
 
-    final maxValue = sortedEntries
-        .map((e) => e.value)
-        .reduce((a, b) => a > b ? a : b)
-        .toDouble();
+      if (childResult != null && childResult.id != null) {
+        attendanceByDay[i] = childResult.attendances != null &&
+            childResult.attendances!.isNotEmpty;
+      }
+    }
 
-    // Define the standard time slots
-
-    // Create a list of entries sorted by time
+    debugPrint("Attendance by day: $attendanceByDay");
 
     return BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
-        maxY: maxValue + 1,
-        barTouchData: BarTouchData(enabled: false),
+        maxY: 1,
+        barTouchData: BarTouchData(
+          enabled: true,
+          touchTooltipData: BarTouchTooltipData(
+            tooltipBgColor: Colors.blueAccent.withOpacity(0.9),
+            tooltipPadding: const EdgeInsets.all(8),
+            tooltipMargin: 8,
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              String status = 'No Data';
+              if (attendanceByDay.containsKey(groupIndex)) {
+                status =
+                    attendanceByDay[groupIndex] == true ? 'Present' : 'Absent';
+              }
+              return BarTooltipItem(
+                '${dayIndices[groupIndex]}\n$status',
+                AppStyles.styleMedium16().copyWith(color: Colors.white),
+              );
+            },
+          ),
+        ),
         titlesData: FlTitlesData(
           show: true,
           bottomTitles: AxisTitles(
@@ -703,13 +468,12 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 final index = value.toInt();
-                if (index >= 0 && index < sortedEntries.length) {
+                if (index >= 0 && index < dayIndices.length) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      sortedEntries[index].key,
-                      style: AppStyles.styleRegular12(),
-                      textAlign: TextAlign.center,
+                      dayIndices[index],
+                      style: AppStyles.styleRegular14(),
                     ),
                   );
                 }
@@ -719,22 +483,7 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
             ),
           ),
           leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                if (value % 1 == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Text(
-                      value.toInt().toString(),
-                      style: AppStyles.styleRegular12(),
-                    ),
-                  );
-                }
-                return const SizedBox();
-              },
-              reservedSize: 30,
-            ),
+            sideTitles: SideTitles(showTitles: false),
           ),
           rightTitles: AxisTitles(
             sideTitles: SideTitles(showTitles: false),
@@ -744,51 +493,138 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
           ),
         ),
         borderData: FlBorderData(show: false),
-        gridData: FlGridData(
-          show: true,
-          horizontalInterval: 1,
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Colors.grey.withOpacity(0.2),
-              strokeWidth: 1,
-            );
-          },
-        ),
-        barGroups: List.generate(sortedEntries.length, (index) {
-          final entry = sortedEntries[index];
-
-          // Choose colors based on time slots
-          Color barColor;
-          switch (entry.key) {
-            case 'Before 7:30':
-              barColor = Colors.green.shade400;
-              break;
-            case '7:30-7:45':
-              barColor = Colors.green.shade600;
-              break;
-            case '7:45-8:00':
-              barColor = Colors.blue.shade400;
-              break;
-            case 'After 8:00':
-              barColor = Colors.orange;
-              break;
-            default:
-              barColor = Colors.grey;
-          }
+        gridData: FlGridData(show: false),
+        barGroups: List.generate(7, (index) {
+          // Get attendance status for this day
+          bool? isPresent = attendanceByDay[index];
 
           return BarChartGroupData(
             x: index,
             barRods: [
               BarChartRodData(
-                toY: entry.value.toDouble(),
-                color: barColor,
-                width: 20,
-                borderRadius: BorderRadius.circular(4),
-              ),
+                toY: 1, // Fixed height for all bars
+                color: isPresent == null
+                    ? Colors.grey.withOpacity(0.5) // No data
+                    : isPresent
+                        ? Colors.green.withOpacity(0.8) // Present
+                        : Colors.red.withOpacity(0.8), // Absent
+                width: 25,
+                borderRadius: BorderRadius.circular(8),
+                backDrawRodData: BackgroundBarChartRodData(
+                  show: true,
+                  toY: 1,
+                  color: Colors.grey.withOpacity(0.1),
+                ),
+              )
             ],
           );
         }),
       ),
     );
   }
+}
+
+class AttendanceCharts extends StatelessWidget {
+  final ThemeMode themeMode;
+  final List<AttendanceData> attendanceData;
+
+  const AttendanceCharts(
+      {super.key, required this.attendanceData, required this.themeMode});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        _buildLineChart(themeMode),
+      ],
+    );
+  }
+
+  List<BarChartGroupData> _getBarGroups() {
+    return attendanceData.map((data) {
+      return BarChartGroupData(
+        x: attendanceData.indexOf(data),
+        barRods: [
+          BarChartRodData(
+            toY: data.isPresent ? 1 : 0,
+            color: data.isPresent ? Colors.green : Colors.red,
+          ),
+        ],
+      );
+    }).toList();
+  }
+
+  Widget _buildLineChart(ThemeMode themeMode) {
+    return Container(
+      decoration: BoxDecoration(
+        color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: themeMode == ThemeMode.dark
+                ? const Color(0xFFFFFFFF).withOpacity(.4)
+                : const Color(0x3F000000),
+            blurRadius: 6,
+            offset: const Offset(0, 0),
+            spreadRadius: 0,
+          )
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Attendance Trend Line Chart',
+              style: AppStyles.styleSemiBold14().copyWith(fontSize: 18),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              height: 250,
+              child: LineChart(
+                LineChartData(
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: _getLineSpots(),
+                      isCurved: true,
+                      color: Colors.blue,
+                      barWidth: 4,
+                    ),
+                  ],
+                  titlesData: FlTitlesData(
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          return Text(
+                            attendanceData[value.toInt()].month,
+                            style: AppStyles.styleRegular12(),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<FlSpot> _getLineSpots() {
+    return attendanceData.asMap().entries.map((entry) {
+      return FlSpot(entry.key.toDouble(), entry.value.isPresent ? 1 : 0);
+    }).toList();
+  }
+}
+
+class AttendanceData {
+  final String month;
+  final bool isPresent;
+
+  AttendanceData({required this.month, required this.isPresent});
 }

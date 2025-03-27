@@ -33,10 +33,10 @@ class LowerSettingsImportantSection extends StatelessWidget {
                   ),
                   shadows: [
                     theme == ThemeMode.dark
-                        ? const BoxShadow(
-                            color: Color(0xFFBDBDBD),
+                        ? BoxShadow(
+                            color: const Color(0xFFBDBDBD).withOpacity(0.15),
                             blurRadius: 16,
-                            offset: Offset(0, 2),
+                            offset: const Offset(0, 2),
                             spreadRadius: 0,
                           )
                         : const BoxShadow(),

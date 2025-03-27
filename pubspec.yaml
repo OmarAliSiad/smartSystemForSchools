@@ -59,6 +59,7 @@ dependencies:
   shared_preferences: ^2.3.3
   url_launcher: ^6.3.1
   webview_flutter: ^4.10.0
+  awesome_card: ^1.1.7
 
 dependency_overrides:
   http: ^0.13.5

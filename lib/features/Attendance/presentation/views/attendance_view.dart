@@ -252,7 +252,7 @@ class _AttendanceViewState extends State<AttendanceView> {
                                         builder: (context) =>
                                             AttendanceDetailsView(
                                           childData: childData,
-                                          date: formattedDate,
+                                          dateFormated: formattedDate,
                                           attendanceModel: attendances[0],
                                         ),
                                       ),

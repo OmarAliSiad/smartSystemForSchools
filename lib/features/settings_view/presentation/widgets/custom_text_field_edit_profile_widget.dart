@@ -40,7 +40,7 @@ class CustomTextFieldEditProfile extends StatelessWidget {
         TextFormField(
           enabled: enable,
           maxLength: length,
-          style: TextStyle(color: !enable ? Colors.grey : Colors.black),
+          style: TextStyle(color: !enable ? Colors.grey : Colors.grey),
           keyboardType: keyboardType,
           controller: controller,
           maxLines: 1,

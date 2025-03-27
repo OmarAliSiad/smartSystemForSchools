@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/utils/auth_service.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_state.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
 import '../../../../generated/locale_keys.g.dart';
@@ -26,7 +28,7 @@ class CustomAppBarHomeView extends StatefulWidget
   @override
   State<CustomAppBarHomeView> createState() => _CustomAppBarHomeViewState();
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 50);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 65);
 }
 
 class _CustomAppBarHomeViewState extends State<CustomAppBarHomeView>
@@ -145,29 +147,32 @@ class _CustomAppBarHomeViewState extends State<CustomAppBarHomeView>
                       child: BlocBuilder<ChangeDataProfileCubit,
                           ChangeDataProfileState>(
                         builder: (context, state) {
-                          final image =
-                              context.read<ChangeDataProfileCubit>().image;
-                          if (state is DataProfileLoaded && image != null) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.file(
-                                image,
-                                fit: BoxFit.cover,
-                                width: 32,
-                                height: 32,
-                              ),
-                            );
-                          } else {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.asset(
-                                Assets.imagesProfileImage,
-                                fit: BoxFit.cover,
-                                width: 32,
-                                height: 32,
-                              ),
-                            );
+                          File? image;
+                          if (state is ImagePicked) {
+                            image = state.image;
+                          } else if (state is DataProfileLoaded) {
+                            image = state.profileDataModel.image;
                           }
+                          return InkWell(
+                            borderRadius: BorderRadius.circular(10),
+                            onTap: widget.onTapPrefix,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: image != null
+                                  ? Image.file(
+                                      image,
+                                      fit: BoxFit.cover,
+                                      width: 32,
+                                      height: 32,
+                                    )
+                                  : Image.asset(
+                                      Assets.imagesProfileImage,
+                                      fit: BoxFit.cover,
+                                      width: 32,
+                                      height: 32,
+                                    ),
+                            ),
+                          );
                         },
                       ),
                     ),

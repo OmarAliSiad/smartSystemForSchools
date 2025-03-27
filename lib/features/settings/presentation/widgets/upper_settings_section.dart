@@ -17,7 +17,7 @@ class UpperSettingsSection extends StatelessWidget {
       top: 0,
       child: FadeInDown(
         child: Container(
-          width: 411,
+          width: MediaQuery.sizeOf(context).width,
           height: 294,
           decoration: const ShapeDecoration(
             color: Color(0xFF0D47A1),

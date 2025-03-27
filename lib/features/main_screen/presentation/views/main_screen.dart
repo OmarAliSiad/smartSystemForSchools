@@ -159,13 +159,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   primaryColor,
                   secondaryColor,
                 ),
-                _buildNavItem(
-                  4,
-                  Assets.imagesAttendence,
-                  LocaleKeys.bottomNavigationBar_attendance.tr(),
-                  primaryColor,
-                  secondaryColor,
-                ),
+                // _buildNavItem(
+                //   4,
+                //   Assets.imagesAttendence,
+                //   LocaleKeys.bottomNavigationBar_attendance.tr(),
+                //   primaryColor,
+                //   secondaryColor,
+                // ),
                 // _buildNavItem(
                 //   5,
                 //   Assets.imagesWallet,
@@ -204,7 +204,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: 50,
+        width: 65,
         decoration: BoxDecoration(
           color:
               isSelected ? primaryColor.withOpacity(0.1) : Colors.transparent,

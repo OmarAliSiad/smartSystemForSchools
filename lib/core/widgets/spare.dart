@@ -26,13 +26,16 @@ class AccountScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
           ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text("Account"),
+        title: Text(
+          "Account",
+          style: AppStyles.styleMedium18(),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -84,7 +87,7 @@ class AccountScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00BCD4),
+                    backgroundColor: Constants.blue, //Color(0xFF00BCD4),,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30,
                       vertical: 15,
@@ -201,10 +204,17 @@ class _RechargeScreenState extends State<RechargeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+          ),
+        ),
         title: Text(
           "Recharge",
-          style: AppStyles.styleMedium13(),
+          style: AppStyles.styleMedium18(),
         ),
       ),
       body: isCustomAmount
@@ -396,7 +406,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
                     "credit card load-up terms and conditions.",
                     style: TextStyle(
                       fontSize: 14,
-                      color: Color(0xFF00BCD4),
+                      color: Constants.blue, //Color(0xFF00BCD4),,
                     ),
                   ),
                 ],
@@ -419,7 +429,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
                         );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00BCD4),
+                    backgroundColor: Constants.blue, //Color(0xFF00BCD4),,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -575,7 +585,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
                       "credit card load-up terms and conditions.",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Color(0xFF00BCD4),
+                        color: Constants.blue, //Color(0xFF00BCD4),,
                       ),
                     ),
                   ),
@@ -611,7 +621,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00BCD4),
+                    backgroundColor: Constants.blue, //Color(0xFF00BCD4),,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -651,7 +661,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
           curve: Curves.easeIn,
           decoration: BoxDecoration(
             color: isSelected
-                ? const Color(0xFF00BCD4)
+                ? Constants.blue //Color(0xFF00BCD4),
                 : isDark
                     ? const Color(0xFF2A2A2A)
                     : Colors.grey.shade200,
@@ -681,10 +691,13 @@ Widget buildPaymentOption(String label, bool isSelected) {
         width: 20,
         height: 20,
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF00BCD4) : Colors.transparent,
+          color: isSelected
+              ? Constants.blue /*Color(0xFF00BCD4),*/
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: isSelected ? const Color(0xFF00BCD4) : Colors.grey,
+            color:
+                isSelected ? Constants.blue /*Color(0xFF00BCD4)*/ : Colors.grey,
             width: 2,
           ),
         ),
@@ -701,7 +714,8 @@ Widget buildPaymentOption(String label, bool isSelected) {
         label,
         style: TextStyle(
           fontSize: 14,
-          color: isSelected ? const Color(0xFF00BCD4) : Colors.grey,
+          color:
+              isSelected ? Constants.blue /*Color(0xFF00BCD4),*/ : Colors.grey,
         ),
       ),
     ],
@@ -728,7 +742,7 @@ class FilterButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: isPrimary
-            ? const Color(0xFF00BCD4)
+            ? Constants.blue //Color(0xFF00BCD4),
             : (isSelected ? Colors.white : Colors.grey.shade200),
         elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

@@ -7,6 +7,10 @@ class UserInfoModel {
   List<dynamic>? roles;
   String? token;
   bool? owner;
+  String? phone;
+  String? gender;
+  String? address;
+
   String? schoolTenantId;
   DateTime? refreshTokenExpiration;
 
@@ -19,6 +23,9 @@ class UserInfoModel {
     this.roles,
     this.token,
     this.owner,
+    this.phone,
+    this.gender,
+    this.address,
     this.schoolTenantId,
     this.refreshTokenExpiration,
   });
@@ -30,6 +37,9 @@ class UserInfoModel {
         username: json['username'] as String?,
         email: json['email'] as String?,
         roles: json['roles'],
+        address:  json['address'] as String?,
+        gender:  json['gender'] as String?,
+        phone:  json['phone'] as String?,
         token: json['token'] as String?,
         owner: json['owner'] as bool?,
         schoolTenantId: json['schoolTenantId'] as String?,

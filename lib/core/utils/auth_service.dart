@@ -1,10 +1,14 @@
 import 'dart:developer';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
+import 'package:smartsystemforschools/core/widgets/show_dialog.dart';
 import '../../features/login/data/models/user_info_model.dart';
 
 class AuthService {
+  final Dio dio = Dio();
   // Base URL of your API
   // Key for storing the token in SharedPreferences
   static const String _tokenKey = 'token';
@@ -68,6 +72,46 @@ class AuthService {
     } on DioException catch (e) {
       log('Error during registration: $e');
       return e.response!;
+    }
+  }
+
+  Future<void> forgotPassword(
+      {required BuildContext context, required String email}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(Constants.token);
+      if (token == null) {
+        throw Exception('No authentication token found');
+      }
+      Response response = await dio.post(
+        'https://school-api.runasp.net/api/Account/forgotPassword',
+        data: {
+          "email": email,
+          "clientUrl":
+              "https://school-api.runasp.net/api/Account/forgotPassword",
+        },
+        options: Options(
+          headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        showAswemoDialog(
+            dialogType: DialogType.success,
+            context: context,
+            title: 'info',
+            desc: 'go to gmail and reset your password');
+      }
+    } catch (e) {
+      showAswemoDialog(
+        context: context,
+        dialogType: DialogType.error,
+        title: 'Error',
+        desc: e.toString(),
+      );
     }
   }
 
