@@ -32,6 +32,7 @@ dependencies:
   awesome_dialog: ^3.2.1
   country_code_picker: ^3.1.0
   country_picker: ^2.0.27
+  connectivity_plus: ^4.0.0
   cupertino_icons: ^1.0.8
   device_preview: ^1.2.0
   dio: ^5.8.0+1

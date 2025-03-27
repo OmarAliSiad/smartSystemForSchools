@@ -1,14 +1,19 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:smartsystemforschools/core/connectivity_cubit/connectivity_cubit.dart';
+import 'package:smartsystemforschools/core/connectivity_cubit/connectivity_state.dart';
+import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
 import 'package:smartsystemforschools/core/themes/dark_theme.dart';
 import 'package:smartsystemforschools/core/themes/light_theme.dart';
 import 'package:smartsystemforschools/core/utils/allegris_service.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
+import 'package:smartsystemforschools/core/utils/disconnect_page_view.dart';
 import 'package:smartsystemforschools/features/Allergies/data/food_ai_service.dart';
 import 'package:smartsystemforschools/features/Allergies/data/manager/cubit/get_all_catogries_cubit.dart';
 import 'package:smartsystemforschools/features/Allergies/data/manager/food_cubit/food_ai_cubit.dart';
@@ -90,6 +95,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AllergiesCubit(AllergiesService())),
         BlocProvider(create: (context) => PaymentCubit()),
         BlocProvider(create: (context) => SpendingLimitCubit()),
+        BlocProvider(
+          create: (context) => InternetCubit(connectivity: Connectivity()),
+        ),
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
@@ -113,6 +121,64 @@ class MyApp extends StatelessWidget {
               themeMode: themeMode,
               theme: lightTheme(context),
               darkTheme: darkTheme(context),
+              builder: (context, child) {
+                return BlocConsumer<InternetCubit, InternetState>(
+                  listener: (context, state) {
+                    if (state is InternetDisconnected) {
+                      dispalySnackBar(
+                        context,
+                        durationD: const Duration(days: 1),
+                        color: Colors.red[700]!,
+                        title: '',
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.wifi_off_rounded,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'No Internet Connection',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    'Please check your network settings',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else if (state is InternetConnected) {
+                      dispalySnackBar(
+                        context,
+                        durationD: const Duration(seconds: 5),
+                        title: 'Internet connection restored',
+                        titleActionButton: 'ok',
+                        color: Colors.green[700]!,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is InternetConnected) {
+                      return child!;
+                    } else {
+                      return const DisconnectedPageView();
+                    }
+                  },
+                );
+              },
               routes: {
                 SplashView.id: (context) => const SplashView(),
                 LogIn.id: (context) => const LogIn(),
