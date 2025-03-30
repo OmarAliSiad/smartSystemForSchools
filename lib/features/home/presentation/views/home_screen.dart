@@ -2,7 +2,10 @@ import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/utils/notification_service/notification_service.dart';
 import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
+import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
 import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/get_child_details/result.dart';
@@ -76,7 +79,13 @@ class _HomeViewState extends State<HomeView> {
           Navigator.of(context).pushNamed(SettingsHomeView.id);
         },
         onTapSuffix: () {
-          Navigator.of(context).pushNamed(NotificationView.id);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return (NotificationView(childDetails: childDetails));
+              },
+            ),
+          );
         },
       ),
       body: RefreshIndicator(

@@ -69,8 +69,14 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
           }
           dispalySnackBar(context, title: message, color: Colors.red);
         } else if (state is GetAllNotificationLoadedSuccessfully) {
-          dispalySnackBar(context,
-              title: 'load notifications succfully', color: Colors.green);
+          if (state.notificationModel.result!.isEmpty) {
+            dispalySnackBar(context,
+                title: 'No notifications found', color: Colors.red);
+          } else {
+            dispalySnackBar(context,
+                title: 'Notifications loaded successfully',
+                color: Colors.green);
+          }
         } else if (state is NotificationDeleted) {
           dispalySnackBar(context, title: state.message, color: Colors.green);
         }

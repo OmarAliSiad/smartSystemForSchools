@@ -186,7 +186,6 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
           ),
           const SizedBox(height: 24),
           // Additional Info Section
-        
           Text(
             "Additional Information",
             style: AppStyles.styleSemiBold20().copyWith(fontSize: 18),
@@ -236,6 +235,12 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
               notificationDetails.result!.studentTransactionItems!
                   .map((e) => e.quantity!)
                   .toList()
+                  .toString()),
+          _buildInfoItem(
+              "total amount of money",
+              notificationDetails.result!.studentTransactionItems!
+                  .map((e) => e.quantity! * e.price!)
+                  .reduce((a, b) => a + b)
                   .toString()),
           // Actions buttons row
           const SizedBox(height: 32),

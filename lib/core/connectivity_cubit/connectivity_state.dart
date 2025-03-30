@@ -1,8 +1,8 @@
-
 enum ConnectionType {
   wifi,
   mobile,
 }
+
 abstract class InternetState {}
 
 class InternetLoading extends InternetState {}

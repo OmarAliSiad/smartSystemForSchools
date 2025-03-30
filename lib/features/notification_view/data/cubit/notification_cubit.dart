@@ -1,34 +1,65 @@
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:smartsystemforschools/core/utils/notification_service/notification_service.dart';
 import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_state.dart';
-import 'package:smartsystemforschools/features/notification_view/data/models/notification_model/notification_model.dart';
 
 // Cubit
 class NotificationCubit extends Cubit<NotificationState> {
   final NotificationService _notificationService = NotificationService();
-  NotificationModel? _cachedNotifications;
-  FilterNotificationModel? _currentFilter;
-
+  // Store the last used filter to reuse when navigating back
+  FilterNotificationModel? _lastUsedFilter;
+  
   NotificationCubit() : super(NotificationInitial());
 
-  Future<void> getAllNotifications(
-      {FilterNotificationModel? filterModel}) async {
-    emit(NotificationLoading());
-    try {
-      // Use provided filter or default to previously used filter or create a new one
-      _currentFilter = filterModel;
-      final result = await _notificationService.getAllNotifications(
-        filterNotificationModel: _currentFilter!,
-      );
-      if (result.isSuccess == true) {
-        _cachedNotifications = result;
-        emit(GetAllNotificationLoadedSuccessfully(notificationModel: result));
-      } else {
-        emit(NotificationFailure(
-            error: result.message ?? 'Failed to load notifications'));
+  // Check if we have an active filter
+  bool hasActiveFilter() {
+    return _lastUsedFilter != null;
+  }
+  
+  // Get the current student ID from filter for UI state restoration
+  String? getCurrentStudentId() {
+    return _lastUsedFilter?.studentId;
+  }
+
+  Future<void> getAllNotifications({FilterNotificationModel? filterModel}) async {
+    // Only show loading if we're actually going to fetch data
+    if (filterModel != null || _lastUsedFilter != null) {
+      emit(NotificationLoading());
+      try {
+        // Save the filter model for later use
+        _lastUsedFilter = filterModel ?? _lastUsedFilter;
+        
+        log('Getting notifications with filter: ${_lastUsedFilter?.studentId}');
+        
+        final result = await _notificationService.getAllNotifications(
+          filterNotificationModel: _lastUsedFilter!,
+        );
+        if (result.isSuccess == true) {
+          log('Notifications loaded successfully: ${result.result?.length ?? 0} items');
+          emit(GetAllNotificationLoadedSuccessfully(notificationModel: result));
+        } else {
+          log('Failed to load notifications: ${result.message}');
+          emit(NotificationFailure(
+              error: result.message ?? 'Failed to load notifications'));
+        }
+      } catch (e) {
+        log('Error loading notifications: $e');
+        emit(NotificationFailure(error: e.toString()));
       }
-    } catch (e) {
-      emit(NotificationFailure(error: e.toString()));
+    } else {
+      log('No filter available, cannot load notifications');
+      emit(NotificationFailure(error: 'No filter available'));
+    }
+  }
+
+  // Reload notifications with the last used filter
+  Future<void> reloadNotifications() async {
+    if (_lastUsedFilter != null) {
+      log('Reloading notifications with stored filter');
+      await getAllNotifications(filterModel: _lastUsedFilter);
+    } else {
+      log('Cannot reload: No filter available');
     }
   }
 
@@ -56,8 +87,8 @@ class NotificationCubit extends Cubit<NotificationState> {
         notificationId: notificationId,
       );
       emit(NotificationDeleted(message: result));
-      // Refresh notifications after deletion
-      await getAllNotifications();
+      // Refresh notifications after deletion using the last filter
+      await reloadNotifications();
     } catch (e) {
       emit(NotificationFailure(error: e.toString()));
     }
@@ -70,6 +101,7 @@ class NotificationCubit extends Cubit<NotificationState> {
     int? status,
     int? title,
   }) async {
+    log('Applying new filter for student: $studentId');
     final filter = FilterNotificationModel(
       studentId: studentId,
       date: date,

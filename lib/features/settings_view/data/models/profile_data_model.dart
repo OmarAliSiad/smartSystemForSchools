@@ -17,7 +17,7 @@ class ProfileDataModel {
   ProfileDataModel copyWith({
     String? phone,
     File? image,
-    String? gender, 
+    String? gender,
     String? address,
   }) {
     return ProfileDataModel(

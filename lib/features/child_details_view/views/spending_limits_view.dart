@@ -384,5 +384,6 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
       weeklySpendingLimit: weeklyLimit,
       monthlySpendingLimit: monthlyLimit,
     );
+    Navigator.of(context).pop();
   }
 }

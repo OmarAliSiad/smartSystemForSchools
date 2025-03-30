@@ -10,7 +10,6 @@ class TotalFees extends StatelessWidget {
       this.selectedAmount,
       required this.total,
       required this.processingFee});
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,7 +27,7 @@ class TotalFees extends StatelessWidget {
               ),
             ),
             Text(
-              "${selectedAmount?.toStringAsFixed(2) ?? 0.0} USD",
+              "${selectedAmount?.toStringAsFixed(2) ?? 0.0} EGP",
               style: const TextStyle(
                 fontSize: 16,
                 color: Constants.blue, //Color(0xFF00BCD4),,
@@ -59,7 +58,7 @@ class TotalFees extends StatelessWidget {
               ],
             ),
             Text(
-              "${processingFee.toStringAsFixed(2)} USD",
+              "${processingFee.toStringAsFixed(2)} EGP",
               style: const TextStyle(
                 fontSize: 16,
                 color: Constants.blue, //Color(0xFF00BCD4),,
@@ -71,7 +70,7 @@ class TotalFees extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            "3USD + 3.5%",
+            "3EGP + 3.5%",
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey.shade500,
@@ -94,7 +93,7 @@ class TotalFees extends StatelessWidget {
               ),
             ),
             Text(
-              "${total.toStringAsFixed(2)} USD",
+              "${total.toStringAsFixed(2)} EGP",
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

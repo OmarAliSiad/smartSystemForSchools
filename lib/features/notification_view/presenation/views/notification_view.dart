@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -40,10 +41,7 @@ class _NotificationViewState extends State<NotificationView>
   void _loadInitialNotifications() {
     // Check if we have an active filter or need to set a default one
     final notificationCubit = context.read<NotificationCubit>();
-
-    // Always ensure there's a filter applied
-    if (notificationCubit.state is NotificationInitial ||
-        !notificationCubit.hasActiveFilter()) {
+    if (notificationCubit.state is NotificationInitial) {
       // Apply initial filter with first child's ID
       notificationCubit.applyFilter(
         studentId: widget.childDetails[0].id.toString(),
@@ -57,33 +55,13 @@ class _NotificationViewState extends State<NotificationView>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Reload when dependencies change
-    context.read<NotificationCubit>().reloadNotifications();
+    // This can also be a good place to reload data
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      // Reload when app is resumed
-      context.read<NotificationCubit>().reloadNotifications();
-    }
-  }
-
-  @override
-  void didUpdateWidget(NotificationView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // Reload when widget is updated
-    context.read<NotificationCubit>().reloadNotifications();
-  }
-
-  // This correctly implements the WidgetsBindingObserver method
   @override
   void didPopNext() {
     // This is called when the screen becomes visible again after another screen is popped
-    if (mounted) {
-      context.read<NotificationCubit>().reloadNotifications();
-    }
+    context.read<NotificationCubit>().reloadNotifications();
   }
 
   @override
@@ -101,15 +79,10 @@ class _NotificationViewState extends State<NotificationView>
           IconButton(
             icon: const Icon(Icons.filter_alt),
             onPressed: () {
-              final notificationCubit = context.read<NotificationCubit>();
-              final currentStudentId =
-                  notificationCubit.getCurrentStudentId() ??
-                      widget.childDetails[0].id.toString();
-
               showFilterBottomSheet(
                 context: context,
                 childDetails: widget.childDetails,
-                selectedStudentId: currentStudentId,
+                selectedStudentId: widget.childDetails[0].id.toString(),
                 isDark: context.read<ThemeModeCubit>().currentTheme ==
                         ThemeMode.dark
                     ? true
@@ -128,17 +101,7 @@ class _NotificationViewState extends State<NotificationView>
             },
             child: const Icon(Icons.arrow_back_ios)),
       ),
-      body: BlocListener<NotificationCubit, NotificationState>(
-        listener: (context, state) {
-          // Handle specific state transitions if needed
-          if (state is NotificationDeleted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-        },
-        child: NotificationViewBody(resultForChildDetails: widget.childDetails),
-      ),
+      body: NotificationViewBody(resultForChildDetails: widget.childDetails),
     );
   }
 }

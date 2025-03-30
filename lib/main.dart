@@ -1,5 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +16,8 @@ import 'package:smartsystemforschools/core/themes/light_theme.dart';
 import 'package:smartsystemforschools/core/utils/allegris_service.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/core/utils/disconnect_page_view.dart';
+import 'package:smartsystemforschools/core/utils/notification_service/messaging_config.dart';
+import 'package:smartsystemforschools/core/utils/notification_service/notification_service.dart';
 import 'package:smartsystemforschools/features/Allergies/data/food_ai_service.dart';
 import 'package:smartsystemforschools/features/Allergies/data/manager/cubit/get_all_catogries_cubit.dart';
 import 'package:smartsystemforschools/features/Allergies/data/manager/food_cubit/food_ai_cubit.dart';
@@ -33,6 +37,7 @@ import 'package:smartsystemforschools/features/login/presenation/views/send_code
 import 'package:smartsystemforschools/features/login/presenation/views/sign_up_screen.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/verfiy_code.dart';
 import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
+import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
 import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
 import 'package:smartsystemforschools/features/onBoarding/views/pageview.dart';
 import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
@@ -41,6 +46,7 @@ import 'package:smartsystemforschools/features/settings_view/presentation/manage
 import 'package:smartsystemforschools/features/settings_view/presentation/views/edit_profile.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/views/privacy_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/views/terms_and_condition_view.dart';
+import 'package:smartsystemforschools/firebase_options.dart';
 import 'package:smartsystemforschools/generated/codegen_loader.g.dart';
 import 'package:smartsystemforschools/features/settings/presentation/widgets/change_password_page.dart';
 import 'core/utils/auth_service.dart';
@@ -50,7 +56,6 @@ import 'features/settings/presentation/views/settings_view.dart';
 
 bool isLoggedIn = false;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
 void main() async {
   // ? code for device preview
   // runApp(
@@ -61,6 +66,11 @@ void main() async {
   // );
   Stripe.publishableKey = ApiKeys.stripePublishableKey;
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  MessagingConfig.initFirebaseMessaging();
+  FirebaseMessaging.onBackgroundMessage(MessagingConfig.messageHandler);
   await EasyLocalization.ensureInitialized();
   isLoggedIn = await AuthService().isLoggedIn();
   runApp(
@@ -98,6 +108,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => InternetCubit(connectivity: Connectivity()),
         ),
+        BlocProvider(
+          create: (context) => NotificationCubit(),
+        )
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
@@ -109,6 +122,7 @@ class MyApp extends StatelessWidget {
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
               locale: context.locale,
+              navigatorKey: navigatorKey,
               scrollBehavior: const ScrollBehavior().copyWith(dragDevices: {
                 PointerDeviceKind.touch,
                 PointerDeviceKind.mouse,
@@ -203,7 +217,9 @@ class MyApp extends StatelessWidget {
                       resultForChildDetails: ResultForChildDetails(),
                     ),
                 AttendanceView.id: (context) => const AttendanceView(),
-                NotificationView.id: (context) => const NotificationView(),
+                NotificationView.id: (context) => const NotificationView(
+                      childDetails: [],
+                    ),
                 ChangePasswordPage.id: (context) => const ChangePasswordPage(),
               },
               initialRoute: isLoggedIn ? MainScreen.id : SplashView.id);

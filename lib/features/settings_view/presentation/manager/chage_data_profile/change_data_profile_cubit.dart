@@ -19,45 +19,40 @@ class ChangeDataProfileCubit extends Cubit<ChangeDataProfileState> {
   ChangeDataProfileCubit() : super(ChangeDataProfileInitial());
 
   // Save profile data to SharedPreferences
-Future<void> saveProfileData(ProfileDataModel profileDataModel) async {
-  try {
-    emit(ChangeDataProfileLoading());
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    
-    // Save all data using Constants
-    await prefs.setString(Constants.phone, profileDataModel.phone);
-    await prefs.setString(Constants.gender, profileDataModel.gender);
-    await prefs.setString(Constants.address, profileDataModel.address);
-    await prefs.setString(Constants.email, profileDataModel.email);
+  Future<void> saveProfileData(ProfileDataModel profileDataModel) async {
+    try {
+      emit(ChangeDataProfileLoading());
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    
-    // Update local controllers
-    Phone.text = profileDataModel.phone;
-    Gender.text = profileDataModel.gender;
-    Address.text = profileDataModel.address;
+      // Save all data using Constants
+      await prefs.setString(Constants.phone, profileDataModel.phone);
+      await prefs.setString(Constants.gender, profileDataModel.gender);
+      await prefs.setString(Constants.address, profileDataModel.address);
+      await prefs.setString(Constants.email, profileDataModel.email);
 
-    // Only save image path if image exists
-    if (profileDataModel.image != null) {
-      await prefs.setString(Constants.image, profileDataModel.image!.path);
+      // Update local controllers
+      Phone.text = profileDataModel.phone;
+      Gender.text = profileDataModel.gender;
+      Address.text = profileDataModel.address;
+
+      // Only save image path if image exists
+      if (profileDataModel.image != null) {
+        await prefs.setString(Constants.image, profileDataModel.image!.path);
+      }
+
+      // Emit success state with updated profile data
+      emit(DataProfileLoaded(
+          profileDataModel: ProfileDataModel(
+              phone: profileDataModel.phone,
+              gender: profileDataModel.gender,
+              address: profileDataModel.address,
+              email: profileDataModel.email,
+              image: profileDataModel.image)));
+    } catch (e) {
+      log('Error saving profile data: $e');
+      emit(ChangeDataProfileError('Failed to save profile data: $e'));
     }
-
-    // Emit success state with updated profile data
-    emit(
-      DataProfileLoaded(
-        profileDataModel: ProfileDataModel(
-          phone: profileDataModel.phone,
-          gender: profileDataModel.gender,
-          address: profileDataModel.address,
-          email:  profileDataModel.email,
-          image: profileDataModel.image
-        )
-      )
-    );
-  } catch (e) {
-    log('Error saving profile data: $e');
-    emit(ChangeDataProfileError('Failed to save profile data: $e'));
   }
-}
 
   // Load profile data from SharedPreferences
   Future<void> loadProfileData() async {
@@ -92,7 +87,7 @@ Future<void> saveProfileData(ProfileDataModel profileDataModel) async {
         DataProfileLoaded(
           profileDataModel: ProfileDataModel(
             phone: Phone.text,
-            email:email.toString(),
+            email: email.toString(),
             image: image,
             gender: Gender.text,
             address: Address.text,
@@ -104,6 +99,7 @@ Future<void> saveProfileData(ProfileDataModel profileDataModel) async {
       emit(ChangeDataProfileError('Failed to load profile data: $e'));
     }
   }
+
   // Pick an image from the gallery
   Future<void> pickImage() async {
     try {
