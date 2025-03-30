@@ -1,0 +1,376 @@
+import 'dart:math';
+
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
+import 'package:smartsystemforschools/core/utils/app_styles.dart';
+import 'package:smartsystemforschools/core/utils/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
+import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
+import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
+import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_state.dart';
+import 'package:smartsystemforschools/features/notification_view/data/models/notification_model/notification_model.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+
+class NotificationDetailsView extends StatefulWidget {
+  final String notificationId;
+  final String dateName;
+  final NotificationModel notificationModel;
+  const NotificationDetailsView({
+    super.key,
+    required this.notificationId,
+    required this.notificationModel,
+    required this.dateName,
+  });
+
+  @override
+  State<NotificationDetailsView> createState() =>
+      _NotificationDetailsViewState();
+}
+
+class _NotificationDetailsViewState extends State<NotificationDetailsView> {
+  @override
+  void initState() {
+    super.initState();
+    _loadNotificationDetails();
+  }
+
+  void _loadNotificationDetails() {
+    context.read<NotificationCubit>().getNotificationDetails(
+          notificationId: widget.notificationId,
+        );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0,
+        title: Text('Notification Details', style: AppStyles.styleSemiBold20()),
+        forceMaterialTransparency: true,
+        leading: InkWell(
+          borderRadius: BorderRadius.circular(30),
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: const Icon(Icons.arrow_back_ios),
+        ),
+      ),
+      body: BlocConsumer<NotificationCubit, NotificationState>(
+        listener: (context, state) {
+          if (state is NotificationFailure) {
+            dispalySnackBar(
+              context,
+              title: state.error,
+              color: Colors.red,
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is NotificationDetailsLoaded) {
+            final details = state.notificationDetails;
+            if (details.isSuccess == false) {
+              return const Center(
+                child: Text("No details available"),
+              );
+            }
+            return _buildDetailsContent(details);
+          } else if (state is NotificationLoading) {
+            return buildLoadingView('notification', context);
+          } else {
+            String message = '';
+            if (state is NotificationFailure) {
+              message = state.error;
+            }
+            return Center(child: Text(message));
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildDetailsContent(GetNotificatoinDetails notificationDetails) {
+    final themeMode = context.read<ThemeModeCubit>().currentTheme;
+    final backgroundColor =
+        themeMode == ThemeMode.dark ? Colors.grey[850] : Colors.white;
+    final textColor = themeMode == ThemeMode.dark ? Colors.white : Colors.black;
+
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with icon
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 28,
+                backgroundColor: const Color(0xff1A0F91).withOpacity(.10),
+                child: _getNotificationIcon(
+                    notificationDetails.message ?? "Notification"),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.notificationModel.result![0].title ?? "No Title",
+                      style: AppStyles.styleSemiBold20(),
+                    ),
+                    if (notificationDetails.result!.createdOn != null)
+                      Text(
+                        'created At ${DateFormat.yMMMd().add_jm().format(notificationDetails.result!.createdOn!)}',
+                        style: TextStyle(color: textColor.withOpacity(0.7)),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          // Status indicator
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color:
+                  _getStatusColor(notificationDetails.result!.studentName ?? "")
+                      .withOpacity(0.2),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Text(
+              'studentName : ${notificationDetails.result!.studentName}' ??
+                  "Unknown Status",
+              style: TextStyle(
+                color: _getStatusColor(
+                    notificationDetails.result!.studentName ?? ""),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          // Message content
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Message",
+                  style: AppStyles.styleMedium16().copyWith(
+                    color: const Color(0xff1A0F91),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.notificationModel.result![0].message ??
+                      "No message content",
+                  style: AppStyles.styleRegular16(),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          // Additional Info Section
+        
+          Text(
+            "Additional Information",
+            style: AppStyles.styleSemiBold20().copyWith(fontSize: 18),
+          ),
+          const SizedBox(height: 16),
+          if (notificationDetails.result!.studentId != null)
+            _buildInfoItem("Student ID",
+                notificationDetails.result!.studentId ?? "Not Available"),
+          if (notificationDetails.result!.studentName != null)
+            _buildInfoItem("Student Name",
+                notificationDetails.result!.studentName ?? "Not Available"),
+          if (notificationDetails.result!.cashierId != null)
+            _buildInfoItem("cashierId",
+                notificationDetails.result!.cashierId ?? "Not Available"),
+          if (notificationDetails.result!.cashierName != null)
+            _buildInfoItem("cashierName",
+                notificationDetails.result!.cashierName ?? "Not Available"),
+          if (notificationDetails.result!.createdOn != null)
+            _buildInfoItem(
+                "created at",
+                DateFormat('yyyy-MM-dd hh:mm')
+                        .format(notificationDetails.result!.createdOn!) ??
+                    "Not Available"),
+          if (notificationDetails.result!.schoolTenantId != null)
+            _buildInfoItem("school Name",
+                notificationDetails.result!.schoolTenantId ?? "Not Available"),
+          const SizedBox(height: 16),
+          Text(
+            "product Information",
+            style: AppStyles.styleSemiBold20().copyWith(fontSize: 18),
+          ),
+          _buildInfoItem(
+              "Product Names",
+              notificationDetails.result!.studentTransactionItems!
+                      .map((e) => e.productName!)
+                      .toList()
+                      .toString() ??
+                  "Not Available"),
+          _buildInfoItem(
+              "Product prices",
+              notificationDetails.result!.studentTransactionItems!
+                  .map((e) => e.price!)
+                  .toList()
+                  .toString()),
+          _buildInfoItem(
+              "Product quantities",
+              notificationDetails.result!.studentTransactionItems!
+                  .map((e) => e.quantity!)
+                  .toList()
+                  .toString()),
+          // Actions buttons row
+          const SizedBox(height: 32),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                icon: const Icon(Icons.delete),
+                label: const Text("Delete"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+                onPressed: () {
+                  _deleteNotification(notificationDetails.result!.id ?? "");
+                },
+              ),
+              const SizedBox(width: 16),
+              OutlinedButton.icon(
+                icon: const Icon(
+                  Icons.close,
+                ),
+                label: const Text(
+                  "Close",
+                ),
+                style: OutlinedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoItem(String label, String value) {
+    final backgroundColor =
+        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
+            ? Colors.grey[850]
+            : Colors.white;
+    return Container(
+      margin: const EdgeInsetsDirectional.symmetric(vertical: 5),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: AppStyles.styleBold14().copyWith(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(width: 8.0),
+            Text(
+              value,
+              style: AppStyles.styleRegular16(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Color _getStatusColor(String status) {
+    status = status.toLowerCase();
+    if (status == "read") return Colors.green;
+    if (status == "unread") return Colors.blue;
+    if (status.contains("fail") || status.contains("error")) return Colors.red;
+    return Colors.grey;
+  }
+
+  // Returns the appropriate icon based on notification type
+  Widget _getNotificationIcon(String title) {
+    IconData iconData = Icons.notifications_none_rounded;
+
+    if (title.toLowerCase().contains("transaction")) {
+      iconData = Icons.payment;
+    } else if (title.toLowerCase().contains("attendance")) {
+      iconData = Icons.event_available;
+    } else if (title.toLowerCase().contains("notice")) {
+      iconData = Icons.announcement;
+    }
+    return Icon(
+      size: 36,
+      iconData,
+      color: const Color(0xff1A0F91),
+    );
+  }
+
+  void _deleteNotification(String notificationId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Delete Notification"),
+        content:
+            const Text("Are you sure you want to delete this notification?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              "Cancel",
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              context.read<NotificationCubit>().deleteNotification(
+                    notificationId: notificationId,
+                  );
+              Navigator.of(context).pop(); // Go back to notifications list
+            },
+            child: const Text("Delete", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+}

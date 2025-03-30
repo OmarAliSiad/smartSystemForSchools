@@ -1,18 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import '../../data/models/notification_card_model.dart';
 import 'notification_card_widget.dart';
 
 class SetcionNotificationCard extends StatefulWidget {
-  final String? currentDate;
-  final NotificationCardModel notificationCardModel;
+  final String dateName;
+  final String date;
+  final String title;
+  final String message;
+  final String notificationId;
   const SetcionNotificationCard({
     super.key,
-    this.currentDate,
-    required this.notificationCardModel,
+    required this.date,
+    required this.title,
+    required this.message,
+    required this.notificationId,
+    required this.dateName,
   });
 
   @override
@@ -21,14 +29,13 @@ class SetcionNotificationCard extends StatefulWidget {
 }
 
 class _SetcionNotificationCardState extends State<SetcionNotificationCard> {
-  bool isdeleted = false;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.currentDate ?? '',
+          widget.dateName,
           style: AppStyles.styleRegular20().copyWith(
             fontSize: 16,
             color: context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
@@ -36,7 +43,7 @@ class _SetcionNotificationCardState extends State<SetcionNotificationCard> {
                 : Colors.black,
           ),
         ),
-        widget.currentDate == null
+        widget.date == null
             ? const SizedBox()
             : const SizedBox(
                 height: 17,
@@ -51,17 +58,17 @@ class _SetcionNotificationCardState extends State<SetcionNotificationCard> {
                 icon: Icons.delete,
                 label: 'Delete',
                 onPressed: (context) {
-                  isdeleted = true;
-                  setState(() {});
+                  context.read<NotificationCubit>().deleteNotification(
+                      notificationId: widget.notificationId);
                 },
               ),
             ],
           ),
-          child: isdeleted
-              ? Container()
-              : NotificationCard(
-                  notificationCardModel: widget.notificationCardModel,
-                ),
+          child: NotificationCard(
+            date: widget.date,
+            title: widget.title,
+            message: widget.message,
+          ),
         ),
       ],
     );

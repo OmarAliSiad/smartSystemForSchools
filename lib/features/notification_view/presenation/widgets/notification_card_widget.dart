@@ -1,19 +1,22 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import '../../data/models/notification_card_model.dart';
 
 class NotificationCard extends StatelessWidget {
-  final NotificationCardModel notificationCardModel;
+  final String title;
+  final String message;
+  final String date;
   const NotificationCard({
     super.key,
-    required this.notificationCardModel,
+    required this.title,
+    required this.message,
+    required this.date,
   });
 
   @override
   Widget build(BuildContext context) {
+    double cWidth = MediaQuery.of(context).size.width * 0.8;
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
         final themeMode = context.read<ThemeModeCubit>().currentTheme;
@@ -62,7 +65,7 @@ class NotificationCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Failed transaction : ',
+                          title,
                           style:
                               AppStyles.styleMedium16().copyWith(fontSize: 14),
                         ),
@@ -70,7 +73,7 @@ class NotificationCard extends StatelessWidget {
                           width: 72,
                         ),
                         Text(
-                          notificationCardModel.time,
+                          date,
                           style: AppStyles.styleRegular14().copyWith(
                             color:
                                 context.read<ThemeModeCubit>().currentTheme ==
@@ -85,8 +88,11 @@ class NotificationCard extends StatelessWidget {
                       height: 9,
                     ),
                     Text(
-                      'Ahmed Khalid attempted a purchase,\nbut the balance was in sufficient',
-                      style: AppStyles.styleRegular14().copyWith(fontSize: 13),
+                      message,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppStyles.styleRegular14().copyWith(
+                        fontSize: 11,
+                      ),
                     )
                   ],
                 )
