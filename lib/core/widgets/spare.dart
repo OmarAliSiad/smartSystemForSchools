@@ -113,28 +113,28 @@ class AccountScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                FilterButton(
-                  text: "All",
-                  isSelected: true,
-                  onPressed: () {},
-                ),
-                const SizedBox(width: 10),
-                FilterButton(
-                  text: "Phone",
-                  isSelected: false,
-                  onPressed: () {},
-                ),
-                const SizedBox(width: 10),
-                FilterButton(
-                  text: resultForChildDetails.fullName.toString(),
-                  isSelected: true,
-                  isPrimary: true,
-                  onPressed: () {},
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     FilterButton(
+            //       text: "All",
+            //       isSelected: true,
+            //       onPressed: () {},
+            //     ),
+            //     const SizedBox(width: 10),
+            //     FilterButton(
+            //       text: "Phone",
+            //       isSelected: false,
+            //       onPressed: () {},
+            //     ),
+            //     const SizedBox(width: 10),
+            //     FilterButton(
+            //       text: resultForChildDetails.fullName.toString(),
+            //       isSelected: true,
+            //       isPrimary: true,
+            //       onPressed: () {},
+            //     ),
+            //   ],
+            // ),
             Expanded(
               child: Center(
                 child: Column(

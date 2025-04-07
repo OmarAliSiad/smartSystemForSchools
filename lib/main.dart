@@ -17,12 +17,8 @@ import 'package:smartsystemforschools/core/utils/allegris_service.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/core/utils/disconnect_page_view.dart';
 import 'package:smartsystemforschools/core/utils/notification_service/messaging_config.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/notification_service.dart';
-import 'package:smartsystemforschools/features/Allergies/data/food_ai_service.dart';
 import 'package:smartsystemforschools/features/Allergies/data/manager/cubit/get_all_catogries_cubit.dart';
-import 'package:smartsystemforschools/features/Allergies/data/manager/food_cubit/food_ai_cubit.dart';
 import 'package:smartsystemforschools/features/Allergies/presentation/views/AllergiesView.dart';
-import 'package:smartsystemforschools/features/Allergies/presentation/views/FoodAIView.dart';
 import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
 import 'package:smartsystemforschools/features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
@@ -30,6 +26,7 @@ import 'package:smartsystemforschools/features/child_details_view/views/child_de
 import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
 import 'package:smartsystemforschools/features/family/presentation/views/add_child_view.dart';
 import 'package:smartsystemforschools/features/family/presentation/views/family_view.dart';
+import 'package:smartsystemforschools/features/food_ai_view/data/cubit/cubit/meal_recommendation_cubit.dart';
 import 'package:smartsystemforschools/features/home/presentation/views/home_screen.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/forgot_password.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/log_in.dart';
@@ -110,7 +107,8 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => NotificationCubit(),
-        )
+        ),
+        BlocProvider(create: (context) => MealRecommendationCubit()),
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {

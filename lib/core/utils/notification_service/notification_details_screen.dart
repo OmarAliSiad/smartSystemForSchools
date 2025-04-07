@@ -236,7 +236,7 @@ class _StatusCard extends StatelessWidget {
       child: Card(
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        color: Colors.red,
+        color: statusmessage.contains('success') ? Colors.green : Colors.red,
         child: Padding(
           padding: const EdgeInsetsDirectional.all(10),
           child: Row(

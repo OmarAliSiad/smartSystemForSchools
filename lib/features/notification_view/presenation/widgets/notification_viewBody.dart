@@ -15,7 +15,11 @@ import 'package:smartsystemforschools/features/notification_view/presenation/wid
 
 class NotificationViewBody extends StatefulWidget {
   final List<ResultForChildDetails> resultForChildDetails;
-  const NotificationViewBody({super.key, required this.resultForChildDetails});
+  final String selectedStudentId;
+  const NotificationViewBody(
+      {super.key,
+      required this.resultForChildDetails,
+      required this.selectedStudentId});
 
   @override
   State<NotificationViewBody> createState() => _NotificationViewBodyState();

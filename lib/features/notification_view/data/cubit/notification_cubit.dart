@@ -9,29 +9,30 @@ class NotificationCubit extends Cubit<NotificationState> {
   final NotificationService _notificationService = NotificationService();
   // Store the last used filter to reuse when navigating back
   FilterNotificationModel? _lastUsedFilter;
-  
+
   NotificationCubit() : super(NotificationInitial());
 
   // Check if we have an active filter
   bool hasActiveFilter() {
     return _lastUsedFilter != null;
   }
-  
+
   // Get the current student ID from filter for UI state restoration
   String? getCurrentStudentId() {
     return _lastUsedFilter?.studentId;
   }
 
-  Future<void> getAllNotifications({FilterNotificationModel? filterModel}) async {
+  Future<void> getAllNotifications(
+      {FilterNotificationModel? filterModel}) async {
     // Only show loading if we're actually going to fetch data
     if (filterModel != null || _lastUsedFilter != null) {
       emit(NotificationLoading());
       try {
         // Save the filter model for later use
         _lastUsedFilter = filterModel ?? _lastUsedFilter;
-        
+
         log('Getting notifications with filter: ${_lastUsedFilter?.studentId}');
-        
+
         final result = await _notificationService.getAllNotifications(
           filterNotificationModel: _lastUsedFilter!,
         );
@@ -49,7 +50,7 @@ class NotificationCubit extends Cubit<NotificationState> {
       }
     } else {
       log('No filter available, cannot load notifications');
-      emit(NotificationFailure(error: 'No filter available'));
+      emit(const NotificationFailure(error: 'No filter available'));
     }
   }
 
@@ -65,6 +66,7 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   Future<void> getNotificationDetails({required String notificationId}) async {
     emit(NotificationLoading());
+    log('notification id : $notificationId');
     try {
       final result = await _notificationService.getNotificationtDetails(
         notificationId: notificationId,

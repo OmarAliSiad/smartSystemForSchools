@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/Allergies/presentation/views/FoodAIView.dart';
-import 'package:smartsystemforschools/features/Attendance/presentation/views/AttendanceAIView.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
+import 'package:smartsystemforschools/features/food_ai_view/screens/food_ai_screen.dart';
 import 'package:smartsystemforschools/features/payment/presentation/views/payment_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/utils/assets.dart';
@@ -26,7 +25,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     FamilyView(key: UniqueKey()),
     AttendanceView(key: UniqueKey()),
     PaymentView(key: UniqueKey()),
-    // AttendanceAIView(key: UniqueKey()),
+    FoodAiScreen(key: UniqueKey()),
     // TrackingView(
     //     onLocationSelected: (p0) {},
     //     initialLocations: const [],
@@ -132,47 +131,40 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildNavItem(
-                  0,
-                  Assets.imagesHome,
-                  LocaleKeys.bottomNavigationBar_home.tr(),
-                  primaryColor,
-                  secondaryColor,
+                  index: 0,
+                  iconPath: Assets.imagesHome,
+                  label: LocaleKeys.bottomNavigationBar_home.tr(),
+                  primaryColor: primaryColor,
+                  secondaryColor: secondaryColor,
                 ),
                 _buildNavItem(
-                  1,
-                  Assets.imagesFamily,
-                  LocaleKeys.bottomNavigationBar_family.tr(),
-                  primaryColor,
-                  secondaryColor,
+                  index: 1,
+                  iconPath: Assets.imagesFamily,
+                  label: LocaleKeys.bottomNavigationBar_family.tr(),
+                  primaryColor: primaryColor,
+                  secondaryColor: secondaryColor,
                 ),
                 _buildNavItem(
-                  2,
-                  Assets.imagesAttendence,
-                  LocaleKeys.bottomNavigationBar_attendance.tr(),
-                  primaryColor,
-                  secondaryColor,
+                  index: 2,
+                  iconPath: Assets.imagesAttendence,
+                  label: LocaleKeys.bottomNavigationBar_attendance.tr(),
+                  primaryColor: primaryColor,
+                  secondaryColor: secondaryColor,
                 ),
                 _buildNavItem(
-                  3,
-                  Assets.imagesWallet,
-                  LocaleKeys.bottomNavigationBar_wallet.tr(),
-                  primaryColor,
-                  secondaryColor,
+                  index: 3,
+                  iconPath: Assets.imagesWallet,
+                  label: LocaleKeys.bottomNavigationBar_wallet.tr(),
+                  primaryColor: primaryColor,
+                  secondaryColor: secondaryColor,
                 ),
-                // _buildNavItem(
-                //   4,
-                //   Assets.imagesAttendence,
-                //   LocaleKeys.bottomNavigationBar_attendance.tr(),
-                //   primaryColor,
-                //   secondaryColor,
-                // ),
-                // _buildNavItem(
-                //   5,
-                //   Assets.imagesWallet,
-                //   LocaleKeys.bottomNavigationBar_wallet.tr(),
-                //   primaryColor,
-                //   secondaryColor,
-                // ),
+                _buildNavItem(
+                  index: 4,
+                  iconPath: Assets.imagesHelp,
+                  label: 'AI',
+                  primaryColor: primaryColor,
+                  secondaryColor: secondaryColor,
+                ),
               ],
             ),
           ),
@@ -181,13 +173,14 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildNavItem(
-    int index,
-    String iconPath,
-    String label,
-    Color primaryColor,
-    Color secondaryColor,
-  ) {
+  Widget _buildNavItem({
+    required int index,
+    String? iconPath,
+    Icon? icon,
+    required String label,
+    required Color primaryColor,
+    required Color secondaryColor,
+  }) {
     final isSelected = currentPage == index;
 
     return GestureDetector(
@@ -220,12 +213,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                 return Transform.scale(
                   scale:
                       isSelected ? 1.0 + (_animations[index].value * 0.2) : 1.0,
-                  child: Image.asset(
-                    iconPath,
-                    color: isSelected ? primaryColor : secondaryColor,
-                    width: 24,
-                    height: 24,
-                  ),
+                  child: icon ??
+                      Image.asset(
+                        iconPath!,
+                        color: isSelected ? primaryColor : secondaryColor,
+                        width: 24,
+                        height: 24,
+                      ),
                 );
               },
             ),

@@ -23,6 +23,7 @@ class NotificationView extends StatefulWidget {
 
 class _NotificationViewState extends State<NotificationView>
     with WidgetsBindingObserver {
+  String selectedStudentId = '';
   @override
   void initState() {
     super.initState();
@@ -83,6 +84,11 @@ class _NotificationViewState extends State<NotificationView>
                 context: context,
                 childDetails: widget.childDetails,
                 selectedStudentId: widget.childDetails[0].id.toString(),
+                onStudentSelected: (studentId) {
+                  setState(() {
+                    selectedStudentId = studentId;
+                  });
+                },
                 isDark: context.read<ThemeModeCubit>().currentTheme ==
                         ThemeMode.dark
                     ? true
@@ -101,7 +107,9 @@ class _NotificationViewState extends State<NotificationView>
             },
             child: const Icon(Icons.arrow_back_ios)),
       ),
-      body: NotificationViewBody(resultForChildDetails: widget.childDetails),
+      body: NotificationViewBody(
+          resultForChildDetails: widget.childDetails,
+          selectedStudentId: selectedStudentId),
     );
   }
 }

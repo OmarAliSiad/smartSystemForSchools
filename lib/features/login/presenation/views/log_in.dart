@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:smartsystemforschools/core/utils/auth_service.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/sign_up_screen.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/methods/vaildate_password.dart';
@@ -132,7 +133,15 @@ class _LogInState extends State<LogIn> {
                         children: [
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).pushNamed(SendCode.id);
+                              // AuthService().forgotPassword(
+                              //           context: context,
+                              //           email: ,
+                              //           body: {
+                              //             "email": user.email,
+                              //             "clientUrl":
+                              //                 "https://student-7e31f.web.app/forgot-password",
+                              //           });
+                              // Navigator.of(context).pushNamed(SendCode.id);
                             },
                             child: Text(
                               LocaleKeys.Auth_forgotPassword.tr(),

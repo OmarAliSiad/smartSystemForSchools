@@ -36,6 +36,13 @@ abstract class AppStyles {
     );
   }
 
+  static TextStyle styleMedium15() {
+    return const TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w500,
+    );
+  }
+
   static TextStyle styleMedium20() {
     return const TextStyle(
       fontSize: 20,
@@ -110,6 +117,13 @@ abstract class AppStyles {
   static TextStyle styleBold14() {
     return const TextStyle(
       fontSize: 14,
+      fontWeight: FontWeight.w700,
+    );
+  }
+
+  static TextStyle styleBold16() {
+    return const TextStyle(
+      fontSize: 16,
       fontWeight: FontWeight.w700,
     );
   }
