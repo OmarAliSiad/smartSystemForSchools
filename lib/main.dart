@@ -183,10 +183,10 @@ class MyApp extends StatelessWidget {
                     }
                   },
                   builder: (context, state) {
-                    if (state is InternetConnected) {
-                      return child!;
-                    } else {
+                    if (state is InternetDisconnected) {
                       return const DisconnectedPageView();
+                    } else {
+                      return child!;
                     }
                   },
                 );

@@ -31,6 +31,20 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
   List<ResultForChildDetails> _children = [];
   ResultForChildDetails? _selectedChild;
   bool _isLoadingChildren = true;
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  // Blood type selection
+  final List<String> _bloodTypes = [
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'AB+',
+    'AB-',
+    'O+',
+    'O-'
+  ];
+  String? _selectedBloodType;
   // final List<String> _dietaryOptions = [
   //   'Vegetarian',
   //   'Vegan',
@@ -180,6 +194,133 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
                       )
                           .animate()
                           .fadeIn(delay: 100.ms, duration: 500.ms)
+                          .slideY(begin: 0.2, end: 0),
+                      const SizedBox(height: 16),
+                      // NEW: Weight field
+                      Text(
+                        'Weight (kg)',
+                        style: AppStyles.styleMedium20(),
+                      )
+                          .animate()
+                          .fadeIn(delay: 150.ms, duration: 500.ms)
+                          .slideY(begin: 0.2, end: 0),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _weightController,
+                        decoration: InputDecoration(
+                          focusedBorder: buildOutlineBorder(borderRadius: 10),
+                          enabledBorder: buildOutlineBorder(borderRadius: 10),
+                          border: buildOutlineBorder(borderRadius: 10),
+                          labelText: 'Weight in kg',
+                          labelStyle: AppStyles.styleMedium16().copyWith(
+                            color: isDarkMode == true
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                        style: AppStyles.styleMedium16(),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter child\'s weight';
+                          }
+                          if (double.tryParse(value) == null) {
+                            return 'Please enter a valid weight';
+                          }
+                          return null;
+                        },
+                      )
+                          .animate()
+                          .fadeIn(delay: 150.ms, duration: 500.ms)
+                          .slideY(begin: 0.2, end: 0),
+                      const SizedBox(height: 16),
+
+                      // NEW: Height field
+                      Text(
+                        'Height (cm)',
+                        style: AppStyles.styleMedium20(),
+                      )
+                          .animate()
+                          .fadeIn(delay: 175.ms, duration: 500.ms)
+                          .slideY(begin: 0.2, end: 0),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _heightController,
+                        decoration: InputDecoration(
+                          focusedBorder: buildOutlineBorder(borderRadius: 10),
+                          enabledBorder: buildOutlineBorder(borderRadius: 10),
+                          border: buildOutlineBorder(borderRadius: 10),
+                          labelText: 'Height in cm',
+                          labelStyle: AppStyles.styleMedium16().copyWith(
+                            color: isDarkMode == true
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                        style: AppStyles.styleMedium16(),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter child\'s height';
+                          }
+                          if (double.tryParse(value) == null) {
+                            return 'Please enter a valid height';
+                          }
+                          return null;
+                        },
+                      )
+                          .animate()
+                          .fadeIn(delay: 175.ms, duration: 500.ms)
+                          .slideY(begin: 0.2, end: 0),
+                      const SizedBox(height: 16),
+
+                      // NEW: Blood Type field
+                      Text(
+                        'Blood Type',
+                        style: AppStyles.styleMedium20(),
+                      )
+                          .animate()
+                          .fadeIn(delay: 190.ms, duration: 500.ms)
+                          .slideY(begin: 0.2, end: 0),
+                      const SizedBox(height: 8),
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          focusedBorder: buildOutlineBorder(borderRadius: 10),
+                          enabledBorder: buildOutlineBorder(borderRadius: 10),
+                          border: buildOutlineBorder(borderRadius: 10),
+                          labelText: 'Select Blood Type',
+                          labelStyle: AppStyles.styleMedium16().copyWith(
+                            color: isDarkMode == true
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                          filled: false,
+                        ),
+                        dropdownColor:
+                            isDarkMode == true ? Colors.black : Colors.white,
+                        value: _selectedBloodType,
+                        style: AppStyles.styleMedium16().copyWith(
+                            color: isDarkMode ? Colors.white : Colors.black),
+                        items: _bloodTypes.map((type) {
+                          return DropdownMenuItem(
+                            value: type,
+                            child: Text(type),
+                          );
+                        }).toList(),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a blood type';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedBloodType = value;
+                          });
+                        },
+                      )
+                          .animate()
+                          .fadeIn(delay: 190.ms, duration: 500.ms)
                           .slideY(begin: 0.2, end: 0),
                       const SizedBox(height: 16),
 
@@ -344,6 +485,9 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
                                   allergies: _selectedAllergies,
                                   dietaryPreferences: _selectedDietaryOptions,
                                   time: _selectedMealType,
+                                  bloodType: _selectedBloodType ?? "Unknown",
+                                  weight: double.parse(_weightController.text),
+                                  height: double.parse(_heightController.text),
                                 );
                                 log(profile.toJson().toString());
                                 context

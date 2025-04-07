@@ -6,7 +6,12 @@ import 'package:smartsystemforschools/core/connectivity_cubit/connectivity_state
 class InternetCubit extends Cubit<InternetState> {
   final Connectivity connectivity;
   late StreamSubscription connectivityStreamSubscription;
+
   InternetCubit({required this.connectivity}) : super(InternetLoading()) {
+    // Check the initial connectivity state when the cubit is created
+    checkInternetConnection();
+
+    // Set up the stream subscription to monitor changes
     connectivityStreamSubscription =
         connectivity.onConnectivityChanged.listen((connectivityResult) {
       if (connectivityResult == ConnectivityResult.wifi) {
@@ -18,13 +23,19 @@ class InternetCubit extends Cubit<InternetState> {
       }
     });
   }
+
   Future<void> checkInternetConnection() async {
     try {
       var connectivityResult = await connectivity.checkConnectivity();
       if (connectivityResult == ConnectivityResult.none) {
         emit(InternetDisconnected());
-      } else {
+      } else if (connectivityResult == ConnectivityResult.wifi) {
         emit(InternetConnected(connectionType: ConnectionType.wifi));
+      } else if (connectivityResult == ConnectivityResult.mobile) {
+        emit(InternetConnected(connectionType: ConnectionType.mobile));
+      } else {
+        // Handle other connection types or keep as loading
+        emit(InternetLoading());
       }
     } catch (e) {
       emit(InternetDisconnected());

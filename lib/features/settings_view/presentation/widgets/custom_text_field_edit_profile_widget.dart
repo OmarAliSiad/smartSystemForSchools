@@ -40,7 +40,13 @@ class CustomTextFieldEditProfile extends StatelessWidget {
         TextFormField(
           enabled: enable,
           maxLength: length,
-          style: TextStyle(color: !enable ? Colors.grey : Colors.grey),
+          style: TextStyle(
+              color: !enable
+                  ? Colors.grey
+                  : context.read<ThemeModeCubit>().currentTheme ==
+                          ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black),
           keyboardType: keyboardType,
           controller: controller,
           maxLines: 1,

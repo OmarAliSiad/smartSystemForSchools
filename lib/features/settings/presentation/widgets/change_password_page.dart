@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'package:animate_do/animate_do.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
 import 'package:smartsystemforschools/core/utils/auth_service.dart';
+import 'package:smartsystemforschools/core/widgets/show_dialog.dart';
 import 'package:smartsystemforschools/features/login/presenation/widgets/custom_text_field.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/custom_button.dart';
@@ -93,9 +95,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     String email =
                         sharedPreferences.getString(Constants.email).toString();
                     log(email);
-                    if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate() && email.isNotEmpty) {
                       await AuthService()
                           .forgotPassword(context: context, email: email);
+                    } else {
+                      if (email.isEmpty) {
+                        showAswemoDialog(
+                          dialogType: DialogType.error,
+                          context: context,
+                          title: 'Failed',
+                          desc: 'go to edit page and enter your email',
+                        );
+                      }
                     }
                   },
                 ),

@@ -39,6 +39,7 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
     return """
     My child is ${profile.age} years old and has allergies to $allergiesText. 
     They have dietary preferences: $preferencesText.
+    And he is weight ${profile.weight} kg and height ${profile.height} cm and his blood type ${profile.bloodType}.
     Please provide a comprehensive list of food products that are forbidden or not recommended for ${mealType.toLowerCase()} options${timeOfDay != null ? ' for $timeOfDay' : ''}.
     For each option, include:
     - Name
@@ -118,7 +119,6 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
               ingredientsList.add(ingredient);
             }
           }
-
           // Extract disadvantages
           final harmful = RegExp(
               r"\*\*Why it\'s harmful:\*\*(.*?)(?=\*\*Kid-Friendly|$)",
@@ -202,7 +202,6 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
     }
     return recommendations;
   }
-
   String _extractSection(String text, String sectionName) {
     final sectionRegex =
         RegExp('\\*\\*$sectionName\\*\\*(.+?)(?=\\*\\*|\$)', dotAll: true);

@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartsystemforschools/core/utils/Constants.dart';
 import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
 import '../../../../core/methods/show_scaffold_messanger.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -66,6 +68,13 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
                 });
                 late Response response;
                 try {
+                  SharedPreferences sharedPreferences =
+                      await SharedPreferences.getInstance();
+                  String email = sharedPreferences.getString(Constants.email)!;
+                
+                  log('email $email');
+                  log('email ${widget.userName.text}');
+                  log('password ${widget.password.text}');
                   response = await AuthService().login(
                     url: 'https://school-api.runasp.net/api/Account/login',
                     body: {

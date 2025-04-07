@@ -78,22 +78,15 @@ class AuthService {
   Future<void> forgotPassword(
       {required BuildContext context, required String email}) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString(Constants.token);
-      if (token == null) {
-        throw Exception('No authentication token found');
-      }
       Response response = await dio.post(
         'https://school-api.runasp.net/api/Account/forgotPassword',
         data: {
           "email": email,
-          "clientUrl":
-              "https://school-api.runasp.net/api/Account/forgotPassword",
+          "clientUrl": "https://student-7e31f.web.app/reset-password",
         },
         options: Options(
           headers: {
             'accept': '*/*',
-            'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
           },
         ),
@@ -178,7 +171,7 @@ class AuthService {
     String? name = prefs.getString(
       Constants.username,
     );
-    String? email = prefs.getString(Constants.email);
+    String email = prefs.getString(Constants.email)!;
     String? schoolTenantId = prefs.getString(Constants.schoolTenantId);
     String? userId = prefs.getString(Constants.userId);
     // String? roles = prefs.getString('roles');
