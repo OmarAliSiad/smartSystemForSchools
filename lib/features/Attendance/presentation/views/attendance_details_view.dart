@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -133,8 +135,7 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
         title: 'Attendance Details',
         textStyle: AppStyles.styleSemiBold20().copyWith(color: Colors.white),
         onTapBack: () {
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil(MainScreen.id, (context) => false);
+          Navigator.of(context).pop();
         },
       ),
       body: isLoading
@@ -401,6 +402,7 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
       final date = now.subtract(Duration(days: 6 - index));
       return daysOfWeek[date.weekday - 1];
     });
+
     // Debug output to verify data
     if (historicalAttendance.isEmpty) {
       return Center(
@@ -435,9 +437,7 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
             childResult.attendances!.isNotEmpty;
       }
     }
-
-    debugPrint("Attendance by day: $attendanceByDay");
-
+    log("Attendance by day: $attendanceByDay");
     return BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
@@ -495,9 +495,8 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
         borderData: FlBorderData(show: false),
         gridData: FlGridData(show: false),
         barGroups: List.generate(7, (index) {
-          // Get attendance status for this day
+          // Fixed: Simply use the attendance status directly for this day
           bool? isPresent = attendanceByDay[index];
-
           return BarChartGroupData(
             x: index,
             barRods: [

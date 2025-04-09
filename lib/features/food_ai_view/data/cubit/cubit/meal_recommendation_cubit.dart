@@ -202,6 +202,7 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
     }
     return recommendations;
   }
+
   String _extractSection(String text, String sectionName) {
     final sectionRegex =
         RegExp('\\*\\*$sectionName\\*\\*(.+?)(?=\\*\\*|\$)', dotAll: true);

@@ -68,7 +68,7 @@ class _CustomDetailsChildViewState extends State<CustomDetailsChildView> {
                     ),
                     //price
                     Text(
-                      widget.childDetailsModel.amountOfMoney.toString(),
+                      '${widget.childDetailsModel.amountOfMoney.toString()}\$',
                       style: AppStyles.styleSemiBold14()
                           .copyWith(color: const Color(0xff1A0F91)),
                     )

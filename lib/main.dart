@@ -21,6 +21,7 @@ import 'package:smartsystemforschools/features/Allergies/data/manager/cubit/get_
 import 'package:smartsystemforschools/features/Allergies/presentation/views/AllergiesView.dart';
 import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
+import 'package:smartsystemforschools/features/chatbot/data/cubit/chatbot_cubit.dart';
 import 'package:smartsystemforschools/features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
 import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
 import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
@@ -109,6 +110,7 @@ class MyApp extends StatelessWidget {
           create: (context) => NotificationCubit(),
         ),
         BlocProvider(create: (context) => MealRecommendationCubit()),
+        BlocProvider(create: (context) => ChatCubit()),
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {

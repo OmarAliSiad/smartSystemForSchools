@@ -105,7 +105,10 @@ class _HomeViewState extends State<HomeView> {
               ),
               SliverToBoxAdapter(
                 child: BounceInDown(
-                  child: const CustomBalanceCardDetails(),
+                  child: CustomBalanceCardDetails(
+                    balance: childDetails.fold(0.0,
+                        (sum, child) => sum + (child.amountOfMoney ?? 0.0)),
+                  ),
                 ),
               ),
               const SliverToBoxAdapter(

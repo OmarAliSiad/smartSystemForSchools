@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
+import 'package:smartsystemforschools/features/chatbot/presentation/chat_screen.dart';
 import 'package:smartsystemforschools/features/food_ai_view/screens/food_ai_screen.dart';
 import 'package:smartsystemforschools/features/payment/presentation/views/payment_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
@@ -26,6 +27,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     AttendanceView(key: UniqueKey()),
     PaymentView(key: UniqueKey()),
     FoodAiScreen(key: UniqueKey()),
+    ChatbotScreen(key: UniqueKey()),
     // TrackingView(
     //     onLocationSelected: (p0) {},
     //     initialLocations: const [],
@@ -45,7 +47,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   void _initAnimations() {
     // Initialize animation controllers for each tab
     _animationControllers = List.generate(
-      5,
+      6,
       (index) => AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 400),
@@ -165,6 +167,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   primaryColor: primaryColor,
                   secondaryColor: secondaryColor,
                 ),
+                _buildNavItem(
+                  index: 5,
+                  iconPath: Assets.imagesChatbot,
+                  label: 'ChatBot',
+                  primaryColor: primaryColor,
+                  secondaryColor: secondaryColor,
+                )
               ],
             ),
           ),

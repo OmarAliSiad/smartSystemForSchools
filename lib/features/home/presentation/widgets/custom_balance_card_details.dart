@@ -6,8 +6,9 @@ import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
 
 class CustomBalanceCardDetails extends StatelessWidget {
+  final double balance;
   const CustomBalanceCardDetails({
-    super.key,
+    super.key, required this.balance,
   });
 
   @override
@@ -42,7 +43,7 @@ class CustomBalanceCardDetails extends StatelessWidget {
               ],
             ),
             Text(
-              LocaleKeys.balanceCardDetails_balancePrice.tr(),
+              '$balance EGP',
               style: AppStyles.styleBold24().copyWith(
                 color: Colors.white,
               ),

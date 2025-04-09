@@ -71,7 +71,7 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
                   SharedPreferences sharedPreferences =
                       await SharedPreferences.getInstance();
                   String email = sharedPreferences.getString(Constants.email)!;
-                
+
                   log('email $email');
                   log('email ${widget.userName.text}');
                   log('password ${widget.password.text}');
