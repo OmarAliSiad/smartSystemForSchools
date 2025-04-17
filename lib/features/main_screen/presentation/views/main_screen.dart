@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
-import 'package:smartsystemforschools/features/chatbot/presentation/chat_screen.dart';
+import 'package:smartsystemforschools/features/chatbot/presentation/chat_bot_screen.dart';
 import 'package:smartsystemforschools/features/food_ai_view/screens/food_ai_screen.dart';
 import 'package:smartsystemforschools/features/payment/presentation/views/payment_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';

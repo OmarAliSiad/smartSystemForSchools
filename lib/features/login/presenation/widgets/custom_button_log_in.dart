@@ -70,9 +70,13 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
                 try {
                   SharedPreferences sharedPreferences =
                       await SharedPreferences.getInstance();
-                  String email = sharedPreferences.getString(Constants.email)!;
-
-                  log('email $email');
+                  if (sharedPreferences.containsKey(Constants.email)) {
+                    String email =
+                        sharedPreferences.getString(Constants.email)!;
+                    log('email $email');
+                  } else {
+                    log('email not found in SharedPreferences');
+                  }
                   log('email ${widget.userName.text}');
                   log('password ${widget.password.text}');
                   response = await AuthService().login(
