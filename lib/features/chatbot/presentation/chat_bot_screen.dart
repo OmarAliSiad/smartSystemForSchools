@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/notification_details_screen.dart';
+import 'package:smartsystemforschools/core/services/notification_service/notification_details_screen.dart';
 import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'package:smartsystemforschools/features/chatbot/data/cubit/cubit/chatbot_cubit.dart';
 import 'package:smartsystemforschools/features/chatbot/data/cubit/cubit/chatbot_state.dart';
@@ -644,14 +644,14 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     }
   }
 
-  Future<void> _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null && result.files.single.path != null) {
-      setState(() {
-        _selectedFilePath = result.files.single.path;
-      });
-    }
-  }
+  // Future<void> _pickFile() async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles();
+  //   if (result != null && result.files.single.path != null) {
+  //     setState(() {
+  //       _selectedFilePath = result.files.single.path;
+  //     });
+  //   }
+  // }
 
   void _sendMessage(BuildContext context) {
     if (_messageController.text.isNotEmpty ||

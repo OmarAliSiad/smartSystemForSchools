@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/notification_service.dart';
+import 'package:smartsystemforschools/core/services/notification_service/notification_service.dart';
 import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_state.dart';
 
 // Cubit

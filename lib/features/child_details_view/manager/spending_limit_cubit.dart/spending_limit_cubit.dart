@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-import 'package:smartsystemforschools/core/utils/school_service.dart';
+import 'package:smartsystemforschools/core/services/school_service/school_service.dart';
 import 'package:smartsystemforschools/features/child_details_view/manager/models/get_sending_limit/get_sending_limit.dart';
 
 part 'spending_limit_state.dart';

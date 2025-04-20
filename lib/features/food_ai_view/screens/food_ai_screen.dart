@@ -13,7 +13,7 @@ import 'package:smartsystemforschools/features/food_ai_view/data/models/child_mo
 import 'package:smartsystemforschools/features/food_ai_view/screens/recommdation_screen.dart';
 import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
 import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/core/utils/school_service.dart';
+import 'package:smartsystemforschools/core/services/school_service/school_service.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/widgets/custom_text_field_edit_profile_widget.dart';
 

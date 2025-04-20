@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/models/allegry_details/allegry_details.dart';
 import 'package:smartsystemforschools/features/Allergies/data/manager/assing_allegris/allegris_state.dart';
-import '../../../../../core/utils/allegris_service.dart';
+import '../../../../../core/services/alllegris_service/allegris_service.dart';
 
 class AllergiesCubit extends Cubit<AllergiesState> {
   final AllergiesService allergiesService;

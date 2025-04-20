@@ -8,7 +8,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:smartsystemforschools/core/models/attendance_model/attendance.dart';
 import 'package:smartsystemforschools/core/models/attendance_model/attendance_model.dart';
 import 'package:smartsystemforschools/core/models/attendance_model/result.dart';
-import 'package:smartsystemforschools/core/utils/attendance_service.dart';
+import 'package:smartsystemforschools/core/services/attendance_service/attendance_service.dart';
 import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/utils/app_styles.dart';

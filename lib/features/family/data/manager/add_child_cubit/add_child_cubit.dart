@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import '../../../../../core/models/get_child_details/result.dart';
-import '../../../../../core/utils/school_service.dart';
+import '../../../../../core/services/school_service/school_service.dart';
 
 part 'add_child_cubit_state.dart';
 

@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
+import 'package:smartsystemforschools/core/services/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
 import 'package:smartsystemforschools/features/notification_view/data/models/notification_model/notification_model.dart';
 
 class NotificationService {

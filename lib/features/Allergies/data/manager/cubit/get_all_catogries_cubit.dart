@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smartsystemforschools/core/models/catogry_details/catgory_details.dart';
-import 'package:smartsystemforschools/core/utils/allegris_service.dart';
+import 'package:smartsystemforschools/core/services/alllegris_service/allegris_service.dart';
 
 part 'get_all_catogries_state.dart';
 

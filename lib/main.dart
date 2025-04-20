@@ -13,16 +13,15 @@ import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart'
 import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
 import 'package:smartsystemforschools/core/themes/dark_theme.dart';
 import 'package:smartsystemforschools/core/themes/light_theme.dart';
-import 'package:smartsystemforschools/core/utils/allegris_service.dart';
+import 'package:smartsystemforschools/core/services/alllegris_service/allegris_service.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/core/utils/disconnect_page_view.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/messaging_config.dart';
+import 'package:smartsystemforschools/core/services/notification_service/messaging_config.dart';
 import 'package:smartsystemforschools/features/Allergies/data/manager/cubit/get_all_catogries_cubit.dart';
 import 'package:smartsystemforschools/features/Allergies/presentation/views/AllergiesView.dart';
 import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
 import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
 import 'package:smartsystemforschools/features/chatbot/data/cubit/cubit/chatbot_cubit.dart';
-import 'package:smartsystemforschools/features/chatbot/data/cubit/cubit/chat_history_cubit.dart';
 import 'package:smartsystemforschools/features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
 import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
 import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
@@ -48,7 +47,7 @@ import 'package:smartsystemforschools/features/settings_view/presentation/views/
 import 'package:smartsystemforschools/firebase_options.dart';
 import 'package:smartsystemforschools/generated/codegen_loader.g.dart';
 import 'package:smartsystemforschools/features/settings/presentation/widgets/change_password_page.dart';
-import 'core/utils/auth_service.dart';
+import 'core/services/auth_service/auth_service.dart';
 import 'features/Allergies/data/manager/assing_allegris/allegris.dart';
 import 'features/splash_feature/presenation/views/splash_view.dart';
 import 'features/settings/presentation/views/settings_view.dart';

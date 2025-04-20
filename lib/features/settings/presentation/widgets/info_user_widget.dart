@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import '../../../../core/utils/auth_service.dart';
+import '../../../../core/services/auth_service/auth_service.dart';
 import '../../../login/data/models/user_info_model.dart';
 
 class InfoUserRowWidget extends StatefulWidget {

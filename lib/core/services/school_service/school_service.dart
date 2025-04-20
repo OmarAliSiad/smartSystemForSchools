@@ -5,8 +5,8 @@ import 'package:smartsystemforschools/core/models/get_school_details_by_id/get_s
 import 'package:smartsystemforschools/core/models/payment_checkout_model/payment_checkout_model.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
 import 'package:smartsystemforschools/features/child_details_view/manager/models/get_sending_limit/get_sending_limit.dart';
-import '../models/get_all_schools/get_all_schools.dart';
-import '../models/get_child_details/result.dart';
+import '../../models/get_all_schools/get_all_schools.dart';
+import '../../models/get_child_details/result.dart';
 
 class SchoolService {
   final Dio dio = Dio();

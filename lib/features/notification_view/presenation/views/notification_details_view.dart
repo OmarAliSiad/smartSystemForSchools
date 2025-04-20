@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
+import 'package:smartsystemforschools/core/services/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
 import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
 import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_state.dart';

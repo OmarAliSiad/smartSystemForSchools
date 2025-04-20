@@ -4,7 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/notification_model.dart';
+import 'package:smartsystemforschools/core/services/notification_service/notification_model.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:smartsystemforschools/main.dart';
 

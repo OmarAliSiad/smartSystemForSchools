@@ -4,7 +4,7 @@ import 'package:smartsystemforschools/core/models/get_all_schools/result.dart';
 import 'package:smartsystemforschools/core/models/get_school_details_by_id/get_school_details_by_id.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
-import 'package:smartsystemforschools/core/utils/school_service.dart';
+import 'package:smartsystemforschools/core/services/school_service/school_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class SchoolViewDetails extends StatefulWidget {

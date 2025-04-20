@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartsystemforschools/core/models/allegry_details/allegry_details.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
-import '../models/catogry_details/catgory_details.dart';
+import '../../models/catogry_details/catgory_details.dart';
 
 class AllergiesService {
   Dio dio = Dio();

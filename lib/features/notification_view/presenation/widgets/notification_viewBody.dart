@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/notification_service.dart';
+import 'package:smartsystemforschools/core/services/notification_service/notification_service.dart';
 import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
 import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_state.dart';

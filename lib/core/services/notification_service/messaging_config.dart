@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/send_notification_services.dart';
+import 'package:smartsystemforschools/core/services/notification_service/send_notification_services.dart';
 import 'package:smartsystemforschools/main.dart';
 
 class MessagingConfig {

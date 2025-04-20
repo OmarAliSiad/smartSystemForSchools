@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/core/utils/assets.dart';
-import 'package:smartsystemforschools/core/utils/auth_service.dart';
+import 'package:smartsystemforschools/core/services/auth_service/auth_service.dart';
 import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/custom_button.dart';
 import 'package:smartsystemforschools/core/widgets/custom_bottom_container.dart';

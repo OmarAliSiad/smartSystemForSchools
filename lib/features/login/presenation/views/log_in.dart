@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/core/utils/auth_service.dart';
+import 'package:smartsystemforschools/core/services/auth_service/auth_service.dart';
 import 'package:smartsystemforschools/features/login/presenation/views/sign_up_screen.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/methods/vaildate_password.dart';

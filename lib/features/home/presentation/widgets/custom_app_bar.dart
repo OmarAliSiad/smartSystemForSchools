@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/core/utils/auth_service.dart';
+import 'package:smartsystemforschools/core/services/auth_service/auth_service.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_state.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -198,14 +198,6 @@ class _CustomAppBarHomeViewState extends State<CustomAppBarHomeView>
                                 child: LinearProgressIndicator(
                                   backgroundColor: Colors.transparent,
                                 ),
-                              ),
-                            )
-                          else if (_errorMessage.isNotEmpty)
-                            Text(
-                              'Error loading user info',
-                              style: AppStyles.styleSemiBold20().copyWith(
-                                color: Colors.red,
-                                fontSize: 14,
                               ),
                             )
                           else

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/notification_service.dart';
+import 'package:smartsystemforschools/core/services/notification_service/notification_service.dart';
 import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
 import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_state.dart';
 import 'package:smartsystemforschools/features/notification_view/presenation/widgets/show_modal_bottom_sheet.dart';

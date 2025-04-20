@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart' as auth;
-import 'package:smartsystemforschools/core/utils/notification_service/notification_details_screen.dart';
-import 'package:smartsystemforschools/core/utils/notification_service/notification_model.dart';
+import 'package:smartsystemforschools/core/services/notification_service/notification_details_screen.dart';
+import 'package:smartsystemforschools/core/services/notification_service/notification_model.dart';
 
 Future<String> getAccessToken() async {
   final jsonString = await rootBundle.loadString(

@@ -6,7 +6,7 @@ import 'package:smartsystemforschools/core/utils/Constants.dart';
 import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
 import '../../../../core/methods/show_scaffold_messanger.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/auth_service.dart';
+import '../../../../core/services/auth_service/auth_service.dart';
 import '../../data/models/user_info_model.dart';
 
 class CustomButtonLogIn extends StatefulWidget {

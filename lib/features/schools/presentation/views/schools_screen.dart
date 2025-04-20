@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smartsystemforschools/core/models/get_all_schools/result.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import '../../../../core/utils/school_service.dart';
+import '../../../../core/services/school_service/school_service.dart';
 import '../../../../features/schools/presentation/views/school_view_details.dart';
 
 class SchoolsScreen extends StatefulWidget {
