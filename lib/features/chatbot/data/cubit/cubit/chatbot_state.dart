@@ -19,7 +19,8 @@ class ChatState {
     return ChatState(
       messages: messages ?? this.messages,
       isLoading: isLoading ?? this.isLoading,
-      currentTypingResponse: currentTypingResponse ?? this.currentTypingResponse,
+      currentTypingResponse:
+          currentTypingResponse ?? this.currentTypingResponse,
     );
   }
 }

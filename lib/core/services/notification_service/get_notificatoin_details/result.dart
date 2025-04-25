@@ -23,7 +23,8 @@ class ResultForNotificationDetails {
     this.studentTransactionItems,
   });
 
-  factory ResultForNotificationDetails.fromJson(Map<String, dynamic> json) => ResultForNotificationDetails(
+  factory ResultForNotificationDetails.fromJson(Map<String, dynamic> json) =>
+      ResultForNotificationDetails(
         id: json['id'] as String?,
         moneyAmountSpended: json['moneyAmountSpended'] as double?,
         studentId: json['studentId'] as String?,

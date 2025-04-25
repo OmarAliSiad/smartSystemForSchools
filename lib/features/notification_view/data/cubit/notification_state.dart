@@ -4,7 +4,7 @@ import 'package:smartsystemforschools/features/notification_view/data/models/not
 
 abstract class NotificationState extends Equatable {
   const NotificationState();
-  
+
   @override
   List<Object?> get props => [];
 }
@@ -15,36 +15,36 @@ class NotificationLoading extends NotificationState {}
 
 class GetAllNotificationLoadedSuccessfully extends NotificationState {
   final NotificationModel notificationModel;
-  
+
   const GetAllNotificationLoadedSuccessfully({required this.notificationModel});
-  
+
   @override
   List<Object?> get props => [notificationModel];
 }
 
 class NotificationDetailsLoaded extends NotificationState {
   final GetNotificatoinDetails notificationDetails;
-  
+
   const NotificationDetailsLoaded({required this.notificationDetails});
-  
+
   @override
   List<Object?> get props => [notificationDetails];
 }
 
 class NotificationDeleted extends NotificationState {
   final String message;
-  
+
   const NotificationDeleted({required this.message});
-  
+
   @override
   List<Object?> get props => [message];
 }
 
 class NotificationFailure extends NotificationState {
   final String error;
-  
+
   const NotificationFailure({required this.error});
-  
+
   @override
   List<Object?> get props => [error];
 }

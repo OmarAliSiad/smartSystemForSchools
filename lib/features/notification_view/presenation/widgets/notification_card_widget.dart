@@ -116,7 +116,8 @@ class NotificationCard extends StatelessWidget {
       final DateTime date = DateTime.parse(dateStr);
 
       // Format as needed - using a shorter format
-      return DateFormat('MMM d, h:mm a').format(date);
+      return DateFormat('MMM d, h:mm a')
+          .format(date.add(const Duration(hours: 1)));
     } catch (e) {
       return dateStr; // Return original if parsing fails
     }

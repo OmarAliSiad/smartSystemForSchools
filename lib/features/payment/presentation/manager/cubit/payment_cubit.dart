@@ -1,16 +1,17 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:meta/meta.dart';
-import 'package:smartsystemforschools/core/models/payment_checkout_model/payment_checkout_model.dart';
-import 'package:smartsystemforschools/core/services/school_service/school_service.dart';
+import 'package:smartsystemforschools/core/models/get_balance/get_balance.dart';
+import 'package:smartsystemforschools/core/models/money_recharge_model/money_recharge_model.dart';
+import 'package:smartsystemforschools/core/models/parent_to_stuent_transcation/parent_to_stuent_transcation.dart';
+import 'package:smartsystemforschools/core/models/parent_to_stuent_transcation/result.dart';
+import 'package:smartsystemforschools/core/services/payment_service/payment_service.dart';
 import 'package:smartsystemforschools/core/services/stripe_service.dart';
 import '../../../../../core/utils/paymobService.dart';
 import '../../../data/models/payment_intent_model/payment_intent_input_model.dart';
 import '../../views/payment_webView.dart';
-
 part 'payment_state.dart';
 
 class PaymentCubit extends Cubit<PaymentState> {
@@ -61,8 +62,8 @@ class PaymentCubit extends Cubit<PaymentState> {
       {required String studentId, required String amount}) async {
     try {
       emit(CheckoutPaymentLoading());
-      PaymentCheckoutModel paymentCheckoutModel =
-          await SchoolService().checkPaymentStatus(
+      MoneyRechargeModel paymentCheckoutModel =
+          await PaymentService().moneyRecharge(
         amount: double.parse(amount),
         studentId: studentId,
       );
@@ -92,7 +93,41 @@ class PaymentCubit extends Cubit<PaymentState> {
       emit(CheckoutPaymentFailure(errMessage: error.toString()));
     }
   }
-  // In payment_cubit.dart, add this method:
+
+  Future<void> getBalance() async {
+    emit(GetBalanceLoading());
+    try {
+      GetBalance getBalance = await PaymentService().getBalance();
+      if (getBalance.isSuccess == true) {
+        emit(GetBalanceSuccess(getBalance: getBalance));
+      } else {
+        emit(GetBalanceFailure(errorMessage: getBalance.message.toString()));
+      }
+    } catch (e) {
+      emit(GetBalanceFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> setMoneyForChild(
+      {required String studentId, required double amountOfMoney}) async {
+    emit(SetMoneyLoading());
+    try {
+      await PaymentService()
+          .setMoneyForStudent(
+        amountOfMoney: amountOfMoney,
+        studentId: studentId,
+      )
+          .then((value) {
+        if (value.isSuccess == true || value.statusCode == 200) {
+          emit(SetMoneySuccess(parentToStuentTranscation: value.result!));
+        } else {
+          emit(SetMoneyFailure(errorMessage: value.message!));
+        }
+      });
+    } catch (e) {
+      emit(SetMoneyFailure(errorMessage: e.toString()));
+    }
+  }
 
   Future<void> makePaymentWithSession(
       {required String sessionId,

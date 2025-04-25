@@ -34,10 +34,21 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
   }
 
   loadNotification() async {
-    await context.read<NotificationCubit>().getAllNotifications(
-          filterModel: FilterNotificationModel(
-              studentId: widget.resultForChildDetails[0].id.toString()),
-        );
+    // Get the current cubit
+    final cubit = context.read<NotificationCubit>();
+
+    // Check if we have a saved filter or need to create a new one
+    if (cubit.hasActiveFilter()) {
+      // Just reload with existing filter
+      await cubit.reloadNotifications();
+    } else {
+      // Apply a new filter
+      await cubit.getAllNotifications(
+        filterModel: FilterNotificationModel(
+          studentId: widget.resultForChildDetails[0].id.toString(),
+        ),
+      );
+    }
   }
 
   String knowTheDate({required DateTime createdOn}) {
@@ -46,8 +57,6 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
     DateTime yesterday = today.subtract(const Duration(days: 1));
     DateTime createdDate =
         DateTime(createdOn.year, createdOn.month, createdOn.day);
-    log(createdDate.toIso8601String());
-    log(yesterday.toIso8601String());
     if (createdDate == today) {
       return 'Today';
     } else if (createdDate == yesterday) {
@@ -147,7 +156,22 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
             );
           }
         } else {
-          return const Center(child: Text('empty'));
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.filter_alt,
+                  size: 70,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Select Notification Filters',
+                  style: AppStyles.styleMedium20(),
+                ),
+              ],
+            ),
+          );
         }
       },
     );
@@ -157,6 +181,9 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
 // Replace your current navigation to notification details with this
 void navigateToNotificationDetails(BuildContext context, String notificationId,
     String dateName, NotificationModel notificationModel) async {
+  // Store the current state before navigation
+  final notificationCubit = context.read<NotificationCubit>();
+
   // Navigate and wait for result
   await Navigator.push(
     context,
@@ -167,10 +194,10 @@ void navigateToNotificationDetails(BuildContext context, String notificationId,
         notificationModel: notificationModel,
       ),
     ),
+  ).then(
+    (value) {
+      // Reload notifications after navigation
+      notificationCubit.reloadNotifications();
+    },
   );
-  // When the future completes, the user has returned to this screen
-  // Reload the notifications
-  if (context.mounted) {
-    context.read<NotificationCubit>().reloadNotifications();
-  }
 }

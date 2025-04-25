@@ -1,27 +1,26 @@
 import 'result.dart';
 
-class GetNotificatoinDetails {
+class ParentToStuentTranscation {
   int? statusCode;
   bool? isSuccess;
   String? message;
-  ResultForNotificationDetails? result;
+  Result? result;
 
-  GetNotificatoinDetails({
+  ParentToStuentTranscation({
     this.statusCode,
     this.isSuccess,
     this.message,
     this.result,
   });
 
-  factory GetNotificatoinDetails.fromJson(Map<String, dynamic> json) {
-    return GetNotificatoinDetails(
+  factory ParentToStuentTranscation.fromJson(Map<String, dynamic> json) {
+    return ParentToStuentTranscation(
       statusCode: json['statusCode'] as int?,
       isSuccess: json['isSuccess'] as bool?,
       message: json['message'] as String?,
       result: json['result'] == null
           ? null
-          : ResultForNotificationDetails.fromJson(
-              json['result'] as Map<String, dynamic>),
+          : Result.fromJson(json['result'] as Map<String, dynamic>),
     );
   }
 

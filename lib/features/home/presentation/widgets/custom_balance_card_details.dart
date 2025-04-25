@@ -1,14 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartsystemforschools/core/utils/Constants.dart';
+import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
 
 class CustomBalanceCardDetails extends StatelessWidget {
-  final double balance;
   const CustomBalanceCardDetails({
-    super.key, required this.balance,
+    super.key,
   });
 
   @override
@@ -21,32 +25,73 @@ class CustomBalanceCardDetails extends StatelessWidget {
       child: Padding(
         padding:
             const EdgeInsetsDirectional.only(start: 15, top: 18, bottom: 18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  LocaleKeys.balanceCardDetails_balance.tr(),
-                  style:
-                      AppStyles.styleMedium20().copyWith(color: Colors.white),
+                Row(
+                  children: [
+                    Text(
+                      LocaleKeys.balanceCardDetails_balance.tr(),
+                      style: AppStyles.styleMedium20()
+                          .copyWith(color: Colors.white),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Image.asset(
+                      Assets.imagesWallet,
+                      fit: BoxFit.cover,
+                      width: 24,
+                      height: 24,
+                    )
+                  ],
                 ),
-                const SizedBox(
-                  width: 10,
+                BlocBuilder<PaymentCubit, PaymentState>(
+                  builder: (context, state) {
+                    if (state is GetBalanceLoading) {
+                      return LoadingAnimationWidget.staggeredDotsWave(
+                        color: Colors.white,
+                        size: 24,
+                      );
+                    } else if (state is GetBalanceFailure) {
+                      return Text(
+                        'failed to load balance',
+                        style: AppStyles.styleRegular16().copyWith(
+                          color: Colors.red,
+                        ),
+                      );
+                    } else if (state is GetBalanceSuccess) {
+                      return Text(
+                        '${state.getBalance.result!.amountOfMoney} EGP',
+                        style: AppStyles.styleBold24().copyWith(
+                          color: Colors.white,
+                        ),
+                      );
+                    } else {
+                      context.read<PaymentCubit>().getBalance();
+                      return Text(
+                        '0 EGP',
+                        style: AppStyles.styleBold24().copyWith(
+                          color: Colors.white,
+                        ),
+                      );
+                    }
+                  },
                 ),
-                Image.asset(
-                  Assets.imagesWallet,
-                  fit: BoxFit.cover,
-                  width: 24,
-                  height: 24,
-                )
               ],
             ),
-            Text(
-              '$balance EGP',
-              style: AppStyles.styleBold24().copyWith(
+            const Spacer(),
+            Transform.rotate(
+              angle: 3.14,
+              child: const Icon(
+                Icons.arrow_back_ios,
                 color: Colors.white,
               ),
+            ),
+            const SizedBox(
+              width: 25,
             ),
           ],
         ),

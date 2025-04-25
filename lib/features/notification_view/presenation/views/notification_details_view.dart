@@ -122,7 +122,7 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
                     ),
                     if (notificationDetails.result!.createdOn != null)
                       Text(
-                        'created At ${DateFormat.yMMMd().add_jm().format(notificationDetails.result!.createdOn!)}',
+                        'created At ${DateFormat.yMMMd().add_jm().format(notificationDetails.result!.createdOn!.add(const Duration(hours: 1)))}',
                         style: TextStyle(color: textColor.withOpacity(0.7)),
                       ),
                   ],

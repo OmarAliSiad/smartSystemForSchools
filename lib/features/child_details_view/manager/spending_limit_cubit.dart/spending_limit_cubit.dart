@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
+import 'package:smartsystemforschools/core/services/payment_service/payment_service.dart';
 import 'package:smartsystemforschools/core/services/school_service/school_service.dart';
 import 'package:smartsystemforschools/features/child_details_view/manager/models/get_sending_limit/get_sending_limit.dart';
 
@@ -14,7 +15,7 @@ class SpendingLimitCubit extends Cubit<SpendingLimitState> {
     try {
       emit(SpendingLimitLoading());
       GetSendingLimit getSendingLimit =
-          await SchoolService().getSpenddingLimit(studentId: studentId);
+          await PaymentService().getSpenddingLimit(studentId: studentId);
       if (getSendingLimit.isSuccess == true) {
         emit(GetSpendingLimitSuccess(getSendingLimit));
         return getSendingLimit;
@@ -38,7 +39,7 @@ class SpendingLimitCubit extends Cubit<SpendingLimitState> {
     try {
       emit(SpendingLimitLoading());
       log(dailySpendingLimit.toString());
-      Response response = await SchoolService().addSpendingLimit(
+      Response response = await PaymentService().addSpendingLimit(
           studentId: studentId,
           dailySpendingLimit: dailySpendingLimit,
           weeklySpendingLimit: weeklySpendingLimit,

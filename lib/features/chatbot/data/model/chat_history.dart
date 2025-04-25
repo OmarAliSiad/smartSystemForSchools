@@ -22,9 +22,8 @@ class ChatHistory {
       id: json['id'],
       title: json['title'],
       lastMessageTime: DateTime.parse(json['lastMessageTime']),
-      messages: (json['messages'] as List)
-          .map((m) => Message.fromJson(m))
-          .toList(),
+      messages:
+          (json['messages'] as List).map((m) => Message.fromJson(m)).toList(),
       previewText: json['previewText'],
     );
   }

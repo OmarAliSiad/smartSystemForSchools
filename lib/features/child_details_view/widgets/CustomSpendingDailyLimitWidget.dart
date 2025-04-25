@@ -5,10 +5,10 @@ import '../../../core/utils/app_styles.dart';
 import '../../../generated/locale_keys.g.dart';
 
 class CustomSpendingDailyLimitWidget extends StatelessWidget {
-  final String price;
+  final double dailyLimit;
   const CustomSpendingDailyLimitWidget({
     super.key,
-    required this.price,
+    required this.dailyLimit,
   });
 
   @override
@@ -16,7 +16,7 @@ class CustomSpendingDailyLimitWidget extends StatelessWidget {
     return Column(
       children: [
         Text(
-          price,
+          dailyLimit.toString(),
           style: AppStyles.styleSemiBold14().copyWith(
             color: const Color(0xff5CC2F2),
           ),

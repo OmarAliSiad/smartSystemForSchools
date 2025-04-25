@@ -16,7 +16,6 @@ class Constants {
   static const email = 'email';
   static const image = 'image';
   static const id = 'id';
-
   static const phoneNumber = 'phonenumber';
   static const roles = 'roles';
   static const address = 'address';

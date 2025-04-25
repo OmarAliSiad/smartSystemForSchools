@@ -8,9 +8,13 @@ class CardDetailsChildWidget extends StatelessWidget {
   const CardDetailsChildWidget({
     super.key,
     required this.receviedData,
+    required this.dailylimit,
+    required this.balance,
   });
 
   final ResultForChildDetails receviedData;
+  final double dailylimit;
+  final double balance;
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +53,11 @@ class CardDetailsChildWidget extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsetsDirectional.only(start: 19),
-                    child: CustomBalanceWidget(price: '50' //,
-                        ),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(start: 19),
+                    child: CustomBalanceWidget(
+                      price: balance, //,
+                    ),
                   ),
                   const SizedBox(
                     width: 25,
@@ -68,8 +73,8 @@ class CardDetailsChildWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const CustomSpendingDailyLimitWidget(
-                    price: '40 EGP',
+                  CustomSpendingDailyLimitWidget(
+                    dailyLimit: dailylimit,
                   ),
                 ],
               ),

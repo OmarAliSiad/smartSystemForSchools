@@ -1,20 +1,20 @@
 import 'result.dart';
 
-class PaymentCheckoutModel {
+class MoneyRechargeModel {
   int? statusCode;
   bool? isSuccess;
   String? message;
   Result? result;
 
-  PaymentCheckoutModel({
+  MoneyRechargeModel({
     this.statusCode,
     this.isSuccess,
     this.message,
     this.result,
   });
 
-  factory PaymentCheckoutModel.fromJson(Map<String, dynamic> json) {
-    return PaymentCheckoutModel(
+  factory MoneyRechargeModel.fromJson(Map<String, dynamic> json) {
+    return MoneyRechargeModel(
       statusCode: json['statusCode'] as int?,
       isSuccess: json['isSuccess'] as bool?,
       message: json['message'] as String?,

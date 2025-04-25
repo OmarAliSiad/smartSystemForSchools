@@ -8,6 +8,7 @@ import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart'
 import 'package:smartsystemforschools/core/models/money_recharge_model/money_recharge_model.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
+import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'package:smartsystemforschools/core/widgets/total_fees.dart';
 import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
@@ -46,24 +47,53 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-          ),
-        ),
-        title: Text(
-          "Recharge",
-          style: AppStyles.styleMedium18(),
-        ),
+    return BlocListener<PaymentCubit, PaymentState>(
+      listener: (context, state) {
+        if (state is SetMoneySuccess) {
+          dispalySnackBar(
+            context,
+            title: "Money recharged successfully",
+            titleActionButton: "OK",
+            color: Colors.green,
+          );
+          Navigator.pop(context);
+        } else if (state is SetMoneyFailure) {
+          dispalySnackBar(
+            context,
+            title: state.errorMessage,
+            titleActionButton: "OK",
+            color: Colors.red,
+          );
+        }
+      },
+      child: BlocBuilder<PaymentCubit, PaymentState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                ),
+              ),
+              title: Text(
+                "Recharge",
+                style: AppStyles.styleMedium18(),
+              ),
+            ),
+            body: state is SetMoneyLoading
+                ? buildLoadingView(
+                    "recharge",
+                    context,
+                  )
+                : isCustomAmount
+                    ? _buildCustomAmountView(context)
+                    : _buildPredefinedAmountView(),
+          );
+        },
       ),
-      body: isCustomAmount
-          ? _buildCustomAmountView(context)
-          : _buildPredefinedAmountView(),
     );
   }
 
@@ -399,87 +429,5 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
             ),
           ),
         ));
-  }
-}
-
-Widget buildPaymentOption(String label, bool isSelected) {
-  return Row(
-    children: [
-      Container(
-        width: 20,
-        height: 20,
-        decoration: BoxDecoration(
-          color: isSelected
-              ? Constants.blue /*Color(0xFF00BCD4),*/
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color:
-                isSelected ? Constants.blue /*Color(0xFF00BCD4)*/ : Colors.grey,
-            width: 2,
-          ),
-        ),
-        child: isSelected
-            ? const Icon(
-                Icons.check,
-                size: 12,
-                color: Colors.white,
-              )
-            : null,
-      ),
-      const SizedBox(width: 10),
-      Text(
-        label,
-        style: TextStyle(
-          fontSize: 14,
-          color:
-              isSelected ? Constants.blue /*Color(0xFF00BCD4),*/ : Colors.grey,
-        ),
-      ),
-    ],
-  );
-}
-
-class FilterButton extends StatelessWidget {
-  final String text;
-  final bool isSelected;
-  final bool isPrimary;
-  final VoidCallback onPressed;
-
-  const FilterButton({
-    super.key,
-    required this.text,
-    required this.isSelected,
-    this.isPrimary = false,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isPrimary
-            ? Constants.blue //Color(0xFF00BCD4),
-            : (isSelected ? Colors.white : Colors.grey.shade200),
-        elevation: 0,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: isPrimary
-              ? BorderSide.none
-              : (isSelected
-                  ? const BorderSide(color: Colors.grey, width: 1)
-                  : BorderSide.none),
-        ),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: isPrimary ? Colors.white : Colors.black,
-          fontSize: 14,
-        ),
-      ),
-    );
   }
 }

@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/chatbot/data/cubit/cubit/chatbot_state.dart';
 import 'package:smartsystemforschools/features/chatbot/data/model/message.dart';
+
+import 'chatbot_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final Dio _dio = Dio();
+  // Cache to store image data for the conversation context
+  final Map<String, String> _imageCache = {};
 
   ChatCubit()
       : super(ChatState(
@@ -32,7 +35,15 @@ class ChatCubit extends Cubit<ChatState> {
     ));
 
     try {
-      // Call the AI service
+      // Cache image data if provided
+      if (imagePath != null) {
+        final File imageFile = File(imagePath);
+        final List<int> imageBytes = await imageFile.readAsBytes();
+        final String base64Image = base64Encode(imageBytes);
+        _imageCache[imagePath] = base64Image;
+      }
+
+      // Call the AI service with conversation history
       final response = await _callAIService(message,
           imagePath: imagePath, filePath: filePath);
 
@@ -78,60 +89,72 @@ class ChatCubit extends Cubit<ChatState> {
           'AIzaSyBLTEcKLPeOAeq89fasRpA0s6KbPzeVaJA'; // Replace with your actual API key
 
       // Use the correct, current Gemini API endpoint structure
-      // For multimodal (text+image) use gemini-pro-vision
-      // For text-only use gemini-pro
       const String url =
           'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey';
 
-      final List<Map<String, dynamic>> parts = [];
+      // Build conversation history
+      final List<Map<String, dynamic>> contents = [];
+      // Add previous messages to establish context - limit to last 10 messages
+      // We'll start with oldest messages first
+      // const int historyLimit = 10;
+      // final int startIdx = state.messages.length > historyLimit
+      //     ? state.messages.length - historyLimit
+      //     : 0;
+      int startIdx = 0;
+      for (int i = startIdx; i < state.messages.length; i++) {
+        final Message msg = state.messages[i];
+        final List<Map<String, dynamic>> parts = [];
+        // Add text content
+        parts.add({'text': msg.content});
+        // Add image if this message had one
+        if (msg.imageUrl != null && _imageCache.containsKey(msg.imageUrl)) {
+          parts.add({
+            'inline_data': {
+              'mime_type': _getMimeType(msg.imageUrl!),
+              'data': _imageCache[msg.imageUrl!]
+            }
+          });
+        }
+        contents.add({'role': msg.isUser ? 'user' : 'model', 'parts': parts});
+      }
+
+      // Add current message
+      final List<Map<String, dynamic>> currentParts = [];
 
       // Add text message
-      parts.add({'text': message});
+      currentParts.add({'text': message});
 
-      // Add image data if available
+      // Add image data if available for current message
       if (imagePath != null) {
-        final File imageFile = File(imagePath);
-        final List<int> imageBytes = await imageFile.readAsBytes();
-        final String base64Image = base64Encode(imageBytes);
+        String base64Image;
+        if (_imageCache.containsKey(imagePath)) {
+          base64Image = _imageCache[imagePath]!;
+        } else {
+          final File imageFile = File(imagePath);
+          final List<int> imageBytes = await imageFile.readAsBytes();
+          base64Image = base64Encode(imageBytes);
+          _imageCache[imagePath] = base64Image;
+        }
 
-        parts.add({
+        currentParts.add({
           'inline_data': {
             'mime_type': _getMimeType(imagePath),
             'data': base64Image
           }
         });
       }
-
-      // // Add file mention if available
-      // if (filePath != null) {
-      //   // Just mention the file in the text
-      //   final filename = filePath.split('/').last;
-      //   if (parts.isNotEmpty && parts[0].containsKey('text')) {
-      //     parts[0]['text'] += "\n[File attached: $filename]";
-      //   }
-      // }
-
-      // Create proper request structure for Gemini API
+      // Add current message to contents
+      contents.add({'role': 'user', 'parts': currentParts});
+      // Create proper request structure for Gemini API with conversation history
       Map<String, dynamic> requestBody = {
-        'contents': [
-          {'parts': parts}
-        ],
+        'contents': contents,
         // 'generationConfig': {
         //   'temperature': 0.7,
         //   'maxOutputTokens': 2048,
         // }
       };
-
-      // Configure Dio
       _dio.options.headers['Content-Type'] = 'application/json';
-
-      // Print request for debugging
-      print('Making request to: $url');
-
-      // Make the API request WITHOUT putting the key in the query parameters
-      // since we've already included it in the URL
       final response = await _dio.post(url, data: requestBody);
-
       if (response.statusCode == 200) {
         try {
           final responseData = response.data;
@@ -169,7 +192,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-// Helper method to determine the MIME type from file extension
+  // Helper method to determine the MIME type from file extension
   String _getMimeType(String filePath) {
     final extension = filePath.split('.').last.toLowerCase();
     switch (extension) {
@@ -205,6 +228,16 @@ class ChatCubit extends Cubit<ChatState> {
   void loadMessages(List<Message> messages) {
     emit(state.copyWith(
       messages: messages,
+    ));
+  }
+
+  // Clear conversation history and cache
+  void clearConversation() {
+    _imageCache.clear();
+    emit(ChatState(
+      messages: [],
+      isLoading: false,
+      currentTypingResponse: '',
     ));
   }
 }

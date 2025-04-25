@@ -73,7 +73,10 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
                   if (sharedPreferences.containsKey(Constants.email)) {
                     String email =
                         sharedPreferences.getString(Constants.email)!;
+                    String username =
+                        sharedPreferences.getString(Constants.username)!;
                     log('email $email');
+                    log('username $username');
                   } else {
                     log('email not found in SharedPreferences');
                   }

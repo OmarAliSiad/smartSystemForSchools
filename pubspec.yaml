@@ -31,6 +31,7 @@ dependencies:
   animate_do: ^3.3.4
   awesome_card: ^1.1.7
   awesome_dialog: ^3.2.1
+  cloud_firestore: ^5.6.6
   connectivity_plus: ^4.0.0
   country_code_picker: ^3.1.0
   country_picker: ^2.0.27

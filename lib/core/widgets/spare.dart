@@ -5,8 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/core/models/payment_checkout_model/payment_checkout_model.dart';
+import 'package:smartsystemforschools/core/models/money_recharge_model/money_recharge_model.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
 import 'package:smartsystemforschools/core/utils/api_keys.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
@@ -17,8 +16,11 @@ import 'package:smartsystemforschools/features/payment/presentation/manager/cubi
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
 class AccountScreen extends StatelessWidget {
-  final ResultForChildDetails resultForChildDetails;
-  const AccountScreen({super.key, required this.resultForChildDetails});
+  // final ResultForChildDetails resultForChildDetails;
+  final String username;
+  final double balance;
+  const AccountScreen(
+      {super.key, required this.username, required this.balance});
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +59,14 @@ class AccountScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      resultForChildDetails.amountOfMoney.toString(),
+                      balance.toString(),
                       style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      resultForChildDetails.fullName.toString(),
+                      username,
                       style: TextStyle(
                         fontSize: 16,
                         color: context.read<ThemeModeCubit>().currentTheme ==
@@ -135,25 +137,18 @@ class AccountScreen extends StatelessWidget {
             //     ),
             //   ],
             // ),
-            Expanded(
+            const Expanded(
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/search_person.png',
-                      height: 150,
-                      // If you don't have this asset, you can use a placeholder:
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(
-                          Icons.search,
-                          size: 80,
-                          color: Colors.grey,
-                        );
-                      },
+                    Icon(
+                      Icons.search,
+                      size: 80,
+                      color: Colors.grey,
                     ),
-                    const SizedBox(height: 20),
-                    const Text(
+                    SizedBox(height: 20),
+                    Text(
                       "No Transactions Found",
                       style: TextStyle(
                         fontSize: 16,
@@ -186,7 +181,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
   int? selectedAmount = 20;
   final TextEditingController customAmountController = TextEditingController();
   bool isCustomAmount = false;
-  late PaymentCheckoutModel checkoutPaymentModel;
+  late MoneyRechargeModel checkoutPaymentModel;
 
   double get processingFee {
     final amount = selectedAmount ?? 0;

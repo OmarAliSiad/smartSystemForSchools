@@ -3,10 +3,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/core/services/notification_service/notification_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartsystemforschools/core/utils/Constants.dart';
 import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
+import 'package:smartsystemforschools/core/widgets/spare.dart';
 import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
+import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
 import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/get_child_details/result.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -28,13 +30,15 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  String? parentName;
   List<ResultForChildDetails> childDetails = [];
   bool _isLoading = false;
-
   @override
   void initState() {
     super.initState();
     loadChildDetails();
+    getUserInfo();
+    loadBalance();
   }
 
   @override
@@ -44,23 +48,28 @@ class _HomeViewState extends State<HomeView> {
     loadChildDetails();
   }
 
+  getUserInfo() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    parentName = sharedPreferences.getString(Constants.username);
+  }
+
+  Future<void> loadBalance() async {
+    context.read<PaymentCubit>().getBalance();
+  }
+
   Future<void> loadChildDetails() async {
     setState(() {
       _isLoading = true;
     });
-
     try {
-      // Use the new method that returns a list of children
       final results = await SchoolService().getAllChildDetails();
-
       setState(() {
-        // Clear the list and add all new children
         childDetails.clear();
         childDetails.addAll(results);
         _isLoading = false;
       });
-
       log("Loaded ${results.length} children in HomeView");
+      loadBalance();
     } catch (e) {
       log("Error loading children in HomeView: $e");
       setState(() {
@@ -105,9 +114,30 @@ class _HomeViewState extends State<HomeView> {
               ),
               SliverToBoxAdapter(
                 child: BounceInDown(
-                  child: CustomBalanceCardDetails(
-                    balance: childDetails.fold(0.0,
-                        (sum, child) => sum + (child.amountOfMoney ?? 0.0)),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) {
+                          return BlocBuilder<PaymentCubit, PaymentState>(
+                            builder: (context, state) {
+                              if (state is GetBalanceSuccess) {
+                                return AccountScreen(
+                                  balance:
+                                      state.getBalance.result!.amountOfMoney!,
+                                  username: parentName.toString(),
+                                );
+                              } else {
+                                return AccountScreen(
+                                  balance: 0.0,
+                                  username: parentName.toString(),
+                                );
+                              }
+                            },
+                          );
+                        }),
+                      );
+                    },
+                    child: const CustomBalanceCardDetails(),
                   ),
                 ),
               ),

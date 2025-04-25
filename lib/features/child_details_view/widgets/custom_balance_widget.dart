@@ -5,7 +5,7 @@ import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../core/utils/app_styles.dart';
 
 class CustomBalanceWidget extends StatelessWidget {
-  final String price;
+  final double price;
   const CustomBalanceWidget({
     super.key,
     required this.price,
@@ -16,7 +16,7 @@ class CustomBalanceWidget extends StatelessWidget {
     return Column(
       children: [
         Text(
-          price,
+          price.toString(),
           style: AppStyles.styleSemiBold14().copyWith(
             color: const Color(0xff5CC2F2),
           ),

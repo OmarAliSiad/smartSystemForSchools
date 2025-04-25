@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartsystemforschools/core/utils/Constants.dart';
@@ -120,6 +121,24 @@ class NotificationService {
     } catch (e) {
       log('Error faild to get all notifications : $e');
       return GetNotificatoinDetails(isSuccess: false, message: e.toString());
+    }
+  }
+
+  Future<void> updatePendingTransactionStatus({
+    required String pendingTransactionId,
+    required String status,
+  }) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('pendingTransactions')
+          .doc(pendingTransactionId)
+          .update({
+        'status': status,
+        'responseTimestamp': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      log('Error updating transaction status: $e');
+      throw e;
     }
   }
 }

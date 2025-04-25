@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart' as auth;
+import 'package:smartsystemforschools/core/services/notification_service/confirmation_request_screen.dart';
 import 'package:smartsystemforschools/core/services/notification_service/notification_details_screen.dart';
 import 'package:smartsystemforschools/core/services/notification_service/notification_model.dart';
 
@@ -71,7 +72,23 @@ void handleNotification(BuildContext context, Map<String, dynamic> data) {
   NotificationProductModel productModel =
       NotificationProductModel.fromJson(data); // Deserialize the JSON data
   String route = productModel.route;
-  if (route == NotificationDetails.id) {
+  if (route == ConfirmationRequestScreen.id) {
+    // Parse product details from the notification
+    List<dynamic> products = jsonDecode(data['productDetails']);
+    // Navigate to the confirmation screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ConfirmationRequestScreen(
+          pendingTransactionId: data['pendingTransactionId'],
+          studentId: data['studentId'],
+          studentName: data['studentName'],
+          amountOfMoney: data['amountOfMoney'],
+          products: products,
+        ),
+      ),
+    );
+  } else if (route == NotificationDetails.id) {
     Navigator.push(
       context,
       MaterialPageRoute(

@@ -54,13 +54,14 @@ class NotificationCubit extends Cubit<NotificationState> {
     }
   }
 
-  // Reload notifications with the last used filter
+  // Verify this method in notification_cubit.dart
   Future<void> reloadNotifications() async {
     if (_lastUsedFilter != null) {
-      log('Reloading notifications with stored filter');
+      log('Reloading notifications with stored filter: ${_lastUsedFilter?.studentId}');
       await getAllNotifications(filterModel: _lastUsedFilter);
     } else {
       log('Cannot reload: No filter available');
+      emit(const NotificationFailure(error: 'No filter available'));
     }
   }
 

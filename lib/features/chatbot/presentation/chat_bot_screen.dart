@@ -1,19 +1,18 @@
+import 'dart:developer';
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
+import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
+import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
+import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/services/notification_service/notification_details_screen.dart';
-import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'package:smartsystemforschools/features/chatbot/data/cubit/cubit/chatbot_cubit.dart';
 import 'package:smartsystemforschools/features/chatbot/data/cubit/cubit/chatbot_state.dart';
 import 'package:smartsystemforschools/features/chatbot/data/model/message.dart';
-import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({super.key});
@@ -36,9 +35,6 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       appBar: AnimatedCustomAppBar(
         waveColor: Colors.blue.shade700,
         backgroundColor: Colors.blue.shade900,
-        onTapBack: () {
-          Navigator.of(context).pushReplacementNamed(MainScreen.id);
-        },
         textStyle: AppStyles.styleSemiBold20(),
         title: 'AI ChatBot',
         thereIsIcon: false,
@@ -283,10 +279,64 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 //   themeMode: themeMode,
                 // ),
                 // const SizedBox(width: 8),
-                _buildIconButton(
-                  icon: Icons.photo_rounded,
-                  onPressed: _pickImage,
-                  themeMode: themeMode,
+                BlocBuilder<ChatCubit, ChatState>(
+                  builder: (context, state) {
+                    return _buildIconButton(
+                      icon: Icons.photo_rounded,
+                      onPressed: () {
+                        if (state.isLoading) {
+                          return;
+                        } else {
+                          // Show language selection dialog
+                          showModalBottomSheet(
+                              scrollControlDisabledMaxHeightRatio: .15,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              backgroundColor: themeMode == ThemeMode.dark
+                                  ? Colors.black
+                                  : Colors.white,
+                              context: context,
+                              builder: (context) {
+                                return StatefulBuilder(
+                                    builder: (context, setState) {
+                                  return Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          _pickImage(ImageSource.camera);
+                                        },
+                                        child: ListTile(
+                                          minTileHeight: 50,
+                                          title: Text(
+                                            'camera',
+                                            style: AppStyles.styleMedium15(),
+                                          ),
+                                          trailing: const Icon(Icons.camera),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          _pickImage(ImageSource.gallery);
+                                        },
+                                        child: ListTile(
+                                          minTileHeight: 10,
+                                          title: Text(
+                                            'gallery',
+                                            style: AppStyles.styleMedium15(),
+                                          ),
+                                          trailing:
+                                              const Icon(Icons.browser_updated),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                });
+                              });
+                        }
+                      },
+                      themeMode: themeMode,
+                    );
+                  },
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -332,6 +382,20 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                       maxLines: 3,
                     ),
                   ),
+                ),
+                const SizedBox(width: 12),
+                BlocBuilder<ChatCubit, ChatState>(
+                  builder: (context, state) {
+                    return _buildIconButton(
+                      icon: Icons.mic_outlined,
+                      onPressed:
+                          state.isLoading ? _scroll() : () => openMicroPhone(),
+                      themeMode: themeMode,
+                      color: themeMode == ThemeMode.dark
+                          ? Colors.blue
+                          : const Color(0xFF3D5AFE),
+                    );
+                  },
                 ),
                 const SizedBox(width: 12),
                 BlocBuilder<ChatCubit, ChatState>(
@@ -522,7 +586,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
               ),
               const SizedBox(height: 6),
               Text(
-                '${message.timestamp.hour}:${message.timestamp.minute.toString().padLeft(2, '0')}:${message.timestamp.second.toString().padLeft(2, '0')}',
+                '${(message.timestamp.hour > 12 ? message.timestamp.hour - 12 : message.timestamp.hour)}:${message.timestamp.minute.toString().padLeft(2, '0')}:${message.timestamp.second.toString().padLeft(2, '0')}',
                 style: TextStyle(
                   fontSize: 12,
                   color: message.isUser
@@ -531,7 +595,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                           ? Colors.white70
                           : Colors.black54),
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -540,11 +604,11 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   }
 
   _scroll() {
-    Future.delayed(const Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 200),
           curve: Curves.easeOut,
         );
       }
@@ -634,9 +698,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     );
   }
 
-  Future<void> _pickImage() async {
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final XFile? image = await _imagePicker.pickImage(source: source);
     if (image != null) {
       setState(() {
         _selectedImagePath = image.path;
@@ -653,6 +716,57 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   //   }
   // }
 
+  void openMicroPhone() async {
+    final SpeechToText speech = SpeechToText();
+    bool available = await speech.initialize(
+      onStatus: (status) {
+        log('Speech recognition status: $status');
+        if (status == 'done') {
+          if (_messageController.text.isEmpty) {
+            dispalySnackBar(context,
+                title: 'No speech detected', color: Colors.orange);
+          }
+        }
+      },
+    );
+
+    if (available) {
+      final locales = await speech.locales();
+      // Find available locales
+      final arabicLocale = locales.firstWhere(
+        (locale) => locale.localeId.startsWith('ar_'),
+      );
+
+      final englishLocale = locales.firstWhere(
+        (locale) => locale.localeId.startsWith('en_'),
+      );
+
+      // Clear previous text
+      _messageController.clear();
+
+      // Start listening with the most appropriate locale
+      final localeToUse = arabicLocale ?? englishLocale;
+
+      speech.listen(
+        onResult: (result) {
+          if (result.finalResult) {
+            setState(() {
+              _messageController.text = result.recognizedWords;
+              _messageController.text = _messageController.text.trim();
+            });
+          }
+        },
+        partialResults: true,
+        cancelOnError: true,
+        listenMode: ListenMode.confirmation,
+        localeId: localeToUse.localeId,
+      );
+    } else {
+      dispalySnackBar(context,
+          title: 'Speech recognition not available', color: Colors.red);
+    }
+  }
+
   void _sendMessage(BuildContext context) {
     if (_messageController.text.isNotEmpty ||
         _selectedImagePath != null ||
@@ -662,7 +776,6 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             imagePath: _selectedImagePath,
             filePath: _selectedFilePath,
           );
-
       // Clear inputs
       _messageController.clear();
       setState(() {
@@ -671,11 +784,11 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       });
 
       // Scroll to bottom after a small delay to ensure the list has updated
-      Future.delayed(const Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(milliseconds: 200), () {
         if (_scrollController.hasClients) {
           _scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 200),
             curve: Curves.easeOut,
           );
         }
@@ -690,6 +803,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     super.dispose();
   }
 }
+
 /*
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';

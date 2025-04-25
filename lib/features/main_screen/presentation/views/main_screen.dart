@@ -99,7 +99,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     final isDarkMode = themeMode == ThemeMode.dark;
     final backgroundColor = isDarkMode ? Colors.black : Colors.white;
     const primaryColor = Color(0xff1A0F91);
-    final secondaryColor = isDarkMode ? Colors.white70 : Colors.grey;
+    final secondaryColor = isDarkMode ? Colors.white : Colors.grey;
     final shadowColor = isDarkMode ? Colors.white12 : Colors.black12;
 
     return Container(
