@@ -1,8 +1,7 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:smartsystemforschools/core/services/notification_service/notification_service.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_state.dart';
+import '../../../../core/services/notification_service/notification_service.dart';
+import 'notification_state.dart';
 
 // Cubit
 class NotificationCubit extends Cubit<NotificationState> {
@@ -66,7 +65,7 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> getNotificationDetails({required String notificationId}) async {
-    emit(NotificationLoading());
+    emit(NotificationDetailsLoading());
     log('notification id : $notificationId');
     try {
       final result = await _notificationService.getNotificationtDetails(

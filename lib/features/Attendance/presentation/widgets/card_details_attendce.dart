@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/models/attendance_model/attendance_model.dart';
 import '../../../../core/utils/app_styles.dart';
 

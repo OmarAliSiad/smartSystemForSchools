@@ -2,8 +2,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
+import 'package:smartsystemforschools/core/utils/app_styles.dart';
+import '../../../../core/models/get_child_details/result.dart';
+import '../../data/cubit/notification_cubit.dart';
 
 void showFilterBottomSheet({
   required BuildContext context,
@@ -23,29 +24,51 @@ void showFilterBottomSheet({
       return StatefulBuilder(
         builder: (context, setState) {
           return Padding(
-            padding: EdgeInsets.only(
+            padding: EdgeInsetsDirectional.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
-              left: 20,
-              right: 20,
+              start: 20,
+              end: 20,
               top: 20,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Filter Notifications',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
                 const SizedBox(height: 20),
                 // Student dropdown
                 DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
+                  dropdownColor: isDark ? Colors.grey[800] : Colors.white,
+                  style: AppStyles.styleMedium16().copyWith(
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                  decoration: InputDecoration(
                     labelText: 'Select Student',
-                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black54,
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white54 : Colors.black54,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white54 : Colors.black54,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white : Colors.blue,
+                      ),
+                    ),
                   ),
                   value: selectedStudentId,
                   items: childDetails.map((student) {
@@ -65,10 +88,33 @@ void showFilterBottomSheet({
                 // Date picker
                 TextFormField(
                   controller: dateController,
-                  decoration: const InputDecoration(
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                  decoration: InputDecoration(
                     labelText: 'Select Date',
-                    border: OutlineInputBorder(),
-                    suffixIcon: Icon(Icons.calendar_today),
+                    labelStyle: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black54,
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white54 : Colors.black54,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white54 : Colors.black54,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white : Colors.blue,
+                      ),
+                    ),
+                    suffixIcon: Icon(
+                      Icons.calendar_today,
+                      color: isDark ? Colors.white70 : Colors.black54,
+                    ),
                   ),
                   readOnly: true,
                   onTap: () async {
@@ -78,6 +124,21 @@ void showFilterBottomSheet({
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2020),
                       lastDate: DateTime.now(),
+                      builder: (context, child) {
+                        return Theme(
+                          data: Theme.of(context).copyWith(
+                            colorScheme: ColorScheme.light(
+                              primary: Colors.blue.shade900,
+                              onPrimary: Colors.white,
+                              onSurface: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                          child: child!,
+                        );
+                      },
                     );
                     if (pickedDate != null) {
                       setState(() {
@@ -90,9 +151,30 @@ void showFilterBottomSheet({
                 const SizedBox(height: 15),
                 // Status dropdown - 0 failed, 1 success
                 DropdownButtonFormField<int>(
-                  decoration: const InputDecoration(
+                  dropdownColor: isDark ? Colors.grey[800] : Colors.white,
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                  decoration: InputDecoration(
                     labelText: 'Notification Status',
-                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black54,
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white54 : Colors.black54,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white54 : Colors.black54,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white : Colors.blue,
+                      ),
+                    ),
                   ),
                   value: selectedStatus,
                   items: const [
@@ -118,9 +200,30 @@ void showFilterBottomSheet({
                 const SizedBox(height: 15),
                 // Title dropdown - 0 payment, 1 attendance
                 DropdownButtonFormField<int>(
-                  decoration: const InputDecoration(
+                  dropdownColor: isDark ? Colors.grey[800] : Colors.white,
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                  decoration: InputDecoration(
                     labelText: 'Notification Type',
-                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black54,
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white54 : Colors.black54,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white54 : Colors.black54,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: isDark ? Colors.white : Colors.blue,
+                      ),
+                    ),
                   ),
                   value: selectedTitle,
                   items: const [
@@ -148,7 +251,11 @@ void showFilterBottomSheet({
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue.shade900,
+                        foregroundColor: Colors.white,
+                      ),
                       onPressed: () {
                         // Reset filters
                         setState(() {
@@ -158,10 +265,17 @@ void showFilterBottomSheet({
                           selectedTitle = null;
                         });
                       },
-                      child: const Text('Reset'),
+                      child: Text(
+                        'Reset',
+                        style: AppStyles.styleMedium16(),
+                      ),
                     ),
                     const SizedBox(width: 15),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue.shade900,
+                        foregroundColor: Colors.white,
+                      ),
                       onPressed: () {
                         context.read<NotificationCubit>().applyFilter(
                               studentId: selectedStudentId,
@@ -173,7 +287,10 @@ void showFilterBottomSheet({
                             );
                         Navigator.pop(context);
                       },
-                      child: const Text('Apply'),
+                      child: Text(
+                        'Apply',
+                        style: AppStyles.styleMedium16(),
+                      ),
                     ),
                   ],
                 ),

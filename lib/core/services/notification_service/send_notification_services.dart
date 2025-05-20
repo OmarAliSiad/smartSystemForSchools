@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart' as auth;
-import 'package:smartsystemforschools/core/services/notification_service/confirmation_request_screen.dart';
-import 'package:smartsystemforschools/core/services/notification_service/notification_details_screen.dart';
-import 'package:smartsystemforschools/core/services/notification_service/notification_model.dart';
+import 'confirmation_request_screen.dart';
+import 'notification_details_screen.dart';
+import 'notification_model.dart';
+import '../../utils/AppNavigatorKeys.dart';
 
 Future<String> getAccessToken() async {
   final jsonString = await rootBundle.loadString(
@@ -69,6 +70,14 @@ Future<void> sendNotification(
 }
 
 void handleNotification(BuildContext context, Map<String, dynamic> data) {
+  final navigatorKey = AppNavigatorKeys().mainNavigatorKey;
+
+  // Safely check if navigation is possible
+  if (navigatorKey.currentState == null) {
+    print('Navigator state is null, cannot navigate');
+    return;
+  }
+
   NotificationProductModel productModel =
       NotificationProductModel.fromJson(data); // Deserialize the JSON data
   String route = productModel.route;
@@ -76,26 +85,22 @@ void handleNotification(BuildContext context, Map<String, dynamic> data) {
     // Parse product details from the notification
     List<dynamic> products = jsonDecode(data['productDetails']);
     // Navigate to the confirmation screen
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ConfirmationRequestScreen(
-          pendingTransactionId: data['pendingTransactionId'],
-          studentId: data['studentId'],
-          studentName: data['studentName'],
-          amountOfMoney: data['amountOfMoney'],
-          products: products,
-        ),
-      ),
+    navigatorKey.currentState!.pushNamed(
+      ConfirmationRequestScreen.id,
+      arguments: {
+        'pendingTransactionId': data['pendingTransactionId'],
+        'studentId': data['studentId'],
+        'studentName': data['studentName'],
+        'amountOfMoney': data['amountOfMoney'],
+        'products': products,
+      },
     );
   } else if (route == NotificationDetails.id) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => NotificationDetails(
-          notificationModel: productModel,
-        ),
-      ),
+    navigatorKey.currentState!.pushNamed(
+      NotificationDetails.id,
+      arguments: {
+        'notificationModel': productModel,
+      },
     );
   }
 }

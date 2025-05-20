@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/views/terms_and_condition_view.dart';
+import 'terms_and_condition_view.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_app_bar.dart';
 import '../../../../core/widgets/custom_bottom_container.dart';
 import '../widgets/custom_button_privacy.dart';
 
 class PrivacyView extends StatelessWidget {
-  static const String id = 'PrivacyView';
+  static const String id = '/PrivacyView';
   const PrivacyView({super.key});
 
   @override

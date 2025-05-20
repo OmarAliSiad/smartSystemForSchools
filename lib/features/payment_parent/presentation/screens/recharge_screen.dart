@@ -1,171 +1,19 @@
+
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/models/money_recharge_model/money_recharge_model.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/core/utils/api_keys.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
-import 'package:smartsystemforschools/core/widgets/payment_bottom_sheet.dart';
-import 'package:smartsystemforschools/core/widgets/total_fees.dart';
-import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-
-class AccountScreen extends StatelessWidget {
-  // final ResultForChildDetails resultForChildDetails;
-  final String username;
-  final double balance;
-  const AccountScreen(
-      {super.key, required this.username, required this.balance});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text(
-          "Account",
-          style: AppStyles.styleMedium18(),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Family Balance",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      balance.toString(),
-                      style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      username,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: context.read<ThemeModeCubit>().currentTheme ==
-                                ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black54,
-                      ),
-                    ),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) => Builder(builder: (context) {
-                        return const PaymentMethodBottomSheet();
-                      }),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Constants.blue, //Color(0xFF00BCD4),,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 15,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  child: Text(
-                    "Recharge",
-                    style: const TextStyle(fontSize: 16)
-                        .copyWith(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-            const Text(
-              "Transactions",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Row(
-            //   children: [
-            //     FilterButton(
-            //       text: "All",
-            //       isSelected: true,
-            //       onPressed: () {},
-            //     ),
-            //     const SizedBox(width: 10),
-            //     FilterButton(
-            //       text: "Phone",
-            //       isSelected: false,
-            //       onPressed: () {},
-            //     ),
-            //     const SizedBox(width: 10),
-            //     FilterButton(
-            //       text: resultForChildDetails.fullName.toString(),
-            //       isSelected: true,
-            //       isPrimary: true,
-            //       onPressed: () {},
-            //     ),
-            //   ],
-            // ),
-            const Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.search,
-                      size: 80,
-                      color: Colors.grey,
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      "No Transactions Found",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
+import '../../../../core/methods/show_scaffold_messanger.dart';
+import '../../../../core/models/money_recharge_model/money_recharge_model.dart';
+import '../../../../core/utils/Constants.dart';
+import '../../../../core/utils/api_keys.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/widgets/build_loading_view.dart';
+import '../widgets/total_fees.dart';
+import '../../../payment/presentation/manager/cubit/payment_cubit.dart';
+import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 class RechargeScreen extends StatefulWidget {
   const RechargeScreen({
     super.key,
@@ -413,14 +261,8 @@ class _RechargeScreenState extends State<RechargeScreen> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () async {
-                    SharedPreferences sharedPreferences =
-                        await SharedPreferences.getInstance();
-                    String studentId =
-                        sharedPreferences.getString(Constants.studentId)!;
-                    log('student id $studentId');
                     context.read<PaymentCubit>().checkoutPayment(
                           amount: total.toString(),
-                          studentId: studentId,
                         );
                   },
                   style: ElevatedButton.styleFrom(
@@ -604,7 +446,6 @@ class _RechargeScreenState extends State<RechargeScreen> {
                       log('student id $studentId');
                       context.read<PaymentCubit>().checkoutPayment(
                             amount: total.toString(),
-                            studentId: studentId,
                           );
                     } else {
                       dispalySnackBar(

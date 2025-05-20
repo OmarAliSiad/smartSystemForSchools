@@ -3,13 +3,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smartsystemforschools/core/models/allegry_details/allegry_details.dart';
-import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/features/Allergies/data/manager/assing_allegris/allegris.dart';
-import 'package:smartsystemforschools/features/Allergies/data/manager/assing_allegris/allegris_state.dart';
-import 'package:smartsystemforschools/features/child_details_view/widgets/buildAllegryChip.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../core/models/allegry_details/allegry_details.dart';
+import '../../../core/models/get_child_details/result.dart';
+import '../../Allergies/data/manager/allegris_catogries/allegris_cubit.dart';
+import '../../Allergies/data/manager/allegris_catogries/allegris_state.dart';
+import 'buildAllegryChip.dart';
+import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../generated/locale_keys.g.dart';
 import '../../../core/utils/app_styles.dart';
 import '../../../core/utils/assets.dart';
 import '../../Allergies/presentation/views/AllergiesView.dart';
@@ -47,7 +47,7 @@ class _CustomAllergiesWidgetState extends State<CustomAllergiesWidget>
   Future<void> loadAllegrisForStudent() async {
     log(widget.childDetails.id.toString());
     await context
-        .read<AllergiesCubit>()
+        .read<AllergiesCubitCatogry>()
         .getAllegrisForStudent(widget.childDetails.id.toString());
   }
 
@@ -58,7 +58,7 @@ class _CustomAllergiesWidgetState extends State<CustomAllergiesWidget>
     });
     // Start the animation
     Future.delayed(const Duration(milliseconds: 300), () {
-      context.read<AllergiesCubit>().deleteAllegris(
+      context.read<AllergiesCubitCatogry>().deleteAllegris(
         widget.childDetails.id.toString(),
         [allergyId],
       ).then((_) {
@@ -120,7 +120,7 @@ class _CustomAllergiesWidgetState extends State<CustomAllergiesWidget>
                         end: 15, bottom: 15.65),
                     child: Row(
                       children: [
-                        BlocBuilder<AllergiesCubit, AllergiesState>(
+                        BlocBuilder<AllergiesCubitCatogry, AllergiesState>(
                           builder: (context, state) {
                             if (state is GetAllergiesLoading) {
                               return Center(
@@ -130,7 +130,7 @@ class _CustomAllergiesWidgetState extends State<CustomAllergiesWidget>
                                 ),
                               );
                             } else if (state is GetAllergiesLoaded) {
-                              AllegryDetails allegryDetails =
+                              AllegryCatogryDetails allegryDetails =
                                   state.allergyItems;
                               return (allegryDetails.result == null ||
                                       allegryDetails.result!.isEmpty)

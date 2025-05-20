@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:smartsystemforschools/core/services/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
-import 'package:smartsystemforschools/features/notification_view/data/models/notification_model/notification_model.dart';
+import '../../../../core/services/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
+import '../models/notification_model/notification_model.dart';
 
 abstract class NotificationState extends Equatable {
   const NotificationState();
@@ -22,6 +22,7 @@ class GetAllNotificationLoadedSuccessfully extends NotificationState {
   List<Object?> get props => [notificationModel];
 }
 
+class NotificationDetailsLoading extends NotificationState {}
 class NotificationDetailsLoaded extends NotificationState {
   final GetNotificatoinDetails notificationDetails;
 

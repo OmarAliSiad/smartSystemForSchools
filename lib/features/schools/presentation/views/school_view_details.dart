@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smartsystemforschools/core/models/get_all_schools/result.dart';
-import 'package:smartsystemforschools/core/models/get_school_details_by_id/get_school_details_by_id.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/custom_button.dart';
-import 'package:smartsystemforschools/core/services/school_service/school_service.dart';
+import '../../../../core/models/get_all_schools/result.dart';
+import '../../../../core/models/get_school_details_by_id/get_school_details_by_id.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/custom_button.dart';
+import '../../../../core/services/school_service/school_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class SchoolViewDetails extends StatefulWidget {
@@ -79,8 +79,7 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final primaryColor =
         isDarkMode ? const Color(0xFF536DFE) : const Color(0xFF1A0F91);
-    final backgroundColor =
-        isDarkMode ? const Color(0xFF121212) : const Color(0xFFF5F7FA);
+    final backgroundColor = isDarkMode ? const Color(0xFF121212) : Colors.white;
     final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
     final textColor = isDarkMode ? Colors.white : Colors.black;
     final secondaryTextColor = isDarkMode ? Colors.grey[400] : Colors.grey[700];
@@ -98,11 +97,15 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
       child: Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text(widget.school.name ?? 'School Details'),
+          title: Text(
+            widget.school.name ?? 'School Details',
+            style: AppStyles.styleSemiBold20(),
+          ),
         ),
         body: RefreshIndicator(
           backgroundColor: cardColor,

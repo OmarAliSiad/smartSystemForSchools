@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/Allergies/data/manager/assing_allegris/allegris.dart';
+import '../../Allergies/data/manager/allegris_catogries/allegris_cubit.dart';
 import '../../../core/models/get_child_details/result.dart';
 import '../../../core/utils/app_styles.dart';
 import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';

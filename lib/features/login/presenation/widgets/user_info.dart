@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/features/login/presenation/widgets/custom_text_field.dart';
+import 'custom_text_field.dart';
 import '../../../../core/utils/app_styles.dart';
 
 class UserInfo extends StatelessWidget {

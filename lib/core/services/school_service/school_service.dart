@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/models/get_school_details_by_id/get_school_details_by_id.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
+import '../../models/get_school_details_by_id/get_school_details_by_id.dart';
+import '../../utils/Constants.dart';
 import '../../models/get_all_schools/get_all_schools.dart';
 import '../../models/get_child_details/result.dart';
 

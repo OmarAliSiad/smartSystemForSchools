@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/features/onBoarding/widgets/dot_indicator.dart';
+import 'dot_indicator.dart';
 
 class DotsIndicator extends StatelessWidget {
   final Color color;

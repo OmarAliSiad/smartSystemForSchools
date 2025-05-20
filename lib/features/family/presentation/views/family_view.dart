@@ -4,18 +4,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/custom_button.dart';
-import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
-import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
-import 'package:smartsystemforschools/features/family/presentation/views/add_child_view.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../../core/utils/animated_app_bar.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/custom_button.dart';
+import '../../../../core/widgets/build_loading_view.dart';
+import '../../data/manager/add_child_cubit/add_child_cubit.dart';
+import 'add_child_view.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../main_screen/presentation/views/main_screen.dart';
 import '../widgets/custom_card_family_widget.dart';
 
 class FamilyView extends StatefulWidget {
-  static const String id = 'FamilyView';
+  static const String id = '/FamilyView';
   const FamilyView({super.key});
 
   @override

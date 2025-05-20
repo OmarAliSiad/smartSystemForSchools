@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../../core/utils/app_styles.dart';
 
 class CustomCardTransactions extends StatelessWidget {

@@ -17,6 +17,7 @@ ThemeData lightTheme(BuildContext context) {
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white,
+      scrolledUnderElevation: 0,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.white,

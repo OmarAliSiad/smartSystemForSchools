@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/services/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
-import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_state.dart';
-import 'package:smartsystemforschools/features/notification_view/data/models/notification_model/notification_model.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../../core/methods/show_scaffold_messanger.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/services/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
+import '../../../../core/widgets/build_loading_view.dart';
+import '../../data/cubit/notification_cubit.dart';
+import '../../data/cubit/notification_state.dart';
+import '../../data/models/notification_model/notification_model.dart';
+import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
 class NotificationDetailsView extends StatefulWidget {
   final String notificationId;
@@ -76,7 +76,7 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
               );
             }
             return _buildDetailsContent(details);
-          } else if (state is NotificationLoading) {
+          } else if (state is NotificationDetailsLoading) {
             return buildLoadingView('notification', context);
           } else {
             String message = '';

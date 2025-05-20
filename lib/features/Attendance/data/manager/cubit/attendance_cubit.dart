@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:smartsystemforschools/core/services/attendance_service/attendance_service.dart';
+import '../../../../../core/services/attendance_service/attendance_service.dart';
 import '../../../../../core/models/attendance_model/attendance_model.dart';
 part 'attendance_state.dart';
 

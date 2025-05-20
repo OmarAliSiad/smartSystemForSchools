@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/core/services/auth_service/auth_service.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/sign_up_screen.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../../core/utils/Constants.dart';
+import '../../../../core/services/auth_service/auth_service.dart';
+import 'sign_up_screen.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../../core/methods/vaildate_password.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
@@ -15,10 +15,9 @@ import '../widgets/custom_button_log_in.dart';
 import '../widgets/custom_logo.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/opcaity_text.dart';
-import 'send_code.dart';
 
 class LogIn extends StatefulWidget {
-  static String id = 'LogIn';
+  static String id = '/LogIn';
   const LogIn({super.key});
 
   @override

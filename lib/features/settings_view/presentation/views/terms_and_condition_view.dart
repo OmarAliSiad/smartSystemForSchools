@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/views/privacy_view.dart';
+import 'privacy_view.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_app_bar.dart';
 import '../../../../core/utils/custom_button.dart';
@@ -8,7 +8,7 @@ import '../../../main_screen/presentation/views/main_screen.dart';
 import '../widgets/custom_button_privacy.dart';
 
 class TermsAndConditionView extends StatelessWidget {
-  static const String id = 'TermsAndConditionView';
+  static const String id = '/TermsAndConditionView';
   const TermsAndConditionView({super.key});
 
   @override

@@ -2,16 +2,46 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
-import 'package:smartsystemforschools/core/services/notification_service/notification_model.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import 'package:smartsystemforschools/main.dart';
+import '../../methods/show_scaffold_messanger.dart';
+import '../../utils/app_styles.dart';
+import '../../utils/custom_app_bar.dart';
+import 'notification_model.dart';
+import '../../../features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../main.dart';
 
-class NotificationDetails extends StatelessWidget {
+class NotificationDetails extends StatefulWidget {
   static String id = 'notification_details';
-  final NotificationProductModel notificationModel;
-  const NotificationDetails({super.key, required this.notificationModel});
+
+  const NotificationDetails({super.key});
+
+  @override
+  State<NotificationDetails> createState() => _NotificationDetailsState();
+}
+
+class _NotificationDetailsState extends State<NotificationDetails> {
+  // Property to store the model from arguments
+  late NotificationProductModel notificationModel;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Extract arguments from route with null safety
+    final args = ModalRoute.of(context)?.settings.arguments;
+
+    if (args != null &&
+        args is Map<String, dynamic> &&
+        args.containsKey('notificationModel')) {
+      notificationModel = args['notificationModel'];
+    } else {
+      // Handle case when arguments are not provided
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        dispalySnackBar(context,
+            title: 'Required arguments not provided', color: Colors.red);
+      });
+      Navigator.of(context).pop();
+    }
+  }
+
   // Helper method to split string lists
   List<String> _splitList(String input) {
     // Remove outer brackets and split
@@ -180,7 +210,7 @@ class NotificationDetails extends StatelessWidget {
                       _buildDetailRow('Product Name', productName),
                       _buildDetailRow('Product ID', productId),
                       _buildDetailRow('Quantity', quantity),
-                      _buildDetailRow('Description', description),
+                      // _buildDetailRow('Description', description),
                       _buildDetailRow('Price', price),
                     ],
                   ),
@@ -222,6 +252,9 @@ class _StatusCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final String statusmessage;
+
+  // Keep the constructor parameters for this internal widget
+  // since it doesn't affect navigation
   const _StatusCard({
     super.key,
     required this.title,

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:smartsystemforschools/core/connectivity_cubit/connectivity_state.dart';
+import 'connectivity_state.dart';
 
 class InternetCubit extends Cubit<InternetState> {
   final Connectivity connectivity;
@@ -34,7 +34,6 @@ class InternetCubit extends Cubit<InternetState> {
       } else if (connectivityResult == ConnectivityResult.mobile) {
         emit(InternetConnected(connectionType: ConnectionType.mobile));
       } else {
-        // Handle other connection types or keep as loading
         emit(InternetLoading());
       }
     } catch (e) {

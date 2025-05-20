@@ -40,7 +40,6 @@ final class GetBalanceFailure extends PaymentState {
   GetBalanceFailure({required this.errorMessage});
 }
 
-
 final class SetMoneyLoading extends PaymentState {}
 
 final class SetMoneySuccess extends PaymentState {

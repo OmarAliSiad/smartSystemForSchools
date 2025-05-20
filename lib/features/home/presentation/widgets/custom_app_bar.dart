@@ -4,9 +4,9 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/core/services/auth_service/auth_service.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_state.dart';
+import '../../../../core/services/auth_service/auth_service.dart';
+import '../../../settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
+import '../../../settings_view/presentation/manager/chage_data_profile/change_data_profile_state.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
 import '../../../../generated/locale_keys.g.dart';
@@ -183,10 +183,14 @@ class _CustomAppBarHomeViewState extends State<CustomAppBarHomeView>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            LocaleKeys.homeView_appBarTitle.tr(),
-                            style: AppStyles.styleSemiBold20()
-                                .copyWith(color: defaultTextColor),
+                          FittedBox(
+                            alignment: Alignment.centerLeft,
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              LocaleKeys.homeView_appBarTitle.tr(),
+                              style: AppStyles.styleSemiBold20()
+                                  .copyWith(color: defaultTextColor),
+                            ),
                           ),
                           const SizedBox(
                             height: 2,

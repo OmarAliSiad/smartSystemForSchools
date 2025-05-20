@@ -2,16 +2,16 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/services/notification_service/notification_service.dart';
-import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_state.dart';
-import 'package:smartsystemforschools/features/notification_view/data/models/notification_model/notification_model.dart';
-import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_details_view.dart';
-import 'package:smartsystemforschools/features/notification_view/presenation/widgets/section_notification_card.dart';
+import '../../../../core/methods/show_scaffold_messanger.dart';
+import '../../../../core/models/get_child_details/result.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/services/notification_service/notification_service.dart';
+import '../../../../core/widgets/build_loading_view.dart';
+import '../../data/cubit/notification_cubit.dart';
+import '../../data/cubit/notification_state.dart';
+import '../../data/models/notification_model/notification_model.dart';
+import '../views/notification_details_view.dart';
+import 'section_notification_card.dart';
 
 class NotificationViewBody extends StatefulWidget {
   final List<ResultForChildDetails> resultForChildDetails;
@@ -36,7 +36,6 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
   loadNotification() async {
     // Get the current cubit
     final cubit = context.read<NotificationCubit>();
-
     // Check if we have a saved filter or need to create a new one
     if (cubit.hasActiveFilter()) {
       // Just reload with existing filter
@@ -117,42 +116,48 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
               ),
             );
           } else {
-            return Padding(
-              padding: const EdgeInsetsDirectional.only(start: 21, end: 19),
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      navigateToNotificationDetails(
-                        context,
-                        notificationModel.result![index].id.toString(),
-                        knowTheDate(
-                          createdOn:
-                              notificationModel.result![index].createdOn!,
+            return CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsetsDirectional.only(start: 21, end: 19),
+                  sliver: SliverList.separated(
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          navigateToNotificationDetails(
+                            context,
+                            notificationModel.result![index].id.toString(),
+                            knowTheDate(
+                              createdOn:
+                                  notificationModel.result![index].createdOn!,
+                            ),
+                            notificationModel,
+                          );
+                        },
+                        child: SetcionNotificationCard(
+                          dateName: knowTheDate(
+                            createdOn:
+                                notificationModel.result![index].createdOn!,
+                          ),
+                          notificationId:
+                              notificationModel.result![index].id.toString(),
+                          date: f.format(
+                              notificationModel.result![index].createdOn!),
+                          title:
+                              notificationModel.result![index].title.toString(),
+                          message: notificationModel.result![index].message
+                              .toString(),
                         ),
-                        notificationModel,
                       );
                     },
-                    child: SetcionNotificationCard(
-                      dateName: knowTheDate(
-                        createdOn: notificationModel.result![index].createdOn!,
-                      ),
-                      notificationId:
-                          notificationModel.result![index].id.toString(),
-                      date:
-                          f.format(notificationModel.result![index].createdOn!),
-                      title: notificationModel.result![index].title.toString(),
-                      message:
-                          notificationModel.result![index].message.toString(),
+                    itemCount: notificationModel.result!.length,
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 10,
                     ),
-                  );
-                },
-                itemCount: notificationModel.result!.length,
-                physics: const BouncingScrollPhysics(),
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 10,
+                  ),
                 ),
-              ),
+              ],
             );
           }
         } else {

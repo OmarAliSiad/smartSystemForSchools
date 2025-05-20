@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
+import '../../data/manager/add_child_cubit/add_child_cubit.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
 

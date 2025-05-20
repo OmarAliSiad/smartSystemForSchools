@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
+import '../../../core/methods/show_scaffold_messanger.dart';
+import '../../../core/utils/Constants.dart';
+import '../../../core/widgets/build_loading_view.dart';
 import 'dart:developer';
-import 'package:smartsystemforschools/features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
+import '../manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
 
 class SpendingLimitsView extends StatefulWidget {
   final String studentId;

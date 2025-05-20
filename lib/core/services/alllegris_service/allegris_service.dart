@@ -1,13 +1,15 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/models/allegry_details/allegry_details.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
+import '../../models/allegries_products/allegries_products.dart';
+import '../../models/allegry_details/allegry_details.dart';
+import '../../models/get_all_products/get_all_products.dart';
+import '../../utils/Constants.dart';
 import '../../models/catogry_details/catgory_details.dart';
 
 class AllergiesService {
   Dio dio = Dio();
-  Future<AllegryDetails> assingAllegris(
+  Future<AllegryCatogryDetails> assingAllegrisCatogries(
       String studentId, int allergiesCategory) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -27,19 +29,96 @@ class AllergiesService {
       );
       if (response.statusCode == 200) {
         log('assing allegris');
-        AllegryDetails allegryDetails = AllegryDetails.fromJson(response.data);
+        AllegryCatogryDetails allegryDetails =
+            AllegryCatogryDetails.fromJson(response.data);
         return allegryDetails;
       } else {
         log('Failed to load allergies: ${response.statusCode}');
-        return AllegryDetails(message: response.data['message']);
+        return AllegryCatogryDetails(message: response.data['message']);
       }
     } catch (e) {
       log('Error fetching allergies: $e');
-      return AllegryDetails(message: 'Error fetching allergies: $e');
+      return AllegryCatogryDetails(message: 'Error fetching allergies: $e');
     }
   }
 
-  Future<AllegryDetails> getAllegris(String studentId) async {
+  Future<AllegriesProducts> assignProductAllergies(
+      {required String studentId,
+      required List<String> allergiesProducts}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(Constants.token);
+      final response = await dio.post(
+        'https://school-api.runasp.net/api/Parent/AssignProductAllergies',
+        queryParameters: {
+          'studentId': studentId,
+          'allergiesProducts': allergiesProducts,
+        },
+        options: Options(
+          validateStatus: (status) => status != null && status < 500,
+          headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      log('allegris products status code ${response.statusCode}');
+      log('allegris products response  ${response.data}');
+      log('allegris products headers ${response.headers}');
+      if (response.statusCode == 200) {
+        AllegriesProducts allegriesProducts =
+            AllegriesProducts.fromJson(response.data);
+        return allegriesProducts;
+      } else {
+        log('Failed to load allergies: ${response.statusCode}');
+        return AllegriesProducts(message: response.data['message']);
+      }
+    } catch (e) {
+      log('Error fetching allergies: $e');
+      return AllegriesProducts(
+        message: 'Error fetching allergies: $e',
+      );
+    }
+  }
+
+  Future<AllegriesProducts> getProductAllergies(
+      {required String studentId}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(Constants.token);
+      final response = await dio.get(
+        'https://school-api.runasp.net/api/Parent/GetProductAllergies',
+        queryParameters: {
+          'studentId': studentId,
+        },
+        options: Options(
+          validateStatus: (status) => status != null && status < 500,
+          headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      log('allegris products status code ${response.statusCode}');
+      log('allegris products response  ${response.data}');
+      log('allegris products headers ${response.headers}');
+      if (response.statusCode == 200) {
+        AllegriesProducts allegriesProducts =
+            AllegriesProducts.fromJson(response.data);
+        return allegriesProducts;
+      } else {
+        log('Failed to load allergies: ${response.statusCode}');
+        return AllegriesProducts(message: response.data['message']);
+      }
+    } catch (e) {
+      log('Error fetching allergies: $e');
+      return AllegriesProducts(
+        message: 'Error fetching allergies: $e',
+      );
+    }
+  }
+
+  Future<AllegryCatogryDetails> getAllegrisCatogries(String studentId) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString(Constants.token);
@@ -53,19 +132,20 @@ class AllergiesService {
             validateStatus: (status) => status != null && status < 500,
           ));
       if (response.statusCode == 200) {
-        AllegryDetails allegryDetails = AllegryDetails.fromJson(response.data);
+        AllegryCatogryDetails allegryDetails =
+            AllegryCatogryDetails.fromJson(response.data);
         return allegryDetails;
       } else {
         log('Failed to load allergies: ${response.statusCode}');
-        return AllegryDetails(message: response.data['message']);
+        return AllegryCatogryDetails(message: response.data['message']);
       }
     } catch (e) {
       log('Error fetching allergies: $e');
-      return AllegryDetails(message: 'Error fetching allergies: $e');
+      return AllegryCatogryDetails(message: 'Error fetching allergies: $e');
     }
   }
 
-  Future<AllegryDetails> deleteAllegris(
+  Future<AllegryCatogryDetails> deleteAllegrisCatogries(
       String studentId, int allergiesCategory) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -85,41 +165,54 @@ class AllergiesService {
       );
       if (response.statusCode == 200) {
         log('assing allegris');
-        AllegryDetails allegryDetails = AllegryDetails.fromJson(response.data);
+        AllegryCatogryDetails allegryDetails =
+            AllegryCatogryDetails.fromJson(response.data);
         return allegryDetails;
       } else {
-        log('Failed to load allergies: ${response.statusCode}');
-        return AllegryDetails(message: response.data['message']);
+        log('Failed to delete allergies: ${response.statusCode}');
+        return AllegryCatogryDetails(message: response.data['message']);
       }
     } catch (e) {
       log('Error fetching allergies: $e');
-      return AllegryDetails(message: 'Error fetching allergies: $e');
+      return AllegryCatogryDetails(message: 'Error fetching allergies: $e');
     }
   }
 
-  Future<CatgoryDetails> getAllCategory() async {
+  Future<AllegriesProducts> removeProductAllergies(
+      {required String studentId,
+      required List<String> allergiesProducts}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString(Constants.token);
-      if (token == null) {
-        log('No auth token found');
-        return CatgoryDetails(); // Return empty product details
-      }
-      final response = await Dio().get(
-        'https://school-api.runasp.net/api/Canteen/Category/GetAll',
+      final response = await dio.delete(
+        'https://school-api.runasp.net/api/Parent/RemoveProductAllergies',
+        queryParameters: {
+          'studentId': studentId,
+          'allergiesProducts': allergiesProducts,
+        },
         options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Content-Type': 'application/json',
-          },
           validateStatus: (status) => status != null && status < 500,
+          headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer $token',
+          },
         ),
       );
-      log('catogry API Response: ${response.data}');
-      return CatgoryDetails.fromJson(response.data);
+      log('removeProductAllergies status code ${response.statusCode}');
+      log('removeProductAllergies response  ${response.data}');
+      log('removeProductAllergies headers ${response.data}');
+      if (response.statusCode == 200) {
+        AllegriesProducts allegriesProducts =
+            AllegriesProducts.fromJson(response.data);
+        return allegriesProducts;
+      } else {
+        return AllegriesProducts(message: response.data['message']);
+      }
     } catch (e) {
-      log('Error fetching catogries: $e');
-      return CatgoryDetails(); // Return empty product details on error
+      log('Error fetching allergies: $e');
+      return AllegriesProducts(
+        message: 'Error fetching allergies: $e',
+      );
     }
   }
 }

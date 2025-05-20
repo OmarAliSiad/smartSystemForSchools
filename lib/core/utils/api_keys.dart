@@ -14,4 +14,6 @@ class ApiKeys {
 
   static const String paymobApiKeys =
       'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TVRBeU16QTJNU3dpYm1GdFpTSTZJbWx1YVhScFlXd2lmUS5qQVBKdnZiSmZmUnc0SGl2UW5hRlltRTlmRldJb3J5bE55dGVCSU83Tkt4VWZHMFNhWkpTanJnYUtPLWU0cHFIbWNNWVBaV2RWcnBxZWlpNDBpS0tOdw==';
+
+  static const String googleApiKeys = 'AIzaSyCm2VBimx6vdb_j8IqTcIBn3aPI9aCJmMk';
 }

@@ -2,19 +2,19 @@ import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
-import 'package:smartsystemforschools/core/utils/custom_button.dart';
-import 'package:smartsystemforschools/features/family/presentation/views/family_view.dart';
-import 'package:smartsystemforschools/features/family/presentation/widgets/custom_text_field.dart';
-import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../../core/methods/show_scaffold_messanger.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/custom_app_bar.dart';
+import '../../../../core/utils/custom_button.dart';
+import 'family_view.dart';
+import '../widgets/custom_text_field.dart';
+import '../../../main_screen/presentation/views/main_screen.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../../core/utils/assets.dart';
 import '../../data/manager/add_child_cubit/add_child_cubit.dart';
 
 class AddChildView extends StatefulWidget {
-  static const String id = 'AddChildView';
+  static const String id = '/AddChildView';
   const AddChildView({super.key});
 
   @override

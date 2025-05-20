@@ -1,18 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
-import 'package:smartsystemforschools/features/chatbot/presentation/chat_bot_screen.dart';
-import 'package:smartsystemforschools/features/food_ai_view/screens/food_ai_screen.dart';
-import 'package:smartsystemforschools/features/payment/presentation/views/payment_view.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../../core/services/notification_service/messaging_config.dart';
+import '../../../Attendance/presentation/views/attendance_view.dart';
+import '../../../chatbot/presentation/chat_bot_screen.dart';
+import '../../../food_ai_view/screens/food_ai_screen.dart';
+import '../../../payment/presentation/views/payment_view.dart';
+import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/utils/assets.dart';
 import '../../../../generated/locale_keys.g.dart';
 import '../../../family/presentation/views/family_view.dart';
 import '../../../home/presentation/views/home_screen.dart';
 
 class MainScreen extends StatefulWidget {
-  static String id = "MainScreen";
+  static String id = "/MainScreen";
   const MainScreen({super.key});
 
   @override
@@ -25,7 +26,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     HomeView(key: UniqueKey()),
     FamilyView(key: UniqueKey()),
     AttendanceView(key: UniqueKey()),
-    PaymentView(key: UniqueKey()),
+    // PaymentView(key: UniqueKey()),
     FoodAiScreen(key: UniqueKey()),
     ChatbotScreen(key: UniqueKey()),
     // TrackingView(
@@ -47,7 +48,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   void _initAnimations() {
     // Initialize animation controllers for each tab
     _animationControllers = List.generate(
-      6,
+      5,
       (index) => AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 400),
@@ -153,22 +154,22 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   primaryColor: primaryColor,
                   secondaryColor: secondaryColor,
                 ),
+                // _buildNavItem(
+                //   index: 3,
+                //   iconPath: Assets.imagesWallet,
+                //   label: LocaleKeys.bottomNavigationBar_wallet.tr(),
+                //   primaryColor: primaryColor,
+                //   secondaryColor: secondaryColor,
+                // ),
                 _buildNavItem(
                   index: 3,
-                  iconPath: Assets.imagesWallet,
-                  label: LocaleKeys.bottomNavigationBar_wallet.tr(),
-                  primaryColor: primaryColor,
-                  secondaryColor: secondaryColor,
-                ),
-                _buildNavItem(
-                  index: 4,
                   iconPath: Assets.imagesHelp,
                   label: 'AI',
                   primaryColor: primaryColor,
                   secondaryColor: secondaryColor,
                 ),
                 _buildNavItem(
-                  index: 5,
+                  index: 4,
                   iconPath: Assets.imagesChatbot,
                   label: 'ChatBot',
                   primaryColor: primaryColor,

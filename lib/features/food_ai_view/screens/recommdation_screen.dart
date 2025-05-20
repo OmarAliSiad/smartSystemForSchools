@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/features/food_ai_view/data/models/meal_recommendation.dart';
+import '../../../core/utils/animated_app_bar.dart';
+import '../../../core/utils/app_styles.dart';
+import '../data/models/meal_recommendation.dart';
 
 class RecommendationsScreen extends StatelessWidget {
   final List<MealRecommendation> recommendations;

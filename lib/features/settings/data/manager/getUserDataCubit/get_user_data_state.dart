@@ -5,11 +5,11 @@ sealed class GetUserDataState {}
 
 final class GetUserDataInitial extends GetUserDataState {}
 
-final class Loading extends GetUserDataState {}
+final class GetUserDataLoading extends GetUserDataState {}
 
-final class UserDataLoaded extends GetUserDataState {
-  // final List<QueryDocumentSnapshot> data;
-  // UserDataLoaded({required this.data});
+final class GetUserDataSuccess extends GetUserDataState {
+  UserInfoModel userInfo;
+  GetUserDataSuccess({required this.userInfo});
 }
 
 final class UserDataFailure extends GetUserDataState {

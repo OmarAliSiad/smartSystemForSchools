@@ -3,20 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/core/models/money_recharge_model/money_recharge_model.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
-import 'package:smartsystemforschools/core/utils/custom_button.dart';
-import 'package:smartsystemforschools/core/widgets/custom_bottom_container.dart';
-import 'package:smartsystemforschools/core/widgets/spare.dart';
-import 'package:smartsystemforschools/features/Allergies/data/manager/assing_allegris/allegris.dart';
-import 'package:smartsystemforschools/features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
-import 'package:smartsystemforschools/features/child_details_view/manager/models/get_sending_limit/get_sending_limit.dart';
-import 'package:smartsystemforschools/features/child_details_view/views/choose_balance_for_child.dart';
-import 'package:smartsystemforschools/features/child_details_view/widgets/custom_card_spending_limits.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../core/models/get_child_details/result.dart';
+import '../../../core/models/money_recharge_model/money_recharge_model.dart';
+import '../../../core/utils/Constants.dart';
+import '../../../core/utils/animated_app_bar.dart';
+import '../../../core/utils/custom_app_bar.dart';
+import '../../../core/utils/custom_button.dart';
+import '../../../core/widgets/custom_bottom_container.dart';
+import '../../payment_parent/presentation/screens/spare.dart';
+import '../../Allergies/data/manager/allegris_catogries/allegris_cubit.dart';
+import '../manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
+import '../manager/models/get_sending_limit/get_sending_limit.dart';
+import 'choose_balance_for_child.dart';
+import '../widgets/custom_card_spending_limits.dart';
+import '../widgets/restricted_products_widget.dart';
+import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../generated/locale_keys.g.dart';
 import '../../../core/utils/app_styles.dart';
 import '../../../core/utils/assets.dart';
 import '../widgets/CardDetailsChildWidget.dart';
@@ -24,7 +26,7 @@ import '../widgets/CustomCardForSpendingAndRecharge.dart';
 import '../widgets/custom_allgeries_widget.dart';
 
 class ChildDetailsView extends StatefulWidget {
-  static const String id = 'ChildDetailsView';
+  static const String id = '/ChildDetailsView';
   final ResultForChildDetails resultForChildDetails;
   const ChildDetailsView({super.key, required this.resultForChildDetails});
 
@@ -58,7 +60,7 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
         result = await context.read<SpendingLimitCubit>().getSpendingLimit(
             studentId: widget.resultForChildDetails.id.toString()),
         context
-            .read<AllergiesCubit>()
+            .read<AllergiesCubitCatogry>()
             .getAllegrisForStudent(widget.resultForChildDetails.id.toString()),
       ]);
       if (result != null) {
@@ -80,12 +82,30 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        ThereIsicon: false,
-        onTap: () {
-          Navigator.of(context).pop();
-        },
+      appBar: AnimatedCustomAppBar(
+        waveColor: Colors.blue,
+        backgroundColor: Colors.blue.shade900,
+        leading: IconButton(
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
+        title: 'Child Details View',
+        thereIsIcon: false,
+        textStyle: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
+      // appBar: CustomAppBar(
+      //   ThereIsicon: false,
+      //   onTap: () {
+      //     Navigator.of(context).pop();
+      //   },
+      // ),
       body: RefreshIndicator(
         backgroundColor: Colors.white,
         color: Colors.blue.shade900,
@@ -153,8 +173,7 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
                                     return ChooseBalanceForChild(
                                       balance: widget
                                           .resultForChildDetails.amountOfMoney!,
-                                      studentId: widget
-                                          .resultForChildDetails.id
+                                      studentId: widget.resultForChildDetails.id
                                           .toString(),
                                     );
                                   }),
@@ -169,11 +188,20 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
                         const SizedBox(
                           height: 26,
                         ),
+                        RestrictedProducts(
+                          resultForChildDetails: widget.resultForChildDetails,
+                        )
+                            .animate()
+                            .fadeIn(duration: 300.ms, delay: 600.ms)
+                            .slideY(begin: 0.05, end: 0),
+                        const SizedBox(
+                          height: 26,
+                        ),
                         CustomAllergiesWidget(
                           childDetails: widget.resultForChildDetails,
                         )
                             .animate()
-                            .fadeIn(duration: 300.ms, delay: 600.ms)
+                            .fadeIn(duration: 300.ms, delay: 700.ms)
                             .slideY(begin: 0.05, end: 0),
                         const SizedBox(
                           height: 26,

@@ -1,17 +1,17 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
+import '../../../core/methods/show_scaffold_messanger.dart';
+import '../../../core/utils/animated_app_bar.dart';
+import '../../../core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smartsystemforschools/features/chatbot/data/cubit/cubit/chatbot_cubit.dart';
-import 'package:smartsystemforschools/features/chatbot/data/cubit/cubit/chatbot_state.dart';
-import 'package:smartsystemforschools/features/chatbot/data/model/message.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../data/cubit/cubit/chatbot_cubit.dart';
+import '../data/cubit/cubit/chatbot_state.dart';
+import '../data/model/message.dart';
+import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class ChatbotScreen extends StatefulWidget {

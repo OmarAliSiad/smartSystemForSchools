@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
+import '../../data/cubit/notification_cubit.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'notification_card_widget.dart';

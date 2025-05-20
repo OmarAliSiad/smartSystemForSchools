@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/chatbot/data/model/message.dart';
+import '../../model/message.dart';
 
 import 'chatbot_state.dart';
 
@@ -16,7 +16,16 @@ class ChatCubit extends Cubit<ChatState> {
           messages: [],
           isLoading: false,
           currentTypingResponse: '',
-        ));
+        )) {
+    // Configure Dio with longer timeout and better error handling
+    _dio.options.connectTimeout = const Duration(seconds: 30);
+    _dio.options.receiveTimeout = const Duration(seconds: 30);
+    _dio.options.validateStatus = (status) {
+      return status != null &&
+          status <
+              500; // Accept all non-500 status codes for better error handling
+    };
+  }
 
   Future<void> sendMessage(String message,
       {String? imagePath, String? filePath}) async {
@@ -71,7 +80,7 @@ class ChatCubit extends Cubit<ChatState> {
 
       final errorMessage = Message(
         content:
-            "Sorry, I couldn't process your request. Error: ${e.toString()}",
+            "Sorry, I couldn't process your request. ${_formatErrorMessage(e)}",
         isUser: false,
         timestamp: DateTime.now(),
       );
@@ -82,31 +91,67 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  String _formatErrorMessage(dynamic error) {
+    if (error is DioException) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        return "Connection timeout. Please check your internet connection.";
+      } else if (error.type == DioExceptionType.receiveTimeout) {
+        return "Server is taking too long to respond. Please try again later.";
+      } else if (error.response != null) {
+        final statusCode = error.response?.statusCode;
+        final responseData = error.response?.data;
+
+        if (statusCode == 400) {
+          return "Invalid request format. Please try again with different input.";
+        } else if (statusCode == 401 || statusCode == 403) {
+          return "API key authentication error. Please check your API key.";
+        } else if (statusCode == 404) {
+          return "API endpoint not found. Please check your configuration.";
+        } else if (statusCode == 429) {
+          return "API quota exceeded. Please try again later.";
+        } else if (statusCode == 500 || statusCode == 503) {
+          return "Server error. The AI service is currently unavailable.";
+        }
+
+        // Try to extract error message from response data
+        if (responseData is Map) {
+          final errorMessage = responseData['error']?['message'] ??
+              responseData['message'] ??
+              responseData['error'] ??
+              "Unknown server error";
+          return "Server error: $errorMessage";
+        }
+      }
+    }
+    return "Error: ${error.toString()}";
+  }
+
   Future<String> _callAIService(String message,
       {String? imagePath, String? filePath}) async {
     try {
-      const apiKey =
-          'AIzaSyBLTEcKLPeOAeq89fasRpA0s6KbPzeVaJA'; // Replace with your actual API key
-
-      // Use the correct, current Gemini API endpoint structure
+      // Use environment variables or secure storage in production!
+      const apiKey = 'AIzaSyB5cs0Z_G1dnwe9DqHnH_Alfd2cybOsurk';
+      // Updated API endpoint for Gemini 2.0 Flash
       const String url =
-          'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey';
+          'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey';
 
       // Build conversation history
       final List<Map<String, dynamic>> contents = [];
-      // Add previous messages to establish context - limit to last 10 messages
-      // We'll start with oldest messages first
-      // const int historyLimit = 10;
-      // final int startIdx = state.messages.length > historyLimit
-      //     ? state.messages.length - historyLimit
-      //     : 0;
-      int startIdx = 0;
+
+      // Limit conversation context to avoid token limits
+      // Only include last 5 messages to stay within context window
+      int startIdx = state.messages.length > 5 ? state.messages.length - 5 : 0;
+
       for (int i = startIdx; i < state.messages.length; i++) {
         final Message msg = state.messages[i];
         final List<Map<String, dynamic>> parts = [];
-        // Add text content
-        parts.add({'text': msg.content});
-        // Add image if this message had one
+
+        // Add text content if not empty
+        if (msg.content.isNotEmpty) {
+          parts.add({'text': msg.content});
+        }
+
+        // Add image if this message had one and it's in the cache
         if (msg.imageUrl != null && _imageCache.containsKey(msg.imageUrl)) {
           parts.add({
             'inline_data': {
@@ -115,14 +160,20 @@ class ChatCubit extends Cubit<ChatState> {
             }
           });
         }
-        contents.add({'role': msg.isUser ? 'user' : 'model', 'parts': parts});
+
+        // Only add message if it has content
+        if (parts.isNotEmpty) {
+          contents.add({'role': msg.isUser ? 'user' : 'model', 'parts': parts});
+        }
       }
 
       // Add current message
       final List<Map<String, dynamic>> currentParts = [];
 
-      // Add text message
-      currentParts.add({'text': message});
+      // Add text message if not empty
+      if (message.isNotEmpty) {
+        currentParts.add({'text': message});
+      }
 
       // Add image data if available for current message
       if (imagePath != null) {
@@ -143,21 +194,63 @@ class ChatCubit extends Cubit<ChatState> {
           }
         });
       }
-      // Add current message to contents
-      contents.add({'role': 'user', 'parts': currentParts});
-      // Create proper request structure for Gemini API with conversation history
+
+      // Only add current message if it has content
+      if (currentParts.isNotEmpty) {
+        contents.add({'role': 'user', 'parts': currentParts});
+      }
+
+      // Create proper request structure for Gemini API
       Map<String, dynamic> requestBody = {
         'contents': contents,
-        // 'generationConfig': {
-        //   'temperature': 0.7,
-        //   'maxOutputTokens': 2048,
-        // }
+        'generationConfig': {
+          'temperature': 0.7,
+          'maxOutputTokens': 1024,
+          'topP': 0.95,
+          'topK': 40,
+        },
+        'safetySettings': [
+          {
+            'category': 'HARM_CATEGORY_HARASSMENT',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            'category': 'HARM_CATEGORY_HATE_SPEECH',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          },
+          {
+            'category': 'HARM_CATEGORY_DANGEROUS_CONTENT',
+            'threshold': 'BLOCK_MEDIUM_AND_ABOVE'
+          }
+        ]
       };
+
       _dio.options.headers['Content-Type'] = 'application/json';
-      final response = await _dio.post(url, data: requestBody);
+
+      final response = await _dio.post(
+        url,
+        data: jsonEncode(requestBody),
+        options: Options(
+          validateStatus: (status) => status != null && status < 500,
+          receiveTimeout: const Duration(seconds: 30),
+        ),
+      );
+
       if (response.statusCode == 200) {
         try {
           final responseData = response.data;
+
+          // First check for errors in the response
+          if (responseData.containsKey('error')) {
+            final error = responseData['error'];
+            final errorMessage = error['message'] ?? 'Unknown API error';
+            throw Exception(errorMessage);
+          }
+
           final candidates = responseData['candidates'];
 
           if (candidates != null && candidates.isNotEmpty) {
@@ -170,25 +263,31 @@ class ChatCubit extends Cubit<ChatState> {
               }
             }
           }
-          print('Unexpected response structure: ${response.data}');
-          return "I couldn't understand the API response format.";
+          return "I received an unexpected response format. Please try again.";
         } catch (e) {
-          print('Response parsing error: ${e.toString()}');
-          return "Error parsing response: ${e.toString()}";
+          if (e is Exception) rethrow;
+          return "Error processing response: ${e.toString()}";
         }
       } else {
-        print('Error response: ${response.statusCode}, ${response.data}');
-        throw Exception(
-            'Failed to get response: ${response.statusCode}, ${response.data}');
+        final errorData = response.data;
+        String errorMessage = "API error";
+
+        if (errorData is Map && errorData.containsKey('error')) {
+          errorMessage = errorData['error']['message'] ?? errorMessage;
+        }
+
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          type: DioExceptionType.badResponse,
+          message: errorMessage,
+        );
       }
     } catch (e) {
-      print('Dio error: ${e.toString()}');
-      // Return a more informative error message
-      if (e.toString().contains('404')) {
-        return "API connection error: The Gemini API endpoint couldn't be found. Please check your API key and model names.";
-      } else {
-        return "I couldn't process your request at the moment. Error: ${e.toString()}";
+      if (e is DioException) {
+        rethrow;
       }
+      throw Exception("Failed to communicate with AI service: ${e.toString()}");
     }
   }
 
@@ -215,16 +314,24 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> _animateResponse(String fullResponse) async {
     String currentText = '';
     // Split the response into characters and animate them typing out
+    final int animationSteps = fullResponse.length;
+    const int maxAnimationDuration = 2000; // max 2 seconds for animation
+
+    // Calculate delay to ensure animation completes in reasonable time
+    final int stepDelay = (animationSteps > 100)
+        ? (maxAnimationDuration ~/ animationSteps)
+        : 20; // 20ms default for short responses
+
     for (int i = 0; i < fullResponse.length; i++) {
       currentText += fullResponse[i];
       emit(state.copyWith(currentTypingResponse: currentText));
 
-      // Adjust typing speed - random delay between 10-50ms for natural typing feel
-      await Future.delayed(Duration(milliseconds: 10 + (5 * (i % 3))));
+      // Adjust typing speed - random delay between 5-15ms for natural typing feel
+      await Future.delayed(Duration(milliseconds: stepDelay + (5 * (i % 3))));
     }
   }
 
-  // Add this method to ChatCubit:
+  // Load saved messages
   void loadMessages(List<Message> messages) {
     emit(state.copyWith(
       messages: messages,

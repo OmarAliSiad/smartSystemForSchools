@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
+import '../../../../core/utils/Constants.dart';
 
 class TotalFees extends StatelessWidget {
   final int? selectedAmount;

@@ -4,7 +4,7 @@ import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.d
 import '../widgets/splash_view_body.dart';
 
 class SplashView extends StatelessWidget {
-  static String id = 'SplashView';
+  static String id = '/SplashView';
   const SplashView({super.key});
 
   @override

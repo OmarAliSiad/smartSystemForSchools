@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/custom_button.dart';
+import '../utils/app_styles.dart';
+import '../utils/custom_button.dart';
 import '../widgets/alertDialog.dart';
 
 Future<dynamic> ShowDialogForRecharge({

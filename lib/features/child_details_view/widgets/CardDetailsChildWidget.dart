@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/features/child_details_view/widgets/CustomSpendingDailyLimitWidget.dart';
-import 'package:smartsystemforschools/features/child_details_view/widgets/custom_balance_widget.dart';
+import '../../../core/models/get_child_details/result.dart';
+import 'CustomSpendingDailyLimitWidget.dart';
+import 'custom_balance_widget.dart';
 import '../../../core/utils/app_styles.dart';
 
 class CardDetailsChildWidget extends StatelessWidget {

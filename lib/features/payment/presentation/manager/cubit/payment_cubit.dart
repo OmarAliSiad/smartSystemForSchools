@@ -3,12 +3,12 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:meta/meta.dart';
-import 'package:smartsystemforschools/core/models/get_balance/get_balance.dart';
-import 'package:smartsystemforschools/core/models/money_recharge_model/money_recharge_model.dart';
-import 'package:smartsystemforschools/core/models/parent_to_stuent_transcation/parent_to_stuent_transcation.dart';
-import 'package:smartsystemforschools/core/models/parent_to_stuent_transcation/result.dart';
-import 'package:smartsystemforschools/core/services/payment_service/payment_service.dart';
-import 'package:smartsystemforschools/core/services/stripe_service.dart';
+import '../../../../../core/models/get_balance/get_balance.dart';
+import '../../../../../core/models/money_recharge_model/money_recharge_model.dart';
+import '../../../../../core/models/parent_to_stuent_transcation/parent_to_stuent_transcation.dart';
+import '../../../../../core/models/parent_to_stuent_transcation/result.dart';
+import '../../../../../core/services/payment_service/payment_service.dart';
+import '../../../../../core/services/stripe_service.dart';
 import '../../../../../core/utils/paymobService.dart';
 import '../../../data/models/payment_intent_model/payment_intent_input_model.dart';
 import '../../views/payment_webView.dart';
@@ -16,56 +16,54 @@ part 'payment_state.dart';
 
 class PaymentCubit extends Cubit<PaymentState> {
   PaymentCubit() : super(PaymentInitial());
-  Future<void> makePaymenStripeService({
-    required PaymentIntentInputModel paymentIntentInputModel,
-    required BuildContext context,
-  }) async {
-    StripeService stripeService = StripeService();
-    emit(PaymentLoading());
-    try {
-      bool data = await stripeService.makePayment(
-          paymentIntentInputModel: paymentIntentInputModel, context: context);
-      if (!data) {
-        emit(PaymentFailure(errorMessage: 'Payment Failed, try again'));
-      } else {
-        emit(PaymentSuccess());
-      }
-    } on StripeException catch (e) {
-      emit(PaymentFailure(errorMessage: e.toString()));
-    } catch (e) {
-      emit(PaymentFailure(errorMessage: e.toString()));
-    }
-  }
+  // Future<void> makePaymenStripeService({
+  //   required PaymentIntentInputModel paymentIntentInputModel,
+  //   required BuildContext context,
+  // }) async {
+  //   StripeService stripeService = StripeService();
+  //   emit(PaymentLoading());
+  //   try {
+  //     bool data = await stripeService.makePayment(
+  //         paymentIntentInputModel: paymentIntentInputModel, context: context);
+  //     if (!data) {
+  //       emit(PaymentFailure(errorMessage: 'Payment Failed, try again'));
+  //     } else {
+  //       emit(PaymentSuccess());
+  //     }
+  //   } on StripeException catch (e) {
+  //     emit(PaymentFailure(errorMessage: e.toString()));
+  //   } catch (e) {
+  //     emit(PaymentFailure(errorMessage: e.toString()));
+  //   }
+  // }
 
-  void makePaymentWithPaymob({required BuildContext context}) async {
-    emit(PaymentLoading());
-    await PaymobService()
-        .getPaymentKey(amount: 10, currency: "EGP")
-        .then((paymentKey) async {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) {
-            return PaymentWebview(
-              url: Uri.parse(
-                  'https://accept.paymob.com/api/acceptance/iframes/899682?payment_token=$paymentKey'),
-            );
-          },
-        ),
-      );
-      emit(PaymentSuccess());
-    }).catchError((e) {
-      emit(PaymentFailure(errorMessage: e.toString()));
-    });
-  }
+  // void makePaymentWithPaymob({required BuildContext context}) async {
+  //   emit(PaymentLoading());
+  //   await PaymobService()
+  //       .getPaymentKey(amount: 10, currency: "EGP")
+  //       .then((paymentKey) async {
+  //     Navigator.of(context).push(
+  //       MaterialPageRoute(
+  //         builder: (context) {
+  //           return PaymentWebview(
+  //             url: Uri.parse(
+  //                 'https://accept.paymob.com/api/acceptance/iframes/899682?payment_token=$paymentKey'),
+  //           );
+  //         },
+  //       ),
+  //     );
+  //     emit(PaymentSuccess());
+  //   }).catchError((e) {
+  //     emit(PaymentFailure(errorMessage: e.toString()));
+  //   });
+  // }
 
-  Future<void> checkoutPayment(
-      {required String studentId, required String amount}) async {
+  Future<void> checkoutPayment({required String amount}) async {
     try {
       emit(CheckoutPaymentLoading());
       MoneyRechargeModel paymentCheckoutModel =
           await PaymentService().moneyRecharge(
         amount: double.parse(amount),
-        studentId: studentId,
       );
 
       // Check if the payment was successful

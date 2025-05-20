@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/features/settings/data/manager/models/profile_data_model.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_state.dart';
+import '../../../../../core/utils/Constants.dart';
+import '../../../../settings/data/manager/models/profile_data_model.dart';
+import 'change_data_profile_state.dart';
 
 class ChangeDataProfileCubit extends Cubit<ChangeDataProfileState> {
   TextEditingController Phone = TextEditingController();
@@ -23,7 +23,6 @@ class ChangeDataProfileCubit extends Cubit<ChangeDataProfileState> {
     try {
       emit(ChangeDataProfileLoading());
       SharedPreferences prefs = await SharedPreferences.getInstance();
-
       // Save all data using Constants
       await prefs.setString(Constants.phone, profileDataModel.phone);
       await prefs.setString(Constants.gender, profileDataModel.gender);
@@ -43,6 +42,7 @@ class ChangeDataProfileCubit extends Cubit<ChangeDataProfileState> {
       // Emit success state with updated profile data
       emit(DataProfileLoaded(
           profileDataModel: ProfileDataModel(
+              username: profileDataModel.username,
               phone: profileDataModel.phone,
               gender: profileDataModel.gender,
               address: profileDataModel.address,

@@ -2,10 +2,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class Constants {
-  static const String username = 'username';
-}
+import '../../utils/Constants.dart';
 
 class FCMTokenService {
   // Singleton instance
@@ -293,6 +290,41 @@ class FCMTokenService {
       log('Cleaned up $totalTokensDeleted invalid tokens');
     } catch (e) {
       log('Error cleaning up invalid tokens: $e');
+    }
+  }
+
+  // Delete FCM token when user logs out
+  Future<void> deleteTokenOnLogout() async {
+    try {
+      // Get current token
+      String? token = await _messaging.getToken();
+      if (token == null) {
+        log('Failed to get FCM token for deletion on logout');
+        return;
+      }
+      // Get parent username from SharedPreferences
+      final sharedPreferences = await SharedPreferences.getInstance();
+      String? username = sharedPreferences.getString(Constants.username);
+      if (username == null) {
+        log('Failed to get username from SharedPreferences for logout');
+        return;
+      }
+      log('Deleting token for parent $username on logout');
+      // Reference to the parent's document
+      final parentDoc = _parentsCollection.doc(username);
+      log(parentDoc.toString());
+      final tokensCollection = parentDoc.collection('fcm_tokens');
+      // Find the token document
+      final snapshot =
+          await tokensCollection.where('token', isEqualTo: token).get();
+      if (snapshot.docs.isNotEmpty) {
+        await snapshot.docs.first.reference.delete();
+        await sharedPreferences.remove('fcm_token');
+      } else {
+        log('Token not found for deletion on logout');
+      }
+    } catch (e) {
+      log('Error deleting FCM token on logout: $e');
     }
   }
 }

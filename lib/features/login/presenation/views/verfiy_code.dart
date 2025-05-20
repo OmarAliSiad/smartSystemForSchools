@@ -1,15 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/forgot_password.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/otp_code.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import 'forgot_password.dart';
+import 'otp_code.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_button.dart';
 import '../../../../core/widgets/custom_bottom_container.dart';
 import '../widgets/custom_logo.dart';
 
 class VerifyCode extends StatefulWidget {
-  static String id = 'VerfiyCode';
+  static String id = '/VerfiyCode';
   const VerifyCode({super.key});
 
   @override

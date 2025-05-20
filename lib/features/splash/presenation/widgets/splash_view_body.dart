@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/features/splash_feature/presenation/widgets/custom_sliding_animation.dart';
+import 'custom_sliding_animation.dart';
 import '../../../../core/widgets/custom_bottom_container.dart';
 import '../../../onBoarding/views/pageview.dart';
 

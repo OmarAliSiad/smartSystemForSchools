@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:smartsystemforschools/core/models/get_all_schools/result.dart';
-import 'package:smartsystemforschools/features/schools/presentation/views/choose_country.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../../core/models/get_all_schools/result.dart';
+import '../../../schools/presentation/views/choose_country.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../../core/methods/vaildate_email.dart';
 import '../../../../core/methods/vaildate_password.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -14,7 +14,7 @@ import '../widgets/custom_text_field.dart';
 import '../widgets/opcaity_text.dart';
 
 class SignUpScreen extends StatefulWidget {
-  static String id = 'SignUpScreen';
+  static String id = '/SignUpScreen';
   const SignUpScreen({super.key});
 
   @override

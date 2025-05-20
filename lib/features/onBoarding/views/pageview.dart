@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../generated/locale_keys.g.dart';
 
 import '../../../core/utils/assets.dart';
 import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../widgets/custom_page_screen.dart';
 
 class PagesScreen extends StatefulWidget {
-  static String id = 'PagesScreen';
+  static String id = '/PagesScreen';
   const PagesScreen({super.key});
   @override
   State<PagesScreen> createState() => _PagesScreenState();

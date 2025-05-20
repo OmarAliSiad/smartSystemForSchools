@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
+import 'app_styles.dart';
 
 class DisconnectedPageView extends StatelessWidget {
   const DisconnectedPageView({super.key});

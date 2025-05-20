@@ -2,8 +2,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
+import '../../../../core/services/fcm_token_service/fcm_token_service.dart';
+import '../../../../core/utils/Constants.dart';
+import '../../../main_screen/presentation/views/main_screen.dart';
 import '../../../../core/methods/show_scaffold_messanger.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/services/auth_service/auth_service.dart';
@@ -90,6 +91,7 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
                     },
                   );
                   if (response.statusCode == 200) {
+                    FCMTokenService().saveToken();
                     log('set user');
                     UserInfoModel userInfo =
                         UserInfoModel.fromJson(response.data);

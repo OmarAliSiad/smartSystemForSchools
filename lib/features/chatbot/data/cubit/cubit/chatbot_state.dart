@@ -1,4 +1,4 @@
-import 'package:smartsystemforschools/features/chatbot/data/model/message.dart';
+import '../../model/message.dart';
 
 class ChatState {
   final List<Message> messages;

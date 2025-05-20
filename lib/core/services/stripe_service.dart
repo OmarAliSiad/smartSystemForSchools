@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/utils/api_keys.dart';
-import 'package:smartsystemforschools/core/utils/api_service.dart';
-import 'package:smartsystemforschools/core/widgets/show_dialog.dart';
-import 'package:smartsystemforschools/features/payment/data/models/payment_intent_model/payment_intent_input_model.dart';
-import 'package:smartsystemforschools/features/payment/data/models/payment_intent_model/payment_intent_model.dart';
-import 'package:smartsystemforschools/features/payment/data/models/ephemeral_key_model/ephmeral_key_model.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../methods/show_scaffold_messanger.dart';
+import '../utils/api_keys.dart';
+import '../utils/api_service.dart';
+import '../widgets/show_dialog.dart';
+import '../../features/payment/data/models/payment_intent_model/payment_intent_input_model.dart';
+import '../../features/payment/data/models/payment_intent_model/payment_intent_model.dart';
+import '../../features/payment/data/models/ephemeral_key_model/ephmeral_key_model.dart';
+import '../../features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StripeService {

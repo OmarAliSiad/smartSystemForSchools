@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/food_ai_view/data/api_handler.dart';
-import 'package:smartsystemforschools/features/food_ai_view/data/cubit/cubit/meal_recommendation_state.dart';
-import 'package:smartsystemforschools/features/food_ai_view/data/models/child_model.dart';
-import 'package:smartsystemforschools/features/food_ai_view/data/models/meal_recommendation.dart';
+import '../../api_handler.dart';
+import 'meal_recommendation_state.dart';
+import '../../models/child_model.dart';
+import '../../models/meal_recommendation.dart';
 
 class MealRecommendationCubit extends Cubit<MealRecommendationState> {
   MealRecommendationCubit() : super(MealRecommendationInitial());
@@ -15,13 +15,10 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
   }) async {
     try {
       emit(MealRecommendationLoading());
-
       // Prepare the prompt for Gemini
       final prompt = _buildPrompt(profile, mealType, timeOfDay);
-
       // Call Gemini API
       final recommendations = await _callGeminiApi(prompt);
-
       emit(MealRecommendationLoaded(recommendations));
     } catch (e) {
       emit(MealRecommendationError(
@@ -31,15 +28,16 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
 
   String _buildPrompt(
       ChildProfile profile, String mealType, String? timeOfDay) {
-    final allergiesText = profile.allergies.join(', ');
+    // final allergiesText = profile.allergies.join(', ');
     final preferencesText = profile.dietaryPreferences.isEmpty
         ? 'no specific preferences'
         : profile.dietaryPreferences.join(', ');
 
     return """
-    My child is ${profile.age} years old and has allergies to $allergiesText. 
+    My child is ${profile.age} years old. 
     They have dietary preferences: $preferencesText.
     And he is weight ${profile.weight} kg and height ${profile.height} cm and his blood type ${profile.bloodType}.
+    the products ${profile.selectedProducts.map((e) => e['name']).join(', ')} and described as ${profile.selectedProducts.map((e) => e['description']).join(', ')}.
     Please provide a comprehensive list of food products that are forbidden or not recommended for ${mealType.toLowerCase()} options${timeOfDay != null ? ' for $timeOfDay' : ''}.
     For each option, include:
     - Name
@@ -50,11 +48,9 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
 
   Future<List<MealRecommendation>> _callGeminiApi(String prompt) async {
     log(prompt);
-    // Replace with your actual API key and endpoint
-    const apiKey = 'AIzaSyBLTEcKLPeOAeq89fasRpA0s6KbPzeVaJA';
     final response = await DioHelper().post(
       url:
-          'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey',
+          'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB5cs0Z_G1dnwe9DqHnH_Alfd2cybOsurk',
       data: {
         'contents': [
           {
@@ -65,7 +61,6 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
         ]
       },
     );
-
     if (response.statusCode == 200) {
       final data = response.data;
       final responseText = data['candidates'][0]['content']['parts'][0]['text'];

@@ -26,6 +26,25 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:956885894538:android:ca5725322a97d00d20f473",
+        "android_client_info": {
+          "package_name": "com.example.canteen_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDep_3FBANQZegt28rtbE35IOivipttNOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:956885894538:android:4704c75d511d7a2e20f473",
         "android_client_info": {
           "package_name": "com.example.canteen_app.dev"
@@ -65,6 +84,44 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:956885894538:android:62d9f94c738327f620f473",
+        "android_client_info": {
+          "package_name": "com.example.smartsystem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDep_3FBANQZegt28rtbE35IOivipttNOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956885894538:android:7bef8d1707a88c5f20f473",
+        "android_client_info": {
+          "package_name": "com.example.smartsystemforschoo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDep_3FBANQZegt28rtbE35IOivipttNOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956885894538:android:c83c095c6dd9176d20f473",
         "android_client_info": {
           "package_name": "com.example.smartsystemforschools"
         }

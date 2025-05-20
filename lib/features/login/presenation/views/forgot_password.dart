@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/methods/vaildate_password.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../../core/methods/show_scaffold_messanger.dart';
+import '../../../../core/methods/vaildate_password.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_button.dart';
 import '../../../../core/widgets/custom_bottom_container.dart';
@@ -11,7 +11,7 @@ import '../widgets/custom_logo.dart';
 import '../widgets/user_info.dart';
 
 class ForgotPassword extends StatefulWidget {
-  static String id = 'ForgotPassword';
+  static String id = '/ForgotPassword';
   const ForgotPassword({super.key});
 
   @override

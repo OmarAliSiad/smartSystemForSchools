@@ -12,7 +12,6 @@ class Constants {
   static const String token = 'token';
   static const String intergrationId = '4949968'; // for paymob
   static const isAuthenticated = 'isAuthenticated';
-  static const username = 'username';
   static const email = 'email';
   static const image = 'image';
   static const id = 'id';
@@ -24,4 +23,5 @@ class Constants {
   static const phone = 'phone';
   static const schoolTenantId = 'schoolTenantId';
   static const studentId = 'studentId';
+  static const String username = 'username';
 }

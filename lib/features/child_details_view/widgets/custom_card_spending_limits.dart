@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/assets.dart';
-import 'package:smartsystemforschools/features/child_details_view/views/spending_limits_view.dart';
-import 'package:smartsystemforschools/features/child_details_view/widgets/custom_button.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../core/utils/app_styles.dart';
+import '../../../core/utils/assets.dart';
+import '../views/spending_limits_view.dart';
+import 'custom_button.dart';
+import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
 class CustomCardSpendingLimits extends StatelessWidget {
   final String studentId;

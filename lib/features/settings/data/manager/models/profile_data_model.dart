@@ -1,6 +1,7 @@
 import 'dart:io';
 
 class ProfileDataModel {
+  final String? username;
   final String phone;
   final File? image;
   final String gender;
@@ -8,6 +9,7 @@ class ProfileDataModel {
   final String address;
 
   ProfileDataModel({
+    this.username,
     required this.phone,
     this.image, // Made optional by removing "required"
     required this.gender,
@@ -23,6 +25,7 @@ class ProfileDataModel {
     String? address,
   }) {
     return ProfileDataModel(
+      username: username ?? username,
       phone: phone ?? this.phone,
       image: image ?? this.image,
       gender: gender ?? this.gender,

@@ -12,12 +12,12 @@ class GetAllergiesLoading extends AllergiesState {}
 class deleteAllergiesLoading extends AllergiesState {}
 
 class AssignAllergiesLoaded extends AllergiesState {
-  final AllegryDetails allergyItems;
+  final AllegryCatogryDetails allergyItems;
   AssignAllergiesLoaded(this.allergyItems);
 }
 
 class GetAllergiesLoaded extends AllergiesState {
-  final AllegryDetails allergyItems;
+  final AllegryCatogryDetails allergyItems;
   GetAllergiesLoaded(this.allergyItems);
 }
 

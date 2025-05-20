@@ -134,11 +134,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:smartsystemforschools/core/services/fcm_token_service/fcm_token_service.dart';
 import 'package:smartsystemforschools/core/services/notification_service/send_notification_services.dart';
-import 'package:smartsystemforschools/main.dart';
+import 'package:smartsystemforschools/core/utils/AppNavigatorKeys.dart';
 
 class MessagingConfig {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
+  // Get the navigator key from the singleton
+  static final appNavigatorKeys = AppNavigatorKeys();
 
   static Future<void> createNotificationChannel() async {
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -235,8 +238,12 @@ class MessagingConfig {
             ),
           ),
         );
-        // Use the global navigatorKey from main.dart
-        handleNotification(navigatorKey.currentContext!, event.data);
+
+        // Use the shared navigator key from AppNavigatorKeys
+        final context = appNavigatorKeys.mainNavigatorKey.currentContext;
+        if (context != null) {
+          handleNotification(context, event.data);
+        }
       } catch (err) {
         log(err.toString());
       }
@@ -244,7 +251,10 @@ class MessagingConfig {
 
     // Only handle notification when user clicks
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      handleNotification(navigatorKey.currentContext!, message.data);
+      final context = appNavigatorKeys.mainNavigatorKey.currentContext;
+      if (context != null) {
+        handleNotification(context, message.data);
+      }
     });
 
     // Also handle initial message when app is opened from a terminated state
@@ -252,7 +262,10 @@ class MessagingConfig {
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null) {
-        handleNotification(navigatorKey.currentContext!, message.data);
+        final context = appNavigatorKeys.mainNavigatorKey.currentContext;
+        if (context != null) {
+          handleNotification(context, message.data);
+        }
       }
     });
   }

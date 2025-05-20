@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
+import '../../../../core/methods/show_scaffold_messanger.dart';
+import '../../../main_screen/presentation/views/main_screen.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/services/auth_service/auth_service.dart';
 import '../../data/models/user_info_model.dart';

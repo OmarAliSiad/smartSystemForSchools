@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -51,7 +48,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDep_3FBANQZegt28rtbE35IOivipttNOc',
-    appId: '1:956885894538:android:62d9f94c738327f620f473',
+    appId: '1:956885894538:android:c83c095c6dd9176d20f473',
     messagingSenderId: '956885894538',
     projectId: 'notification-388f1',
     storageBucket: 'notification-388f1.firebasestorage.app',
@@ -59,10 +56,20 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAbouUtEyWr8KJLO1VldcTQ95w6bZdPa08',
-    appId: '1:956885894538:ios:a02610423a22736020f473',
+    appId: '1:956885894538:ios:55499f6f092f358e20f473',
     messagingSenderId: '956885894538',
     projectId: 'notification-388f1',
     storageBucket: 'notification-388f1.firebasestorage.app',
     iosBundleId: 'com.example.smartsystemforschools',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDKle77RYchIZfeK7PrBJsUPqrBK4tCb1M',
+    appId: '1:956885894538:web:856a737303000bc820f473',
+    messagingSenderId: '956885894538',
+    projectId: 'notification-388f1',
+    authDomain: 'notification-388f1.firebaseapp.com',
+    storageBucket: 'notification-388f1.firebasestorage.app',
+    measurementId: 'G-EGG1XLB0R0',
   );
 }

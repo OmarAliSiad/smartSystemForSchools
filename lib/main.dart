@@ -7,61 +7,63 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:smartsystemforschools/core/connectivity_cubit/connectivity_cubit.dart';
-import 'package:smartsystemforschools/core/connectivity_cubit/connectivity_state.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/core/themes/dark_theme.dart';
-import 'package:smartsystemforschools/core/themes/light_theme.dart';
-import 'package:smartsystemforschools/core/services/alllegris_service/allegris_service.dart';
-import 'package:smartsystemforschools/core/utils/api_keys.dart';
-import 'package:smartsystemforschools/core/utils/disconnect_page_view.dart';
-import 'package:smartsystemforschools/core/services/notification_service/messaging_config.dart';
-import 'package:smartsystemforschools/features/Allergies/data/manager/cubit/get_all_catogries_cubit.dart';
-import 'package:smartsystemforschools/features/Allergies/presentation/views/AllergiesView.dart';
-import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
-import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
-import 'package:smartsystemforschools/features/chatbot/data/cubit/cubit/chatbot_cubit.dart';
-import 'package:smartsystemforschools/features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
-import 'package:smartsystemforschools/features/child_details_view/views/child_details_view.dart';
-import 'package:smartsystemforschools/features/family/data/manager/add_child_cubit/add_child_cubit.dart';
-import 'package:smartsystemforschools/features/family/presentation/views/add_child_view.dart';
-import 'package:smartsystemforschools/features/family/presentation/views/family_view.dart';
-import 'package:smartsystemforschools/features/food_ai_view/data/cubit/cubit/meal_recommendation_cubit.dart';
-import 'package:smartsystemforschools/features/home/presentation/views/home_screen.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/forgot_password.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/log_in.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/send_code.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/sign_up_screen.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/verfiy_code.dart';
-import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
-import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
-import 'package:smartsystemforschools/features/onBoarding/views/pageview.dart';
-import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/views/edit_profile.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/views/privacy_view.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/views/terms_and_condition_view.dart';
-import 'package:smartsystemforschools/firebase_options.dart';
-import 'package:smartsystemforschools/generated/codegen_loader.g.dart';
-import 'package:smartsystemforschools/features/settings/presentation/widgets/change_password_page.dart';
+import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_childs_transcations_cubit.dart';
+import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_transcations_cubit.dart';
+import 'core/connectivity_cubit/connectivity_cubit.dart';
+import 'core/connectivity_cubit/connectivity_state.dart';
+import 'core/methods/show_scaffold_messanger.dart';
+import 'core/models/get_child_details/result.dart';
+import 'core/services/notification_service/confirmation_request_screen.dart';
+import 'core/services/notification_service/notification_details_screen.dart';
+import 'core/themes/dark_theme.dart';
+import 'core/themes/light_theme.dart';
+import 'core/services/alllegris_service/allegris_service.dart';
+import 'core/utils/AppNavigatorKeys.dart';
+import 'core/utils/api_keys.dart';
+import 'core/utils/disconnect_page_view.dart';
+import 'core/services/notification_service/messaging_config.dart';
+import 'features/Allergies/data/manager/allegries_products_cubit/allegries_products_cubit.dart';
+import 'features/Allergies/data/manager/get_all_catogries_cubit/get_all_catogries_cubit.dart';
+import 'features/Allergies/data/manager/products_cubit/products_cubit.dart';
+import 'features/Allergies/presentation/views/AllergiesView.dart';
+import 'features/Attendance/data/manager/cubit/attendance_cubit.dart';
+import 'features/Attendance/presentation/views/attendance_view.dart';
+import 'features/chatbot/data/cubit/cubit/chatbot_cubit.dart';
+import 'features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
+import 'features/child_details_view/views/child_details_view.dart';
+import 'features/family/data/manager/add_child_cubit/add_child_cubit.dart';
+import 'features/family/presentation/views/add_child_view.dart';
+import 'features/family/presentation/views/family_view.dart';
+import 'features/food_ai_view/data/cubit/cubit/meal_recommendation_cubit.dart';
+import 'features/home/presentation/views/home_screen.dart';
+import 'features/login/presenation/views/forgot_password.dart';
+import 'features/login/presenation/views/log_in.dart';
+import 'features/login/presenation/views/send_code.dart';
+import 'features/login/presenation/views/sign_up_screen.dart';
+import 'features/login/presenation/views/verfiy_code.dart';
+import 'features/main_screen/presentation/views/main_screen.dart';
+import 'features/notification_view/data/cubit/notification_cubit.dart';
+import 'features/notification_view/presenation/views/notification_view.dart';
+import 'features/onBoarding/views/pageview.dart';
+import 'features/payment/presentation/manager/cubit/payment_cubit.dart';
+import 'features/settings_view/presentation/manager/chage_data_profile/change_data_profile_cubit.dart';
+import 'features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'features/settings_view/presentation/views/edit_profile.dart';
+import 'features/settings_view/presentation/views/language_selection_page.dart';
+import 'features/settings_view/presentation/views/privacy_view.dart';
+import 'features/settings_view/presentation/views/terms_and_condition_view.dart';
+import 'firebase_options.dart';
+import 'generated/codegen_loader.g.dart';
+import 'features/settings/presentation/widgets/change_password_page.dart';
 import 'core/services/auth_service/auth_service.dart';
-import 'features/Allergies/data/manager/assing_allegris/allegris.dart';
-import 'features/splash_feature/presenation/views/splash_view.dart';
+import 'features/Allergies/data/manager/allegris_catogries/allegris_cubit.dart';
+import 'features/splash/presenation/views/splash_view.dart';
 import 'features/settings/presentation/views/settings_view.dart';
 
 bool isLoggedIn = false;
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+// Use the AppNavigatorKeys singleton to manage navigation keys
+final appNavigatorKeys = AppNavigatorKeys();
 void main() async {
-  // ? code for device preview
-  // runApp(
-  //   DevicePreview(
-  //     enabled: !kReleaseMode,
-  //     builder: (context) => const MyApp(), // Wrap your app
-  //   ),
-  // );
   Stripe.publishableKey = ApiKeys.stripePublishableKey;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -86,6 +88,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  // Use the shared navigator key from AppNavigatorKeys singleton
   const MyApp({super.key});
 
   @override
@@ -100,17 +103,30 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AddChildCubit()),
         BlocProvider(create: (context) => AttendanceCubit()),
         BlocProvider(create: (context) => GetAllCatogriesCubit()),
-        BlocProvider(create: (context) => AllergiesCubit(AllergiesService())),
+        BlocProvider(
+            create: (context) => AllergiesCubitCatogry(AllergiesService())),
         BlocProvider(create: (context) => PaymentCubit()),
         BlocProvider(create: (context) => SpendingLimitCubit()),
         BlocProvider(
           create: (context) => InternetCubit(connectivity: Connectivity()),
         ),
         BlocProvider(
+          create: (context) => AllergiesProductCubit(),
+        ),
+        BlocProvider(
           create: (context) => NotificationCubit(),
         ),
         BlocProvider(create: (context) => MealRecommendationCubit()),
+        BlocProvider(
+          create: (context) =>
+              ParentChildsTranscationsCubit()..fetchTransactions(),
+        ),
         BlocProvider(create: (context) => ChatCubit()),
+        BlocProvider(create: (context) => ProductsCubit()),
+        BlocProvider(
+          create: (context) =>
+              ParentTranscationsCubit()..fetchParentTransactions(),
+        ),
         // BlocProvider<ChatHistoryCubit>(create: (context) => ChatHistoryCubit()),
       ],
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
@@ -123,7 +139,7 @@ class MyApp extends StatelessWidget {
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
               locale: context.locale,
-              navigatorKey: navigatorKey,
+              navigatorKey: appNavigatorKeys.mainNavigatorKey,
               scrollBehavior: const ScrollBehavior().copyWith(dragDevices: {
                 PointerDeviceKind.touch,
                 PointerDeviceKind.mouse,
@@ -222,6 +238,12 @@ class MyApp extends StatelessWidget {
                       childDetails: [],
                     ),
                 ChangePasswordPage.id: (context) => const ChangePasswordPage(),
+                LanguageSelectionPage.id: (context) =>
+                    const LanguageSelectionPage(),
+                ConfirmationRequestScreen.id: (context) =>
+                    const ConfirmationRequestScreen(),
+                NotificationDetails.id: (context) =>
+                    const NotificationDetails(),
               },
               initialRoute: isLoggedIn ? MainScreen.id : SplashView.id);
         },
@@ -231,6 +253,8 @@ class MyApp extends StatelessWidget {
 }
 
 class Get {
-  static BuildContext? get context => navigatorKey.currentContext;
-  static NavigatorState? get navigator => navigatorKey.currentState;
+  static BuildContext? get context =>
+      appNavigatorKeys.mainNavigatorKey.currentContext;
+  static NavigatorState? get navigator =>
+      appNavigatorKeys.mainNavigatorKey.currentState;
 }

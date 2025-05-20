@@ -1,17 +1,16 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/models/money_recharge_model/money_recharge_model.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
-import 'package:smartsystemforschools/core/widgets/total_fees.dart';
-import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../core/methods/show_scaffold_messanger.dart';
+import '../../../core/models/money_recharge_model/money_recharge_model.dart';
+import '../../../core/utils/Constants.dart';
+import '../../../core/utils/app_styles.dart';
+import '../../../core/widgets/build_loading_view.dart';
+import '../../payment_parent/presentation/widgets/total_fees.dart';
+import '../../payment/presentation/manager/cubit/payment_cubit.dart';
+import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
 class ChooseBalanceForChild extends StatefulWidget {
   final double balance;
@@ -66,34 +65,35 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
           );
         }
       },
-      child: BlocBuilder<PaymentCubit, PaymentState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                ),
-              ),
-              title: Text(
-                "Recharge",
-                style: AppStyles.styleMedium18(),
+      child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios,
               ),
             ),
-            body: state is SetMoneyLoading
-                ? buildLoadingView(
-                    "recharge",
-                    context,
-                  )
-                : isCustomAmount
-                    ? _buildCustomAmountView(context)
-                    : _buildPredefinedAmountView(),
-          );
-        },
-      ),
+            title: Text(
+              "Recharge",
+              style: AppStyles.styleMedium18(),
+            ),
+          ),
+          body: BlocBuilder<PaymentCubit, PaymentState>(
+            builder: (context, state) {
+              if (state is SetMoneyLoading) {
+                Future.delayed(const Duration(seconds: 60));
+                return buildLoadingView(
+                  "recharge",
+                  context,
+                );
+              }
+              return isCustomAmount
+                  ? _buildCustomAmountView(context)
+                  : _buildPredefinedAmountView();
+            },
+          )),
     );
   }
 

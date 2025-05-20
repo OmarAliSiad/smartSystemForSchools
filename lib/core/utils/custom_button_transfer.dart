@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/core/utils/assets.dart';
+import 'assets.dart';
 
 class CustomButtonTransfer extends StatelessWidget {
   final void Function()? onTap;

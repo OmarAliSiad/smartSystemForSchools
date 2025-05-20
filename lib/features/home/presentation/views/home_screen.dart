@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
-import 'package:smartsystemforschools/core/widgets/spare.dart';
-import 'package:smartsystemforschools/features/notification_view/presenation/views/notification_view.dart';
-import 'package:smartsystemforschools/features/payment/presentation/manager/cubit/payment_cubit.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_childs_transcations_cubit.dart';
+import 'package:smartsystemforschools/features/payment_parent/presentation/widgets/transactions_list_widget.dart';
+import '../../../../core/utils/Constants.dart';
+import '../../../../core/widgets/build_loading_view.dart';
+import '../../../payment_parent/presentation/screens/spare.dart';
+import '../../../notification_view/presenation/views/notification_view.dart';
+import '../../../payment/presentation/manager/cubit/payment_cubit.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../../core/models/get_child_details/result.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/services/school_service/school_service.dart';
@@ -21,7 +23,7 @@ import '../widgets/custom_details_child_view.dart';
 import 'dart:developer';
 
 class HomeView extends StatefulWidget {
-  static const String id = 'HomeView';
+  static const String id = '/HomeView';
 
   const HomeView({super.key});
 
@@ -36,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    loadChildDetails();
+    loadFamilyDetails();
     getUserInfo();
     loadBalance();
   }
@@ -45,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Refresh data when the screen is shown
-    loadChildDetails();
+    loadFamilyDetails();
   }
 
   getUserInfo() async {
@@ -57,7 +59,7 @@ class _HomeViewState extends State<HomeView> {
     context.read<PaymentCubit>().getBalance();
   }
 
-  Future<void> loadChildDetails() async {
+  Future<void> loadFamilyDetails() async {
     setState(() {
       _isLoading = true;
     });
@@ -69,13 +71,55 @@ class _HomeViewState extends State<HomeView> {
         _isLoading = false;
       });
       log("Loaded ${results.length} children in HomeView");
-      loadBalance();
+      Future.wait([
+        loadBalance(),
+        loadTranscations(),
+      ]);
     } catch (e) {
       log("Error loading children in HomeView: $e");
       setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  DateTime selectedDate = DateTime.now();
+  String formattedDate = '';
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.blue.shade900,
+              onPrimary: Colors.white,
+              onSurface: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        selectedDate = pickedDate;
+        formattedDate = DateFormat('yyyy/MM/dd').format(selectedDate);
+      });
+      loadTranscations(formattedDate);
+    }
+  }
+
+  Future<void> loadTranscations([String? selectedDate]) async {
+    await context
+        .read<ParentChildsTranscationsCubit>()
+        .fetchTransactions(date: formattedDate);
   }
 
   @override
@@ -100,11 +144,11 @@ class _HomeViewState extends State<HomeView> {
       body: RefreshIndicator(
         backgroundColor: Colors.white,
         color: Colors.blue.shade900,
-        onRefresh: loadChildDetails,
+        onRefresh: loadFamilyDetails,
         child: Padding(
           padding: const EdgeInsetsDirectional.only(start: 18, end: 19),
           child: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             clipBehavior: Clip.none,
             slivers: [
               const SliverToBoxAdapter(
@@ -207,9 +251,27 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               SliverToBoxAdapter(
-                child: Text(
-                  LocaleKeys.transactions_transactions.tr(),
-                  style: AppStyles.styleMedium20(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      LocaleKeys.transactions_transactions.tr(),
+                      style: AppStyles.styleMedium20(),
+                    ),
+                    MaterialButton(
+                      color: Colors.blue[900],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                      child: const Text(
+                        'select date',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
                 ),
               ),
               const SliverToBoxAdapter(
@@ -217,13 +279,7 @@ class _HomeViewState extends State<HomeView> {
                   height: 15,
                 ),
               ),
-              SliverList.builder(
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsetsDirectional.only(bottom: 13),
-                  child: ZoomIn(child: const CustomCardTransactions()),
-                ),
-                itemCount: 10,
-              ),
+              const TransactionsListWidget(),
             ],
           ),
         ),

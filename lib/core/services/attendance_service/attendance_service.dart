@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/models/attendance_model/attendance_model.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
+import '../../models/attendance_model/attendance_model.dart';
+import '../../utils/Constants.dart';
 
 class AttendanceService {
   final Dio dio = Dio();

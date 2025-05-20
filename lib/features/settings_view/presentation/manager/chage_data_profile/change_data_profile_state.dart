@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:smartsystemforschools/features/settings/data/manager/models/profile_data_model.dart';
+import '../../../../settings/data/manager/models/profile_data_model.dart';
 
 sealed class ChangeDataProfileState {}
 

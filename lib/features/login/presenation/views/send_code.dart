@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/verfiy_code.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import 'verfiy_code.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../../core/methods/vaildate_email.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_button.dart';
@@ -10,7 +10,7 @@ import '../widgets/custom_logo.dart';
 import '../widgets/user_info.dart';
 
 class SendCode extends StatefulWidget {
-  static String id = 'SendCode';
+  static String id = '/SendCode';
   const SendCode({super.key});
 
   @override

@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:smartsystemforschools/core/models/catogry_details/catgory_details.dart';
-import 'package:smartsystemforschools/core/services/alllegris_service/allegris_service.dart';
-
+import '../../../../../core/models/catogry_details/catgory_details.dart';
+import '../../../../../core/services/product_catogry_service/product_catogry_service.dart';
 part 'get_all_catogries_state.dart';
 
 class GetAllCatogriesCubit extends Cubit<GetAllCatogriesState> {
@@ -11,10 +9,8 @@ class GetAllCatogriesCubit extends Cubit<GetAllCatogriesState> {
   Future<CatgoryDetails> getAllCatogries() async {
     try {
       emit(GetAllCatogriesLoading());
-      CatgoryDetails catgoryDetails = await AllergiesService().getAllCategory();
-      log('catogries');
-      log(catgoryDetails.result![0].toJson().toString());
-      log(catgoryDetails.result![1].toJson().toString());
+      CatgoryDetails catgoryDetails =
+          await ProductAndCatogryService().getAllCategory();
       emit(GetAllCatogriesLoaded(
         catgoryDetails: catgoryDetails,
       ));

@@ -1,20 +1,20 @@
 import 'result.dart';
 
-class AllegryDetails {
+class AllegryCatogryDetails {
   int? statusCode;
   bool? isSuccess;
   String? message;
   List<Result>? result;
 
-  AllegryDetails({
+  AllegryCatogryDetails({
     this.statusCode,
     this.isSuccess,
     this.message,
     this.result,
   });
 
-  factory AllegryDetails.fromJson(Map<String, dynamic> json) {
-    return AllegryDetails(
+  factory AllegryCatogryDetails.fromJson(Map<String, dynamic> json) {
+    return AllegryCatogryDetails(
       statusCode: json['statusCode'] as int?,
       isSuccess: json['isSuccess'] as bool?,
       message: json['message'] as String?,

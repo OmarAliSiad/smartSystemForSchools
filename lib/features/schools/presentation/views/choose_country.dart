@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/services/school_service/school_service.dart';
-import 'package:smartsystemforschools/features/schools/presentation/views/schools_screen.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/services/school_service/school_service.dart';
+import 'schools_screen.dart';
 
 class PickCountry extends StatefulWidget {
   static const String id = 'PickCountry';

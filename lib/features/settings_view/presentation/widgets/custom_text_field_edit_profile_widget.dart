@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/utils/app_styles.dart';
 
 class CustomTextFieldEditProfile extends StatelessWidget {
@@ -11,15 +11,21 @@ class CustomTextFieldEditProfile extends StatelessWidget {
   final int? length;
   final bool enable;
   final String? vaildatorMessage;
-  const CustomTextFieldEditProfile(
-      {super.key,
-      required this.title,
-      required this.hintText,
-      this.controller,
-      this.keyboardType,
-      this.length,
-      required this.enable,
-      this.vaildatorMessage});
+  final bool isOptional;
+  final IconData? suffixIcon;
+
+  const CustomTextFieldEditProfile({
+    super.key,
+    required this.title,
+    required this.hintText,
+    this.controller,
+    this.keyboardType,
+    this.length,
+    required this.enable,
+    this.vaildatorMessage,
+    this.isOptional = false,
+    this.suffixIcon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +35,10 @@ class CustomTextFieldEditProfile extends StatelessWidget {
         Text(
           title,
           style: AppStyles.styleMedium16().copyWith(
-            color: context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
-                ? Colors.white
-                : Colors.black,
+            color:
+                context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
           ),
         ),
         const SizedBox(
@@ -43,7 +50,7 @@ class CustomTextFieldEditProfile extends StatelessWidget {
           style: TextStyle(
               color: !enable
                   ? Colors.grey
-                  : context.read<ThemeModeCubit>().currentTheme ==
+                  : context.watch<ThemeModeCubit>().currentTheme ==
                           ThemeMode.dark
                       ? Colors.white
                       : Colors.black),
@@ -51,7 +58,7 @@ class CustomTextFieldEditProfile extends StatelessWidget {
           controller: controller,
           maxLines: 1,
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            if (!isOptional && (value == null || value.isEmpty)) {
               return vaildatorMessage;
             }
             return null;
@@ -64,6 +71,7 @@ class CustomTextFieldEditProfile extends StatelessWidget {
             border: buildOutlineBorder(),
             enabledBorder: buildOutlineBorder(),
             focusedBorder: buildOutlineBorder(),
+            suffixIcon: suffixIcon != null ? Icon(suffixIcon) : null,
           ),
         ),
       ],

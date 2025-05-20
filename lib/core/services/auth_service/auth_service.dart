@@ -3,8 +3,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/core/widgets/show_dialog.dart';
+import '../../utils/Constants.dart';
+import '../../widgets/show_dialog.dart';
 import '../../../features/login/data/models/user_info_model.dart';
 
 class AuthService {

@@ -1,20 +1,19 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/core/services/notification_service/notification_service.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_cubit.dart';
-import 'package:smartsystemforschools/features/notification_view/data/cubit/notification_state.dart';
-import 'package:smartsystemforschools/features/notification_view/presenation/widgets/show_modal_bottom_sheet.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../../core/models/get_child_details/result.dart';
+import '../../../../core/services/notification_service/notification_service.dart';
+import '../../data/cubit/notification_cubit.dart';
+import '../../data/cubit/notification_state.dart';
+import '../widgets/show_modal_bottom_sheet.dart';
+import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../widgets/notification_viewBody.dart';
 
 class NotificationView extends StatefulWidget {
   final List<ResultForChildDetails> childDetails;
-  static const String id = 'NotificationView';
+  static const String id = '/NotificationView';
   const NotificationView({super.key, required this.childDetails});
 
   @override
@@ -61,7 +60,7 @@ class _NotificationViewState extends State<NotificationView>
 
   @override
   void didPopNext() {
-    // This is called when the screen becomes visible again after another screen is popped
+    log('Reloading notifications after returning to this screen');
     context.read<NotificationCubit>().reloadNotifications();
   }
 
@@ -78,7 +77,7 @@ class _NotificationViewState extends State<NotificationView>
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_alt),
+            icon: const Icon(Icons.filter_list),
             onPressed: () {
               showFilterBottomSheet(
                 context: context,

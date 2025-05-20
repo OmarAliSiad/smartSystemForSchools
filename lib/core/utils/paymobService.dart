@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/core/utils/api_keys.dart';
+import 'Constants.dart';
+import 'api_keys.dart';
 
 class PaymobService {
   // Singleton Dio instance

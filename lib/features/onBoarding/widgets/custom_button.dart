@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/features/login/presenation/views/log_in.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../login/presenation/views/log_in.dart';
+import '../../../generated/locale_keys.g.dart';
 import '../../../core/utils/app_styles.dart';
 
 class CustomButtonPageView extends StatefulWidget {

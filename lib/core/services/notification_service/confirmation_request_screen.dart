@@ -1,26 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
-import 'package:smartsystemforschools/core/services/notification_service/notification_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../methods/show_scaffold_messanger.dart';
+import '../../utils/app_styles.dart';
+import 'notification_service.dart';
+import '../../../features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
 class ConfirmationRequestScreen extends StatefulWidget {
   static String id = 'confirmation_request';
-  final String pendingTransactionId;
-  final String studentId;
-  final String studentName;
-  final String amountOfMoney;
-  final List<dynamic> products;
 
-  const ConfirmationRequestScreen({
-    super.key,
-    required this.pendingTransactionId,
-    required this.studentId,
-    required this.studentName,
-    required this.amountOfMoney,
-    required this.products,
-  });
+  const ConfirmationRequestScreen({super.key});
 
   @override
   State<ConfirmationRequestScreen> createState() =>
@@ -29,12 +18,53 @@ class ConfirmationRequestScreen extends StatefulWidget {
 
 class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
   late Timer _timeoutTimer;
+  late Timer _countdownTimer;
+  int _remainingSeconds = 120;
   late StreamSubscription _statusSubscription;
+
+  // Added properties to store arguments
+  late String pendingTransactionId;
+  late String studentId;
+  late String studentName;
+  late String amountOfMoney;
+  late List<dynamic> products;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Extract arguments from route with null safety
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args != null && args is Map<String, dynamic>) {
+      pendingTransactionId = args['pendingTransactionId'] ?? '';
+      studentId = args['studentId'] ?? '';
+      studentName = args['studentName'] ?? '';
+      amountOfMoney = args['amountOfMoney'] ?? '';
+      products = args['products'] ?? [];
+    } else {
+      // Show error message
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        dispalySnackBar(context,
+            title: 'Required arguments not provided', color: Colors.red);
+      });
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   initState() {
     super.initState();
-    _timeoutTimer = Timer(const Duration(minutes: 60), () {
+    _timeoutTimer = Timer.periodic(const Duration(seconds: 120), (timer) {
       Navigator.pop(context, false);
+    });
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_remainingSeconds > 0) {
+        setState(() {
+          _remainingSeconds--;
+        });
+      } else {
+        _countdownTimer.cancel();
+        _respondToRequest(context, 'denied');
+      }
     });
   }
 
@@ -48,10 +78,13 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Purchase Confirmation',
-        textStyle: AppStyles.styleBold20(),
-        ThereIsicon: false,
+      appBar: AppBar(
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Purchase Confirmation',
+          style: AppStyles.styleBold20(),
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -59,6 +92,11 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              _buildTimerDisplay(
+                context,
+                context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark,
+              ),
+              const SizedBox(height: 16),
               _buildConfirmationHeader(context),
               const SizedBox(height: 24),
               Text(
@@ -66,8 +104,7 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
                 style: AppStyles.styleBold20(),
               ),
               const SizedBox(height: 16),
-              ...widget.products
-                  .map((product) => _buildProductCard(context, product)),
+              ...products.map((product) => _buildProductCard(context, product)),
               const SizedBox(height: 32),
               _buildTotalAmount(context),
               const SizedBox(height: 32),
@@ -81,7 +118,9 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
 
   Widget _buildConfirmationHeader(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+          ? Colors.black
+          : Colors.white,
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
@@ -95,12 +134,12 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              '${widget.studentName} is requesting to make a purchase',
+              '$studentName is requesting to make a purchase',
               style: AppStyles.styleMedium16(),
             ),
             const SizedBox(height: 4),
             Text(
-              'Student ID: ${widget.studentId}',
+              'Student ID: $studentId',
               style: AppStyles.styleMedium13(),
             ),
           ],
@@ -111,7 +150,9 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
 
   Widget _buildProductCard(BuildContext context, dynamic product) {
     return Card(
-      color: Colors.white,
+      color: context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+          ? Colors.black
+          : Colors.white,
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
@@ -146,7 +187,9 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
 
   Widget _buildTotalAmount(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+          ? Colors.black
+          : Colors.white,
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
@@ -159,7 +202,7 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
               style: AppStyles.styleBold16(),
             ),
             Text(
-              '${widget.amountOfMoney} EGP',
+              '$amountOfMoney EGP',
               style: AppStyles.styleBold20().copyWith(
                 color: Colors.blue.shade900,
               ),
@@ -207,11 +250,14 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
   void _respondToRequest(BuildContext context, String status) async {
     try {
       // Update transaction status in shared location
-      await NotificationService().updatePendingTransactionStatus(
-        pendingTransactionId: widget.pendingTransactionId,
+      await NotificationService()
+          .updatePendingTransactionStatus(
+        pendingTransactionId: pendingTransactionId,
         status: status,
-      );
-
+      )
+          .then((value) {
+        Navigator.of(context).pop();
+      });
       // Show confirmation
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -220,9 +266,7 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
           backgroundColor: status == "approved" ? Colors.green : Colors.red,
         ),
       );
-
       // Go back
-      Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -231,5 +275,68 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
         ),
       );
     }
+  }
+
+  Widget _buildTimerDisplay(BuildContext context, bool isDarkMode) {
+    Color timerColor = _remainingSeconds < 30
+        ? Colors.red
+        : (_remainingSeconds < 60 ? Colors.orange : Colors.blue.shade700);
+
+    return Card(
+      color: isDarkMode ? Colors.black : Colors.white,
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.timer_outlined,
+                  color: timerColor,
+                  size: 24,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Time Remaining',
+                  style: AppStyles.styleBold16().copyWith(
+                    color: timerColor,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              _countdownTimer != null
+                  ? '${(_remainingSeconds ~/ 60).toString().padLeft(2, '0')}:${(_remainingSeconds % 60).toString().padLeft(2, '0')}'
+                  : '00:00',
+              style: AppStyles.styleBold24().copyWith(
+                color: timerColor,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            const SizedBox(height: 12),
+            LinearProgressIndicator(
+              value: _countdownTimer != null ? _remainingSeconds / 120 : 0,
+              backgroundColor:
+                  isDarkMode ? Colors.grey.shade800 : Colors.grey.shade300,
+              valueColor: AlwaysStoppedAnimation<Color>(timerColor),
+              minHeight: 8,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'This request will automatically expire after the timer ends',
+              style: AppStyles.styleMedium13().copyWith(
+                color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade700,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

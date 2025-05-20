@@ -2,20 +2,29 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
-import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
-import 'package:smartsystemforschools/core/utils/app_styles.dart';
-import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
-import 'package:smartsystemforschools/features/Allergies/data/manager/cubit/get_all_catogries_cubit.dart';
-import 'package:smartsystemforschools/features/food_ai_view/data/cubit/cubit/meal_recommendation_cubit.dart';
-import 'package:smartsystemforschools/features/food_ai_view/data/cubit/cubit/meal_recommendation_state.dart';
-import 'package:smartsystemforschools/features/food_ai_view/data/models/child_model.dart';
-import 'package:smartsystemforschools/features/food_ai_view/screens/recommdation_screen.dart';
-import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
-import 'package:smartsystemforschools/core/models/get_child_details/result.dart';
-import 'package:smartsystemforschools/core/services/school_service/school_service.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/widgets/custom_text_field_edit_profile_widget.dart';
+import '../../../core/methods/show_scaffold_messanger.dart';
+import '../../../core/services/product_catogry_service/product_catogry_service.dart';
+import '../../../core/utils/animated_app_bar.dart';
+import '../../../core/utils/app_styles.dart';
+import '../../../core/widgets/build_loading_view.dart';
+import '../../Allergies/data/manager/get_all_catogries_cubit/get_all_catogries_cubit.dart';
+import '../data/cubit/cubit/meal_recommendation_cubit.dart';
+import '../data/cubit/cubit/meal_recommendation_state.dart';
+import '../data/models/child_model.dart';
+import 'recommdation_screen.dart';
+import '../../main_screen/presentation/views/main_screen.dart';
+import '../../../core/models/get_child_details/result.dart';
+import '../../../core/services/school_service/school_service.dart';
+import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../settings_view/presentation/widgets/custom_text_field_edit_profile_widget.dart';
+import 'package:smartsystemforschools/core/models/catogry_details/result.dart'; // For Category model
+import 'package:smartsystemforschools/core/models/get_all_products/result.dart'; // For Product model
+
+// Import the ProductAndCatogryService
+class ProductAndCatogryServiceProvider {
+  static final ProductAndCatogryService _service = ProductAndCatogryService();
+  static ProductAndCatogryService get service => _service;
+}
 
 class FoodAiScreen extends StatefulWidget {
   const FoodAiScreen({super.key});
@@ -62,11 +71,20 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
   final List<String> _selectedAllergies = [];
   final List<String> _selectedDietaryOptions = [];
 
+  // New variables for categories and products
+  List<CatogryResult> _categories = [];
+  CatogryResult? _selectedCategory;
+  List<ResultForProducts> _products = [];
+  List<ResultForProducts> _selectedProducts = [];
+  bool _isLoadingCategories = true;
+  bool _isLoadingProducts = false;
+
   @override
   void initState() {
     super.initState();
     _loadChildren();
     _loadAllergies();
+    _loadCategories(); // Load categories when screen initializes
   }
 
   Future<void> _loadChildren() async {
@@ -93,6 +111,60 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
     context.read<GetAllCatogriesCubit>().getAllCatogries();
   }
 
+  // New method to load categories
+  Future<void> _loadCategories() async {
+    try {
+      setState(() {
+        _isLoadingCategories = true;
+      });
+      final response =
+          await ProductAndCatogryServiceProvider.service.getAllCategory();
+      final categories = response.result ?? [];
+
+      setState(() {
+        _categories = categories;
+        _isLoadingCategories = false;
+        if (_categories.isNotEmpty) {
+          _selectedCategory = _categories.first;
+          _loadProductsByCategory(_selectedCategory!.id!);
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingCategories = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load categories: $e')),
+      );
+    }
+  }
+
+  // New method to load products by category
+  Future<void> _loadProductsByCategory(int categoryId) async {
+    try {
+      setState(() {
+        _isLoadingProducts = true;
+        _products = [];
+      });
+
+      final response = await ProductAndCatogryServiceProvider.service
+          .getAllProducts(catogrydIdFilter: categoryId);
+      final products = response.result ?? [];
+
+      setState(() {
+        _products = products;
+        _isLoadingProducts = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingProducts = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load products: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Get the current theme mode
@@ -116,9 +188,7 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
         child: BlocListener<MealRecommendationCubit, MealRecommendationState>(
           listener: (context, state) {
             if (state is MealRecommendationError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.message)),
-              );
+              dispalySnackBar(context, title: state.message, color: Colors.red);
             } else if (state is MealRecommendationLoaded) {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -323,55 +393,33 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
                           .fadeIn(delay: 190.ms, duration: 500.ms)
                           .slideY(begin: 0.2, end: 0),
                       const SizedBox(height: 16),
-
-                      // Allergies section with BLoC
+                      // NEW: Category selection
                       Text(
-                        'Allergies',
+                        'Food Category',
                         style: AppStyles.styleMedium20(),
                       )
                           .animate()
-                          .fadeIn(delay: 200.ms, duration: 500.ms)
+                          .fadeIn(delay: 220.ms, duration: 500.ms)
                           .slideY(begin: 0.2, end: 0),
                       const SizedBox(height: 8),
-                      _buildAllergiesSection(isDarkMode),
+                      _isLoadingCategories
+                          ? buildLoadingView('Categories', context)
+                          : _buildCategorySelector(isDarkMode),
                       const SizedBox(height: 16),
-                      // // Dietary preferences
-                      // Text(
-                      //   'Dietary Preferences',
-                      //   style: Theme.of(context)
-                      //       .textTheme
-                      //       .titleLarge
-                      //       ?.copyWith(color: textColor),
-                      // )
-                      //     .animate()
-                      //     .fadeIn(delay: 300.ms, duration: 500.ms)
-                      //     .slideY(begin: 0.2, end: 0),
-                      // const SizedBox(height: 8),
-                      // Wrap(
-                      //   spacing: 8,
-                      //   children: _dietaryOptions.map((option) {
-                      //     final isSelected =
-                      //         _selectedDietaryOptions.contains(option);
-                      //     return FilterChip(
-                      //       label: Text(option),
-                      //       selected: isSelected,
-                      //       selectedColor: Colors.blue.shade300,
-                      //       onSelected: (selected) {
-                      //         setState(() {
-                      //           if (selected) {
-                      //             _selectedDietaryOptions.add(option);
-                      //           } else {
-                      //             _selectedDietaryOptions.remove(option);
-                      //           }
-                      //         });
-                      //       },
-                      //     );
-                      //   }).toList(),
-                      // )
-                      //     .animate()
-                      //     .fadeIn(delay: 350.ms, duration: 500.ms)
-                      //     .slideY(begin: 0.2, end: 0),
-                      // const SizedBox(height: 24),
+
+                      // NEW: Products from selected category
+                      Text(
+                        'Select Products',
+                        style: AppStyles.styleMedium20(),
+                      )
+                          .animate()
+                          .fadeIn(delay: 250.ms, duration: 500.ms)
+                          .slideY(begin: 0.2, end: 0),
+                      const SizedBox(height: 8),
+                      _isLoadingProducts
+                          ? buildLoadingView('Products', context)
+                          : _buildProductsSection(isDarkMode),
+                      const SizedBox(height: 16),
 
                       // Meal type
                       Text(
@@ -472,10 +520,11 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               log('_selectedAllergies $_selectedAllergies');
-                              if (_selectedAllergies.isEmpty) {
+                              log('_selectedProducts ${_selectedProducts.map((p) => p.name).toList()}');
+                              if (_selectedProducts.isEmpty) {
                                 dispalySnackBar(
                                   context,
-                                  title: 'Please select at least one allergy',
+                                  title: 'Please select at least one product',
                                   color: Colors.red,
                                 );
                               } else {
@@ -488,6 +537,12 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
                                   bloodType: _selectedBloodType ?? "Unknown",
                                   weight: double.parse(_weightController.text),
                                   height: double.parse(_heightController.text),
+                                  selectedProducts: _selectedProducts
+                                      .map((p) => {
+                                            'name': p.name,
+                                            'description': p.description
+                                          })
+                                      .toList(),
                                 );
                                 log(profile.toJson().toString());
                                 context
@@ -571,6 +626,104 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
     ).animate().fadeIn(duration: 500.ms).slideY(begin: 0.2, end: 0);
   }
 
+  // NEW: Category selector widget
+  Widget _buildCategorySelector(bool isDarkMode) {
+    if (_categories.isEmpty) {
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'No categories found.',
+            style: AppStyles.styleMedium20(),
+          ),
+        ),
+      );
+    }
+    return DropdownButtonFormField<CatogryResult>(
+      dropdownColor: isDarkMode == true ? Colors.black : Colors.white,
+      decoration: InputDecoration(
+        focusedBorder: buildOutlineBorder(borderRadius: 10),
+        enabledBorder: buildOutlineBorder(borderRadius: 10),
+        border: buildOutlineBorder(borderRadius: 10),
+        label: Text(
+          'Select Category',
+          style: AppStyles.styleMedium16().copyWith(
+              color: isDarkMode == true ? Colors.white : Colors.black),
+        ),
+        filled: false,
+        labelStyle: AppStyles.styleMedium20(),
+      ),
+      value: _selectedCategory,
+      style: AppStyles.styleMedium20(),
+      items: _categories.map((category) {
+        return DropdownMenuItem<CatogryResult>(
+          value: category,
+          child: Text(
+            category.name ?? 'Unknown',
+            style: AppStyles.styleMedium16()
+                .copyWith(color: isDarkMode ? Colors.white : Colors.black),
+          ),
+        );
+      }).toList(),
+      onChanged: (value) {
+        setState(() {
+          _selectedCategory = value;
+          _selectedProducts =
+              []; // Reset selected products when category changes
+          if (value != null && value.id != null) {
+            _loadProductsByCategory(value.id!);
+          }
+        });
+      },
+    ).animate().fadeIn(duration: 500.ms).slideY(begin: 0.2, end: 0);
+  }
+
+  // NEW: Products selection widget
+  Widget _buildProductsSection(bool isDarkMode) {
+    if (_products.isEmpty) {
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'No products found in this category.',
+            style: AppStyles.styleMedium20(),
+          ),
+        ),
+      );
+    }
+
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: _products.map((product) {
+        final isSelected = _selectedProducts.contains(product);
+        return FilterChip(
+          color: isDarkMode == true
+              ? WidgetStatePropertyAll(Colors.grey.shade900)
+              : const WidgetStatePropertyAll(Colors.white),
+          label: Text(
+            product.name ?? 'Unknown',
+            style: AppStyles.styleMedium15(),
+          ),
+          selected: isSelected,
+          selectedColor: Colors.blue.shade900,
+          onSelected: (selected) {
+            setState(() {
+              if (selected) {
+                _selectedProducts.add(product);
+              } else {
+                _selectedProducts.remove(product);
+              }
+            });
+          },
+        );
+      }).toList(),
+    )
+        .animate()
+        .fadeIn(delay: 270.ms, duration: 500.ms)
+        .slideY(begin: 0.2, end: 0);
+  }
+
   Widget _buildAllergiesSection(bool isDarkMode) {
     return BlocBuilder<GetAllCatogriesCubit, GetAllCatogriesState>(
       builder: (context, state) {
@@ -614,10 +767,7 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
                 },
               );
             }).toList(),
-          )
-              .animate()
-              .fadeIn(delay: 250.ms, duration: 500.ms)
-              .slideY(begin: 0.2, end: 0);
+          ).animate().fadeIn(delay: 250.ms, duration: 500.ms);
         } else if (state is GetAllCatogriesFailure) {
           return Column(
             children: [

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smartsystemforschools/features/child_details_view/manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
-import 'package:smartsystemforschools/features/child_details_view/widgets/custom_button.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
+import 'custom_button.dart';
+import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../core/utils/app_styles.dart';
 
 class CustomCardForSpendingAndRecharge extends StatelessWidget {

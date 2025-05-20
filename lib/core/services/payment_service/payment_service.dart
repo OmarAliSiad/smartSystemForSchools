@@ -1,17 +1,16 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/models/get_balance/get_balance.dart';
-import 'package:smartsystemforschools/core/models/money_recharge_model/money_recharge_model.dart';
-import 'package:smartsystemforschools/core/models/parent_to_stuent_transcation/parent_to_stuent_transcation.dart';
-import 'package:smartsystemforschools/core/utils/Constants.dart';
-import 'package:smartsystemforschools/features/child_details_view/manager/models/get_sending_limit/get_sending_limit.dart';
+import '../../models/get_balance/get_balance.dart';
+import '../../models/money_recharge_model/money_recharge_model.dart';
+import '../../models/parent_to_stuent_transcation/parent_to_stuent_transcation.dart';
+import '../../utils/Constants.dart';
+import '../../../features/child_details_view/manager/models/get_sending_limit/get_sending_limit.dart';
 
 class PaymentService {
   final Dio dio = Dio();
 
   Future<MoneyRechargeModel> moneyRecharge({
-    required String studentId,
     required double amount,
   }) async {
     try {
@@ -20,7 +19,6 @@ class PaymentService {
       if (token == null) {
         log('No auth token found');
       }
-      log(studentId.toString());
       log((amount is double).toString());
       log(amount.toString());
       try {
@@ -101,7 +99,8 @@ class PaymentService {
   }
 
   Future<ParentToStuentTranscation> setMoneyForStudent({
-    required String studentId ,required  double amountOfMoney,
+    required String studentId,
+    required double amountOfMoney,
   }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -124,6 +123,20 @@ class PaymentService {
       ParentToStuentTranscation parentToStuentTranscation =
           ParentToStuentTranscation.fromJson(response.data);
       return parentToStuentTranscation;
+    } on DioException catch (e) {
+      if (e.message != null) {
+        log('DioException during payment checkout: ${e.message}');
+        return ParentToStuentTranscation(
+          statusCode: e.response?.statusCode ?? 0,
+          isSuccess: false,
+          message: '${e.message}',
+        );
+      }
+      return ParentToStuentTranscation(
+        statusCode: e.response?.statusCode ?? 0,
+        isSuccess: false,
+        message: 'Network error: ${e.message}',
+      );
     } catch (e) {
       log("Error in getBalance: $e");
       return ParentToStuentTranscation(

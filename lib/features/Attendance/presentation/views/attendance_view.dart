@@ -3,18 +3,18 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smartsystemforschools/core/models/attendance_model/attendance_model.dart';
-import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
-import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
-import 'package:smartsystemforschools/features/Attendance/data/manager/cubit/attendance_cubit.dart';
-import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_details_view.dart';
-import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
-import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import '../../../../core/models/attendance_model/attendance_model.dart';
+import '../../../../core/utils/animated_app_bar.dart';
+import '../../../../core/widgets/build_loading_view.dart';
+import '../../data/manager/cubit/attendance_cubit.dart';
+import 'attendance_details_view.dart';
+import '../../../main_screen/presentation/views/main_screen.dart';
+import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../widgets/card_details_attendce.dart';
 
 class AttendanceView extends StatefulWidget {
-  static const String id = 'AttendanceView';
+  static const String id = '/AttendanceView';
   const AttendanceView({super.key});
 
   @override
@@ -56,7 +56,7 @@ class _AttendanceViewState extends State<AttendanceView> {
       },
     );
 
-    if (pickedDate != null && pickedDate != selectedDate) {
+    if (pickedDate != null) {
       setState(() {
         selectedDate = pickedDate;
         formattedDate = DateFormat('yyyy/MM/dd').format(selectedDate);

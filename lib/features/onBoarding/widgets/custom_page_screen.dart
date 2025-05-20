@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:smartsystemforschools/features/onBoarding/widgets/custom_button.dart';
-import 'package:smartsystemforschools/features/onBoarding/widgets/dots_indicator.dart';
+import 'custom_button.dart';
+import 'dots_indicator.dart';
 
 import '../../../core/utils/app_styles.dart';
 import '../../../core/widgets/custom_bottom_container.dart';

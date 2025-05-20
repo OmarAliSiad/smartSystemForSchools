@@ -3,20 +3,20 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:smartsystemforschools/core/utils/custom_app_bar.dart';
-import 'package:smartsystemforschools/core/utils/custom_button.dart';
-import 'package:smartsystemforschools/core/widgets/custom_bottom_container.dart';
-import 'package:smartsystemforschools/features/Allergies/data/manager/cubit/get_all_catogries_cubit.dart';
-import 'package:smartsystemforschools/generated/locale_keys.g.dart';
+import '../../../../core/utils/custom_app_bar.dart';
+import '../../../../core/utils/custom_button.dart';
+import '../../../../core/widgets/custom_bottom_container.dart';
+import '../../data/manager/get_all_catogries_cubit/get_all_catogries_cubit.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../../core/models/allegry_details/allegry_details.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/assets.dart';
-import '../../data/manager/assing_allegris/allegris.dart';
-import '../../data/manager/assing_allegris/allegris_state.dart';
+import '../../data/manager/allegris_catogries/allegris_cubit.dart';
+import '../../data/manager/allegris_catogries/allegris_state.dart';
 import '../widgets/custom_allergies_card.dart';
 
 class AllergiesView extends StatefulWidget {
-  static const String id = "AllergiesView";
+  static const String id = "/AllergiesView";
   final String studentId;
   const AllergiesView({super.key, required this.studentId});
 
@@ -92,8 +92,8 @@ class _AllergiesViewState extends State<AllergiesView>
     });
 
     try {
-      AllegryDetails allegryDetails = await context
-          .read<AllergiesCubit>()
+      AllegryCatogryDetails allegryDetails = await context
+          .read<AllergiesCubitCatogry>()
           .assignAllergies(widget.studentId, selectedCategoryIds);
       if (mounted &&
           allegryDetails.result != null &&
@@ -297,7 +297,7 @@ class _AllergiesViewState extends State<AllergiesView>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                BlocBuilder<AllergiesCubit, AllergiesState>(
+                BlocBuilder<AllergiesCubitCatogry, AllergiesState>(
                   builder: (context, state) {
                     final isLoading = state is AssignAllergiesLoading;
 

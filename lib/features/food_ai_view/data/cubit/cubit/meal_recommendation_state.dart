@@ -1,4 +1,4 @@
-import 'package:smartsystemforschools/features/food_ai_view/data/models/meal_recommendation.dart';
+import '../../models/meal_recommendation.dart';
 
 abstract class MealRecommendationState {}
 

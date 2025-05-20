@@ -50,7 +50,14 @@
     <string>en</string>
     <string>ar</string>
 	</array>
-	<key>CFBundleLocalizations</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location when selecting your address</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to location when selecting your address</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+	<key>GMSApiKey</key>
+	<string>AIzaSyCm2VBimx6vdb_j8IqTcIBn3aPI9aCJmMk</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Scan your card to add it automatically</string>
 	<key>NSCameraUsageDescription</key>
