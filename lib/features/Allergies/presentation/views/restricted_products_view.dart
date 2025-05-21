@@ -171,7 +171,7 @@ class _RestrictedProductsViewState extends State<RestrictedProductsView>
   Widget build(BuildContext context) {
     super.build(context);
     final isDarkMode =
-        context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
 
     return Scaffold(
       appBar: AnimatedCustomAppBar(

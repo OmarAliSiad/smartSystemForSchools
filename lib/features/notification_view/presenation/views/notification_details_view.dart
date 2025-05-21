@@ -91,7 +91,7 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
   }
 
   Widget _buildDetailsContent(GetNotificatoinDetails notificationDetails) {
-    final themeMode = context.watch<ThemeModeCubit>().currentTheme;
+    final themeMode = context.read<ThemeModeCubit>().currentTheme;
     final backgroundColor =
         themeMode == ThemeMode.dark ? Colors.grey[850] : Colors.white;
     final textColor = themeMode == ThemeMode.dark ? Colors.white : Colors.black;
@@ -253,7 +253,7 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
   }
 
   Widget _buildInfoItem(String label, String value) {
-    final themeMode = context.watch<ThemeModeCubit>().currentTheme;
+    final themeMode = context.read<ThemeModeCubit>().currentTheme;
     return Container(
       margin: const EdgeInsetsDirectional.symmetric(vertical: 8),
       width: double.infinity,

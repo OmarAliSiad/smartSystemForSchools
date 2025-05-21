@@ -76,7 +76,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
       body: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
           final isDark =
-              context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+              context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
           return SafeArea(
             child: SingleChildScrollView(
               child: Padding(

@@ -185,7 +185,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       return const NoTranscationsFound();
                     }
                     final isDark =
-                        context.watch<ThemeModeCubit>().currentTheme ==
+                        context.read<ThemeModeCubit>().currentTheme ==
                             ThemeMode.dark;
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(

@@ -25,7 +25,7 @@ class CardDetailsAttendanceWidget extends StatelessWidget {
       duration: const Duration(milliseconds: 500),
       child: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
-          final themeMode = context.watch<ThemeModeCubit>().currentTheme;
+          final themeMode = context.read<ThemeModeCubit>().currentTheme;
           final isDark = themeMode == ThemeMode.dark;
           final statusColor = isAbsent ? Colors.red : Colors.green;
           final backgroundColor =

@@ -56,7 +56,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
     // Sync our isActiveTheme state variable with the actual ThemeModeCubit state
     // This ensures the switch reflects the current theme when navigating back to this screen
     isActiveTheme =
-        context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
   }
 
   Future<void> _loadSavedSettings() async {
@@ -66,7 +66,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
       _switchValue = prefs.getBool(_confirmationKey) ?? false;
       // Get theme directly from ThemeModeCubit to ensure UI consistency
       isActiveTheme =
-          context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+          context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
       // For language, check the current app locale first
       final currentLocale = context.locale.languageCode;
       isActiveLanguage = prefs.getBool(_languageKey) ?? (currentLocale == 'ar');
@@ -75,7 +75,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
     // This ensures the app's actual state matches what we're showing in the UI
     if (isActiveTheme) {
       // Only call if the current theme doesn't match the saved preference
-      if (context.watch<ThemeModeCubit>().currentTheme != ThemeMode.dark) {
+      if (context.read<ThemeModeCubit>().currentTheme != ThemeMode.dark) {
         context.watch<ThemeModeCubit>().changeThemeMode();
       }
     }

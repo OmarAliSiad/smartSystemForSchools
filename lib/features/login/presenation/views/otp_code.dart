@@ -37,7 +37,7 @@ class PinCodeWidget extends StatelessWidget {
       animationDuration: const Duration(milliseconds: 300),
       textStyle: AppStyles.styleBold24(),
       backgroundColor:
-          context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+          context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
               ? Colors.transparent
               : Colors.white,
       enableActiveFill: true,

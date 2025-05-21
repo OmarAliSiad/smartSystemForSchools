@@ -38,7 +38,7 @@ class _SetcionNotificationCardState extends State<SetcionNotificationCard> {
           widget.dateName,
           style: AppStyles.styleRegular20().copyWith(
             fontSize: 16,
-            color: context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+            color: context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
                 ? Colors.white
                 : Colors.black,
           ),

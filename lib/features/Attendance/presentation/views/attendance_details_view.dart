@@ -142,7 +142,7 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
           ? buildLoadingView('attendance', context)
           : BlocBuilder<ThemeModeCubit, ThemeModeState>(
               builder: (context, state) {
-                final themeMode = context.watch<ThemeModeCubit>().currentTheme;
+                final themeMode = context.read<ThemeModeCubit>().currentTheme;
                 return RefreshIndicator(
                   backgroundColor: Colors.white,
                   color: Colors.blue.shade900,
@@ -482,18 +482,18 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
               reservedSize: 30,
             ),
           ),
-          leftTitles: AxisTitles(
+          leftTitles: const AxisTitles(
             sideTitles: SideTitles(showTitles: false),
           ),
-          rightTitles: AxisTitles(
+          rightTitles: const AxisTitles(
             sideTitles: SideTitles(showTitles: false),
           ),
-          topTitles: AxisTitles(
+          topTitles: const AxisTitles(
             sideTitles: SideTitles(showTitles: false),
           ),
         ),
         borderData: FlBorderData(show: false),
-        gridData: FlGridData(show: false),
+        gridData: const FlGridData(show: false),
         barGroups: List.generate(7, (index) {
           // Fixed: Simply use the attendance status directly for this day
           bool? isPresent = attendanceByDay[index];

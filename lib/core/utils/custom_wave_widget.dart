@@ -35,7 +35,7 @@ class _CustomWiveWidgetState extends State<CustomWiveWidget> {
   @override
   Widget build(BuildContext context) {
     final primaryColor =
-        context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
             ? Colors.indigo.shade900
             : const Color(0xff1A0F91);
 

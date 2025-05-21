@@ -13,7 +13,7 @@ class RestrictedProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
-        final themeMode = context.watch<ThemeModeCubit>().currentTheme;
+        final themeMode = context.read<ThemeModeCubit>().currentTheme;
         return Card(
           color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
           child: Container(

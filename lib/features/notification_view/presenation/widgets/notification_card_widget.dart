@@ -18,7 +18,7 @@ class NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeMode = context.watch<ThemeModeCubit>().currentTheme;
+    final themeMode = context.read<ThemeModeCubit>().currentTheme;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -79,7 +79,7 @@ class NotificationCard extends StatelessWidget {
                           _formatDate(date),
                           style: AppStyles.styleRegular14().copyWith(
                             color:
-                                context.watch<ThemeModeCubit>().currentTheme ==
+                                context.read<ThemeModeCubit>().currentTheme ==
                                         ThemeMode.dark
                                     ? Colors.white
                                     : Colors.black.withOpacity(.70),

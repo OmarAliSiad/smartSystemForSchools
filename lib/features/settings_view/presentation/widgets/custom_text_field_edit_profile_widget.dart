@@ -35,10 +35,9 @@ class CustomTextFieldEditProfile extends StatelessWidget {
         Text(
           title,
           style: AppStyles.styleMedium16().copyWith(
-            color:
-                context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.black,
+            color: context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
           ),
         ),
         const SizedBox(
@@ -50,7 +49,7 @@ class CustomTextFieldEditProfile extends StatelessWidget {
           style: TextStyle(
               color: !enable
                   ? Colors.grey
-                  : context.watch<ThemeModeCubit>().currentTheme ==
+                  : context.read<ThemeModeCubit>().currentTheme ==
                           ThemeMode.dark
                       ? Colors.white
                       : Colors.black),

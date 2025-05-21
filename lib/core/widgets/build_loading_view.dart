@@ -6,7 +6,7 @@ import '../utils/app_styles.dart';
 
 Widget buildLoadingView(String message, BuildContext context) {
   Color primaryColor =
-      context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+      context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
           ? Colors.white
           : Colors.black;
   return Center(

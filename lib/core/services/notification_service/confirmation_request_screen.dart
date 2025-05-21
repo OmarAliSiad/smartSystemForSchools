@@ -94,7 +94,7 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
             children: [
               _buildTimerDisplay(
                 context,
-                context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark,
+                context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark,
               ),
               const SizedBox(height: 16),
               _buildConfirmationHeader(context),
@@ -118,9 +118,10 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
 
   Widget _buildConfirmationHeader(BuildContext context) {
     return Card(
-      color: context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+      color: context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
           ? Colors.black
           : Colors.white,
+      shadowColor: Colors.grey,
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
@@ -150,9 +151,10 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
 
   Widget _buildProductCard(BuildContext context, dynamic product) {
     return Card(
-      color: context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+      color: context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
           ? Colors.black
           : Colors.white,
+      shadowColor: Colors.grey,
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
@@ -187,9 +189,10 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
 
   Widget _buildTotalAmount(BuildContext context) {
     return Card(
-      color: context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+      color: context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
           ? Colors.black
           : Colors.white,
+      shadowColor: Colors.grey,
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
@@ -284,6 +287,7 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
 
     return Card(
       color: isDarkMode ? Colors.black : Colors.white,
+      shadowColor: Colors.grey,
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(

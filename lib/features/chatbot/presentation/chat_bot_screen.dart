@@ -30,7 +30,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeMode = context.watch<ThemeModeCubit>().currentTheme;
+    final themeMode = context.read<ThemeModeCubit>().currentTheme;
     return Scaffold(
       appBar: AnimatedCustomAppBar(
         waveColor: Colors.blue.shade700,
@@ -867,7 +867,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeMode = context.watch<ThemeModeCubit>().currentTheme;
+    final themeMode = context.read<ThemeModeCubit>().currentTheme;
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(

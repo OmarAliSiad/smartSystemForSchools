@@ -89,7 +89,7 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
       ),
       body: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
-          final theme = context.watch<ThemeModeCubit>().currentTheme;
+          final theme = context.read<ThemeModeCubit>().currentTheme;
           final isDarkMode = theme == ThemeMode.dark;
 
           return Padding(

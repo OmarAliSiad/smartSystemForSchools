@@ -29,7 +29,7 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final themeMode = context.watch<ThemeModeCubit>().currentTheme;
+//     final themeMode = context.read<ThemeModeCubit>().currentTheme;
 
 //     return Scaffold(
 //       appBar: AnimatedCustomAppBar(

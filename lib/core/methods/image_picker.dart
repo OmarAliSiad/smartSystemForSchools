@@ -9,7 +9,7 @@ Future<void> pickImage(
   await showModalBottomSheet(
     context: context,
     backgroundColor:
-        context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
             ? Colors.grey[850]
             : Colors.white,
     shape: const RoundedRectangleBorder(
@@ -26,7 +26,7 @@ Future<void> pickImage(
                 'Choose Image Source',
                 style: AppStyles.styleSemiBold14().copyWith(
                   fontSize: 16,
-                  color: context.watch<ThemeModeCubit>().currentTheme ==
+                  color: context.read<ThemeModeCubit>().currentTheme ==
                           ThemeMode.dark
                       ? Colors.white
                       : Colors.black,

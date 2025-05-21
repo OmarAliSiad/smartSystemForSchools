@@ -71,7 +71,7 @@ class TransactionsListWidget extends StatelessWidget {
                         'createdOn': tx.createdOn,
                         'cashierName': tx.cashierName,
                         'studentTransactionItems': tx.studentTransactionItems,
-                        'schoolTenantId' :tx.schoolTenantId,
+                        'schoolTenantId': tx.schoolTenantId,
                       },
                     );
                   },
@@ -80,14 +80,14 @@ class TransactionsListWidget extends StatelessWidget {
                       bottom: 16,
                     ),
                     decoration: BoxDecoration(
-                      color: context.watch<ThemeModeCubit>().currentTheme ==
+                      color: context.read<ThemeModeCubit>().currentTheme ==
                               ThemeMode.dark
                           ? Colors.black
                           : Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                          color: context.watch<ThemeModeCubit>().currentTheme ==
+                          color: context.read<ThemeModeCubit>().currentTheme ==
                                   ThemeMode.dark
                               ? const Color(0xFFFFFFFF).withOpacity(.4)
                               : const Color(0x3F000000),

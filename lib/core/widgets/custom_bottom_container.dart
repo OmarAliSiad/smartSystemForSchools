@@ -10,7 +10,7 @@ class CustomBottomContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
-        final themeMode = context.watch<ThemeModeCubit>().currentTheme;
+        final themeMode = context.read<ThemeModeCubit>().currentTheme;
         return Center(
           child: Container(
             margin: const EdgeInsetsDirectional.only(bottom: 18),

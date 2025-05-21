@@ -114,7 +114,7 @@ class _AttendanceViewState extends State<AttendanceView> {
             // Date selector
             BlocBuilder<ThemeModeCubit, ThemeModeState>(
               builder: (context, state) {
-                final state = context.watch<ThemeModeCubit>().currentTheme;
+                final state = context.read<ThemeModeCubit>().currentTheme;
                 return Padding(
                   padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,

@@ -46,7 +46,7 @@ class _BuildAllergyChipState extends State<BuildAllergyChip>
   @override
   Widget build(BuildContext context) {
     final isDark =
-        context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
 
     return InkWell(
       splashColor: Colors.grey,

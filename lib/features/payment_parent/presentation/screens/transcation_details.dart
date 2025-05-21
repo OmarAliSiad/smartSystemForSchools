@@ -14,7 +14,7 @@ class TranscationDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark =
-        context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
     final arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
