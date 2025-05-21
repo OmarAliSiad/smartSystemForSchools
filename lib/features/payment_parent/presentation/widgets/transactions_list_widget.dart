@@ -58,59 +58,77 @@ class TransactionsListWidget extends StatelessWidget {
                             DateTime.now(),
                       )
                     : '';
-                return Container(
-                  margin: const EdgeInsets.only(
-                    bottom: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    color: context.watch<ThemeModeCubit>().currentTheme ==
-                            ThemeMode.dark
-                        ? Colors.black
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: context.watch<ThemeModeCubit>().currentTheme ==
-                                ThemeMode.dark
-                            ? const Color(0xFFFFFFFF).withOpacity(.4)
-                            : const Color(0x3F000000),
-                        blurRadius: 6,
-                        offset: const Offset(0, 0),
-                        spreadRadius: 0,
-                      )
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                        start: 15, top: 15, bottom: 25, end: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Transfer from your wallet to ${tx.studentName.toString()}',
-                              style: AppStyles.styleRegular14(),
-                            ),
-                            const Spacer(),
-                            Text(
-                              '${tx.moneyAmountSpended.toString()}\$',
-                              style: AppStyles.styleSemiBold14()
-                                  .copyWith(color: const Color(0xff5CC2F2)),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          dateStr,
-                          style: AppStyles.styleRegular12(),
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/transactionDetails',
+                      arguments: {
+                        'transactionId': tx.id,
+                        'studentName': tx.studentName,
+                        'moneyAmountSpended': tx.moneyAmountSpended,
+                        'date': dateStr,
+                        'createdOn': tx.createdOn,
+                        'cashierName': tx.cashierName,
+                        'studentTransactionItems': tx.studentTransactionItems,
+                        'schoolTenantId' :tx.schoolTenantId,
+                      },
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                      bottom: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      color: context.watch<ThemeModeCubit>().currentTheme ==
+                              ThemeMode.dark
+                          ? Colors.black
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: context.watch<ThemeModeCubit>().currentTheme ==
+                                  ThemeMode.dark
+                              ? const Color(0xFFFFFFFF).withOpacity(.4)
+                              : const Color(0x3F000000),
+                          blurRadius: 6,
+                          offset: const Offset(0, 0),
+                          spreadRadius: 0,
                         )
                       ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.only(
+                          start: 15, top: 15, bottom: 25, end: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Transfer from your wallet to ${tx.studentName.toString()}',
+                                style: AppStyles.styleRegular14(),
+                              ),
+                              const Spacer(),
+                              Text(
+                                '${tx.moneyAmountSpended.toString()}\$',
+                                style: AppStyles.styleSemiBold14()
+                                    .copyWith(color: const Color(0xff5CC2F2)),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            dateStr,
+                            style: AppStyles.styleRegular12(),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );

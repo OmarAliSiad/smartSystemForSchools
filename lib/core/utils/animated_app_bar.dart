@@ -38,13 +38,26 @@ class _AnimatedCustomAppBarState extends State<AnimatedCustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      scrolledUnderElevation: 0,
+      elevation: 0,
+      actions: [
+        widget.thereIsIcon
+            ? IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                ),
+                onPressed: widget.onTapClose ?? () => Navigator.pop(context),
+              )
+            : const SizedBox(),
+      ],
       leading: widget.leading ??
           IconButton(
             icon: const Icon(
               Icons.arrow_back_ios,
               color: Colors.white,
             ),
-            onPressed: widget.onTapBack,
+            onPressed: widget.onTapBack ?? () => Navigator.pop(context),
           ),
       flexibleSpace: const CustomWiveWidget(),
       centerTitle: true,

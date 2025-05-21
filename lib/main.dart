@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_childs_transcations_cubit.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_transcations_cubit.dart';
+import 'package:smartsystemforschools/features/payment_parent/presentation/screens/transcation_details.dart';
 import 'core/connectivity_cubit/connectivity_cubit.dart';
 import 'core/connectivity_cubit/connectivity_state.dart';
 import 'core/methods/show_scaffold_messanger.dart';
@@ -244,6 +245,7 @@ class MyApp extends StatelessWidget {
                     const ConfirmationRequestScreen(),
                 NotificationDetails.id: (context) =>
                     const NotificationDetails(),
+                TranscationDetails.id: (context) => const TranscationDetails(),
               },
               initialRoute: isLoggedIn ? MainScreen.id : SplashView.id);
         },

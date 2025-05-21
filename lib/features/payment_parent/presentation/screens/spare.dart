@@ -233,9 +233,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                         style: AppStyles.styleRegular14(),
                                       ),
                                       Text(
-                                        state.parentTranscations.result![index]
-                                            .amountOfMoney
-                                            .toString(),
+                                        '${state.parentTranscations.result![index].amountOfMoney.toString()}\$',
                                         style: AppStyles.styleSemiBold14()
                                             .copyWith(
                                           color: const Color(0xff5CC2F2),

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 ThemeData lightTheme(BuildContext context) {
   TextStyle blackedStyleColor = const TextStyle(color: Colors.black);
   return ThemeData(
+    cardTheme: const CardTheme(
+      color: Colors.white,
+    ),
     fontFamily: context.locale.toString() == 'ar' ? 'Cairo' : 'Poppins',
     brightness: Brightness.light,
     dialogTheme: const DialogTheme(

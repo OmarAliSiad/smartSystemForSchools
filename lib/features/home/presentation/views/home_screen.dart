@@ -18,7 +18,6 @@ import '../../../../core/services/school_service/school_service.dart';
 import '../../../settings/presentation/views/settings_view.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_balance_card_details.dart';
-import '../widgets/custom_card_transactions.dart';
 import '../widgets/custom_details_child_view.dart';
 import 'dart:developer';
 
