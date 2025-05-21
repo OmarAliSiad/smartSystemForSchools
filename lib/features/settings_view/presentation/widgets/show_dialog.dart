@@ -19,7 +19,7 @@ Future<dynamic> showDialogProfile({
     builder: (BuildContext context) {
       return AlertDialog(
         backgroundColor:
-            context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
+            context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
                 ? Colors.black
                 : Colors.white,
         title: Center(

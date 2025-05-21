@@ -277,7 +277,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
 
   Widget _buildCustomAmountView(BuildContext context) {
     final isDark =
-        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+        context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark;
     return Column(
       children: [
         Expanded(
@@ -469,7 +469,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
   Widget _buildAmountOption(dynamic amount, {bool isText = false}) {
     final isSelected = !isText && selectedAmount == amount;
     final isDark =
-        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+        context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark;
     return GestureDetector(
         onTap: () {
           setState(() {

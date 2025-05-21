@@ -29,7 +29,7 @@ class CustomContainerSettingsView extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color:
-                  context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
+                  context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
                       ? null
                       : Colors.white,
               border: Border.all(color: Colors.grey),
@@ -57,12 +57,12 @@ class CustomContainerSettingsView extends StatelessWidget {
                   ),
                   iconImage == null
                       ? Icon(icon,
-                          color: context.read<ThemeModeCubit>().currentTheme ==
+                          color: context.watch<ThemeModeCubit>().currentTheme ==
                                   ThemeMode.dark
                               ? Colors.white
                               : Colors.black)
                       : Image.asset(
-                          color: context.read<ThemeModeCubit>().currentTheme ==
+                          color: context.watch<ThemeModeCubit>().currentTheme ==
                                   ThemeMode.dark
                               ? Colors.white
                               : colorIcon ?? Colors.black,
@@ -76,7 +76,7 @@ class CustomContainerSettingsView extends StatelessWidget {
                   Text(
                     title,
                     style: AppStyles.styleRegular20().copyWith(
-                        color: context.read<ThemeModeCubit>().currentTheme ==
+                        color: context.watch<ThemeModeCubit>().currentTheme ==
                                 ThemeMode.dark
                             ? Colors.white
                             : Colors.black),

@@ -49,7 +49,7 @@ class StripeService {
   // }) async {
   //   try {
   //     // Get the current theme mode from the ThemeModeCubit
-  //     final themeMode = context.read<ThemeModeCubit>().currentTheme;
+  //     final themeMode = context.watch<ThemeModeCubit>().currentTheme;
   //     final bool isDarkMode = themeMode == ThemeMode.dark;
 
   //     // Initialize the payment sheet with the appropriate theme

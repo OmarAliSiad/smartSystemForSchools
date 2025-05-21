@@ -27,7 +27,7 @@ class _CustomDetailsChildViewState extends State<CustomDetailsChildView> {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
         log(widget.childDetailsModel.id.toString());
-        final themeMode = context.read<ThemeModeCubit>().currentTheme;
+        final themeMode = context.watch<ThemeModeCubit>().currentTheme;
         return Container(
           decoration: BoxDecoration(
             color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,

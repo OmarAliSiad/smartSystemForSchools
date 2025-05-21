@@ -260,7 +260,7 @@
 //               child: Padding(
 //                 padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
 //                 child: TextField(
-//                   cursorColor: context.read<ThemeModeCubit>().currentTheme ==
+//                   cursorColor: context.watch<ThemeModeCubit>().currentTheme ==
 //                           ThemeMode.dark
 //                       ? Colors.white
 //                       : Colors.black,
@@ -302,14 +302,14 @@
 //                     maxHeight: MediaQuery.of(context).size.height * 0.4,
 //                   ),
 //                   decoration: BoxDecoration(
-//                     color: context.read<ThemeModeCubit>().currentTheme ==
+//                     color: context.watch<ThemeModeCubit>().currentTheme ==
 //                             ThemeMode.dark
 //                         ? Colors.black
 //                         : Colors.white,
 //                     borderRadius: BorderRadius.circular(8),
 //                     boxShadow: [
 //                       BoxShadow(
-//                         color: context.read<ThemeModeCubit>().currentTheme ==
+//                         color: context.watch<ThemeModeCubit>().currentTheme ==
 //                                 ThemeMode.dark
 //                             ? const Color(0xFFFFFFFF).withOpacity(.4)
 //                             : const Color(0x3F000000),

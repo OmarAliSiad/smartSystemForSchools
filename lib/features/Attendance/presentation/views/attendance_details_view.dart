@@ -142,7 +142,7 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
           ? buildLoadingView('attendance', context)
           : BlocBuilder<ThemeModeCubit, ThemeModeState>(
               builder: (context, state) {
-                final themeMode = context.read<ThemeModeCubit>().currentTheme;
+                final themeMode = context.watch<ThemeModeCubit>().currentTheme;
                 return RefreshIndicator(
                   backgroundColor: Colors.white,
                   color: Colors.blue.shade900,

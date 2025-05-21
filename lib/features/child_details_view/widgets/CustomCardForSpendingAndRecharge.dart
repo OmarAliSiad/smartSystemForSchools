@@ -26,7 +26,7 @@ class CustomCardForSpendingAndRecharge extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
-        final themeMode = context.read<ThemeModeCubit>().currentTheme;
+        final themeMode = context.watch<ThemeModeCubit>().currentTheme;
         return Card(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

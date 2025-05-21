@@ -138,7 +138,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
       context: context,
       builder: (context) => BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
-          final themeMode = context.read<ThemeModeCubit>().currentTheme;
+          final themeMode = context.watch<ThemeModeCubit>().currentTheme;
           return SingleChildScrollView(
             child: Column(
               children: [

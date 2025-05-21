@@ -17,7 +17,7 @@ class PaymentMethodBottomSheet extends StatelessWidget {
         return BlocBuilder<ThemeModeCubit, ThemeModeState>(
           builder: (context, state) {
             final isDark =
-                context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+                context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark;
             return Container(
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF1E1E1E) : Colors.white,

@@ -75,7 +75,7 @@ class _CustomAllergiesWidgetState extends State<CustomAllergiesWidget>
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
-        final themeMode = context.read<ThemeModeCubit>().currentTheme;
+        final themeMode = context.watch<ThemeModeCubit>().currentTheme;
         return Card(
           color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
           child: Container(

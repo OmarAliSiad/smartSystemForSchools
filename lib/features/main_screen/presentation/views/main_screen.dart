@@ -81,7 +81,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
-        final themeMode = context.read<ThemeModeCubit>().currentTheme;
+        final themeMode = context.watch<ThemeModeCubit>().currentTheme;
         return Scaffold(
           backgroundColor: themeMode == ThemeMode.dark
               ? const Color(0xFF121212)
@@ -101,7 +101,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     final backgroundColor = isDarkMode ? Colors.black : Colors.white;
     const primaryColor = Color(0xff1A0F91);
     final secondaryColor = isDarkMode ? Colors.white : Colors.grey;
-    final shadowColor = isDarkMode ? Colors.white12 : Colors.black;
+    final shadowColor = isDarkMode ? Colors.white12 : Colors.white;
 
     return Container(
       height: 80,

@@ -221,7 +221,7 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
   }
 
   Widget _buildLimitsSection() {
-    final themeMode = context.read<ThemeModeCubit>().currentTheme;
+    final themeMode = context.watch<ThemeModeCubit>().currentTheme;
     final isDarkMode = themeMode == ThemeMode.dark;
 
     return Card(
@@ -357,7 +357,7 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
 //         }
 //       },
 //       borderSideColor:
-//           context.read<ThemeModeCubit>().currentTheme ==
+//           context.watch<ThemeModeCubit>().currentTheme ==
 //                   ThemeMode.dark
 //               ? Colors.white
 //               : Colors.black.withOpacity(.20),

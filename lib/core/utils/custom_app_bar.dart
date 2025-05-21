@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       leading: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {
-          final state = context.read<ThemeModeCubit>().currentTheme;
+          final state = context.watch<ThemeModeCubit>().currentTheme;
           return IconButton(
             style: ButtonStyle(
               shape: WidgetStatePropertyAll(

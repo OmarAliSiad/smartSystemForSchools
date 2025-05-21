@@ -88,7 +88,7 @@ class _NotificationViewState extends State<NotificationView>
                     selectedStudentId = studentId;
                   });
                 },
-                isDark: context.read<ThemeModeCubit>().currentTheme ==
+                isDark: context.watch<ThemeModeCubit>().currentTheme ==
                         ThemeMode.dark
                     ? true
                     : false,

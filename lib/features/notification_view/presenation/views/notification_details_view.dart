@@ -91,7 +91,7 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
   }
 
   Widget _buildDetailsContent(GetNotificatoinDetails notificationDetails) {
-    final themeMode = context.read<ThemeModeCubit>().currentTheme;
+    final themeMode = context.watch<ThemeModeCubit>().currentTheme;
     final backgroundColor =
         themeMode == ThemeMode.dark ? Colors.grey[850] : Colors.white;
     final textColor = themeMode == ThemeMode.dark ? Colors.white : Colors.black;
@@ -156,14 +156,17 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: BorderRadius.circular(12),
+              color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+              borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
+                  color: themeMode == ThemeMode.dark
+                      ? const Color(0xFFFFFFFF).withOpacity(.4)
+                      : const Color(0x3F000000),
+                  blurRadius: 6,
+                  offset: const Offset(0, 0),
+                  spreadRadius: 0,
+                )
               ],
             ),
             child: Column(
@@ -250,22 +253,22 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
   }
 
   Widget _buildInfoItem(String label, String value) {
-    final backgroundColor =
-        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark
-            ? Colors.grey[850]
-            : Colors.white;
+    final themeMode = context.watch<ThemeModeCubit>().currentTheme;
     return Container(
-      margin: const EdgeInsetsDirectional.symmetric(vertical: 5),
+      margin: const EdgeInsetsDirectional.symmetric(vertical: 8),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
+        color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
+            color: themeMode == ThemeMode.dark
+                ? const Color(0xFFFFFFFF).withOpacity(.4)
+                : const Color(0x3F000000),
+            blurRadius: 6,
+            offset: const Offset(0, 0),
+            spreadRadius: 0,
+          )
         ],
       ),
       child: Padding(
