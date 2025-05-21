@@ -313,14 +313,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
-  file_picker:
-    dependency: "direct main"
-    description:
-      name: file_picker
-      sha256: "77f8e81d22d2a07d0dee2c62e1dda71dc1da73bf43bb2d45af09727406167964"
-      url: "https://pub.dev"
-    source: hosted
-    version: "10.1.9"
   file_selector_linux:
     dependency: transitive
     description:
@@ -1482,14 +1474,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.18.0"
-  win32:
-    dependency: transitive
-    description:
-      name: win32
-      sha256: daf97c9d80197ed7b619040e86c8ab9a9dad285e7671ee7390f9180cc828a51e
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.10.1"
   xdg_directories:
     dependency: transitive
     description:
