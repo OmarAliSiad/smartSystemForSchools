@@ -101,7 +101,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     final backgroundColor = isDarkMode ? Colors.black : Colors.white;
     const primaryColor = Color(0xff1A0F91);
     final secondaryColor = isDarkMode ? Colors.white : Colors.grey;
-    final shadowColor = isDarkMode ? Colors.white12 : Colors.black12;
+    final shadowColor = isDarkMode ? Colors.white12 : Colors.black;
 
     return Container(
       height: 80,

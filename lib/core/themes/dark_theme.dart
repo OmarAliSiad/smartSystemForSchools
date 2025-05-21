@@ -4,10 +4,6 @@ import 'package:flutter/material.dart';
 ThemeData darkTheme(BuildContext context) {
   TextStyle whiteStyleColor = const TextStyle(color: Colors.white);
   return ThemeData(
-    cardTheme: const CardTheme(
-      color: Colors.black,
-      shadowColor: Colors.grey,
-    ),
     fontFamily: context.locale.toString() == 'ar' ? 'Cairo' : 'Poppins',
     brightness: Brightness.dark,
     scaffoldBackgroundColor: Colors.black, //232524
