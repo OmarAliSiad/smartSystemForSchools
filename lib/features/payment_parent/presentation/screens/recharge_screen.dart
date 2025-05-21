@@ -1,10 +1,10 @@
-
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartsystemforschools/features/payment_parent/presentation/widgets/custom_app_bar_spare_recharge_widget.dart';
 import '../../../../core/methods/show_scaffold_messanger.dart';
 import '../../../../core/models/money_recharge_model/money_recharge_model.dart';
 import '../../../../core/utils/Constants.dart';
@@ -14,6 +14,7 @@ import '../../../../core/widgets/build_loading_view.dart';
 import '../widgets/total_fees.dart';
 import '../../../payment/presentation/manager/cubit/payment_cubit.dart';
 import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+
 class RechargeScreen extends StatefulWidget {
   const RechargeScreen({
     super.key,
@@ -46,20 +47,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-          ),
-        ),
-        title: Text(
-          "Recharge",
-          style: AppStyles.styleMedium18(),
-        ),
-      ),
+      appBar: const CustomAppBarSpareAndRechargeWidget(title: 'Recharge'),
       body: isCustomAmount
           ? BlocConsumer<PaymentCubit, PaymentState>(
               listener: (context, state) {

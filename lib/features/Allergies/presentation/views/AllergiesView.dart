@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import '../../../../core/utils/custom_app_bar.dart';
 import '../../../../core/utils/custom_button.dart';
 import '../../../../core/widgets/custom_bottom_container.dart';
@@ -77,12 +78,10 @@ class _AllergiesViewState extends State<AllergiesView>
         .toList();
 
     if (selectedCategoryIds.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(LocaleKeys.allegries_allegries_no_selection.tr()),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-        ),
+      dispalySnackBar(
+        context,
+        title: LocaleKeys.allegries_allegries_no_selection.tr(),
+        color: Colors.red,
       );
       return;
     }
@@ -98,36 +97,23 @@ class _AllergiesViewState extends State<AllergiesView>
       if (mounted &&
           allegryDetails.result != null &&
           allegryDetails.result!.isNotEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(LocaleKeys.allegries_allegries_success.tr()),
-            backgroundColor: Colors.green,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        dispalySnackBar(context,
+            title: LocaleKeys.allegries_allegries_success.tr(),
+            color: Colors.green);
+
         Navigator.pop(context, true); // Return true to indicate success
       } else {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(allegryDetails.message.toString()),
-              backgroundColor: Colors.red,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+          dispalySnackBar(context,
+              title: allegryDetails.message.toString(), color: Colors.red);
           Navigator.pop(context, true);
         }
       }
       // Return true to indicate success
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        dispalySnackBar(context, title: e.toString(), color: Colors.red);
+
         setState(() {
           isAssigning = false;
         });

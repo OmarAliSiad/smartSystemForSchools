@@ -70,6 +70,10 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NotificationCubit, NotificationState>(
+      buildWhen: (context, state) =>
+          state is NotificationLoading ||
+          state is GetAllNotificationLoadedSuccessfully ||
+          state is NotificationDeleted,
       listener: (context, state) {
         if (state is NotificationFailure || state is NotificationDeleted) {
           String message = '';
@@ -140,7 +144,7 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
                             createdOn:
                                 notificationModel.result![index].createdOn!,
                           ),
-                          notificationId:
+                          notificationId: 
                               notificationModel.result![index].id.toString(),
                           date: f.format(
                               notificationModel.result![index].createdOn!),
@@ -199,10 +203,5 @@ void navigateToNotificationDetails(BuildContext context, String notificationId,
         notificationModel: notificationModel,
       ),
     ),
-  ).then(
-    (value) {
-      // Reload notifications after navigation
-      notificationCubit.reloadNotifications();
-    },
   );
 }

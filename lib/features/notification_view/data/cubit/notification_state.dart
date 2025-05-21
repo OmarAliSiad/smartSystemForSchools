@@ -18,8 +18,6 @@ class GetAllNotificationLoadedSuccessfully extends NotificationState {
 
   const GetAllNotificationLoadedSuccessfully({required this.notificationModel});
 
-  @override
-  List<Object?> get props => [notificationModel];
 }
 
 class NotificationDetailsLoading extends NotificationState {}

@@ -12,6 +12,7 @@ import '../../data/models/user_info_model.dart';
 
 class CustomButtonLogIn extends StatefulWidget {
   final TextEditingController userName;
+  final Function(bool login) callback;
   final TextEditingController password;
   final GlobalKey<FormState> formState;
   final String text;
@@ -21,6 +22,7 @@ class CustomButtonLogIn extends StatefulWidget {
     required this.formState,
     required this.userName,
     required this.password,
+    required this.callback,
   });
   @override
   State<CustomButtonLogIn> createState() => _CustomButtonLogInState();
@@ -64,6 +66,7 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
           ? null
           : () async {
               if (widget.formState.currentState!.validate()) {
+                widget.callback(true);
                 setState(() {
                   loading = true;
                 });
@@ -125,6 +128,7 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
                     setState(() {
                       loading = false;
                     });
+                    widget.callback(false);
                   }
                 }
               }

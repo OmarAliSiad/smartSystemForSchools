@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import '../../../core/methods/show_scaffold_messanger.dart';
 import '../../../core/utils/Constants.dart';
 import '../../../core/widgets/build_loading_view.dart';
@@ -41,6 +42,7 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Spending Limit', style: AppStyles.styleSemiBold20()),
         centerTitle: true,
         elevation: 0,
         forceMaterialTransparency: true,
@@ -378,12 +380,18 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
 
     log('Daily limit: $dailyLimit, Weekly limit: $weeklyLimit, Monthly limit: $monthlyLimit');
 
-    await cubit.addSpendingLimit(
+    final response = await cubit.addSpendingLimit(
       studentId: widget.studentId,
       dailySpendingLimit: dailyLimit,
       weeklySpendingLimit: weeklyLimit,
       monthlySpendingLimit: monthlyLimit,
     );
-    Navigator.of(context).pop();
+
+    // Return true to indicate limits were updated successfully
+    if (response.statusCode == 200) {
+      Navigator.of(context).pop(true);
+    } else {
+      Navigator.of(context).pop(false);
+    }
   }
 }

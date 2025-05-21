@@ -107,8 +107,9 @@ class _NotificationViewState extends State<NotificationView>
             child: const Icon(Icons.arrow_back_ios)),
       ),
       body: NotificationViewBody(
-          resultForChildDetails: widget.childDetails,
-          selectedStudentId: selectedStudentId),
+        resultForChildDetails: widget.childDetails,
+        selectedStudentId: selectedStudentId,
+      ),
     );
   }
 }

@@ -3,19 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartsystemforschools/features/child_details_view/widgets/custom_card_spending_limits.dart';
 import '../../../core/models/get_child_details/result.dart';
 import '../../../core/models/money_recharge_model/money_recharge_model.dart';
 import '../../../core/utils/Constants.dart';
 import '../../../core/utils/animated_app_bar.dart';
-import '../../../core/utils/custom_app_bar.dart';
-import '../../../core/utils/custom_button.dart';
 import '../../../core/widgets/custom_bottom_container.dart';
-import '../../payment_parent/presentation/screens/spare.dart';
 import '../../Allergies/data/manager/allegris_catogries/allegris_cubit.dart';
 import '../manager/spending_limit_cubit.dart/spending_limit_cubit.dart';
 import '../manager/models/get_sending_limit/get_sending_limit.dart';
 import 'choose_balance_for_child.dart';
-import '../widgets/custom_card_spending_limits.dart';
 import '../widgets/restricted_products_widget.dart';
 import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../generated/locale_keys.g.dart';
@@ -39,7 +36,6 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
   GetSendingLimit? getSendingLimit;
   TextEditingController amountController = TextEditingController();
   TextEditingController dailyLimitController = TextEditingController();
-  bool isLoading = true;
 
   @override
   void dispose() {
@@ -55,27 +51,28 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
 
   Future<void> loadData() async {
     try {
-      final GetSendingLimit? result;
-      await Future.value([
-        result = await context.read<SpendingLimitCubit>().getSpendingLimit(
-            studentId: widget.resultForChildDetails.id.toString()),
-        context
-            .read<AllergiesCubitCatogry>()
-            .getAllegrisForStudent(widget.resultForChildDetails.id.toString()),
-      ]);
-      if (result != null) {
+      // Use Future.wait to properly await multiple futures
+      final spendingLimitFuture = context
+          .read<SpendingLimitCubit>()
+          .getSpendingLimit(
+              studentId: widget.resultForChildDetails.id.toString());
+
+      final allergiesFuture = context
+          .read<AllergiesCubitCatogry>()
+          .getAllegrisForStudent(widget.resultForChildDetails.id.toString());
+
+      // Wait for both futures to complete
+      await Future.wait([spendingLimitFuture, allergiesFuture]);
+
+      // Then handle the spending limit result
+      final result = await spendingLimitFuture;
+      if (result != null && mounted) {
         setState(() {
           getSendingLimit = result;
         });
       }
     } catch (e) {
       print("Error loading spending limit: $e");
-    } finally {
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
     }
   }
 
@@ -100,12 +97,6 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
           color: Colors.white,
         ),
       ),
-      // appBar: CustomAppBar(
-      //   ThereIsicon: false,
-      //   onTap: () {
-      //     Navigator.of(context).pop();
-      //   },
-      // ),
       body: RefreshIndicator(
         backgroundColor: Colors.white,
         color: Colors.blue.shade900,
@@ -143,6 +134,10 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
                       children: [
                         CustomCardSpendingLimits(
                           studentId: widget.resultForChildDetails.id.toString(),
+                          onUpdateLimits: () {
+                            // Reload the data when limits are updated
+                            loadData();
+                          },
                         )
                             .animate()
                             .fadeIn(duration: 300.ms, delay: 300.ms)

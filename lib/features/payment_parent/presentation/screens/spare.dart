@@ -3,7 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/utils/custom_wave_widget.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_transcations_cubit.dart';
+import 'package:smartsystemforschools/features/payment_parent/presentation/widgets/custom_app_bar_spare_recharge_widget.dart';
 import '../../../../core/utils/Constants.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/build_loading_view.dart';
@@ -67,20 +69,8 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text(
-          "Account",
-          style: AppStyles.styleSemiBold20(),
-        ),
+      appBar: const CustomAppBarSpareAndRechargeWidget(
+        title: 'Account',
       ),
       body: RefreshIndicator(
         color: Colors.black,
@@ -272,38 +262,6 @@ class _AccountScreenState extends State<AccountScreen> {
                     return const NoTranscationsFound();
                   }
                 },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class NoTranscationsFound extends StatelessWidget {
-  const NoTranscationsFound({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const SliverFillRemaining(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.search,
-              size: 80,
-              color: Colors.grey,
-            ),
-            SizedBox(height: 20),
-            Text(
-              "No Transactions Found",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
               ),
             ),
           ],

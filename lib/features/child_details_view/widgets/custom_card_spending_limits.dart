@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import '../../../core/utils/app_styles.dart';
 import '../../../core/utils/assets.dart';
 import '../views/spending_limits_view.dart';
@@ -8,7 +9,13 @@ import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart
 
 class CustomCardSpendingLimits extends StatelessWidget {
   final String studentId;
-  const CustomCardSpendingLimits({super.key, required this.studentId});
+  final VoidCallback onUpdateLimits;
+
+  const CustomCardSpendingLimits({
+    super.key,
+    required this.studentId,
+    required this.onUpdateLimits,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +49,9 @@ class CustomCardSpendingLimits extends StatelessWidget {
                 children: [
                   Text('spending limits', style: AppStyles.styleMedium16()),
                   CustomButtonChildDetails(
-                    onPressed: () {
-                      Navigator.of(context).push(
+                    onPressed: () async {
+                      // Navigate to SpendingLimitsView and wait for result
+                      final result = await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => SpendingLimitsView(
                             studentId: studentId,
@@ -51,6 +59,17 @@ class CustomCardSpendingLimits extends StatelessWidget {
                           ),
                         ),
                       );
+
+                      // If result is true, refresh data in parent widget
+                      if (result == true) {
+                        dispalySnackBar(
+                          context,
+                          title: 'Spending limits updated',
+                          color: Colors.green,
+                        );
+                        // Call the callback provided by the parent to refresh data
+                        onUpdateLimits();
+                      }
                     },
                     title: 'spending limits',
                     padding: const EdgeInsetsDirectional.symmetric(

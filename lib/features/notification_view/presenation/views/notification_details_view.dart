@@ -244,40 +244,6 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
                   .toString()),
           // Actions buttons row
           const SizedBox(height: 32),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton.icon(
-                icon: const Icon(Icons.delete),
-                label: const Text("Delete"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                ),
-                onPressed: () {
-                  _deleteNotification(notificationDetails.result!.id ?? "");
-                },
-              ),
-              const SizedBox(width: 16),
-              OutlinedButton.icon(
-                icon: const Icon(
-                  Icons.close,
-                ),
-                label: const Text(
-                  "Close",
-                ),
-                style: OutlinedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
         ],
       ),
     );
@@ -347,35 +313,6 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
       size: 36,
       iconData,
       color: const Color(0xff1A0F91),
-    );
-  }
-
-  void _deleteNotification(String notificationId) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Delete Notification"),
-        content:
-            const Text("Are you sure you want to delete this notification?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text(
-              "Cancel",
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              context.read<NotificationCubit>().deleteNotification(
-                    notificationId: notificationId,
-                  );
-              Navigator.of(context).pop(); // Go back to notifications list
-            },
-            child: const Text("Delete", style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
     );
   }
 }

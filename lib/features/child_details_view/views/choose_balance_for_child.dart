@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/features/payment_parent/presentation/widgets/custom_app_bar_spare_recharge_widget.dart';
 import '../../../core/methods/show_scaffold_messanger.dart';
 import '../../../core/models/money_recharge_model/money_recharge_model.dart';
 import '../../../core/utils/Constants.dart';
@@ -66,24 +67,10 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
         }
       },
       child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios,
-              ),
-            ),
-            title: Text(
-              "Recharge",
-              style: AppStyles.styleMedium18(),
-            ),
-          ),
+          appBar: const CustomAppBarSpareAndRechargeWidget(title: 'Recharge'),
           body: BlocBuilder<PaymentCubit, PaymentState>(
             builder: (context, state) {
               if (state is SetMoneyLoading) {
-                Future.delayed(const Duration(seconds: 60));
                 return buildLoadingView(
                   "recharge",
                   context,

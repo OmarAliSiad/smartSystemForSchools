@@ -17,13 +17,19 @@ class _CustomWiveWidgetState extends State<CustomWiveWidget> {
   List<int>? durations = [
     4000,
     5000,
+    6000,
   ];
 
-  List<Color> colors = [Colors.blue.shade500, Colors.blue.shade700];
+  List<Color> colors = [
+    Colors.blue.shade500,
+    Colors.blue.shade700,
+    Colors.blue.shade900,
+  ];
 
   List<double> heightPercentages = [
     0.65,
-    0.66,
+    0.70,
+    0.75,
   ];
 
   @override
