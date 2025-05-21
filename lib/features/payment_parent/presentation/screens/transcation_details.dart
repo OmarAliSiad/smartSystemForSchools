@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/models/student_transcations/student_transaction_item.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
 class TranscationDetails extends StatelessWidget {
   static const String id = '/transactionDetails';
@@ -11,6 +13,8 @@ class TranscationDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark =
+        context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark;
     final arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
@@ -41,7 +45,7 @@ class TranscationDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header section
-              _buildHeaderSection(studentName, date, moneyAmountSpended)
+              _buildHeaderSection(studentName, date, moneyAmountSpended, isDark)
                   .animate()
                   .fadeIn(duration: 600.ms, delay: 200.ms)
                   .slideY(begin: 0.2, end: 0),
@@ -50,7 +54,7 @@ class TranscationDetails extends StatelessWidget {
 
               // Transaction details
               _buildTransactionDetailsSection(
-                      schoolTenantId, createdOn, cashierName)
+                      schoolTenantId, createdOn, cashierName, isDark)
                   .animate()
                   .fadeIn(duration: 600.ms, delay: 400.ms)
                   .slideY(begin: 0.2, end: 0),
@@ -59,7 +63,7 @@ class TranscationDetails extends StatelessWidget {
 
               // Items section
               if (studentTransactionItems.isNotEmpty)
-                _buildItemsSection(studentTransactionItems)
+                _buildItemsSection(studentTransactionItems, isDark)
                     .animate()
                     .fadeIn(duration: 600.ms, delay: 600.ms)
                     .slideY(begin: 0.2, end: 0),
@@ -70,9 +74,12 @@ class TranscationDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderSection(String studentName, String date, double amount) {
+  Widget _buildHeaderSection(
+      String studentName, String date, double amount, bool isDark) {
     return Card(
+      color: isDark ? Colors.black : Colors.white,
       elevation: 4,
+      shadowColor: Colors.grey,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -125,8 +132,8 @@ class TranscationDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildTransactionDetailsSection(
-      String schoolTenantId, DateTime createdOn, String cashierName) {
+  Widget _buildTransactionDetailsSection(String schoolTenantId,
+      DateTime createdOn, String cashierName, bool isDark) {
     final dateStr = createdOn != null
         ? DateFormat('yyyy-MM-dd – kk:mm').format(
             DateTime.tryParse(createdOn.toIso8601String())!
@@ -135,7 +142,9 @@ class TranscationDetails extends StatelessWidget {
           )
         : '';
     return Card(
+      color: isDark ? Colors.black : Colors.white,
       elevation: 4,
+      shadowColor: Colors.grey,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -160,9 +169,11 @@ class TranscationDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildItemsSection(List<StudentTransactionItem> items) {
+  Widget _buildItemsSection(List<StudentTransactionItem> items, bool isDark) {
     return Card(
+      color: isDark ? Colors.black : Colors.white,
       elevation: 4,
+      shadowColor: Colors.grey,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
