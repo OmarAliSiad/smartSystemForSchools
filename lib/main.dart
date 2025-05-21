@@ -140,8 +140,6 @@ class MyApp extends StatelessWidget {
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
               locale: context.locale,
-    
-
               navigatorKey: appNavigatorKeys.mainNavigatorKey,
               scrollBehavior: const ScrollBehavior().copyWith(dragDevices: {
                 PointerDeviceKind.touch,
