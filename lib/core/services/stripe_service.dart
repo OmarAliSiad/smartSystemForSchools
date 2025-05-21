@@ -227,24 +227,24 @@ class StripeService {
                   Expanded(
                     child: InAppWebView(
                       initialUrlRequest: URLRequest(
-                        url: Uri.parse(sessionUrl),
+                        url: WebUri(sessionUrl),
                       ),
-                      initialOptions: InAppWebViewGroupOptions(
-                        crossPlatform: InAppWebViewOptions(
-                          javaScriptEnabled: true,
-                        ),
+                      initialSettings: InAppWebViewSettings(
+                        javaScriptEnabled: true,
                       ),
                       onLoadStop: (controller, url) async {
-                        String urlRequest =
-                            'https${url.toString().split('http').last}';
-                        log('is success');
-                        final canLaunchit = await canLaunch(urlRequest);
-                        if (canLaunchit) {
-                          await launch(urlRequest).then(
-                            (value) => Navigator.of(context).pop(true),
-                          );
-                        } else {
-                          throw "Could not launch $url";
+                        if (url != null) {
+                          String urlRequest =
+                              'https${url.toString().split('http').last}';
+                          log('is success');
+                          final canLaunchit = await canLaunch(urlRequest);
+                          if (canLaunchit) {
+                            await launch(urlRequest).then(
+                              (value) => Navigator.of(context).pop(true),
+                            );
+                          } else {
+                            throw "Could not launch $url";
+                          }
                         }
                       },
                     ),
