@@ -9,6 +9,7 @@ plugins {
 }
 //
 android {
+    experimentalProperties["android.ndk.suppressMinSdkVersionError"] = 21
     namespace = "com.example.smartsystemforschools"
     compileSdk = 35
     ndkVersion = "25.1.8937393"
