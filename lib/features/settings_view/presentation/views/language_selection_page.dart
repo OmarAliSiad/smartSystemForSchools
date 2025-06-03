@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_app_bar.dart';
 import '../../../../generated/locale_keys.g.dart';
@@ -79,13 +80,16 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: AnimatedCustomAppBar(
         title: LocaleKeys.Settings_language.tr(),
         textStyle: AppStyles.styleSemiBold20(),
-        ThereIsicon: false,
-        onTap: () {
-          Navigator.of(context).pop();
-        },
+        thereIsIcon: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: BlocBuilder<ThemeModeCubit, ThemeModeState>(
         builder: (context, state) {

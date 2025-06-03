@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import '../../../../core/models/get_all_schools/result.dart';
 import '../../../../core/models/get_school_details_by_id/get_school_details_by_id.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -96,16 +97,17 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
       ),
       child: Scaffold(
         backgroundColor: backgroundColor,
-        appBar: AppBar(
-          scrolledUnderElevation: 0,
+        appBar: AnimatedCustomAppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
+            icon: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              color: Colors.white,
+              onPressed: () => Navigator.pop(context),
+            ),
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text(
-            widget.school.name ?? 'School Details',
-            style: AppStyles.styleSemiBold20(),
-          ),
+          thereIsIcon: false,
+          title: widget.school.name ?? 'School Details',
         ),
         body: RefreshIndicator(
           backgroundColor: cardColor,

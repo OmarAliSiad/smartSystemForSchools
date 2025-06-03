@@ -129,6 +129,12 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AnimatedCustomAppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         waveColor: Colors.blue.shade700,
         backgroundColor: Colors.blue.shade900,
         thereIsIcon: false,

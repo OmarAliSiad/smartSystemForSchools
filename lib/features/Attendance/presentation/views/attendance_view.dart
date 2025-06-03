@@ -98,8 +98,9 @@ class _AttendanceViewState extends State<AttendanceView> {
         title: 'Attendance',
         textStyle: AppStyles.styleSemiBold20(),
         onTapBack: () {
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil(MainScreen.id, (context) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(MainScreen.id, 
+            (Route<dynamic> route) => false,
+          );
         },
       ),
       body: RefreshIndicator(

@@ -18,6 +18,10 @@ class RecommendationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AnimatedCustomAppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
         waveColor: Colors.blue,
         thereIsIcon: false,
         backgroundColor: Colors.blue.shade900,

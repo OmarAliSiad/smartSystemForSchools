@@ -32,6 +32,12 @@ class TranscationDetails extends StatelessWidget {
     return Scaffold(
       appBar: AnimatedCustomAppBar(
         thereIsIcon: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: 'Transaction Details',
         onTapBack: () {
           Navigator.pop(context);

@@ -252,6 +252,7 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
     Duration animationDelay,
   ) {
     return Card(
+      color: widget.isDarkMode ? const Color(0xFF1C1C22) : Colors.white,
       child: Column(
         children: [
           // Header section with title and toggle button
@@ -288,13 +289,15 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: widget.isDarkMode ? Colors.grey[800] : Colors.white,
+                    color: widget.isDarkMode
+                        ? Colors.grey[800]
+                        : Colors.blue.shade800,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: IconButton(
                     icon: Icon(
                       isExpanded ? Icons.close : Icons.add,
-                      color: Colors.blue,
+                      color: Colors.white,
                       size: 20,
                     ),
                     onPressed: onToggle,

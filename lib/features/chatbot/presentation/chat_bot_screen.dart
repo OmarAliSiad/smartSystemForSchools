@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
+
 import '../../../core/utils/animated_app_bar.dart';
 import '../../../core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,12 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         backgroundColor: Colors.blue.shade900,
         textStyle: AppStyles.styleSemiBold20(),
         title: 'AI ChatBot',
+        onTapBack: () {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            MainScreen.id,
+            (Route<dynamic> route) => false,
+          );
+        },
         thereIsIcon: false,
       ),
       body: Column(

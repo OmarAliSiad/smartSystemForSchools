@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:smartsystemforschools/core/utils/custom_wave_widget.dart';
 import '../../../../core/models/get_child_details/result.dart';
 import '../../../../core/services/notification_service/notification_service.dart';
 import '../../data/cubit/notification_cubit.dart';
@@ -74,10 +75,11 @@ class _NotificationViewState extends State<NotificationView>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: const CustomWiveWidget(),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_list),
+            icon: const Icon(Icons.filter_list, color: Colors.white),
             onPressed: () {
               showFilterBottomSheet(
                 context: context,
@@ -97,14 +99,21 @@ class _NotificationViewState extends State<NotificationView>
           )
         ],
         elevation: 0,
-        title: Text('Notifications', style: AppStyles.styleSemiBold20()),
+        title: Text(
+          'Notifications',
+          style: AppStyles.styleSemiBold20().copyWith(color: Colors.white),
+        ),
         forceMaterialTransparency: true,
         leading: InkWell(
-            borderRadius: BorderRadius.circular(30),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: const Icon(Icons.arrow_back_ios)),
+          borderRadius: BorderRadius.circular(30),
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: NotificationViewBody(
         resultForChildDetails: widget.childDetails,

@@ -70,9 +70,7 @@ class _FamilyViewState extends State<FamilyView> with WidgetsBindingObserver {
       appBar: AnimatedCustomAppBar(
         waveColor: Colors.blue.shade700,
         backgroundColor: Colors.blue.shade900,
-        onTapBack: () {
-          Navigator.of(context).pushReplacementNamed(MainScreen.id);
-        },
+       
         textStyle: AppStyles.styleSemiBold20(),
         title: LocaleKeys.family_family.tr(),
         thereIsIcon: false,

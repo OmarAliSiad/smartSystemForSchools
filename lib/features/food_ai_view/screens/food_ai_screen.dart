@@ -178,7 +178,9 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
         backgroundColor: Colors.blue.shade900,
         title: 'Meal Planner AI',
         onTapBack: () {
-          Navigator.of(context).pushReplacementNamed(MainScreen.id);
+   Navigator.of(context).pushNamedAndRemoveUntil(MainScreen.id, 
+            (Route<dynamic> route) => false,
+          );
         },
         thereIsIcon: false,
         textStyle: AppStyles.styleSemiBold20(),

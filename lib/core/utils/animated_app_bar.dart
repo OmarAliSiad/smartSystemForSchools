@@ -51,14 +51,7 @@ class _AnimatedCustomAppBarState extends State<AnimatedCustomAppBar> {
               )
             : const SizedBox(),
       ],
-      leading: widget.leading ??
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-            ),
-            onPressed: widget.onTapBack ?? () => Navigator.pop(context),
-          ),
+      leading: widget.leading ?? const SizedBox(),
       flexibleSpace: const CustomWiveWidget(),
       centerTitle: true,
       backgroundColor: widget.backgroundColor ?? Colors.transparent,

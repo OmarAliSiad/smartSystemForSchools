@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:smartsystemforschools/core/utils/moder_error_screen.dart';
+import 'package:smartsystemforschools/core/utils/modern_error_screen.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_childs_transcations_cubit.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_transcations_cubit.dart';
 import 'package:smartsystemforschools/features/payment_parent/presentation/screens/transcation_details.dart';
