@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-import '../../../core/methods/show_scaffold_messanger.dart';
 import '../../../core/utils/animated_app_bar.dart';
 import '../../../core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +10,6 @@ import '../data/cubit/cubit/chatbot_cubit.dart';
 import '../data/cubit/cubit/chatbot_state.dart';
 import '../data/model/message.dart';
 import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({super.key});
@@ -30,7 +27,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeMode = context.read<ThemeModeCubit>().currentTheme;
+    final themeMode = context.watch<ThemeModeCubit>().currentTheme;
     return Scaffold(
       appBar: AnimatedCustomAppBar(
         waveColor: Colors.blue.shade700,
@@ -39,9 +36,6 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         title: 'AI ChatBot',
         thereIsIcon: false,
       ),
-      backgroundColor: themeMode == ThemeMode.dark
-          ? const Color(0xFF121212)
-          : const Color(0xFFF5F5F5),
       body: Column(
         children: [
           Expanded(
@@ -384,19 +378,19 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                   ),
                 ),
                 const SizedBox(width: 12),
-                BlocBuilder<ChatCubit, ChatState>(
-                  builder: (context, state) {
-                    return _buildIconButton(
-                      icon: Icons.mic_outlined,
-                      onPressed:
-                          state.isLoading ? _scroll() : () => openMicroPhone(),
-                      themeMode: themeMode,
-                      color: themeMode == ThemeMode.dark
-                          ? Colors.blue
-                          : const Color(0xFF3D5AFE),
-                    );
-                  },
-                ),
+                // BlocBuilder<ChatCubit, ChatState>(
+                //   builder: (context, state) {
+                //     return _buildIconButton(
+                //       icon: Icons.mic_outlined,
+                //       onPressed:
+                //           state.isLoading ? _scroll() : () => openMicroPhone(),
+                //       themeMode: themeMode,
+                //       color: themeMode == ThemeMode.dark
+                //           ? Colors.blue
+                //           : const Color(0xFF3D5AFE),
+                //     );
+                //   },
+                // ),
                 const SizedBox(width: 12),
                 BlocBuilder<ChatCubit, ChatState>(
                   builder: (context, state) {
@@ -716,56 +710,56 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   //   }
   // }
 
-  void openMicroPhone() async {
-    final SpeechToText speech = SpeechToText();
-    bool available = await speech.initialize(
-      onStatus: (status) {
-        log('Speech recognition status: $status');
-        if (status == 'done') {
-          if (_messageController.text.isEmpty) {
-            dispalySnackBar(context,
-                title: 'No speech detected', color: Colors.orange);
-          }
-        }
-      },
-    );
+  // void openMicroPhone() async {
+  //   final SpeechToText speech = SpeechToText();
+  //   bool available = await speech.initialize(
+  //     onStatus: (status) {
+  //       log('Speech recognition status: $status');
+  //       if (status == 'done') {
+  //         if (_messageController.text.isEmpty) {
+  //           dispalySnackBar(context,
+  //               title: 'No speech detected', color: Colors.orange);
+  //         }
+  //       }
+  //     },
+  //   );
 
-    if (available) {
-      final locales = await speech.locales();
-      // Find available locales
-      final arabicLocale = locales.firstWhere(
-        (locale) => locale.localeId.startsWith('ar_'),
-      );
+  //   if (available) {
+  //     final locales = await speech.locales();
+  //     // Find available locales
+  //     final arabicLocale = locales.firstWhere(
+  //       (locale) => locale.localeId.startsWith('ar_'),
+  //     );
 
-      final englishLocale = locales.firstWhere(
-        (locale) => locale.localeId.startsWith('en_'),
-      );
+  //     final englishLocale = locales.firstWhere(
+  //       (locale) => locale.localeId.startsWith('en_'),
+  //     );
 
-      // Clear previous text
-      _messageController.clear();
+  //     // Clear previous text
+  //     _messageController.clear();
 
-      // Start listening with the most appropriate locale
-      final localeToUse = arabicLocale ?? englishLocale;
+  //     // Start listening with the most appropriate locale
+  //     final localeToUse = arabicLocale ?? englishLocale;
 
-      speech.listen(
-        onResult: (result) {
-          if (result.finalResult) {
-            setState(() {
-              _messageController.text = result.recognizedWords;
-              _messageController.text = _messageController.text.trim();
-            });
-          }
-        },
-        partialResults: true,
-        cancelOnError: true,
-        listenMode: ListenMode.confirmation,
-        localeId: localeToUse.localeId,
-      );
-    } else {
-      dispalySnackBar(context,
-          title: 'Speech recognition not available', color: Colors.red);
-    }
-  }
+  //     speech.listen(
+  //       onResult: (result) {
+  //         if (result.finalResult) {
+  //           setState(() {
+  //             _messageController.text = result.recognizedWords;
+  //             _messageController.text = _messageController.text.trim();
+  //           });
+  //         }
+  //       },
+  //       partialResults: true,
+  //       cancelOnError: true,
+  //       listenMode: ListenMode.confirmation,
+  //       localeId: localeToUse.localeId,
+  //     );
+  //   } else {
+  //     dispalySnackBar(context,
+  //         title: 'Speech recognition not available', color: Colors.red);
+  //   }
+  // }
 
   void _sendMessage(BuildContext context) {
     if (_messageController.text.isNotEmpty ||

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:smartsystemforschools/core/utils/moder_error_screen.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_childs_transcations_cubit.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_transcations_cubit.dart';
 import 'package:smartsystemforschools/features/payment_parent/presentation/screens/transcation_details.dart';
@@ -65,6 +66,7 @@ bool isLoggedIn = false;
 // Use the AppNavigatorKeys singleton to manage navigation keys
 final appNavigatorKeys = AppNavigatorKeys();
 void main() async {
+ ErrorWidget.builder = (FlutterErrorDetails details) => ModernErrorScreen(errorDetails: details,);
   Stripe.publishableKey = ApiKeys.stripePublishableKey;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

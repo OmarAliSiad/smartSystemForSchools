@@ -30,48 +30,6 @@ class _InfoUserRowWidgetState extends State<InfoUserRowWidget> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        BlocBuilder<ChangeDataProfileCubit, ChangeDataProfileState>(
-          builder: (context, state) {
-            if (state is DataProfileLoaded) {
-              return Container(
-                width: 50,
-                height: 50,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.file(
-                    state.profileDataModel.image!,
-                    width: 90,
-                    height: 90,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              );
-            } else {
-              return Container(
-                width: 50,
-                height: 50,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.asset(
-                    Assets.imagesProfileImage,
-                    width: 90,
-                    height: 90,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              );
-            }
-          },
-        ),
-        const SizedBox(
-          width: 20,
-        ),
         BlocBuilder<GetUserDataCubit, GetUserDataState>(
           builder: (context, state) {
             if (state is GetUserDataLoading) {

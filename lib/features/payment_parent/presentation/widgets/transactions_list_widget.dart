@@ -9,11 +9,11 @@ import 'package:smartsystemforschools/features/settings_view/presentation/manage
 
 class TransactionsListWidget extends StatelessWidget {
   final String? date;
-
   const TransactionsListWidget({super.key, this.date});
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeModeCubit>().currentTheme;
     return BlocBuilder<ParentChildsTranscationsCubit,
         ParentChildsTranscationsState>(
       builder: (context, state) {
@@ -80,15 +80,12 @@ class TransactionsListWidget extends StatelessWidget {
                       bottom: 16,
                     ),
                     decoration: BoxDecoration(
-                      color: context.read<ThemeModeCubit>().currentTheme ==
-                              ThemeMode.dark
-                          ? Colors.black
-                          : Colors.white,
+                      color:
+                          theme == ThemeMode.dark ? Colors.black : Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                          color: context.read<ThemeModeCubit>().currentTheme ==
-                                  ThemeMode.dark
+                          color: theme == ThemeMode.dark
                               ? const Color(0xFFFFFFFF).withOpacity(.4)
                               : const Color(0x3F000000),
                           blurRadius: 6,

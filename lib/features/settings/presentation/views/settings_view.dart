@@ -17,7 +17,7 @@ class SettingsHomeView extends StatelessWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(
                 minHeight: MediaQuery.of(context).size.height +
-                    MediaQuery.of(context).size.height * 0.1),
+                    MediaQuery.of(context).size.height * 0.12),
             child: const IntrinsicHeight(
               child: Stack(
                 children: [

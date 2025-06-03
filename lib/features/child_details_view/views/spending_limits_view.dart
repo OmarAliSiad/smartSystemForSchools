@@ -45,11 +45,15 @@ class _SpendingLimitsViewState extends State<SpendingLimitsView> {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: const CustomWiveWidget(),
-        title: Text('Spending Limit', style: AppStyles.styleSemiBold20()),
+        title: Text(
+          'Spending Limit',
+          style: AppStyles.styleSemiBold20().copyWith(color: Colors.white),
+        ),
         centerTitle: true,
         elevation: 0,
         forceMaterialTransparency: true,
         leading: IconButton(
+          color: Colors.white,
           onPressed: () {
             Navigator.pop(context);
           },

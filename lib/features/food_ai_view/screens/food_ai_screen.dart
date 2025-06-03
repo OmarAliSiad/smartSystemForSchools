@@ -168,7 +168,7 @@ class _FoodAiScreenState extends State<FoodAiScreen> {
   @override
   Widget build(BuildContext context) {
     // Get the current theme mode
-    final themeMode = context.read<ThemeModeCubit>().currentTheme;
+    final themeMode = context.watch<ThemeModeCubit>().currentTheme;
     final isDarkMode = themeMode == ThemeMode.dark;
     // Determine colors based on theme
     final backgroundColor = isDarkMode ? Colors.black : Colors.blue.shade500;
