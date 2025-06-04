@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/utils/custom_wave_widget.dart';
 import '../../../../core/methods/show_scaffold_messanger.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/services/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
@@ -47,14 +48,21 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        title: Text('Notification Details', style: AppStyles.styleSemiBold20()),
+        title: Text(
+          'Notification Details',
+          style: AppStyles.styleSemiBold20().copyWith(color: Colors.white),
+        ),
         forceMaterialTransparency: true,
+        flexibleSpace: const CustomWiveWidget(),
         leading: InkWell(
           borderRadius: BorderRadius.circular(30),
           onTap: () {
             Navigator.of(context).pop();
           },
-          child: const Icon(Icons.arrow_back_ios),
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
         ),
       ),
       body: BlocConsumer<NotificationCubit, NotificationState>(

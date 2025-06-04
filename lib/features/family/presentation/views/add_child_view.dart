@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/features/family/presentation/widgets/custom_app_bar_add_child_view.dart';
 import '../../../../core/methods/show_scaffold_messanger.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_app_bar.dart';
@@ -31,7 +32,7 @@ class _AddChildViewState extends State<AddChildView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: CustomAppBarAddChildView(
         textStyle: AppStyles.styleSemiBold20(),
         ThereIsicon: false,
         title: LocaleKeys.family_AddChild.tr(),
