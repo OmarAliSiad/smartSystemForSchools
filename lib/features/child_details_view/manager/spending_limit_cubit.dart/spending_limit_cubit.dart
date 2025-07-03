@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import '../../../../core/services/payment_service/payment_service.dart';
 import '../models/get_sending_limit/get_sending_limit.dart';
-
 part 'spending_limit_state.dart';
 
 class SpendingLimitCubit extends Cubit<SpendingLimitState> {
@@ -27,7 +26,6 @@ class SpendingLimitCubit extends Cubit<SpendingLimitState> {
       return null; // Return null on exception
     }
   }
-
   Future<Response> addSpendingLimit({
     required String studentId,
     double? dailySpendingLimit,
@@ -42,7 +40,6 @@ class SpendingLimitCubit extends Cubit<SpendingLimitState> {
           dailySpendingLimit: dailySpendingLimit,
           weeklySpendingLimit: weeklySpendingLimit,
           monthlySpendingLimit: monthlySpendingLimit);
-
       if (response.statusCode == 200) {
         return response;
       } else {

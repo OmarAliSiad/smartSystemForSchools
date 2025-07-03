@@ -22,6 +22,4 @@ class ParentChildsTranscationsCubit
       emit(PaymentTransactionsError(e.toString()));
     }
   }
-
-  
 }

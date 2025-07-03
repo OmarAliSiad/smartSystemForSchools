@@ -52,20 +52,14 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
 
   Future<void> loadData() async {
     try {
-      // Use Future.wait to properly await multiple futures
       final spendingLimitFuture = context
           .read<SpendingLimitCubit>()
           .getSpendingLimit(
               studentId: widget.resultForChildDetails.id.toString());
-
       final allergiesFuture = context
           .read<AllergiesCubitCatogry>()
           .getAllegrisForStudent(widget.resultForChildDetails.id.toString());
-
-      // Wait for both futures to complete
       await Future.wait([spendingLimitFuture, allergiesFuture]);
-
-      // Then handle the spending limit result
       final result = await spendingLimitFuture;
       if (result != null && mounted) {
         setState(() {

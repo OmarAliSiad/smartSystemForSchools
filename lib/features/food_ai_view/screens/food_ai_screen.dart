@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:smartsystemforschools/core/models/get_all_products/get_all_products.dart';
 import '../../../core/methods/show_scaffold_messanger.dart';
 import '../../../core/services/product_catogry_service/product_catogry_service.dart';
 import '../../../core/utils/animated_app_bar.dart';
@@ -37,6 +38,8 @@ class _FoodAiScreenState extends State<FoodAiScreen>
   // For child selection
   List<ResultForChildDetails> _children = [];
   ResultForChildDetails? _selectedChild;
+  GetAllProducts? catogryProducts;
+
   bool _isLoadingChildren = true;
 
   // Blood type selection
@@ -113,75 +116,67 @@ class _FoodAiScreenState extends State<FoodAiScreen>
   Widget build(BuildContext context) {
     final themeMode = context.watch<ThemeModeCubit>().currentTheme;
     final isDarkMode = themeMode == ThemeMode.dark;
-
-    return KeyedSubtree(
-      key: ValueKey(context.locale.toString()),
-      child: Scaffold(
-        body: AnimatedBuilder(
-          animation: _backgroundAnimation,
-          builder: (context, child) {
-            return Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: isDarkMode
-                      ? [
-                          Color.lerp(
-                              const Color(0xFF0F0F23),
-                              const Color(0xFF1A1A2E),
-                              _backgroundAnimation.value)!,
-                          Color.lerp(
-                              const Color(0xFF1A1A2E),
-                              const Color(0xFF16213E),
-                              _backgroundAnimation.value)!,
-                          Color.lerp(
-                              const Color(0xFF16213E),
-                              const Color(0xFF0F0F23),
-                              _backgroundAnimation.value)!,
-                        ]
-                      : [
-                          Color.lerp(
-                              const Color(0xFF667EEA),
-                              const Color.fromARGB(255, 40, 31, 91),
-                              _backgroundAnimation.value)!,
-                          Color.lerp(
-                              const Color.fromARGB(255, 82, 116, 183),
-                              const Color(0xFF6B73FF),
-                              _backgroundAnimation.value)!,
-                          Color.lerp(
-                              const Color.fromARGB(255, 88, 93, 185),
-                              const Color.fromARGB(255, 76, 98, 195),
-                              _backgroundAnimation.value)!,
-                        ],
-                ),
+    return Scaffold(
+      body: AnimatedBuilder(
+        animation: _backgroundAnimation,
+        builder: (context, child) {
+          return Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: isDarkMode
+                    ? [
+                        Color.lerp(
+                            const Color(0xFF0F0F23),
+                            const Color(0xFF1A1A2E),
+                            _backgroundAnimation.value)!,
+                        Color.lerp(
+                            const Color(0xFF1A1A2E),
+                            const Color(0xFF16213E),
+                            _backgroundAnimation.value)!,
+                        Color.lerp(
+                            const Color(0xFF16213E),
+                            const Color(0xFF0F0F23),
+                            _backgroundAnimation.value)!,
+                      ]
+                    : [
+                        Color.lerp(
+                            const Color.fromARGB(255, 1, 42, 124),
+                            const Color.fromARGB(255, 3, 8, 87),
+                            _backgroundAnimation.value)!,
+                        Color.lerp(
+                            const Color.fromARGB(255, 1, 2, 35),
+                            const Color.fromARGB(255, 1, 6, 30),
+                            _backgroundAnimation.value)!,
+                      ],
               ),
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    _buildCustomHeader(isDarkMode),
-                    Expanded(
-                      child: _buildMainContent(isDarkMode),
-                    ),
-                  ],
-                ),
+            ),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  _buildCustomHeader(isDarkMode),
+                  Expanded(
+                    child: _buildMainContent(isDarkMode),
+                  ),
+                ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildCustomHeader(bool isDarkMode) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsetsDirectional.all(20),
       child: Column(
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsetsDirectional.all(12),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(15),
@@ -198,8 +193,8 @@ class _FoodAiScreenState extends State<FoodAiScreen>
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(25),
@@ -259,7 +254,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
 
   Widget _buildMainContent(bool isDarkMode) {
     return Container(
-      margin: const EdgeInsets.only(top: 20),
+      margin: const EdgeInsetsDirectional.only(top: 20),
       decoration: BoxDecoration(
         color: isDarkMode ? Colors.grey.shade900 : Colors.white,
         borderRadius: const BorderRadius.only(
@@ -298,7 +293,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
             return Form(
               key: _formKey,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsetsDirectional.all(24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -345,16 +340,17 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your child\'s age';
-                              }
-                              if (int.tryParse(value) == null) {
-                                return 'Please enter a valid age';
+                              } else if (double.tryParse(value) == null ||
+                                  double.parse(value) > 18 ||
+                                  double.parse(value) <= 0) {
+                                return 'enter vaild age for child';
+                              } else if (value.length > 2) {
+                                return "enter vaild age for child";
                               }
                               return null;
                             },
                           ),
-
                           const SizedBox(height: 16),
-
                           // Weight and Height Row
                           Row(
                             children: [
@@ -369,8 +365,9 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter weight';
-                                    }
-                                    if (double.tryParse(value) == null) {
+                                    } else if (double.tryParse(value) == null ||
+                                        double.parse(value) <= 0 ||
+                                        value.length > 2) {
                                       return 'Please enter a valid weight';
                                     }
                                     return null;
@@ -390,7 +387,9 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                                     if (value == null || value.isEmpty) {
                                       return 'Please enter height';
                                     }
-                                    if (double.tryParse(value) == null) {
+                                    if (double.tryParse(value) == null ||
+                                        double.parse(value) <= 0 ||
+                                        value.length > 3) {
                                       return 'Please enter a valid height';
                                     }
                                     return null;
@@ -399,10 +398,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                               ),
                             ],
                           ),
-
                           const SizedBox(height: 16),
-
-                          // Blood Type
                           _buildStyledDropdown(
                             label: 'Blood Type',
                             value: _selectedBloodType,
@@ -451,7 +447,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                     const SizedBox(height: 40),
 
                     // Generate Button
-                    _buildGenerateButton(isDarkMode)
+                    _buildGenerateButton(isDarkMode, catogryProducts)
                         .animate()
                         .fadeIn(delay: 400.ms, duration: 600.ms)
                         .slideY(begin: 0.3, end: 0)
@@ -474,7 +470,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
   Widget _buildStyledCard({required Widget child, required bool isDarkMode}) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsetsDirectional.all(20),
       decoration: BoxDecoration(
         color: isDarkMode ? Colors.grey.shade900 : Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -500,7 +496,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsetsDirectional.all(8),
           decoration: BoxDecoration(
             color: Colors.blue.shade100,
             borderRadius: BorderRadius.circular(10),
@@ -515,7 +511,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
         Text(
           title,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.blue.shade600,
           ),
@@ -645,7 +641,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
   Widget _buildChildSelector(bool isDarkMode) {
     if (_children.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsetsDirectional.all(16),
         decoration: BoxDecoration(
           color: Colors.orange.shade50,
           borderRadius: BorderRadius.circular(15),
@@ -719,11 +715,11 @@ class _FoodAiScreenState extends State<FoodAiScreen>
         if (state is GetAllCatogriesLoading) {
           return buildLoadingView('allergies', context);
         } else if (state is GetAllCatogriesLoaded) {
-          final allergies = state.catgoryDetails.result ?? [];
+          final products = state.catgoryDetails.result ?? [];
 
-          if (allergies.isEmpty) {
+          if (products.isEmpty) {
             return Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsetsDirectional.all(16),
               decoration: BoxDecoration(
                 color: Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(15),
@@ -747,12 +743,11 @@ class _FoodAiScreenState extends State<FoodAiScreen>
           return Wrap(
             spacing: 10,
             runSpacing: 10,
-            children: allergies.map((allergy) {
+            children: products.map((allergy) {
               final allergyName = allergy.name ?? 'Unknown';
               final isSelected = _selectedAllergies.contains(allergyName);
-
               return GestureDetector(
-                onTap: () {
+                onTap: () async {
                   setState(() {
                     if (isSelected) {
                       _selectedAllergies.remove(allergyName);
@@ -760,11 +755,13 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                       _selectedAllergies.add(allergyName);
                     }
                   });
+                  catogryProducts = await ProductAndCatogryService()
+                      .getAllProducts(catogrydIdFilter: allergy.id!);
                 },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 16, vertical: 10),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? Colors.blue.shade600
@@ -814,7 +811,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
           );
         } else if (state is GetAllCatogriesFailure) {
           return Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsetsDirectional.all(16),
             decoration: BoxDecoration(
               color: Colors.red.shade50,
               borderRadius: BorderRadius.circular(15),
@@ -853,7 +850,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
         }
 
         return Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsetsDirectional.all(16),
           child: Row(
             children: [
               CircularProgressIndicator(
@@ -876,7 +873,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
     );
   }
 
-  Widget _buildGenerateButton(bool isDarkMode) {
+  Widget _buildGenerateButton(bool isDarkMode, GetAllProducts? products) {
     return InkWell(
       onTap: () {
         if (_formKey.currentState!.validate()) {
@@ -884,15 +881,14 @@ class _FoodAiScreenState extends State<FoodAiScreen>
             name: _selectedChild?.fullName ?? "Unknown",
             age: int.parse(_ageController.text),
             allergies: _selectedAllergies,
-            dietaryPreferences: _selectedDietaryOptions,
-            time:
-                "Breakfast", // Default value since we removed meal type selection
+            time: "Breakfast",
             bloodType: _selectedBloodType ?? "Unknown",
             weight: double.parse(_weightController.text),
             height: double.parse(_heightController.text),
           );
           context.read<MealRecommendationCubit>().getRecommendations(
                 profile: profile,
+                products: products,
                 mealType:
                     "Breakfast", // Default value since we removed meal type selection
               );

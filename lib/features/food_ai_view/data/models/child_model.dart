@@ -3,7 +3,6 @@ class ChildProfile {
   final String name;
   final int age;
   final List<String> allergies;
-  final List<String> dietaryPreferences;
   final String time;
   final double weight;
   final double height;
@@ -12,7 +11,6 @@ class ChildProfile {
     required this.name,
     required this.age,
     required this.allergies,
-    required this.dietaryPreferences,
     required this.time,
     required this.weight,
     required this.height,
@@ -23,7 +21,6 @@ class ChildProfile {
         'name': name,
         'age': age,
         'allergies': allergies,
-        'dietaryPreferences': dietaryPreferences,
         'time': time,
       };
 }

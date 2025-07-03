@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/models/get_all_products/get_all_products.dart';
+import 'package:smartsystemforschools/core/models/get_all_products/result.dart';
 import '../../api_handler.dart';
 import 'meal_recommendation_state.dart';
 import '../../models/child_model.dart';
@@ -11,14 +13,20 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
   Future<void> getRecommendations({
     required ChildProfile profile,
     required String mealType,
-    String? timeOfDay,
+    required GetAllProducts? products,
   }) async {
     try {
       emit(MealRecommendationLoading());
+
+      // Get blocked products first
+      final blockedProducts = _getBlockedProducts(profile, products);
+
       // Prepare the prompt for Gemini
-      final prompt = _buildPrompt(profile, mealType, timeOfDay);
+      final prompt = _buildPrompt(profile, mealType, products, blockedProducts);
+
       // Call Gemini API
       final recommendations = await _callGeminiApi(prompt);
+
       emit(MealRecommendationLoaded(recommendations));
     } catch (e) {
       emit(MealRecommendationError(
@@ -26,22 +34,47 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
     }
   }
 
+  /// Returns a list of blocked product names based on child's profile
+  List<String> _getBlockedProducts(
+      ChildProfile profile, GetAllProducts? products) {
+    if (products?.result == null || products!.result!.isEmpty) {
+      return [];
+    }
+    List<String> blockedProducts = [];
+    if (blockedProducts.length < 2 && products.result!.length >= 2) {
+      // Add more products to reach minimum of 2
+      for (var product in products.result!) {
+        if (product.name != null && !blockedProducts.contains(product.name!)) {
+          blockedProducts.add(product.name!);
+          if (blockedProducts.length >= 2) break;
+        }
+      }
+    }
+
+    log('Blocked products: $blockedProducts');
+    return blockedProducts;
+  }
+
   String _buildPrompt(
-      ChildProfile profile, String mealType, String? timeOfDay) {
-    // final allergiesText = profile.allergies.join(', ');
-    final preferencesText = profile.dietaryPreferences.isEmpty
-        ? 'no specific preferences'
-        : profile.dietaryPreferences.join(', ');
+    ChildProfile profile,
+    String mealType,
+    GetAllProducts? products,
+    List<String> blockedProducts,
+  ) {
+    final blockedProductsText = blockedProducts.isEmpty
+        ? 'no specific blocked products'
+        : blockedProducts.join(', ');
 
     return """
     My child is ${profile.age} years old. 
-    They have dietary preferences: $preferencesText.
     And he is weight ${profile.weight} kg and height ${profile.height} cm and his blood type ${profile.bloodType}.
-    Please provide a comprehensive list of food products that are forbidden or not recommended for ${mealType.toLowerCase()} options${timeOfDay != null ? ' for $timeOfDay' : ''}.
-    For each option, include:
+    BLOCKED PRODUCTS (DO NOT RECOMMEND): $blockedProductsText
+    Please provide a comprehensive list of food products that are forbidden or not recommended for this child.
+    For each blocked product, include:
     - Name
-    - Ingredients
-    - Why it's harmful
+    - Why it's harmful for this specific child
+    - Alternative suggestions if applicable
+    The blocked products are: $blockedProductsText
     """;
   }
 
@@ -120,18 +153,10 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
           final disadvantagMatch = harmful.firstMatch(sectionText);
           final disadvantageText = disadvantagMatch?.group(1)?.trim() ?? '';
 
-          // Extract tips
-          // final tipsRegex = RegExp(
-          //     r'\*\*Kid-Friendly Tips:\*\*(.*?)(?=\*\*\d|$)',
-          //     dotAll: true);
-          // final tipsMatch = tipsRegex.firstMatch(sectionText);
-          // final tipsText = tipsMatch?.group(1)?.trim() ?? '';
-
           recommendations.add(MealRecommendation(
             name: mealName,
             ingredients: ingredientsList,
             description: sectionText,
-            // kidFriendlyTip: tipsText,
             disadvantageDescription: disadvantageText,
           ));
         }
@@ -178,18 +203,13 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
             dotAll: true);
         final disadvantagMatch = harmful.firstMatch(sectionText);
         final disadvantageText = disadvantagMatch?.group(1)?.trim() ?? '';
-        // Extract tips
-        // final tipsRegex = RegExp(r'\*\*Kid-Friendly Tips:\*\*(.*?)(?=\*\*\d|$)',
-        //     dotAll: true);
-        // final tipsMatch = tipsRegex.firstMatch(sectionText);
-        // final tipsText = tipsMatch?.group(1)?.trim() ?? '';
+
         recommendations.add(MealRecommendation(
           name: name,
           ingredients: ingredientsList.isEmpty
               ? ['No ingredients listed']
               : ingredientsList,
           description: sectionText,
-          // kidFriendlyTip: tipsText,
           disadvantageDescription: disadvantageText,
         ));
       }
@@ -202,5 +222,11 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
         RegExp('\\*\\*$sectionName\\*\\*(.+?)(?=\\*\\*|\$)', dotAll: true);
     final match = sectionRegex.firstMatch(text);
     return match?.group(1)?.trim() ?? '';
+  }
+
+  /// Public method to get blocked product names
+  List<String> getBlockedProductNames(
+      ChildProfile profile, GetAllProducts? products) {
+    return _getBlockedProducts(profile, products);
   }
 }
