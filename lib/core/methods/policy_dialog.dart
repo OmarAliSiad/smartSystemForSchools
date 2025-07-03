@@ -2,7 +2,9 @@ import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../generated/locale_keys.g.dart';
 import '../utils/app_styles.dart';
 
@@ -16,6 +18,10 @@ class PolicyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor:
+          context.watch<ThemeModeCubit>().currentTheme == ThemeMode.dark
+              ? Colors.black
+              : Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(raduis),
       ),

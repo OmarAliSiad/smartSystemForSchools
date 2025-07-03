@@ -24,4 +24,5 @@ class Constants {
   static const schoolTenantId = 'schoolTenantId';
   static const studentId = 'studentId';
   static const String username = 'username';
+  static const String refreshToken = 'refreshToken';
 }

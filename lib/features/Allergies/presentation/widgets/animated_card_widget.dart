@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/allegries_products/product.dart';
 
 class AnimatedCard extends StatefulWidget {
@@ -144,7 +146,11 @@ class _AnimatedCardState extends State<AnimatedCard> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Text(
-                                    widget.isRestricted ? 'Blocked' : 'Allowed',
+                                    widget.isRestricted
+                                        ? LocaleKeys.RestrictedProducts_Blocked
+                                            .tr()
+                                        : LocaleKeys.RestrictedProducts_Allowed
+                                            .tr(),
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
@@ -176,9 +182,9 @@ class _AnimatedCardState extends State<AnimatedCard> {
                           color: Colors.blue.shade700,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: const Text(
-                          'SELECTED',
-                          style: TextStyle(
+                        child: Text(
+                          LocaleKeys.RestrictedProducts_SELECTED.tr(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
@@ -201,9 +207,9 @@ class _AnimatedCardState extends State<AnimatedCard> {
                           color: Colors.red.shade700,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: const Text(
-                          'RESTRICTED',
-                          style: TextStyle(
+                        child: Text(
+                          LocaleKeys.RestrictedProducts_RESTRICTED.tr(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),

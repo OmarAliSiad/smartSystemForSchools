@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/models/attendance_model/attendance_model.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -178,7 +180,13 @@ class CardDetailsAttendanceWidget extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                isAbsent ? 'ABSENT' : 'PRESENT',
+                                isAbsent
+                                    ? LocaleKeys
+                                        .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_tooltip_absent
+                                        .tr()
+                                    : LocaleKeys
+                                        .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_tooltip_present
+                                        .tr(),
                                 style: TextStyle(
                                   color: statusColor,
                                   fontWeight: FontWeight.bold,

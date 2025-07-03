@@ -79,14 +79,6 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
         context.watch<ThemeModeCubit>().changeThemeMode();
       }
     }
-    // Language might have been set from elsewhere in the app
-    // So we only update it if it doesn't match the current locale
-    if ((isActiveLanguage && context.locale.languageCode != 'ar') ||
-        (!isActiveLanguage && context.locale.languageCode != 'en')) {
-      context.setLocale(
-          isActiveLanguage ? const Locale('ar') : const Locale('en'));
-    }
-
     // Update notification confirmation setting
     NotificationService().enableConfirmationFromParent(enable: _switchValue);
   }
@@ -94,6 +86,36 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
   Future<void> _saveSettings(String key, bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(key, value);
+  }
+
+  String getMdPolicyFile() {
+    final languageCode = context.locale.languageCode;
+    switch (languageCode) {
+      case 'es':
+        return 'privacy_es.md';
+      case 'fr':
+        return 'privacy_fr.md';
+      case 'ar':
+        return 'privacy_ar.md';
+      case 'en':
+      default:
+        return 'privacy_en.md';
+    }
+  }
+
+  String getMdTermsAndConditions() {
+    final languageCode = context.locale.languageCode;
+    switch (languageCode) {
+      case 'es':
+        return 'terms_and_conditions_es.md';
+      case 'fr':
+        return 'terms_and_conditions_fr.md';
+      case 'ar':
+        return 'terms_and_conditions_ar.md';
+      case 'en':
+      default:
+        return 'terms_and_conditions_en.md';
+    }
   }
 
   Future<void> getUserInfoAndSchoolDetails() async {
@@ -160,7 +182,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
               ),
             );
           },
-          settingsName: 'school details',
+          settingsName: LocaleKeys.Settings_schoolDetails.tr(),
           style: AppStyles.styleRegular18(),
           suffixWidget: const Icon(
             Icons.arrow_forward_ios,
@@ -192,20 +214,20 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
             size: 20,
           ),
         ),
-        const SizedBox(
-          height: 34,
-        ),
-        CustomSettingsWidget(
-          onTap: () {
-            Navigator.of(context).pushNamed(ChangePasswordPage.id);
-          },
-          settingsName: LocaleKeys.Settings_changePassword.tr(),
-          style: AppStyles.styleRegular18(),
-          suffixWidget: const Icon(
-            Icons.arrow_forward_ios,
-            size: 20,
-          ),
-        ),
+        // const SizedBox(
+        //   height: 34,
+        // ),
+        // CustomSettingsWidget(
+        //   onTap: () {
+        //     Navigator.of(context).pushNamed(ChangePasswordPage.id);
+        //   },
+        //   settingsName: LocaleKeys.Settings_changePassword.tr(),
+        //   style: AppStyles.styleRegular18(),
+        //   suffixWidget: const Icon(
+        //     Icons.arrow_forward_ios,
+        //     size: 20,
+        //   ),
+        // ),
         const SizedBox(
           height: 34,
         ),
@@ -254,7 +276,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
           height: 12,
         ),
         CustomSettingsWidget(
-          settingsName: 'confirmation',
+          settingsName: LocaleKeys.Settings_confirmation.tr(),
           style: AppStyles.styleRegular18(),
           suffixWidget: Transform.scale(
             scale: .9,
@@ -311,11 +333,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
               context: context,
               builder: (context) {
                 return PolicyDialog(
-                  raduis: 8,
-                  mdFileName: isActiveLanguage
-                      ? 'terms_and_conditions_ar.md'
-                      : 'terms_and_conditions_en.md',
-                );
+                    raduis: 8, mdFileName: getMdTermsAndConditions());
               },
             );
           },
@@ -337,7 +355,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
                 return PolicyDialog(
                   raduis: 8,
                   mdFileName:
-                      isActiveLanguage ? 'privacy_ar.md' : 'privacy_en.md',
+                      getMdPolicyFile(), // Use the method to get the correct file
                 );
               },
             );

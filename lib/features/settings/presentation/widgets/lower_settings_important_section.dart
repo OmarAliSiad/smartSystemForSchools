@@ -21,6 +21,7 @@ class LowerSettingsImportantSection extends StatelessWidget {
           return FadeInUp(
             child: Center(
               child: Container(
+                margin: const EdgeInsetsDirectional.symmetric(horizontal: 10),
                 width: 379,
                 height: 911,
                 decoration: ShapeDecoration(

@@ -6,7 +6,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/core/utils/modern_error_screen.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_childs_transcations_cubit.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_transcations_cubit.dart';
@@ -61,38 +64,46 @@ import 'core/services/auth_service/auth_service.dart';
 import 'features/Allergies/data/manager/allegris_catogries/allegris_cubit.dart';
 import 'features/splash/presenation/views/splash_view.dart';
 import 'features/settings/presentation/views/settings_view.dart';
+import 'generated/locale_keys.g.dart';
 
 bool isLoggedIn = false;
 // Use the AppNavigatorKeys singleton to manage navigation keys
 final appNavigatorKeys = AppNavigatorKeys();
 void main() async {
- ErrorWidget.builder = (FlutterErrorDetails details) => ModernErrorScreen(errorDetails: details,);
+  ErrorWidget.builder = (FlutterErrorDetails details) => ModernErrorScreen(
+        errorDetails: details,
+      );
   Stripe.publishableKey = ApiKeys.stripePublishableKey;
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   MessagingConfig.initFirebaseMessaging();
   FirebaseMessaging.onBackgroundMessage(MessagingConfig.messageHandler);
-  await EasyLocalization.ensureInitialized();
   isLoggedIn = await AuthService().isLoggedIn();
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('ar')],
-      path:
-          'assets/translations', // <-- change the path of the translation files
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ar'),
+        Locale('fr'),
+        Locale('es'),
+      ],
+      path: 'assets/translations',
       fallbackLocale: const Locale(
-        'ar',
+        'en',
       ),
       assetLoader: const CodegenLoader(),
-      child: const MyApp(),
+      child: MyApp(connectivity: Connectivity()),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   // Use the shared navigator key from AppNavigatorKeys singleton
-  const MyApp({super.key});
+  final Connectivity connectivity;
+  const MyApp({super.key, required this.connectivity});
 
   @override
   Widget build(BuildContext context) {
@@ -157,36 +168,40 @@ class MyApp extends StatelessWidget {
               darkTheme: darkTheme(context),
               builder: (context, child) {
                 return BlocConsumer<InternetCubit, InternetState>(
-                  listener: (context, state) {
+                  listener: (context, state) async {
+                    int count = await getCount();
                     if (state is InternetDisconnected) {
                       dispalySnackBar(
                         context,
                         durationD: const Duration(days: 1),
                         color: Colors.red[700]!,
                         title: '',
-                        child: const Row(
+                        child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.wifi_off_rounded,
                               color: Colors.white,
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    'No Internet Connection',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
+                                    LocaleKeys
+                                        .internetConnection_noInternetConnection
+                                        .tr(),
+                                    style: AppStyles.styleMedium16()
+                                        .copyWith(color: Colors.white),
                                   ),
-                                  SizedBox(height: 4),
+                                  const SizedBox(height: 4),
                                   Text(
-                                    'Please check your network settings',
-                                    style: TextStyle(fontSize: 14),
+                                    LocaleKeys
+                                        .internetConnection_pleaseYourNetworkSettings
+                                        .tr(),
+                                    style: AppStyles.styleMedium15()
+                                        .copyWith(color: Colors.white),
                                   ),
                                 ],
                               ),
@@ -195,13 +210,19 @@ class MyApp extends StatelessWidget {
                         ),
                       );
                     } else if (state is InternetConnected) {
-                      dispalySnackBar(
-                        context,
-                        durationD: const Duration(seconds: 5),
-                        title: 'Internet connection restored',
-                        titleActionButton: 'ok',
-                        color: Colors.green[700]!,
-                      );
+                      count == 1
+                          ? dispalySnackBar(
+                              context,
+                              durationD: const Duration(seconds: 5),
+                              title: LocaleKeys
+                                  .internetConnection_internetConnectionRestored
+                                  .tr(),
+                              titleActionButton: 'ok',
+                              color: Colors.green[700]!,
+                            )
+                          : null;
+                      count++;
+                      saveCount(count);
                     }
                   },
                   builder: (context, state) {
@@ -261,4 +282,17 @@ class Get {
       appNavigatorKeys.mainNavigatorKey.currentContext;
   static NavigatorState? get navigator =>
       appNavigatorKeys.mainNavigatorKey.currentState;
+}
+
+void saveCount(int count) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setInt('count', count);
+}
+
+Future<int> getCount() async {
+  return await SharedPreferences.getInstance().then(
+    (value) {
+      return value.getInt('count') ?? 1;
+    },
+  );
 }

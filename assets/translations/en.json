@@ -14,6 +14,20 @@
         "subtitle": "Receive instant reports and regular updates about your child’s spending to stay informed and in control at all time.",
         "button": "GetStarted"
     },
+    "RestrictedProducts": {
+        "RestrictedProducts": "Restricted Products",
+        "SelectedProducts": "Select Products",
+        "ApplyChanges": "Apply Changes",
+        "LoadingCategories": "Loading categories...",
+        "NoCategoriesAvailable": "No categories available",
+        "Unknown": "Unknown",
+        "LoadingProducts": "Loading products...",
+        "FailedToLoadProducts": "Failed to load products",
+        "Blocked": "Blocked",
+        "Allowed": "Allowed",
+        "SELECTED": "SELECTED",
+        "RESTRICTED": "RESTRICTED"
+    },
     "Auth": {
         "title": "Login to your Account",
         "register": "register to your Account",
@@ -27,7 +41,43 @@
         "confirmPasswordHintText": "Confirm your password",
         "forgotPassword": "Forgot Password?",
         "login": "Login",
-        "singup": "SingUp"
+        "singup": "SingUp",
+        "invalidUserDataReceived": "Invalid user data received",
+        "loginSuccessfully": "Login Successfully",
+        "loginFailed": "Login failed",
+        "Ok": "Ok",
+        "loggingIn": "Logging in..."
+    },
+    "spare": {
+        "Account": "Account",
+        "FamilyBalance": "Family Balance",
+        "Recharge": "Recharge",
+        "Transactions": "Transactions",
+        "transactions": "transactions",
+        "selectDate": "Select Date",
+        "noTransactionsFound": "No Transactions Found",
+        "ok": "ok",
+        "missingSessionInformation": "Missing payment session information",
+        "Other": "other",
+        "creditRechargesAreNonRefundable": "Credit recharges are non-refundable.",
+        "byTappingRecharge": "By tapping recharge you agree to the",
+        "creditCardLoadUpTermsAndConditions": "credit card load-up terms and conditions.",
+        "enterAmount": "Enter Amount",
+        "total": "Total",
+        "Subtotal": "Subtotal",
+        "processingFees": "Processing Fees",
+        "pleaseEnterAWholeNumberBetween1And10000": "Please enter a whole number between 1 and 10000",
+        "EGP": "EGP",
+        "MoneyRechargedSuccessfully": "Money recharged successfully"
+    },
+    "common": {
+        "loading": "Loading",
+        "details": "details...",
+        "transcations": "transcations",
+        "childs": "childs",
+        "noTransFound": "No Transactions Found",
+        "noChildrenAddedYet": "No children added yet",
+        "Error": "Error"
     },
     "valdation": {
         "valdationText": "Please enter some text"
@@ -59,7 +109,18 @@
         "home": "Home",
         "family": "Family",
         "attendance": "Attendance",
-        "wallet": "Wallet"
+        "wallet": "Wallet",
+        "mealsPlanner": "meals",
+        "chatBot": "ChatBot"
+    },
+    "aiChatBot": {
+        "aiChatBot": "ChatBot",
+        "typing": "Typing",
+        "typeAMessage": "Type a message..."
+    },
+    "cameraAndGallery": {
+        "gallery": "gallery",
+        "camera": "camera"
     },
     "homeView": {
         "appBarTitle": "Good Morning,",
@@ -79,19 +140,30 @@
         "subTitle": "Available in wallet Shahd 100 EGP",
         "price": "10 EGP"
     },
+    "paymentMethodBottomSheet": {
+        "pickPaymentMethod": "Pick a Payment Method",
+        "addCard": "Add a Credit or Debit Card",
+        "debitCard": "Debit Card",
+        "creditCard": "Credit Card"
+    },
     "Settings": {
         "name": "mohamed ammen",
         "settings": "Settings",
+        "schoolDetails": "school details",
+        "confirmation": "confirmation",
         "accountSettings": "Account Settings",
         "editProfile": "Edit profile",
         "changePassword": "Change password",
         "darkMode": "Dark Mode",
         "language": "Language",
+        "saveLanguage": "Save Language",
         "more": "More",
         "termsAndConditions": "Terms and Conditions",
         "privacyPolicy": "Privacy Policy",
         "logout": "Logout",
-        "save": "Save"
+        "save": "Save",
+        "searchLanguages": "Search languages",
+        "noLanguagesFound": "No languages found"
     },
     "editProfile": {
         "editProfile": "Edit Profile",
@@ -166,32 +238,146 @@
         "5h": "5h ago",
         "des": "Ahmed Khalid attempted a purchase,\nbut the balance was in sufficient"
     },
-    "childDetails": {
+    "childDetailsView": {
+        "title": "Child Details View",
+        "limits": "Limits",
+        "day": "Day",
+        "week": "Week",
+        "month": "Month",
+        "remaining": "Remaining",
+        "recharge": "Recharge",
         "dailySpendingLimit": "Daily Spending Limit",
-        "dailyLimit": "Daily limit",
+        "dailyLimit": "Daily Limit",
         "price": "Price",
         "cancel": "Cancel",
         "edit": "Edit",
-        "recharge": "Recharge",
-        "rechargeButton": "Recharge",
-        "close": "Close",
-        "addedSuccessfully": "Added Successfully"
+        "enterDailyLimit": "Enter daily limit",
+        "ok": "OK",
+        "spendingLimits": "spending limits",
+        "spendingLimitsUpdated": "Spending limits updated",
+        "restrictedProducts": "Restricted Products",
+        "manageRestrictions": "Manage Restrictions"
+    },
+    "spendingLimitsView": {
+        "title": "Spending Limit",
+        "spendingLimits": "Spending Limits",
+        "description": "Enable daily, weekly, or monthly limits to encourage healthy spending habits",
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "dailyReset": "Resets every midnight",
+        "weeklyReset": "Resets every Sunday",
+        "monthlyReset": "Resets every month",
+        "enterAmount": "Enter amount",
+        "save": "Save",
+        "spendingLimitsLoaded": "Spending limits loaded successfully",
+        "loadingSpendingLimits": "Spending limits"
+    },
+    "errors": {
+        "loadingSpendingLimit": "Error loading spending limit"
+    },
+    "messages": {
+        "dataRefreshed": "Data refreshed successfully"
     },
     "tracking": {
         "title": "Student Tracking",
         "studentLocation": "Student Location",
         "bottomNavLabel": "Tracking"
     },
-    "family": {
-        "AddChild": "Add child",
-        "family": "Family",
-        "Balance": "Balance",
-        "dailySpendingLimit": "Daily Spending Limit"
-    },
     "account": {
         "donotHaveAccount": "If you donot have account? ",
         "haveAccount": "Have Account ",
         "singup": "SingUp",
         "login": "LogIn"
+    },
+    "transaction": {
+        "details": "Transaction Details",
+        "transferFromWallet": "Transfer from your wallet to",
+        "date": "select date",
+        "schoolName": "school Name",
+        "DateAndTime": "Date and Time",
+        "staffMember": "Staff Member",
+        "itemsPurchased": "Items Purchased",
+        "quantity": "quantity",
+        "total": "Total"
+    },
+    "family": {
+        "family": "family",
+        "noChildrenAddedYet": "No children added yet",
+        "failedToLoadingChildren": "Failed to loading children",
+        "tryAgain": "Try Again",
+        "AddChild": "Add child",
+        "Balance": "Balance",
+        "dailySpendingLimit": "Daily Spending Limit"
+    },
+    "attendanceDetails": {
+        "attendance": "Attendance",
+        "TryAgain": "Try Again",
+        "failedToLoadAttendanceData": "Failed to load attendance data",
+        "SelectAnotherDate": "Select Another Date",
+        "noAttendanceRecordsFoundForThisDate": "No attendance records found for this date",
+        "attendanceDetailsView": {
+            "appBarTitle": "Attendance Details",
+            "attendanceStatus": {
+                "absent": "Absent",
+                "present": "Present",
+                "recordedMessage": "Attendance recorded for the day"
+            },
+            "studentInformationCard": {
+                "title": "Student Information",
+                "name": "Name",
+                "grade": "Grade",
+                "gender": "Gender",
+                "date": "Date",
+                "birthDate": "Birth Date",
+                "city": "City"
+            },
+            "weeklyAttendanceChart": {
+                "title": "Weekly Attendance",
+                "noData": {
+                    "message": "No attendance data available for this week"
+                },
+                "daysOfWeek": {
+                    "mon": "Mon",
+                    "tue": "Tue",
+                    "wed": "Wed",
+                    "thu": "Thu",
+                    "fri": "Fri",
+                    "sat": "Sat",
+                    "sun": "Sun"
+                },
+                "tooltip": {
+                    "noData": "No Data",
+                    "present": "Present",
+                    "absent": "Absent"
+                }
+            },
+            "detailedAttendanceInfo": {
+                "title": "Attendance Details",
+                "status": "Status",
+                "statusAbsent": "Absent for the day",
+                "statusPresent": "Present",
+                "arrivalTime": "Arrival Time",
+                "leavingTime": "Leaving Time",
+                "timeSpent": "Time Spent"
+            }
+        },
+        "attendanceCharts": {
+            "attendanceTrendLineChart": {
+                "title": "Attendance Trend Line Chart"
+            }
+        }
+    },
+    "internetConnection": {
+        "noInternetConnection": "No Internet Connection",
+        "pleaseYourNetworkSettings": "Please check your network settings",
+        "internetConnectionRestored": "Internet connection restored"
+    },
+    "showDialogLogin": {
+        "info": "info",
+        "goToGmailAndResetYourPassword": "go to gmail and reset your password",
+        "error": "error",
+        "sessionExpired": "Session Expired",
+        "yourSessionHasExpiredPleaseLogInAgain": "Your session has expired. Please log in again."
     }
 }

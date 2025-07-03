@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../methods/show_scaffold_messanger.dart';
 import '../../utils/app_styles.dart';
 import 'notification_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
 class ConfirmationRequestScreen extends StatefulWidget {
@@ -77,39 +78,43 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Purchase Confirmation',
-          style: AppStyles.styleBold20(),
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Purchase Confirmation',
+            style: AppStyles.styleBold20(),
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTimerDisplay(
-                context,
-                context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark,
-              ),
-              const SizedBox(height: 16),
-              _buildConfirmationHeader(context),
-              const SizedBox(height: 24),
-              Text(
-                'Products to Purchase',
-                style: AppStyles.styleBold20(),
-              ),
-              const SizedBox(height: 16),
-              ...products.map((product) => _buildProductCard(context, product)),
-              const SizedBox(height: 32),
-              _buildTotalAmount(context),
-              const SizedBox(height: 32),
-              _buildActionButtons(context),
-            ],
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTimerDisplay(
+                  context,
+                  context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark,
+                ),
+                const SizedBox(height: 16),
+                _buildConfirmationHeader(context),
+                const SizedBox(height: 24),
+                Text(
+                  'Products to Purchase',
+                  style: AppStyles.styleBold20(),
+                ),
+                const SizedBox(height: 16),
+                ...products
+                    .map((product) => _buildProductCard(context, product)),
+                const SizedBox(height: 32),
+                _buildTotalAmount(context),
+                const SizedBox(height: 32),
+                _buildActionButtons(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -259,24 +264,39 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
         status: status,
       )
           .then((value) {
-        Navigator.of(context).pop();
+        if (context.mounted) {}
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
       });
       // Show confirmation
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              status == "approved" ? 'Purchase approved' : 'Purchase denied'),
-          backgroundColor: status == "approved" ? Colors.green : Colors.red,
-        ),
-      );
-      // Go back
+      if (context.mounted) {
+        final messenger = ScaffoldMessenger.of(context);
+        messenger.clearSnackBars();
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              status == "approved" ? 'Purchase approved' : 'Purchase denied',
+              style: AppStyles.styleMedium13(),
+            ),
+            backgroundColor: status == "approved" ? Colors.green : Colors.red,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (context.mounted) {
+        final messenger = ScaffoldMessenger.of(context);
+        messenger.clearSnackBars();
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              'Error: $e',
+              style: AppStyles.styleMedium13(),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 

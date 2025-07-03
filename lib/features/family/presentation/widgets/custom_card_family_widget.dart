@@ -47,68 +47,82 @@ class CustomCardFaimlyWidget extends StatelessWidget {
           )
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.only(
-                start: 15, top: 20, bottom: 25, end: 10),
-            child: Column(
-              children: [
-                Image.asset(
-                  Assets.imagesPerson,
-                  color:
-                      themeMode == ThemeMode.dark ? Colors.white : Colors.black,
-                  fit: BoxFit.cover,
-                  width: 52,
-                  height: 52,
-                ),
-                Text(
-                  childDetailsModel.fullName ?? 'Unknown Child',
-                  style: AppStyles.styleMedium16(),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsetsDirectional.only(top: 21, bottom: 15, end: 37),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  LocaleKeys.family_Balance.tr(),
-                  style: AppStyles.styleRegular16(),
-                ),
-                Text(
-                  '100 EGP',
-                  style: AppStyles.styleMedium16().copyWith(
-                    color: const Color(0xFF5CC2F2),
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsetsDirectional.only(
+                  start: 15, top: 20, bottom: 25, end: 10),
+              child: Column(
+                children: [
+                  Image.asset(
+                    Assets.imagesPerson,
+                    color: themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black,
+                    fit: BoxFit.cover,
+                    width: 52,
+                    height: 52,
                   ),
-                ),
-                Text(
-                  LocaleKeys.family_dailySpendingLimit.tr(),
-                  style: AppStyles.styleMedium16(),
-                ),
-                Text(
-                  '40 EGP',
-                  style: AppStyles.styleMedium16().copyWith(
-                    color: const Color(0xFF5CC2F2),
-                  ),
-                ),
-              ],
+                  SizedBox(
+                    width: 80,
+                    child: Text(
+                      childDetailsModel.fullName ?? 'Unknown Child',
+                      style: AppStyles.styleMedium16(),
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          CustomButtonTransfer(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (contex) {
-                return ChildDetailsView(
-                  resultForChildDetails: childDetailsModel,
-                );
-              }));
-            },
-          ),
-        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                    top: 21, bottom: 15, end: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      LocaleKeys.family_Balance.tr(),
+                      style: AppStyles.styleRegular16(),
+                    ),
+                    Text(
+                      childDetailsModel.amountOfMoney.toString(),
+                      style: AppStyles.styleMedium16().copyWith(
+                        color: const Color(0xFF5CC2F2),
+                      ),
+                    ),
+                    Text(
+                      LocaleKeys.family_dailySpendingLimit.tr(),
+                      style: AppStyles.styleMedium16(),
+                    ),
+                    Text(
+                      '100 EGP',
+                      style: AppStyles.styleMedium16().copyWith(
+                        color: const Color(0xFF5CC2F2),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsetsDirectional.only(end: 10),
+              child: CustomButtonTransfer(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (contex) {
+                    return ChildDetailsView(
+                      resultForChildDetails: childDetailsModel,
+                    );
+                  }));
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

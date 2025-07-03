@@ -37,7 +37,6 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
     My child is ${profile.age} years old. 
     They have dietary preferences: $preferencesText.
     And he is weight ${profile.weight} kg and height ${profile.height} cm and his blood type ${profile.bloodType}.
-    the products ${profile.selectedProducts.map((e) => e['name']).join(', ')} and described as ${profile.selectedProducts.map((e) => e['description']).join(', ')}.
     Please provide a comprehensive list of food products that are forbidden or not recommended for ${mealType.toLowerCase()} options${timeOfDay != null ? ' for $timeOfDay' : ''}.
     For each option, include:
     - Name

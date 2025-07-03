@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:smartsystemforschools/features/main_screen/presentation/views/main_screen.dart';
-
+import 'package:easy_localization/easy_localization.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../core/utils/animated_app_bar.dart';
 import '../../../core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
@@ -30,77 +31,245 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   @override
   Widget build(BuildContext context) {
     final themeMode = context.watch<ThemeModeCubit>().currentTheme;
-    return Scaffold(
-      appBar: AnimatedCustomAppBar(
-        waveColor: Colors.blue.shade700,
-        backgroundColor: Colors.blue.shade900,
-        textStyle: AppStyles.styleSemiBold20(),
-        title: 'AI ChatBot',
-        onTapBack: () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            MainScreen.id,
-            (Route<dynamic> route) => false,
-          );
-        },
-        thereIsIcon: false,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: BlocBuilder<ChatCubit, ChatState>(
-              builder: (context, state) {
-                return ListView.builder(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.all(16),
-                  itemCount: state.messages.length +
-                      (state.currentTypingResponse.isNotEmpty ? 1 : 0) +
-                      (state.isLoading ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    // First, show all existing messages
-                    if (index < state.messages.length) {
-                      final message = state.messages[index];
-                      return _buildMessageBubble(message, themeMode);
-                    }
-                    // Then, show typing animation if there's content being typed
-                    else if (state.currentTypingResponse.isNotEmpty &&
-                        index == state.messages.length) {
-                      return _buildTypingBubble(
-                          state.currentTypingResponse, themeMode);
-                    }
-                    // Finally, show loading indicator if we're waiting for a response
-                    else if (state.isLoading) {
-                      return Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Center(
-                          child: LoadingAnimationWidget.hexagonDots(
-                            color: themeMode == ThemeMode.dark
-                                ? Colors.blue
-                                : const Color(0xFF3D5AFE),
-                            size: 40,
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: AnimatedCustomAppBar(
+          waveColor: Colors.blue.shade700,
+          backgroundColor: Colors.blue.shade900,
+          textStyle: AppStyles.styleSemiBold20(),
+          title: LocaleKeys.aiChatBot_aiChatBot.tr(),
+          onTapBack: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              MainScreen.id,
+              (Route<dynamic> route) => false,
+            );
+          },
+          thereIsIcon: false,
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: BlocBuilder<ChatCubit, ChatState>(
+                builder: (context, state) {
+                  return ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(16),
+                    itemCount: state.messages.length +
+                        (state.currentTypingResponse.isNotEmpty ? 1 : 0) +
+                        (state.isLoading ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      // First, show all existing messages
+                      if (index < state.messages.length) {
+                        final message = state.messages[index];
+                        return _buildMessageBubble(message, themeMode);
+                      }
+                      // Then, show typing animation if there's content being typed
+                      else if (state.currentTypingResponse.isNotEmpty &&
+                          index == state.messages.length) {
+                        return _buildTypingBubble(
+                            state.currentTypingResponse, themeMode);
+                      }
+                      // Finally, show loading indicator if we're waiting for a response
+                      else if (state.isLoading) {
+                        return Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Center(
+                            child: LoadingAnimationWidget.hexagonDots(
+                              color: themeMode == ThemeMode.dark
+                                  ? Colors.blue
+                                  : const Color(0xFF3D5AFE),
+                              size: 40,
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                    return const SizedBox();
-                  },
-                );
-              },
+                        );
+                      }
+                      return const SizedBox();
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-          // Preview of selected files
-          if (_selectedImagePath != null || _selectedFilePath != null)
+            // Preview of selected files
+            if (_selectedImagePath != null || _selectedFilePath != null)
+              Container(
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: themeMode == ThemeMode.dark
+                      ? const Color(0xFF1E1E1E)
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: themeMode == ThemeMode.dark
+                          ? const Color(0xFFFFFFFF).withOpacity(.1)
+                          : const Color(0x3F000000),
+                      blurRadius: 6,
+                      offset: const Offset(0, 0),
+                      spreadRadius: 0,
+                    )
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    if (_selectedImagePath != null)
+                      Stack(
+                        children: [
+                          Container(
+                            height: 70,
+                            width: 70,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              image: DecorationImage(
+                                image: FileImage(File(_selectedImagePath!)),
+                                fit: BoxFit.cover,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: themeMode == ThemeMode.dark
+                                      ? const Color(0xFFFFFFFF).withOpacity(.2)
+                                      : const Color(0x3F000000),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                  spreadRadius: 0,
+                                )
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            right: -5,
+                            top: -5,
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedImagePath = null;
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: themeMode == ThemeMode.dark
+                                      ? Colors.grey[800]
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: themeMode == ThemeMode.dark
+                                          ? const Color(0xFFFFFFFF)
+                                              .withOpacity(.2)
+                                          : const Color(0x3F000000),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 0),
+                                      spreadRadius: 0,
+                                    )
+                                  ],
+                                ),
+                                child: Icon(Icons.close_rounded,
+                                    size: 16,
+                                    color: themeMode == ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.black),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    if (_selectedFilePath != null)
+                      Stack(
+                        children: [
+                          Container(
+                            height: 60,
+                            padding: const EdgeInsets.all(12),
+                            margin: const EdgeInsets.only(left: 8),
+                            decoration: BoxDecoration(
+                              color: themeMode == ThemeMode.dark
+                                  ? Colors.grey[850]
+                                  : Colors.grey[100],
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: themeMode == ThemeMode.dark
+                                      ? const Color(0xFFFFFFFF).withOpacity(.2)
+                                      : const Color(0x3F000000),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 0),
+                                  spreadRadius: 0,
+                                )
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.insert_drive_file_rounded,
+                                  color: themeMode == ThemeMode.dark
+                                      ? Colors.blue
+                                      : const Color(0xFF3D5AFE),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  _selectedFilePath!.split('/').last,
+                                  style: TextStyle(
+                                      color: themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black87,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            right: -5,
+                            top: -5,
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedFilePath = null;
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: themeMode == ThemeMode.dark
+                                      ? Colors.grey[800]
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: themeMode == ThemeMode.dark
+                                          ? const Color(0xFFFFFFFF)
+                                              .withOpacity(.2)
+                                          : const Color(0x3F000000),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 0),
+                                      spreadRadius: 0,
+                                    )
+                                  ],
+                                ),
+                                child: Icon(Icons.close_rounded,
+                                    size: 16,
+                                    color: themeMode == ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.black),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            // Input area
             Container(
-              padding: const EdgeInsets.all(12),
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: themeMode == ThemeMode.dark
-                    ? const Color(0xFF1E1E1E)
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(16),
+                color:
+                    themeMode == ThemeMode.dark ? Colors.black : Colors.white,
                 boxShadow: [
                   BoxShadow(
                     color: themeMode == ThemeMode.dark
-                        ? const Color(0xFFFFFFFF).withOpacity(.1)
+                        ? const Color(0xFFFFFFFF).withOpacity(.4)
                         : const Color(0x3F000000),
                     blurRadius: 6,
                     offset: const Offset(0, 0),
@@ -110,314 +279,153 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
               ),
               child: Row(
                 children: [
-                  if (_selectedImagePath != null)
-                    Stack(
-                      children: [
-                        Container(
-                          height: 70,
-                          width: 70,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            image: DecorationImage(
-                              image: FileImage(File(_selectedImagePath!)),
-                              fit: BoxFit.cover,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: themeMode == ThemeMode.dark
-                                    ? const Color(0xFFFFFFFF).withOpacity(.2)
-                                    : const Color(0x3F000000),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                                spreadRadius: 0,
-                              )
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                          right: -5,
-                          top: -5,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedImagePath = null;
-                              });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: themeMode == ThemeMode.dark
-                                    ? Colors.grey[800]
+                  // _buildIconButton(
+                  //   icon: Icons.attach_file_rounded,
+                  //   onPressed: _pickFile,
+                  //   themeMode: themeMode,
+                  // ),
+                  // const SizedBox(width: 8),
+                  BlocBuilder<ChatCubit, ChatState>(
+                    builder: (context, state) {
+                      return _buildIconButton(
+                        icon: Icons.photo_rounded,
+                        onPressed: () {
+                          if (state.isLoading) {
+                            return;
+                          } else {
+                            // Show language selection dialog
+                            showModalBottomSheet(
+                                scrollControlDisabledMaxHeightRatio: .15,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                backgroundColor: themeMode == ThemeMode.dark
+                                    ? Colors.black
                                     : Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: themeMode == ThemeMode.dark
-                                        ? const Color(0xFFFFFFFF)
-                                            .withOpacity(.2)
-                                        : const Color(0x3F000000),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 0),
-                                    spreadRadius: 0,
-                                  )
-                                ],
-                              ),
-                              child: Icon(Icons.close_rounded,
-                                  size: 16,
-                                  color: themeMode == ThemeMode.dark
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  if (_selectedFilePath != null)
-                    Stack(
-                      children: [
-                        Container(
-                          height: 60,
-                          padding: const EdgeInsets.all(12),
-                          margin: const EdgeInsets.only(left: 8),
-                          decoration: BoxDecoration(
+                                context: context,
+                                builder: (context) {
+                                  return StatefulBuilder(
+                                      builder: (context, setState) {
+                                    return Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            _pickImage(ImageSource.camera);
+                                          },
+                                          child: ListTile(
+                                            minTileHeight: 50,
+                                            title: Text(
+                                              LocaleKeys.cameraAndGallery_camera
+                                                  .tr(),
+                                              style: AppStyles.styleMedium15(),
+                                            ),
+                                            trailing: const Icon(Icons.camera),
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            _pickImage(ImageSource.gallery);
+                                          },
+                                          child: ListTile(
+                                            minTileHeight: 10,
+                                            title: Text(
+                                              LocaleKeys
+                                                  .cameraAndGallery_gallery
+                                                  .tr(),
+                                              style: AppStyles.styleMedium15(),
+                                            ),
+                                            trailing: const Icon(
+                                                Icons.browser_updated),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                                });
+                          }
+                        },
+                        themeMode: themeMode,
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        color: themeMode == ThemeMode.dark
+                            ? const Color(0xFF1E1E1E)
+                            : Colors.grey[100],
+                        boxShadow: [
+                          BoxShadow(
                             color: themeMode == ThemeMode.dark
-                                ? Colors.grey[850]
-                                : Colors.grey[100],
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: themeMode == ThemeMode.dark
-                                    ? const Color(0xFFFFFFFF).withOpacity(.2)
-                                    : const Color(0x3F000000),
-                                blurRadius: 4,
-                                offset: const Offset(0, 0),
-                                spreadRadius: 0,
-                              )
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.insert_drive_file_rounded,
-                                color: themeMode == ThemeMode.dark
-                                    ? Colors.blue
-                                    : const Color(0xFF3D5AFE),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                _selectedFilePath!.split('/').last,
-                                style: TextStyle(
-                                    color: themeMode == ThemeMode.dark
-                                        ? Colors.white
-                                        : Colors.black87,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
+                                ? const Color(0xFFFFFFFF).withOpacity(.1)
+                                : const Color(0x1F000000),
+                            blurRadius: 4,
+                            offset: const Offset(0, 1),
+                            spreadRadius: 0,
+                          )
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _messageController,
+                        style: TextStyle(
+                          color: themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.black87,
                         ),
-                        Positioned(
-                          right: -5,
-                          top: -5,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedFilePath = null;
-                              });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: themeMode == ThemeMode.dark
-                                    ? Colors.grey[800]
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: themeMode == ThemeMode.dark
-                                        ? const Color(0xFFFFFFFF)
-                                            .withOpacity(.2)
-                                        : const Color(0x3F000000),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 0),
-                                    spreadRadius: 0,
-                                  )
-                                ],
-                              ),
-                              child: Icon(Icons.close_rounded,
-                                  size: 16,
-                                  color: themeMode == ThemeMode.dark
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
+                        decoration: InputDecoration(
+                          hintText: LocaleKeys.aiChatBot_typeAMessage.tr(),
+                          hintStyle: TextStyle(
+                            color: themeMode == ThemeMode.dark
+                                ? Colors.grey[400]
+                                : Colors.grey[600],
                           ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(24),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
                         ),
-                      ],
+                        minLines: 1,
+                        maxLines: 3,
+                      ),
                     ),
+                  ),
+                  const SizedBox(width: 12),
+                  // BlocBuilder<ChatCubit, ChatState>(
+                  //   builder: (context, state) {
+                  //     return _buildIconButton(
+                  //       icon: Icons.mic_outlined,
+                  //       onPressed:
+                  //           state.isLoading ? _scroll() : () => openMicroPhone(),
+                  //       themeMode: themeMode,
+                  //       color: themeMode == ThemeMode.dark
+                  //           ? Colors.blue
+                  //           : const Color(0xFF3D5AFE),
+                  //     );
+                  //   },
+                  // ),
+                  const SizedBox(width: 12),
+                  BlocBuilder<ChatCubit, ChatState>(
+                    builder: (context, state) {
+                      return _buildIconButton(
+                        icon: Icons.send_rounded,
+                        onPressed: state.isLoading
+                            ? _scroll()
+                            : () => _sendMessage(context),
+                        themeMode: themeMode,
+                        color: themeMode == ThemeMode.dark
+                            ? Colors.blue
+                            : const Color(0xFF3D5AFE),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
-          // Input area
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: themeMode == ThemeMode.dark ? Colors.black : Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: themeMode == ThemeMode.dark
-                      ? const Color(0xFFFFFFFF).withOpacity(.4)
-                      : const Color(0x3F000000),
-                  blurRadius: 6,
-                  offset: const Offset(0, 0),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: Row(
-              children: [
-                // _buildIconButton(
-                //   icon: Icons.attach_file_rounded,
-                //   onPressed: _pickFile,
-                //   themeMode: themeMode,
-                // ),
-                // const SizedBox(width: 8),
-                BlocBuilder<ChatCubit, ChatState>(
-                  builder: (context, state) {
-                    return _buildIconButton(
-                      icon: Icons.photo_rounded,
-                      onPressed: () {
-                        if (state.isLoading) {
-                          return;
-                        } else {
-                          // Show language selection dialog
-                          showModalBottomSheet(
-                              scrollControlDisabledMaxHeightRatio: .15,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              backgroundColor: themeMode == ThemeMode.dark
-                                  ? Colors.black
-                                  : Colors.white,
-                              context: context,
-                              builder: (context) {
-                                return StatefulBuilder(
-                                    builder: (context, setState) {
-                                  return Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          _pickImage(ImageSource.camera);
-                                        },
-                                        child: ListTile(
-                                          minTileHeight: 50,
-                                          title: Text(
-                                            'camera',
-                                            style: AppStyles.styleMedium15(),
-                                          ),
-                                          trailing: const Icon(Icons.camera),
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          _pickImage(ImageSource.gallery);
-                                        },
-                                        child: ListTile(
-                                          minTileHeight: 10,
-                                          title: Text(
-                                            'gallery',
-                                            style: AppStyles.styleMedium15(),
-                                          ),
-                                          trailing:
-                                              const Icon(Icons.browser_updated),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                });
-                              });
-                        }
-                      },
-                      themeMode: themeMode,
-                    );
-                  },
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      color: themeMode == ThemeMode.dark
-                          ? const Color(0xFF1E1E1E)
-                          : Colors.grey[100],
-                      boxShadow: [
-                        BoxShadow(
-                          color: themeMode == ThemeMode.dark
-                              ? const Color(0xFFFFFFFF).withOpacity(.1)
-                              : const Color(0x1F000000),
-                          blurRadius: 4,
-                          offset: const Offset(0, 1),
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: TextField(
-                      controller: _messageController,
-                      style: TextStyle(
-                        color: themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black87,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Type a message...',
-                        hintStyle: TextStyle(
-                          color: themeMode == ThemeMode.dark
-                              ? Colors.grey[400]
-                              : Colors.grey[600],
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                      ),
-                      minLines: 1,
-                      maxLines: 3,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                // BlocBuilder<ChatCubit, ChatState>(
-                //   builder: (context, state) {
-                //     return _buildIconButton(
-                //       icon: Icons.mic_outlined,
-                //       onPressed:
-                //           state.isLoading ? _scroll() : () => openMicroPhone(),
-                //       themeMode: themeMode,
-                //       color: themeMode == ThemeMode.dark
-                //           ? Colors.blue
-                //           : const Color(0xFF3D5AFE),
-                //     );
-                //   },
-                // ),
-                const SizedBox(width: 12),
-                BlocBuilder<ChatCubit, ChatState>(
-                  builder: (context, state) {
-                    return _buildIconButton(
-                      icon: Icons.send_rounded,
-                      onPressed: state.isLoading
-                          ? _scroll()
-                          : () => _sendMessage(context),
-                      themeMode: themeMode,
-                      color: themeMode == ThemeMode.dark
-                          ? Colors.blue
-                          : const Color(0xFF3D5AFE),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -672,7 +680,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Typing',
+                    LocaleKeys.aiChatBot_typing.tr(),
                     style: TextStyle(
                       fontSize: 12,
                       color: themeMode == ThemeMode.dark
@@ -774,7 +782,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         _selectedImagePath != null ||
         _selectedFilePath != null) {
       context.read<ChatCubit>().sendMessage(
-            _messageController.text,
+            _messageController.text.trim(),
             imagePath: _selectedImagePath,
             filePath: _selectedFilePath,
           );
@@ -872,6 +880,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     final themeMode = context.read<ThemeModeCubit>().currentTheme;
     return WillPopScope(
       onWillPop: _onWillPop,
+      child: KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue.shade900,

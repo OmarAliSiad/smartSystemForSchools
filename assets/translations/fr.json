@@ -1,0 +1,383 @@
+{
+  "PageView1": {
+    "title": "Bienvenue sur le Portail Parents",
+    "subtitle": "Surveillez facilement les besoins de votre enfant et gérez tous leurs détails depuis un seul endroit, offrant une expérience transparente et intégrée.",
+    "button": "Suivant"
+  },
+  "PageView2": {
+    "title": "Facile à contrôler",
+    "subtitle": "Fixez un budget quotidien pour votre enfant et suivez ses activités pour assurer une gestion fluide et efficace.",
+    "button": "Suivant"
+  },
+  "PageView3": {
+    "title": "Restez connecté",
+    "subtitle": "Recevez des rapports instantanés et des mises à jour régulières sur les dépenses de votre enfant pour rester informé et en contrôle à tout moment.",
+    "button": "Commencer"
+  },
+  "RestrictedProducts": {
+    "RestrictedProducts": "Produits restreints",
+    "SelectedProducts": "Sélectionner des produits",
+    "ApplyChanges": "Appliquer les modifications",
+    "LoadingCategories": "Chargement des catégories...",
+    "NoCategoriesAvailable": "Aucune catégorie disponible",
+    "Unknown": "Inconnu",
+    "LoadingProducts": "Chargement des produits...",
+    "FailedToLoadProducts": "Échec du chargement des produits",
+    "Blocked": "Bloqué",
+    "Allowed": "Autorisé",
+    "SELECTED": "SÉLECTIONNÉ",
+    "RESTRICTED": "RESTRICTION"
+  },
+  "Auth": {
+    "title": "Connectez-vous à votre compte",
+    "register": "Inscrivez-vous à votre compte",
+    "labelUserName": "Nom d'utilisateur",
+    "email": "Email",
+    "confirmPassword": "Confirmer le mot de passe",
+    "userNameHintText": "Entrez votre nom d'utilisateur",
+    "userEmailHintText": "Entrez votre email",
+    "labelPassword": "Mot de passe",
+    "passwordHintText": "Entrez votre mot de passe",
+    "confirmPasswordHintText": "Confirmez votre mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "login": "Se connecter",
+    "singup": "S'inscrire",
+    "invalidUserDataReceived": "Données utilisateur invalides reçues",
+    "loginSuccessfully": "Connexion réussie",
+    "loginFailed": "Échec de la connexion",
+    "Ok": "Ok",
+    "loggingIn": "Connexion en cours..."
+  },
+  "spare": {
+    "Account": "Compte",
+    "FamilyBalance": "Solde familial",
+    "Recharge": "Recharger",
+    "Transactions": "Transactions",
+    "transactions": "transactions",
+    "selectDate": "Sélectionner une date",
+    "noTransactionsFound": "Aucune transaction trouvée",
+    "ok": "OK",
+    "missingSessionInformation": "Informations de session de paiement manquantes",
+    "Other": "autre",
+    "creditRechargesAreNonRefundable": "Les recharges de crédit ne sont pas remboursables.",
+    "byTappingRecharge": "En appuyant sur recharger, vous acceptez les",
+    "creditCardLoadUpTermsAndConditions": "conditions générales de rechargement par carte bancaire.",
+    "enterAmount": "Saisir le montant",
+    "total": "Total",
+    "Subtotal": "Sous-total",
+    "processingFees": "Frais de traitement",
+    "pleaseEnterAWholeNumberBetween1And10000": "Veuillez entrer un nombre entier entre 1 et 10000",
+    "EGP": "EGP",
+    "MoneyRechargedSuccessfully": "Solde rechargé avec succès"
+  },
+  "common": {
+    "loading": "Chargement",
+    "details": "détails...",
+    "transcations": "transactions",
+    "childs": "enfants",
+    "noTransFound": "Aucune transaction trouvée",
+    "noChildrenAddedYet": "Aucun enfant ajouté pour le moment",
+    "Error": "Erreur"
+  },
+  "valdation": {
+    "valdationText": "Veuillez entrer du texte"
+  },
+  "SendCode": {
+    "forgotPassword": "Mot de passe oublié",
+    "subtitle": "Ne vous inquiétez pas, ça arrive. Veuillez entrer l'email associé à votre compte",
+    "email": "Email",
+    "emailHint": "Entrez votre email",
+    "button": "Envoyer le code"
+  },
+  "VerifyCode": {
+    "checkEmail": "Veuillez vérifier votre email",
+    "description": "Entrez le code de vérification qui a été envoyé à votre email",
+    "button": "Vérifier",
+    "resend": "Renvoyer le code",
+    "time": "00:20"
+  },
+  "ForgotPassword": {
+    "title": "Veuillez entrer un nouveau mot de passe",
+    "subtitle": "Ce mot de passe doit être différent du mot de passe précédent",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordHint": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPasswordHint": "Confirmer le mot de passe",
+    "button": "Réinitialiser le mot de passe"
+  },
+  "bottomNavigationBar": {
+    "home": "Accueil",
+    "family": "Famille",
+    "attendance": "Présence",
+    "wallet": "Portefeuille",
+    "mealsPlanner": "repas",
+    "chatBot": "ChatBot"
+  },
+  "aiChatBot": {
+    "aiChatBot": "ChatBot IA",
+    "typing": "Saisie...",
+    "typeAMessage": "Écrire un message..."
+  },
+  "cameraAndGallery": {
+    "gallery": "Galerie",
+    "camera": "Caméra"
+  },
+  "homeView": {
+    "appBarTitle": "Bonjour,",
+    "appBarName": "Omar",
+    "nameShahd": "Shahd",
+    "nameAhmed": "Ahmed",
+    "status": "État de l'inventaire",
+    "family": "Ma famille"
+  },
+  "balanceCardDetails": {
+    "balance": "Solde",
+    "balancePrice": "1 299,33 EGP"
+  },
+  "transactions": {
+    "transactions": "Transactions",
+    "title": "Transfert de votre portefeuille à Shahd",
+    "subTitle": "Disponible dans le portefeuille Shahd 100 EGP",
+    "price": "10 EGP"
+  },
+  "paymentMethodBottomSheet": {
+    "pickPaymentMethod": "Choisissez un mode de paiement",
+    "addCard": "Ajouter une carte de crédit ou de débit",
+    "debitCard": "Carte de débit",
+    "creditCard": "Carte de crédit"
+  },
+  "Settings": {
+    "name": "Mohamed Ammen",
+    "settings": "Paramètres",
+    "schoolDetails": "Détails de l'école",
+    "confirmation": "Confirmation",
+    "accountSettings": "Paramètres du compte",
+    "editProfile": "Modifier le profil",
+    "changePassword": "Changer le mot de passe",
+    "darkMode": "Mode sombre",
+    "language": "Langue",
+    "saveLanguage": "Enregistrer la langue",
+    "more": "Plus",
+    "termsAndConditions": "Conditions générales",
+    "privacyPolicy": "Politique de confidentialité",
+    "logout": "Déconnexion",
+    "save": "Enregistrer",
+    "searchLanguages": "Rechercher des langues",
+    "noLanguagesFound": "Aucune langue trouvée"
+  },
+  "editProfile": {
+    "editProfile": "Modifier le profil",
+    "name": "Nom",
+    "hintName": "Entrez le nom",
+    "phone": "Téléphone",
+    "hintPhone": "Entrez le numéro de téléphone",
+    "email": "Email",
+    "hintEmail": "Entrez l'email",
+    "save": "Enregistrer"
+  },
+  "policy": {
+    "ok": "Ok"
+  },
+  "wallet": {
+    "wallet": "Portefeuille",
+    "cardNumber": "Numéro de carte",
+    "expiry": "Expiration",
+    "CVC": "CVC",
+    "country": "Pays",
+    "postalCode": "Code postal",
+    "Transfer": "Transférer"
+  },
+  "allegries": {
+    "allegries_des": "Gérez les allergies et les conditions médicales de votre enfant",
+    "allegries_Remove": "Supprimer l'allergie",
+    "allegries_RemoveConfirm": "Êtes-vous sûr de vouloir supprimer cette allergie ?",
+    "cancel": "Annuler",
+    "remove": "Supprimer",
+    "allegries_Allergies": "Allergies",
+    "allegries_headline": "Veuillez sélectionner toutes les allergies applicables à votre enfant. Ces informations seront utilisées pour assurer la sécurité de votre enfant et éviter les allergènes.",
+    "allegries_button": "Confirmer",
+    "allegries_saving": "Sauvegarde en cours...",
+    "allegries_success": "Allergies enregistrées avec succès",
+    "allegries_no_selection": "Veuillez sélectionner au moins une catégorie d'allergie",
+    "loading_categories": "Chargement des catégories d'allergies...",
+    "retry": "Réessayer",
+    "no_allergies_found": "Aucune catégorie d'allergie trouvée",
+    "student_details": "Détails de l'étudiant",
+    "edit": "Modifier",
+    "no_allergies": "Aucune allergie enregistrée",
+    "Allergies": "Allergies",
+    "chocolate": "Chocolat",
+    "biscuit": "Biscuit",
+    "milk": "Lait",
+    "softDrinks": "Boissons gazeuses",
+    "banana": "Banane",
+    "nuts": "Noix",
+    "headline": "Spécifiez les allergies pour nous aider à adapter les options alimentaires en conséquence.",
+    "button": "Confirmer",
+    "des": "Gérez les informations d'allergie de votre enfant pour garantir des choix alimentaires sûrs et adaptés."
+  },
+  "addedChild": {
+    "studentID": "ID étudiant",
+    "name": "Nom",
+    "hintName": "Entrez le nom",
+    "schoolName": "Nom de l'école",
+    "added": "Ajouté",
+    "buttonText": "Ajouter",
+    "addedSuccessfully": "Ajouté avec succès",
+    "uploadImage": {
+      "pleaseUploadImage": "Veuillez télécharger une image",
+      "oK": "OK"
+    }
+  },
+  "notifacation": {
+    "appBarText": "Notifications",
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "lastWeek": "La semaine dernière",
+    "7h": "il y a 7h",
+    "5h": "il y a 5h",
+    "des": "Ahmed Khalid a tenté un achat, mais le solde était insuffisant"
+  },
+  "childDetailsView": {
+    "title": "Vue des détails de l'enfant",
+    "limits": "Limites",
+    "day": "Jour",
+    "week": "Semaine",
+    "month": "Mois",
+    "remaining": "Restant",
+    "recharge": "Recharger",
+    "dailySpendingLimit": "Limite de dépense quotidienne",
+    "dailyLimit": "Limite quotidienne",
+    "price": "Prix",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "enterDailyLimit": "Entrer la limite quotidienne",
+    "ok": "OK",
+    "spendingLimits": "limites de dépenses",
+    "spendingLimitsUpdated": "Limites de dépenses mises à jour",
+    "restrictedProducts": "Produits restreints",
+    "manageRestrictions": "Gérer les restrictions"
+  },
+  "spendingLimitsView": {
+    "title": "Limite de dépense",
+    "spendingLimits": "Limites de dépenses",
+    "description": "Activez les limites quotidiennes, hebdomadaires ou mensuelles pour encourager des habitudes de dépense saines",
+    "daily": "Quotidien",
+    "weekly": "Hebdomadaire",
+    "monthly": "Mensuel",
+    "dailyReset": "Se remet à zéro chaque minuit",
+    "weeklyReset": "Se remet à zéro chaque dimanche",
+    "monthlyReset": "Se remet à zéro chaque mois",
+    "enterAmount": "Entrez le montant",
+    "save": "Enregistrer",
+    "spendingLimitsLoaded": "Limites de dépenses chargées avec succès",
+    "loadingSpendingLimits": "Limites de dépenses"
+  },
+  "errors": {
+    "loadingSpendingLimit": "Erreur lors du chargement de la limite de dépense"
+  },
+  "messages": {
+    "dataRefreshed": "Données actualisées avec succès"
+  },
+  "tracking": {
+    "title": "Suivi de l'étudiant",
+    "studentLocation": "Localisation de l'étudiant",
+    "bottomNavLabel": "Suivi"
+  },
+  "account": {
+    "donotHaveAccount": "Si vous n'avez pas de compte ?",
+    "haveAccount": "Vous avez un compte ?",
+    "singup": "S'inscrire",
+    "login": "Se connecter"
+  },
+  "transaction": {
+    "details": "Détails de la transaction",
+    "transferFromWallet": "Transfert de votre portefeuille à",
+    "date": "Sélectionner la date",
+    "schoolName": "Nom de l'école",
+    "DateAndTime": "Date et heure",
+    "staffMember": "Membre du personnel",
+    "itemsPurchased": "Articles achetés",
+    "quantity": "Quantité",
+    "total": "Total"
+  },
+  "family": {
+    "family": "famille",
+    "noChildrenAddedYet": "Aucun enfant ajouté pour le moment",
+    "failedToLoadingChildren": "Échec du chargement des enfants",
+    "tryAgain": "Réessayer",
+    "AddChild": "Ajouter un enfant",
+    "Balance": "Solde",
+    "dailySpendingLimit": "Limite quotidienne de dépenses"
+  },
+  "attendanceDetails": {
+    "attendance": "Présence",
+    "TryAgain": "Réessayer",
+    "failedToLoadAttendanceData": "Erreur lors du chargement des données de présence",
+    "SelectAnotherDate": "Sélectionner une autre date",
+    "noAttendanceRecordsFoundForThisDate": "Aucun enregistrement de présence trouvé pour cette date",
+    "attendanceDetailsView": {
+      "appBarTitle": "Détails de la présence",
+      "attendanceStatus": {
+        "absent": "Absent",
+        "present": "Présent",
+        "recordedMessage": "Présence enregistrée pour la journée"
+      },
+      "studentInformationCard": {
+        "title": "Informations sur l'étudiant",
+        "name": "Nom",
+        "grade": "Classe",
+        "gender": "Sexe",
+        "date": "Date",
+        "birthDate": "Date de naissance",
+        "city": "Ville"
+      },
+      "weeklyAttendanceChart": {
+        "title": "Présence hebdomadaire",
+        "noData": {
+          "message": "Aucune donnée de présence disponible pour cette semaine"
+        },
+        "daysOfWeek": {
+          "mon": "Lun",
+          "tue": "Mar",
+          "wed": "Mer",
+          "thu": "Jeu",
+          "fri": "Ven",
+          "sat": "Sam",
+          "sun": "Dim"
+        },
+        "tooltip": {
+          "noData": "Pas de données",
+          "present": "Présent",
+          "absent": "Absent"
+        }
+      },
+      "detailedAttendanceInfo": {
+        "title": "Détails de la présence",
+        "status": "Statut",
+        "statusAbsent": "Absent pour la journée",
+        "statusPresent": "Présent",
+        "arrivalTime": "Heure d'arrivée",
+        "leavingTime": "Heure de départ",
+        "timeSpent": "Temps passé"
+      }
+    },
+    "attendanceCharts": {
+      "attendanceTrendLineChart": {
+        "title": "Graphique de la tendance de présence"
+      }
+    }
+  },
+  "internetConnection": {
+    "noInternetConnection": "Pas de connexion Internet",
+    "pleaseYourNetworkSettings": "Veuillez vérifier vos paramètres réseau",
+    "internetConnectionRestored": "Connexion Internet rétablie"
+  },
+  "showDialogLogin": {
+    "info": "Info",
+    "goToGmailAndResetYourPassword": "allez sur Gmail et réinitialisez votre mot de passe",
+    "error": "Erreur",
+    "sessionExpired": "Session expirée",
+    "yourSessionHasExpiredPleaseLogInAgain": "Votre session a expiré. Veuillez vous reconnecter."
+  }
+}

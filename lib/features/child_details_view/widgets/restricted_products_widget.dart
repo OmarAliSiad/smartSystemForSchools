@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../core/models/get_child_details/result.dart';
 import '../../../core/utils/app_styles.dart';
 import '../../Allergies/presentation/views/restricted_products_view.dart';
@@ -33,52 +35,52 @@ class RestrictedProducts extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsetsDirectional.only(start: 15),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Restricted Products',
-                      style: AppStyles.styleMedium16(),
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(end: 190),
-                      child: MaterialButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return RestrictedProductsView(
-                                  studentId: resultForChildDetails.id!,
-                                );
-                              },
-                            ),
-                          );
-                        },
-                        color: const Color(0xFF1A0F91),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+              child: Row(
+                children: [
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 10,
                         ),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Manage Restrictions',
-                              style: AppStyles.styleMedium13().copyWith(
-                                color: Colors.white,
+                        Text(
+                          LocaleKeys.childDetailsView_restrictedProducts.tr(),
+                          style: AppStyles.styleMedium16(),
+                        ),
+                        const SizedBox(height: 10),
+                        MaterialButton(
+                          height: 32,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return RestrictedProductsView(
+                                    studentId: resultForChildDetails.id!,
+                                  );
+                                },
                               ),
+                            );
+                          },
+                          color: const Color(0xFF1A0F91),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            LocaleKeys.childDetailsView_manageRestrictions.tr(),
+                            style: AppStyles.styleMedium13().copyWith(
+                              color: Colors.white,
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ]),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ]),
+                ],
+              ),
             ),
           ),
         );

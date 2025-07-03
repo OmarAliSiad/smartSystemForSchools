@@ -38,7 +38,7 @@ class CustomButtonChildDetails extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               const SizedBox(
-                width: 8,
+                width: 3,
               ),
               Text(
                 title,

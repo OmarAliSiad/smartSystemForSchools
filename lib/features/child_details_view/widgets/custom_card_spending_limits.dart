@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../core/utils/app_styles.dart';
 import '../../../core/utils/assets.dart';
 import '../views/spending_limits_view.dart';
@@ -47,7 +49,8 @@ class CustomCardSpendingLimits extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('spending limits', style: AppStyles.styleMedium16()),
+                  Text(LocaleKeys.childDetailsView_spendingLimits.tr(),
+                      style: AppStyles.styleMedium16()),
                   CustomButtonChildDetails(
                     onPressed: () async {
                       // Navigate to SpendingLimitsView and wait for result
@@ -62,16 +65,20 @@ class CustomCardSpendingLimits extends StatelessWidget {
 
                       // If result is true, refresh data in parent widget
                       if (result == true) {
-                        dispalySnackBar(
-                          context,
-                          title: 'Spending limits updated',
-                          color: Colors.green,
-                        );
-                        // Call the callback provided by the parent to refresh data
-                        onUpdateLimits();
+                        if (context.mounted) {
+                          dispalySnackBar(
+                            context,
+                            title: LocaleKeys
+                                .childDetailsView_spendingLimitsUpdated
+                                .tr(),
+                            color: Colors.green,
+                          );
+                          // Call the callback provided by the parent to refresh data
+                          onUpdateLimits();
+                        }
                       }
                     },
-                    title: 'spending limits',
+                    title: LocaleKeys.childDetailsView_spendingLimits.tr(),
                     padding: const EdgeInsetsDirectional.symmetric(
                         horizontal: 10, vertical: 5),
                     imagePath: Assets.imagesShooping,

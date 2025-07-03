@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/core/utils/custom_wave_widget.dart';
+
+import '../../../../generated/locale_keys.g.dart';
 
 class CustomAppBarSpareAndRechargeWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -42,20 +45,20 @@ class NoTranscationsFound extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SliverFillRemaining(
+    return SliverFillRemaining(
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.search,
               size: 80,
               color: Colors.grey,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
-              "No Transactions Found",
-              style: TextStyle(
+              LocaleKeys.spare_noTransactionsFound.tr(),
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
               ),

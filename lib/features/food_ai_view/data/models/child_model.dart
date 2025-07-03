@@ -8,7 +8,6 @@ class ChildProfile {
   final double weight;
   final double height;
   final String bloodType;
-  final List<Map<String, dynamic>> selectedProducts;
   ChildProfile({
     required this.name,
     required this.age,
@@ -18,7 +17,6 @@ class ChildProfile {
     required this.weight,
     required this.height,
     required this.bloodType,
-    required this.selectedProducts,
   });
 
   Map<String, dynamic> toJson() => {

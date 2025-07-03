@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/features/settings/data/manager/getUserDataCubit/get_user_data_cubit.dart';
 import '../widgets/lower_settings_important_section.dart';
 import '../widgets/upper_settings_section.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SettingsHomeView extends StatelessWidget {
   static const String id = '/settingsView';
@@ -12,18 +13,21 @@ class SettingsHomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GetUserDataCubit()..getData(),
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height +
-                    MediaQuery.of(context).size.height * 0.12),
-            child: const IntrinsicHeight(
-              child: Stack(
-                children: [
-                  UpperSettingsSection(),
-                  LowerSettingsImportantSection(),
-                ],
+      child: KeyedSubtree(
+        key: ValueKey(context.locale.toString()),
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height +
+                      MediaQuery.of(context).size.height * 0.12),
+              child: const IntrinsicHeight(
+                child: Stack(
+                  children: [
+                    UpperSettingsSection(),
+                    LowerSettingsImportantSection(),
+                  ],
+                ),
               ),
             ),
           ),

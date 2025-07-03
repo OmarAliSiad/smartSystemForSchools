@@ -7,7 +7,7 @@ import '../../utils/app_styles.dart';
 import '../../utils/custom_app_bar.dart';
 import 'notification_model.dart';
 import '../../../features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import '../../../main.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class NotificationDetails extends StatefulWidget {
   static String id = 'notification_details';
@@ -64,68 +64,71 @@ class _NotificationDetailsState extends State<NotificationDetails> {
     final descriptions = _splitList(notificationModel.description);
     final prices = _splitList(notificationModel.price.toString());
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        onTap: () {
-          Navigator.of(context).pop();
-        },
-        title: 'Notification Details',
-        textStyle: AppStyles.styleBold20(),
-        ThereIsicon: false,
-      ),
-      body: BlocBuilder<ThemeModeCubit, ThemeModeState>(
-        builder: (context, state) {
-          final isDark =
-              context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
-          return SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (notificationModel.message!.contains('failed'))
-                      _StatusCard(
-                        statusmessage: notificationModel.reason.toString(),
-                        title: 'the payment is failed',
-                        icon: Icons.error,
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: CustomAppBar(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          title: 'Notification Details',
+          textStyle: AppStyles.styleBold20(),
+          ThereIsicon: false,
+        ),
+        body: BlocBuilder<ThemeModeCubit, ThemeModeState>(
+          builder: (context, state) {
+            final isDark =
+                context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+            return SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (notificationModel.message!.contains('failed'))
+                        _StatusCard(
+                          statusmessage: notificationModel.reason.toString(),
+                          title: 'the payment is failed',
+                          icon: Icons.error,
+                        ),
+                      if (notificationModel.message!.contains('success'))
+                        _StatusCard(
+                          statusmessage: notificationModel.message.toString(),
+                          title: 'the payment is success',
+                          icon: Icons.check,
+                        ),
+                      const SizedBox(
+                        height: 20,
                       ),
-                    if (notificationModel.message!.contains('success'))
-                      _StatusCard(
-                        statusmessage: notificationModel.message.toString(),
-                        title: 'the payment is success',
-                        icon: Icons.check,
+                      Text(
+                        'Products he want to purchase',
+                        style: AppStyles.styleBold20(),
                       ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'Products he want to purchase',
-                      style: AppStyles.styleBold20(),
-                    ),
-                    // Detailed Information Cards
-                    ...List.generate(
-                      productIds.length,
-                      (index) => _buildDetailCard(
-                        context,
-                        isDark: isDark,
-                        index: index,
-                        productImage: productImage[index],
-                        studentId: notificationModel.studentId,
-                        amountOfMoney: notificationModel.amountOfMoney,
-                        productName: productName[index],
-                        productId: productIds[index],
-                        quantity: quantities[index],
-                        description: descriptions[index],
-                        price: prices[index],
+                      // Detailed Information Cards
+                      ...List.generate(
+                        productIds.length,
+                        (index) => _buildDetailCard(
+                          context,
+                          isDark: isDark,
+                          index: index,
+                          productImage: productImage[index],
+                          studentId: notificationModel.studentId,
+                          amountOfMoney: notificationModel.amountOfMoney,
+                          productName: productName[index],
+                          productId: productIds[index],
+                          quantity: quantities[index],
+                          description: descriptions[index],
+                          price: prices[index],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

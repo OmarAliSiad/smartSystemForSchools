@@ -123,163 +123,172 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBarHomeView(
-        waveColor: Colors.blue,
-        backgroundColor: Colors.blue.shade900,
-        onTapPrefix: () {
-          Navigator.of(context).pushNamed(SettingsHomeView.id);
-        },
-        onTapSuffix: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return (NotificationView(childDetails: childDetails));
-              },
-            ),
-          );
-        },
-      ),
-      body: RefreshIndicator(
-        backgroundColor: Colors.white,
-        color: Colors.blue.shade900,
-        onRefresh: loadFamilyDetails,
-        child: Padding(
-          padding: const EdgeInsetsDirectional.only(start: 18, end: 19),
-          child: CustomScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            clipBehavior: Clip.none,
-            slivers: [
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 15,
-                ),
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: CustomAppBarHomeView(
+          waveColor: Colors.blue,
+          backgroundColor: Colors.blue.shade900,
+          onTapPrefix: () {
+            Navigator.of(context).pushNamed(SettingsHomeView.id);
+          },
+          onTapSuffix: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) {
+                  return KeyedSubtree(
+                      key: ValueKey(context.locale.toString()),
+                      child: (NotificationView(childDetails: childDetails)));
+                },
               ),
-              SliverToBoxAdapter(
-                child: BounceInDown(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) {
-                          return BlocBuilder<PaymentCubit, PaymentState>(
-                            builder: (context, state) {
-                              if (state is GetBalanceSuccess) {
-                                return AccountScreen(
-                                  balance:
-                                      state.getBalance.result!.amountOfMoney!,
-                                  username: parentName.toString(),
-                                );
-                              } else {
-                                return AccountScreen(
-                                  balance: 0.0,
-                                  username: parentName.toString(),
-                                );
-                              }
-                            },
-                          );
-                        }),
-                      );
-                    },
-                    child: const CustomBalanceCardDetails(),
+            );
+          },
+        ),
+        body: RefreshIndicator(
+          backgroundColor: Colors.white,
+          color: Colors.blue.shade900,
+          onRefresh: loadFamilyDetails,
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(start: 18, end: 19),
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              clipBehavior: Clip.none,
+              slivers: [
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 15,
                   ),
                 ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 15,
+                SliverToBoxAdapter(
+                  child: BounceInDown(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return BlocBuilder<PaymentCubit, PaymentState>(
+                              builder: (context, state) {
+                                if (state is GetBalanceSuccess) {
+                                  return AccountScreen(
+                                    balance:
+                                        state.getBalance.result!.amountOfMoney!,
+                                    username: parentName.toString(),
+                                  );
+                                } else {
+                                  return AccountScreen(
+                                    balance: 0.0,
+                                    username: parentName.toString(),
+                                  );
+                                }
+                              },
+                            );
+                          }),
+                        );
+                      },
+                      child: const CustomBalanceCardDetails(),
+                    ),
+                  ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Text(
-                  LocaleKeys.homeView_family.tr(),
-                  style: AppStyles.styleMedium20(),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 15,
+                  ),
                 ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 15,
+                SliverToBoxAdapter(
+                  child: Text(
+                    LocaleKeys.homeView_family.tr(),
+                    style: AppStyles.styleMedium20(),
+                  ),
                 ),
-              ),
-              _isLoading
-                  ? SliverToBoxAdapter(
-                      child: Center(child: buildLoadingView('childs', context)),
-                    )
-                  : childDetails.isEmpty
-                      ? SliverToBoxAdapter(
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    Icons.family_restroom,
-                                    size: 50,
-                                    color: Colors.grey[400],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    'No children added yet',
-                                    style: AppStyles.styleRegular16(),
-                                  ),
-                                ],
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 15,
+                  ),
+                ),
+                _isLoading
+                    ? SliverToBoxAdapter(
+                        child:
+                            Center(child: buildLoadingView(LocaleKeys.common_childs.tr(), context)),
+                      )
+                    : childDetails.isEmpty
+                        ? SliverToBoxAdapter(
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.family_restroom,
+                                      size: 50,
+                                      color: Colors.grey[400],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      LocaleKeys.common_noChildrenAddedYet.tr(),
+                                      style: AppStyles.styleRegular16(),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
+                          )
+                        : SliverList.builder(
+                            itemCount: childDetails.length,
+                            itemBuilder: (context, index) => Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                  bottom: index == childDetails.length - 1
+                                      ? 0
+                                      : 13),
+                              child: CustomDetailsChildView(
+                                index: index,
+                                childDetailsModel: childDetails[index],
+                              )
+                                  .animate()
+                                  .fadeIn(
+                                      duration: 600.ms,
+                                      delay:
+                                          Duration(milliseconds: 150 * index))
+                                  .slideX(
+                                      begin: index % 2 == 0 ? .2 : -0.2,
+                                      end: 0),
+                            ),
                           ),
-                        )
-                      : SliverList.builder(
-                          itemCount: childDetails.length,
-                          itemBuilder: (context, index) => Padding(
-                            padding: EdgeInsetsDirectional.only(
-                                bottom:
-                                    index == childDetails.length - 1 ? 0 : 13),
-                            child: CustomDetailsChildView(
-                              index: index,
-                              childDetailsModel: childDetails[index],
-                            )
-                                .animate()
-                                .fadeIn(
-                                    duration: 600.ms,
-                                    delay: Duration(milliseconds: 150 * index))
-                                .slideX(
-                                    begin: index % 2 == 0 ? .2 : -0.2, end: 0),
-                          ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 15,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        LocaleKeys.transactions_transactions.tr(),
+                        style: AppStyles.styleMedium20(),
+                      ),
+                      MaterialButton(
+                        color: Colors.blue[900],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 15,
+                        onPressed: () {
+                          _selectDate(context);
+                        },
+                        child: Text(
+                          LocaleKeys.transaction_date.tr(),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      LocaleKeys.transactions_transactions.tr(),
-                      style: AppStyles.styleMedium20(),
-                    ),
-                    MaterialButton(
-                      color: Colors.blue[900],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      onPressed: () {
-                        _selectDate(context);
-                      },
-                      child: const Text(
-                        'select date',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  ],
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 15,
+                  ),
                 ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 15,
-                ),
-              ),
-              const TransactionsListWidget(),
-            ],
+                const TransactionsListWidget(),
+              ],
+            ),
           ),
         ),
       ),

@@ -7,6 +7,7 @@ import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/custom_button.dart';
 import '../../../../core/services/school_service/school_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SchoolViewDetails extends StatefulWidget {
   static const String id = 'SchoolViewDetails';
@@ -95,30 +96,34 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
               AppStyles.styleSemiBold20().copyWith(color: primaryColor),
         ),
       ),
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: AnimatedCustomAppBar(
-          leading: IconButton(
-            icon: IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              color: Colors.white,
+      child: KeyedSubtree(
+        key: ValueKey(context.locale.toString()),
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: AnimatedCustomAppBar(
+            leading: IconButton(
+              icon: IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                color: Colors.white,
+                onPressed: () => Navigator.pop(context),
+              ),
               onPressed: () => Navigator.pop(context),
             ),
-            onPressed: () => Navigator.pop(context),
+            thereIsIcon: false,
+            title: widget.school.name ?? 'School Details',
           ),
-          thereIsIcon: false,
-          title: widget.school.name ?? 'School Details',
-        ),
-        body: RefreshIndicator(
-          backgroundColor: cardColor,
-          color: primaryColor,
-          onRefresh: _loadSchoolDetails,
-          child: _isLoading
-              ? _buildLoadingView(primaryColor)
-              : _errorMessage.isNotEmpty
-                  ? _buildErrorView(primaryColor, textColor, secondaryTextColor)
-                  : _buildSchoolDetailsView(
-                      primaryColor, cardColor, textColor, secondaryTextColor),
+          body: RefreshIndicator(
+            backgroundColor: cardColor,
+            color: primaryColor,
+            onRefresh: _loadSchoolDetails,
+            child: _isLoading
+                ? _buildLoadingView(primaryColor)
+                : _errorMessage.isNotEmpty
+                    ? _buildErrorView(
+                        primaryColor, textColor, secondaryTextColor)
+                    : _buildSchoolDetailsView(
+                        primaryColor, cardColor, textColor, secondaryTextColor),
+          ),
         ),
       ),
     );

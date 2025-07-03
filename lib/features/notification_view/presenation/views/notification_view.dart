@@ -1,10 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:smartsystemforschools/core/utils/custom_wave_widget.dart';
 import '../../../../core/models/get_child_details/result.dart';
-import '../../../../core/services/notification_service/notification_service.dart';
 import '../../data/cubit/notification_cubit.dart';
 import '../../data/cubit/notification_state.dart';
 import '../widgets/show_modal_bottom_sheet.dart';
@@ -24,6 +22,7 @@ class NotificationView extends StatefulWidget {
 class _NotificationViewState extends State<NotificationView>
     with WidgetsBindingObserver {
   String selectedStudentId = '';
+
   @override
   void initState() {
     super.initState();
@@ -35,18 +34,30 @@ class _NotificationViewState extends State<NotificationView>
       log(child.fullName.toString());
     }
 
-    // Initialize notifications if needed
-    _loadInitialNotifications();
+    // Initialize selectedStudentId with first child's ID
+    if (widget.childDetails.isNotEmpty) {
+      selectedStudentId = widget.childDetails[0].id.toString();
+    }
+
+    // Schedule the initial load for after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadInitialNotifications();
+    });
   }
 
   void _loadInitialNotifications() {
+    // Ensure the widget is still mounted before accessing context
+    if (!mounted) return;
+
     // Check if we have an active filter or need to set a default one
     final notificationCubit = context.read<NotificationCubit>();
     if (notificationCubit.state is NotificationInitial) {
       // Apply initial filter with first child's ID
-      notificationCubit.applyFilter(
-        studentId: widget.childDetails[0].id.toString(),
-      );
+      if (widget.childDetails.isNotEmpty) {
+        notificationCubit.applyFilter(
+          studentId: widget.childDetails[0].id.toString(),
+        );
+      }
     } else {
       // Reload with existing filter
       notificationCubit.reloadNotifications();
@@ -62,7 +73,9 @@ class _NotificationViewState extends State<NotificationView>
   @override
   void didPopNext() {
     log('Reloading notifications after returning to this screen');
-    context.read<NotificationCubit>().reloadNotifications();
+    if (mounted) {
+      context.read<NotificationCubit>().reloadNotifications();
+    }
   }
 
   @override
@@ -72,7 +85,7 @@ class _NotificationViewState extends State<NotificationView>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext mainContext) {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: const CustomWiveWidget(),
@@ -81,20 +94,26 @@ class _NotificationViewState extends State<NotificationView>
           IconButton(
             icon: const Icon(Icons.filter_list, color: Colors.white),
             onPressed: () {
-              showFilterBottomSheet(
-                context: context,
-                childDetails: widget.childDetails,
-                selectedStudentId: widget.childDetails[0].id.toString(),
-                onStudentSelected: (studentId) {
-                  setState(() {
-                    selectedStudentId = studentId;
-                  });
-                },
-                isDark: context.read<ThemeModeCubit>().currentTheme ==
-                        ThemeMode.dark
-                    ? true
-                    : false,
-              );
+              if (widget.childDetails.isNotEmpty) {
+                showFilterBottomSheet(
+                  context: mainContext,
+                  childDetails: widget.childDetails,
+                  selectedStudentId: selectedStudentId.isNotEmpty
+                      ? selectedStudentId
+                      : widget.childDetails[0].id.toString(),
+                  onStudentSelected: (studentId) {
+                    if (mounted) {
+                      setState(() {
+                        selectedStudentId = studentId;
+                      });
+                    }
+                  },
+                  isDark: context.read<ThemeModeCubit>().currentTheme ==
+                          ThemeMode.dark
+                      ? true
+                      : false,
+                );
+              }
             },
           )
         ],

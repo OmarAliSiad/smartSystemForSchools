@@ -1,8 +1,9 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smartsystemforschools/features/Allergies/presentation/widgets/no_product_widget.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/allegries_products/product.dart';
 import '../../../../core/models/catogry_details/result.dart';
 import '../../../../core/utils/animated_app_bar.dart';
@@ -13,6 +14,7 @@ import '../../data/manager/get_all_catogries_cubit/get_all_catogries_cubit.dart'
 import '../../data/manager/products_cubit/products_cubit.dart';
 import '../widgets/animated_card_widget.dart';
 import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RestrictedProductsView extends StatefulWidget {
   final String studentId;
@@ -173,64 +175,69 @@ class _RestrictedProductsViewState extends State<RestrictedProductsView>
     final isDarkMode =
         context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
 
-    return Scaffold(
-      appBar: AnimatedCustomAppBar(
-        waveColor: isDarkMode ? Colors.indigo : Colors.blue,
-        backgroundColor:
-            isDarkMode ? Colors.indigo.shade900 : Colors.blue.shade900,
-        leading: IconButton(
-          color: Colors.white,
-          onPressed: () {
-            if (_isSelectionMode) {
-              _toggleSelectionMode();
-            } else {
-              Navigator.pop(context);
-            }
-          },
-          icon: Icon(_isSelectionMode ? Icons.close : Icons.arrow_back_ios),
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: AnimatedCustomAppBar(
+          waveColor: isDarkMode ? Colors.indigo : Colors.blue,
+          backgroundColor:
+              isDarkMode ? Colors.indigo.shade900 : Colors.blue.shade900,
+          leading: IconButton(
+            color: Colors.white,
+            onPressed: () {
+              if (_isSelectionMode) {
+                _toggleSelectionMode();
+              } else {
+                Navigator.pop(context);
+              }
+            },
+            icon: Icon(_isSelectionMode ? Icons.close : Icons.arrow_back_ios),
+          ),
+          title: _isSelectionMode
+              ? '${LocaleKeys.RestrictedProducts_SelectedProducts.tr()} (${_selectedProductIds.length})'
+              : LocaleKeys.RestrictedProducts_RestrictedProducts.tr(),
+          thereIsIcon: false,
+          textStyle: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
-        title: _isSelectionMode
-            ? 'Select Products (${_selectedProductIds.length})'
-            : 'Restricted Products',
-        thereIsIcon: false,
-        textStyle: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
+        body: _buildBody(isDarkMode),
+        floatingActionButton: !_isSelectionMode
+            ? FloatingActionButton(
+                backgroundColor: isDarkMode ? Colors.indigo : Colors.blue,
+                onPressed: _toggleSelectionMode,
+                child: const Icon(Icons.edit, color: Colors.white),
+              )
+            : null,
+        bottomNavigationBar: _isSelectionMode && _selectedProductIds.isNotEmpty
+            ? Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                color:
+                    isDarkMode ? Colors.indigo.shade900 : Colors.blue.shade900,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isDarkMode ? Colors.indigo : Colors.blue,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: _applyChanges,
+                  child: Text(
+                    '${LocaleKeys.RestrictedProducts_ApplyChanges.tr()} (${_selectedProductIds.length})',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              )
+            : null,
       ),
-      body: _buildBody(isDarkMode),
-      floatingActionButton: !_isSelectionMode
-          ? FloatingActionButton(
-              backgroundColor: isDarkMode ? Colors.indigo : Colors.blue,
-              onPressed: _toggleSelectionMode,
-              child: const Icon(Icons.edit, color: Colors.white),
-            )
-          : null,
-      bottomNavigationBar: _isSelectionMode && _selectedProductIds.isNotEmpty
-          ? Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              color: isDarkMode ? Colors.indigo.shade900 : Colors.blue.shade900,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isDarkMode ? Colors.indigo : Colors.blue,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: _applyChanges,
-                child: Text(
-                  'Apply Changes (${_selectedProductIds.length})',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            )
-          : null,
     );
   }
 
@@ -246,7 +253,7 @@ class _RestrictedProductsViewState extends State<RestrictedProductsView>
           ),
           const SizedBox(height: 20),
           Text(
-            'Loading categories...',
+            LocaleKeys.RestrictedProducts_LoadingCategories.tr(),
             style: AppStyles.styleRegular14(),
           ),
         ],
@@ -299,7 +306,7 @@ class _RestrictedProductsViewState extends State<RestrictedProductsView>
 
         return Center(
           child: Text(
-            'No categories available',
+            LocaleKeys.RestrictedProducts_NoCategoriesAvailable.tr(),
             style: TextStyle(
               color: isDarkMode ? Colors.white70 : Colors.black87,
               fontSize: 16,
@@ -324,7 +331,7 @@ class _RestrictedProductsViewState extends State<RestrictedProductsView>
         tabs: categories.map((category) {
           return Tab(
             child: Text(
-              category.name ?? 'Unknown',
+              category.name ?? LocaleKeys.RestrictedProducts_Unknown.tr(),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ).animate().fadeIn().slideX(begin: 0.05, end: 0);
@@ -395,7 +402,7 @@ class _CategoryProductsViewState extends State<CategoryProductsView> {
                 height: 20,
               ),
               Text(
-                'Loading products...',
+                LocaleKeys.RestrictedProducts_LoadingProducts.tr(),
                 style: AppStyles.styleRegular14(),
               ),
             ],
@@ -404,15 +411,7 @@ class _CategoryProductsViewState extends State<CategoryProductsView> {
         if (productsState is ProductsSucess) {
           final products = productsState.getAllProducts.result ?? [];
           if (products.isEmpty) {
-            return Center(
-              child: Text(
-                'No products in this category',
-                style: TextStyle(
-                  color: widget.isDarkMode ? Colors.white70 : Colors.black87,
-                  fontSize: 16,
-                ),
-              ),
-            );
+            return NoProductsWidget(isDarkMode: widget.isDarkMode);
           }
 
           return BlocBuilder<AllergiesProductCubit, AllergiesProductsState>(
@@ -435,7 +434,7 @@ class _CategoryProductsViewState extends State<CategoryProductsView> {
 
         return Center(
           child: Text(
-            'Failed to load products',
+            LocaleKeys.RestrictedProducts_FailedToLoadProducts.tr(),
             style: TextStyle(
               color: widget.isDarkMode ? Colors.white70 : Colors.black87,
               fontSize: 16,

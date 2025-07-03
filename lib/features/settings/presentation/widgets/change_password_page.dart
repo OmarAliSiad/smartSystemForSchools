@@ -11,8 +11,8 @@ import '../../../../core/widgets/show_dialog.dart';
 import '../../../login/presenation/widgets/custom_text_field.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/custom_button.dart';
-import 'custom_app_bar_settings.dart';
 import '../../../../../../generated/locale_keys.g.dart';
+
 
 class ChangePasswordPage extends StatefulWidget {
   static const String id = 'changePasswordPage';
@@ -28,7 +28,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
       appBar: AnimatedCustomAppBar(
         title: LocaleKeys.Settings_changePassword.tr(),
         thereIsIcon: false,
@@ -126,6 +128,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           ),
         ),
       ),
-    );
+    ),);
   }
 }

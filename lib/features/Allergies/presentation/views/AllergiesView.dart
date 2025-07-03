@@ -123,192 +123,197 @@ class _AllergiesViewState extends State<AllergiesView>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(
-                child: CustomAppBar(
-                  title: LocaleKeys.allegries_Allergies.tr(),
-                  textStyle: AppStyles.styleSemiBold20(),
-                  ThereIsicon: false,
-                  onTap: () => Navigator.pop(context),
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: CustomAppBar(
+                    title: LocaleKeys.allegries_Allergies.tr(),
+                    textStyle: AppStyles.styleSemiBold20(),
+                    ThereIsicon: false,
+                    onTap: () => Navigator.pop(context),
+                  ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 30),
-                    // Animated allergies icon
-                    TweenAnimationBuilder<double>(
-                      tween: Tween<double>(begin: 0.0, end: 1.0),
-                      duration: const Duration(seconds: 1),
-                      builder: (context, value, child) {
-                        return Transform.scale(
-                          scale: value,
-                          child: Image.asset(
-                            Assets.imagesGluten,
-                            height: 80,
-                            width: 80,
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 30),
-                    Padding(
-                      padding:
-                          const EdgeInsetsDirectional.only(start: 15, end: 14),
-                      child: FittedBox(
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 30),
+                      // Animated allergies icon
+                      TweenAnimationBuilder<double>(
+                        tween: Tween<double>(begin: 0.0, end: 1.0),
+                        duration: const Duration(seconds: 1),
+                        builder: (context, value, child) {
+                          return Transform.scale(
+                            scale: value,
+                            child: Image.asset(
+                              Assets.imagesGluten,
+                              height: 80,
+                              width: 80,
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.only(
+                            start: 15, end: 14),
                         child: Text(
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                           LocaleKeys.allegries_headline.tr(),
                           style: AppStyles.styleMedium13(),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                  ],
+                      const SizedBox(height: 30),
+                    ],
+                  ),
                 ),
-              ),
-              BlocBuilder<GetAllCatogriesCubit, GetAllCatogriesState>(
-                builder: (context, state) {
-                  if (state is GetAllCatogriesLoading) {
-                    return SliverToBoxAdapter(
-                      child: Center(
-                        child: Column(
-                          children: [
-                            LoadingAnimationWidget.staggeredDotsWave(
-                              color: Colors.blue.shade900,
-                              size: 60,
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              LocaleKeys.allegries_loading_categories.tr(),
-                              style: AppStyles.styleMedium16()
-                                  .copyWith(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  } else if (state is GetAllCatogriesFailure) {
-                    return SliverToBoxAdapter(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.warning_amber_rounded,
-                                size: 60, color: Colors.amber),
-                            const SizedBox(height: 16),
-                            Text(
-                              state.errMessage.toString(),
-                              style: AppStyles.styleMedium16(),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 20),
-                            ElevatedButton(
-                              onPressed: loadCategories,
-                              child: Text(LocaleKeys.allegries_retry.tr()),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  } else if (state is GetAllCatogriesLoaded) {
-                    if (state.catgoryDetails.result == null ||
-                        state.catgoryDetails.result!.isEmpty) {
+                BlocBuilder<GetAllCatogriesCubit, GetAllCatogriesState>(
+                  builder: (context, state) {
+                    if (state is GetAllCatogriesLoading) {
                       return SliverToBoxAdapter(
                         child: Center(
-                          child: Text(
-                            LocaleKeys.allegries_no_allergies_found.tr(),
-                            style: AppStyles.styleMedium16(),
+                          child: Column(
+                            children: [
+                              LoadingAnimationWidget.staggeredDotsWave(
+                                color: Colors.blue.shade900,
+                                size: 60,
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                LocaleKeys.allegries_loading_categories.tr(),
+                                style: AppStyles.styleMedium16()
+                                    .copyWith(fontSize: 14),
+                              ),
+                            ],
                           ),
                         ),
                       );
-                    }
-
-                    return SliverPadding(
-                      padding:
-                          const EdgeInsetsDirectional.symmetric(horizontal: 25),
-                      sliver: SliverGrid.builder(
-                        itemCount: state.catgoryDetails.result!.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisSpacing: 29,
-                          mainAxisSpacing: 25,
-                          crossAxisCount: 2,
+                    } else if (state is GetAllCatogriesFailure) {
+                      return SliverToBoxAdapter(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.warning_amber_rounded,
+                                  size: 60, color: Colors.amber),
+                              const SizedBox(height: 16),
+                              Text(
+                                state.errMessage.toString(),
+                                style: AppStyles.styleMedium16(),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: loadCategories,
+                                child: Text(LocaleKeys.allegries_retry.tr()),
+                              ),
+                            ],
+                          ),
                         ),
-                        itemBuilder: (context, index) {
-                          final category = state.catgoryDetails.result![index];
-                          final categoryId = category.id ?? -1;
-                          final isSelected =
-                              selectedCategories[categoryId] ?? false;
+                      );
+                    } else if (state is GetAllCatogriesLoaded) {
+                      if (state.catgoryDetails.result == null ||
+                          state.catgoryDetails.result!.isEmpty) {
+                        return SliverToBoxAdapter(
+                          child: Center(
+                            child: Text(
+                              LocaleKeys.allegries_no_allergies_found.tr(),
+                              style: AppStyles.styleMedium16(),
+                            ),
+                          ),
+                        );
+                      }
 
-                          return AnimatedBuilder(
-                            animation: _scaleAnimation,
-                            builder: (context, child) {
-                              return Transform.scale(
-                                scale: isSelected ? _scaleAnimation.value : 1.0,
-                                child: GestureDetector(
-                                  onTap: () => _handleCardTap(
-                                      categoryId, category.name ?? ""),
-                                  child: CustomAllergiesCard(
-                                    isSelected: isSelected,
-                                    text: category.name ?? "",
+                      return SliverPadding(
+                        padding: const EdgeInsetsDirectional.symmetric(
+                            horizontal: 25),
+                        sliver: SliverGrid.builder(
+                          itemCount: state.catgoryDetails.result!.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisSpacing: 29,
+                            mainAxisSpacing: 25,
+                            crossAxisCount: 2,
+                          ),
+                          itemBuilder: (context, index) {
+                            final category =
+                                state.catgoryDetails.result![index];
+                            final categoryId = category.id ?? -1;
+                            final isSelected =
+                                selectedCategories[categoryId] ?? false;
+
+                            return AnimatedBuilder(
+                              animation: _scaleAnimation,
+                              builder: (context, child) {
+                                return Transform.scale(
+                                  scale:
+                                      isSelected ? _scaleAnimation.value : 1.0,
+                                  child: GestureDetector(
+                                    onTap: () => _handleCardTap(
+                                        categoryId, category.name ?? ""),
+                                    child: CustomAllergiesCard(
+                                      isSelected: isSelected,
+                                      text: category.name ?? "",
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    );
-                  } else {
-                    return const SliverToBoxAdapter(child: SizedBox());
-                  }
-                },
-              ),
-              // Add extra space at the bottom for the button
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 120),
-              ),
-            ],
-          ),
-          // Fixed button at bottom with loading state
-          Positioned(
-            bottom: -10,
-            left: 20,
-            right: 20,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                BlocBuilder<AllergiesCubitCatogry, AllergiesState>(
-                  builder: (context, state) {
-                    final isLoading = state is AssignAllergiesLoading;
-
-                    return CustomButton(
-                        padding: const EdgeInsetsDirectional.only(
-                          top: 15,
-                          bottom: 18,
-                          end: 124,
-                          start: 124,
+                                );
+                              },
+                            );
+                          },
                         ),
-                        text: isLoading
-                            ? LocaleKeys.allegries_allegries_saving.tr()
-                            : LocaleKeys.allegries_button.tr(),
-                        textStyle: AppStyles.styleSemiBold14(),
-                        borderRadius: 20,
-                        onPressed: isLoading ? null : _assignAllergies,
-                        isLoading: isLoading);
+                      );
+                    } else {
+                      return const SliverToBoxAdapter(child: SizedBox());
+                    }
                   },
                 ),
-                const SizedBox(height: 18),
-                const CustomBottomContainer(color: Colors.black)
+                // Add extra space at the bottom for the button
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 120),
+                ),
               ],
             ),
-          ),
-        ],
+            // Fixed button at bottom with loading state
+            Positioned(
+              bottom: -10,
+              left: 20,
+              right: 20,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BlocBuilder<AllergiesCubitCatogry, AllergiesState>(
+                    builder: (context, state) {
+                      final isLoading = state is AssignAllergiesLoading;
+
+                      return CustomButton(
+                          padding: const EdgeInsetsDirectional.only(
+                            top: 15,
+                            bottom: 18,
+                            end: 124,
+                            start: 124,
+                          ),
+                          text: isLoading
+                              ? LocaleKeys.allegries_allegries_saving.tr()
+                              : LocaleKeys.allegries_button.tr(),
+                          textStyle: AppStyles.styleSemiBold14(),
+                          borderRadius: 20,
+                          onPressed: isLoading ? null : _assignAllergies,
+                          isLoading: isLoading);
+                    },
+                  ),
+                  const SizedBox(height: 18),
+                  const CustomBottomContainer(color: Colors.black)
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

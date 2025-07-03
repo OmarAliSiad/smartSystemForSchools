@@ -1,16 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/services/notification_service/messaging_config.dart';
-import '../../../Attendance/presentation/views/attendance_view.dart';
-import '../../../chatbot/presentation/chat_bot_screen.dart';
-import '../../../food_ai_view/screens/food_ai_screen.dart';
-import '../../../payment/presentation/views/payment_view.dart';
-import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
-import '../../../../core/utils/assets.dart';
-import '../../../../generated/locale_keys.g.dart';
-import '../../../family/presentation/views/family_view.dart';
-import '../../../home/presentation/views/home_screen.dart';
+import 'package:smartsystemforschools/core/utils/assets.dart';
+import 'package:smartsystemforschools/features/Attendance/presentation/views/attendance_view.dart';
+import 'package:smartsystemforschools/features/chatbot/presentation/chat_bot_screen.dart';
+import 'package:smartsystemforschools/features/family/presentation/views/family_view.dart';
+import 'package:smartsystemforschools/features/food_ai_view/screens/food_ai_screen.dart';
+import 'package:smartsystemforschools/features/home/presentation/views/home_screen.dart';
+import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 
 class MainScreen extends StatefulWidget {
   static String id = "/MainScreen";
@@ -48,7 +46,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   void _initAnimations() {
     // Initialize animation controllers for each tab
     _animationControllers = List.generate(
-      5,
+      screens.length,
       (index) => AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 400),
@@ -82,15 +80,18 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     return BlocBuilder<ThemeModeCubit, ThemeModeState>(
       builder: (context, state) {
         final themeMode = context.read<ThemeModeCubit>().currentTheme;
-        return Scaffold(
-          backgroundColor: themeMode == ThemeMode.dark
-              ? const Color(0xFF121212)
-              : Colors.white,
-          body: IndexedStack(
-            index: currentPage,
-            children: screens,
+        return KeyedSubtree(
+          key: ValueKey(context.locale.toString()),
+          child: Scaffold(
+            backgroundColor: themeMode == ThemeMode.dark
+                ? const Color(0xFF121212)
+                : Colors.white,
+            body: IndexedStack(
+              index: currentPage,
+              children: screens,
+            ),
+            bottomNavigationBar: _buildAnimatedBottomNavigationBar(themeMode),
           ),
-          bottomNavigationBar: _buildAnimatedBottomNavigationBar(themeMode),
         );
       },
     );
@@ -164,14 +165,14 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                 _buildNavItem(
                   index: 3,
                   iconPath: Assets.imagesHelp,
-                  label: 'AI',
+                  label: LocaleKeys.bottomNavigationBar_mealsPlanner.tr(),
                   primaryColor: primaryColor,
                   secondaryColor: secondaryColor,
                 ),
                 _buildNavItem(
                   index: 4,
                   iconPath: Assets.imagesChatbot,
-                  label: 'ChatBot',
+                  label: LocaleKeys.bottomNavigationBar_chatBot.tr(),
                   primaryColor: primaryColor,
                   secondaryColor: secondaryColor,
                 )

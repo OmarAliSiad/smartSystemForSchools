@@ -9,11 +9,12 @@ import '../../../../core/methods/show_scaffold_messanger.dart';
 import '../../../../core/models/money_recharge_model/money_recharge_model.dart';
 import '../../../../core/utils/Constants.dart';
 import '../../../../core/utils/api_keys.dart';
-import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/build_loading_view.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../widgets/total_fees.dart';
 import '../../../payment/presentation/manager/cubit/payment_cubit.dart';
 import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RechargeScreen extends StatefulWidget {
   const RechargeScreen({
@@ -46,131 +47,141 @@ class _RechargeScreenState extends State<RechargeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBarSpareAndRechargeWidget(title: 'Recharge'),
-      body: isCustomAmount
-          ? BlocConsumer<PaymentCubit, PaymentState>(
-              listener: (context, state) {
-                if (state is CheckoutPaymentFailure) {
-                  dispalySnackBar(context,
-                      color: Colors.red,
-                      title: state.errMessage.toString(),
-                      titleActionButton: 'ok');
-                } // In ChildDetailsView.dart, modify the listener section:
-                else if (state is CheckoutPaymentLoaded) {
-                  checkoutPaymentModel = state.CheckoutPaymentModel!;
-                  // Show success snackBar first
-                  dispalySnackBar(context,
-                          color: Colors.green,
-                          title: state.CheckoutPaymentModel!.message.toString(),
-                          duration: 500,
-                          titleActionButton: 'ok')
-                      .closed
-                      .then((_) {
-                    log('show stripe service with session');
-
-                    // Extract sessionId and pubKey from the response
-                    final sessionId =
-                        state.CheckoutPaymentModel!.result!.sessionId;
-                    final pubKey = state.CheckoutPaymentModel!.result!.pubKey;
-                    final sessionUrl =
-                        state.CheckoutPaymentModel!.result!.sessionUrl;
-
-                    log('sessionId: $sessionId , pubKey: $pubKey');
-                    log('length of session id : ${sessionId!.length}');
-
-                    if (pubKey != null) {
-                      // Use the session-based payment method
-                      context.read<PaymentCubit>().makePaymentWithSession(
-                            sessionId: sessionId.toString(),
-                            pubKey: pubKey.toString(),
-                            secretKey: ApiKeys.secretKey,
-                            sessionUrl: sessionUrl.toString(),
-                            context: context,
-                          );
-                    } else {
-                      dispalySnackBar(
-                        context,
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: CustomAppBarSpareAndRechargeWidget(
+            title: LocaleKeys.spare_Recharge.tr()),
+        body: isCustomAmount
+            ? BlocConsumer<PaymentCubit, PaymentState>(
+                listener: (context, state) {
+                  if (state is CheckoutPaymentFailure) {
+                    dispalySnackBar(context,
                         color: Colors.red,
-                        title: 'Missing payment session information',
-                        titleActionButton: 'ok',
-                      );
-                    }
-                  });
-                }
-              },
-              builder: (context, state) {
-                return Stack(
-                  children: [
+                        title: state.errMessage.toString(),
+                        titleActionButton: LocaleKeys.spare_ok.tr());
+                  } // In ChildDetailsView.dart, modify the listener section:
+                  else if (state is CheckoutPaymentLoaded) {
+                    checkoutPaymentModel = state.CheckoutPaymentModel!;
+                    // Show success snackBar first
+                    dispalySnackBar(context,
+                            color: Colors.green,
+                            title:
+                                state.CheckoutPaymentModel!.message.toString(),
+                            duration: 500,
+                            titleActionButton: LocaleKeys.spare_ok.tr())
+                        .closed
+                        .then((_) {
+                      log('show stripe service with session');
+
+                      // Extract sessionId and pubKey from the response
+                      final sessionId =
+                          state.CheckoutPaymentModel!.result!.sessionId;
+                      final pubKey = state.CheckoutPaymentModel!.result!.pubKey;
+                      final sessionUrl =
+                          state.CheckoutPaymentModel!.result!.sessionUrl;
+
+                      log('sessionId: $sessionId , pubKey: $pubKey');
+                      log('length of session id : ${sessionId!.length}');
+
+                      if (pubKey != null) {
+                        // Use the session-based payment method
+                        context.read<PaymentCubit>().makePaymentWithSession(
+                              sessionId: sessionId.toString(),
+                              pubKey: pubKey.toString(),
+                              secretKey: ApiKeys.secretKey,
+                              sessionUrl: sessionUrl.toString(),
+                              context: context,
+                            );
+                      } else {
+                        dispalySnackBar(
+                          context,
+                          color: Colors.red,
+                          title:
+                              LocaleKeys.spare_missingSessionInformation.tr(),
+                          titleActionButton: LocaleKeys.spare_ok.tr(),
+                        );
+                      }
+                    });
+                  }
+                },
+                builder: (context, state) {
+                  return Stack(
+                    children: [
+                      state is CheckoutPaymentLoading || state is PaymentLoading
+                          ? SizedBox(
+                              height: MediaQuery.sizeOf(context).height - 100,
+                              child: buildLoadingView(
+                                  LocaleKeys.spare_Recharge.tr(), context))
+                          : _buildCustomAmountView(context),
+                    ],
+                  );
+                },
+              )
+            : BlocConsumer<PaymentCubit, PaymentState>(
+                listener: (context, state) {
+                  if (state is CheckoutPaymentFailure) {
+                    dispalySnackBar(context,
+                        color: Colors.red,
+                        title: state.errMessage.toString(),
+                        titleActionButton: LocaleKeys.spare_ok.tr());
+                  } // In ChildDetailsView.dart, modify the listener section:
+                  else if (state is CheckoutPaymentLoaded) {
+                    checkoutPaymentModel = state.CheckoutPaymentModel!;
+                    // Show success snackBar first
+                    dispalySnackBar(context,
+                            color: Colors.green,
+                            title:
+                                state.CheckoutPaymentModel!.message.toString(),
+                            duration: 500,
+                            titleActionButton: LocaleKeys.spare_ok.tr())
+                        .closed
+                        .then((_) {
+                      log('show stripe service with session');
+
+                      // Extract sessionId and pubKey from the response
+                      final sessionId =
+                          state.CheckoutPaymentModel!.result!.sessionId;
+                      final pubKey = state.CheckoutPaymentModel!.result!.pubKey;
+                      final sessionUrl =
+                          state.CheckoutPaymentModel!.result!.sessionUrl;
+
+                      log('sessionId: $sessionId , pubKey: $pubKey');
+                      log('length of session id : ${sessionId!.length}');
+
+                      if (pubKey != null) {
+                        // Use the session-based payment method
+                        context.read<PaymentCubit>().makePaymentWithSession(
+                              sessionId: sessionId.toString(),
+                              pubKey: pubKey.toString(),
+                              secretKey: ApiKeys.secretKey,
+                              sessionUrl: sessionUrl.toString(),
+                              context: context,
+                            );
+                      } else {
+                        dispalySnackBar(
+                          context,
+                          color: Colors.red,
+                          title:
+                              LocaleKeys.spare_missingSessionInformation.tr(),
+                          titleActionButton: LocaleKeys.spare_ok.tr(),
+                        );
+                      }
+                    });
+                  }
+                },
+                builder: (context, state) {
+                  return Stack(children: [
                     state is CheckoutPaymentLoading || state is PaymentLoading
                         ? SizedBox(
                             height: MediaQuery.sizeOf(context).height - 100,
-                            child: buildLoadingView('recharge', context))
-                        : _buildCustomAmountView(context),
-                  ],
-                );
-              },
-            )
-          : BlocConsumer<PaymentCubit, PaymentState>(
-              listener: (context, state) {
-                if (state is CheckoutPaymentFailure) {
-                  dispalySnackBar(context,
-                      color: Colors.red,
-                      title: state.errMessage.toString(),
-                      titleActionButton: 'ok');
-                } // In ChildDetailsView.dart, modify the listener section:
-                else if (state is CheckoutPaymentLoaded) {
-                  checkoutPaymentModel = state.CheckoutPaymentModel!;
-                  // Show success snackBar first
-                  dispalySnackBar(context,
-                          color: Colors.green,
-                          title: state.CheckoutPaymentModel!.message.toString(),
-                          duration: 500,
-                          titleActionButton: 'ok')
-                      .closed
-                      .then((_) {
-                    log('show stripe service with session');
-
-                    // Extract sessionId and pubKey from the response
-                    final sessionId =
-                        state.CheckoutPaymentModel!.result!.sessionId;
-                    final pubKey = state.CheckoutPaymentModel!.result!.pubKey;
-                    final sessionUrl =
-                        state.CheckoutPaymentModel!.result!.sessionUrl;
-
-                    log('sessionId: $sessionId , pubKey: $pubKey');
-                    log('length of session id : ${sessionId!.length}');
-
-                    if (pubKey != null) {
-                      // Use the session-based payment method
-                      context.read<PaymentCubit>().makePaymentWithSession(
-                            sessionId: sessionId.toString(),
-                            pubKey: pubKey.toString(),
-                            secretKey: ApiKeys.secretKey,
-                            sessionUrl: sessionUrl.toString(),
-                            context: context,
-                          );
-                    } else {
-                      dispalySnackBar(
-                        context,
-                        color: Colors.red,
-                        title: 'Missing payment session information',
-                        titleActionButton: 'ok',
-                      );
-                    }
-                  });
-                }
-              },
-              builder: (context, state) {
-                return Stack(children: [
-                  state is CheckoutPaymentLoading || state is PaymentLoading
-                      ? SizedBox(
-                          height: MediaQuery.sizeOf(context).height - 100,
-                          child: buildLoadingView('recharge', context))
-                      : _buildPredefinedAmountView()
-                ]);
-              },
-            ),
+                            child: buildLoadingView(
+                                LocaleKeys.spare_Recharge.tr(), context))
+                        : _buildPredefinedAmountView()
+                  ]);
+                },
+              ),
+      ),
     );
   }
 
@@ -198,7 +209,8 @@ class _RechargeScreenState extends State<RechargeScreen> {
                               delay: 200.ms * amountOptions.indexOf(amount))
                           .slideY(begin: 0.2, end: 0),
                     ),
-                    _buildAmountOption("other", isText: true)
+                    _buildAmountOption(LocaleKeys.spare_Other.tr(),
+                            isText: true)
                         .animate()
                         .fade(duration: 600.ms, delay: 1200.ms)
                         .slideY(begin: 0.2, end: 0),
@@ -222,20 +234,20 @@ class _RechargeScreenState extends State<RechargeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Credit recharges are non-refundable.",
-                style: TextStyle(fontSize: 14),
+              Text(
+                LocaleKeys.spare_creditRechargesAreNonRefundable.tr(),
+                style: const TextStyle(fontSize: 14),
               ),
-              const Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "By tapping recharge you agree to the",
-                    style: TextStyle(fontSize: 14),
+                    LocaleKeys.spare_byTappingRecharge.tr(),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   Text(
-                    "credit card load-up terms and conditions.",
-                    style: TextStyle(
+                    LocaleKeys.spare_creditCardLoadUpTermsAndConditions.tr(),
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Constants.blue, //Color(0xFF00BCD4),,
                     ),
@@ -259,9 +271,9 @@ class _RechargeScreenState extends State<RechargeScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    "Recharge at Repton",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  child: Text(
+                    LocaleKeys.spare_Recharge.tr(),
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
               ),
@@ -309,10 +321,11 @@ class _RechargeScreenState extends State<RechargeScreen> {
                     controller: customAmountController,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Amount",
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                    decoration: InputDecoration(
+                      hintText: LocaleKeys.spare_enterAmount.tr(),
+                      hintStyle: const TextStyle(color: Colors.grey),
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
                     ),
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -344,6 +357,7 @@ class _RechargeScreenState extends State<RechargeScreen> {
                   Container(
                     padding: const EdgeInsetsDirectional.symmetric(
                       vertical: 30,
+                      horizontal: 10,
                     ),
                     decoration: BoxDecoration(
                       color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
@@ -358,9 +372,10 @@ class _RechargeScreenState extends State<RechargeScreen> {
                         ),
                       ],
                     ),
-                    child: const Text(
-                      "Please enter a whole number between 1 and 2000",
-                      style: TextStyle(
+                    child: Text(
+                      LocaleKeys.spare_pleaseEnterAWholeNumberBetween1And10000
+                          .tr(),
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.red,
                         fontWeight: FontWeight.w500,
@@ -391,24 +406,24 @@ class _RechargeScreenState extends State<RechargeScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Text(
-                "Credit recharges are non-refundable.",
-                style: TextStyle(fontSize: 14),
+              Text(
+                LocaleKeys.spare_creditRechargesAreNonRefundable.tr(),
+                style: const TextStyle(fontSize: 14),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "By tapping recharge you agree to the ",
-                    style: TextStyle(fontSize: 14),
+                  Text(
+                    LocaleKeys.spare_byTappingRecharge.tr(),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   GestureDetector(
                     onTap: () {
                       // Open terms and conditions
                     },
-                    child: const Text(
-                      "credit card load-up terms and conditions.",
-                      style: TextStyle(
+                    child: Text(
+                      LocaleKeys.spare_creditCardLoadUpTermsAndConditions.tr(),
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Constants.blue, //Color(0xFF00BCD4),,
                       ),
@@ -426,20 +441,24 @@ class _RechargeScreenState extends State<RechargeScreen> {
                     if (customAmountController.text.isNotEmpty &&
                         (int.tryParse(customAmountController.text) ?? 0) >= 1 &&
                         (int.tryParse(customAmountController.text) ?? 0) <=
-                            2000) {
+                            10000) {
                       SharedPreferences sharedPreferences =
                           await SharedPreferences.getInstance();
                       String studentId =
                           sharedPreferences.getString(Constants.studentId)!;
                       log('student id $studentId');
-                      context.read<PaymentCubit>().checkoutPayment(
-                            amount: total.toString(),
-                          );
+                      if (context.mounted) {
+                        context.read<PaymentCubit>().checkoutPayment(
+                              amount: total.toString(),
+                            );
+                      }
                     } else {
                       dispalySnackBar(
                         context,
-                        title: "Please enter a whole number between 1 and 2000",
-                        titleActionButton: "OK",
+                        title: LocaleKeys
+                            .spare_pleaseEnterAWholeNumberBetween1And10000
+                            .tr(),
+                        titleActionButton: LocaleKeys.spare_ok.tr(),
                         color: Colors.red,
                       );
                     }
@@ -450,9 +469,9 @@ class _RechargeScreenState extends State<RechargeScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    "Recharge at Repton",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  child: Text(
+                    LocaleKeys.spare_Recharge.tr(),
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
               )
@@ -538,8 +557,9 @@ Widget buildPaymentOption(String label, bool isSelected) {
         label,
         style: TextStyle(
           fontSize: 14,
-          color:
-              isSelected ? Constants.blue /*Color(0xFF00BCD4),*/ : Colors.grey,
+          color: isSelected
+              ? Constants.blue /*Color(0xFF00BCD4),*/
+              : Colors.grey,
         ),
       ),
     ],

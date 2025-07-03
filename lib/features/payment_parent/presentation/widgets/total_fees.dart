@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/utils/Constants.dart';
 
 class TotalFees extends StatelessWidget {
@@ -19,9 +21,9 @@ class TotalFees extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              "Subtotal",
-              style: TextStyle(
+            Text(
+              LocaleKeys.spare_Subtotal.tr(),
+              style: const TextStyle(
                 fontSize: 16,
                 color: Constants.blue, //Color(0xFF00BCD4),,
               ),
@@ -42,9 +44,9 @@ class TotalFees extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Text(
-                  "Processing Fees",
-                  style: TextStyle(
+                Text(
+                  LocaleKeys.spare_processingFees.tr(),
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Constants.blue, //Color(0xFF00BCD4),,
                   ),
@@ -58,7 +60,7 @@ class TotalFees extends StatelessWidget {
               ],
             ),
             Text(
-              "${processingFee.toStringAsFixed(2)} EGP",
+              "${processingFee.toStringAsFixed(2)} ${LocaleKeys.spare_EGP.tr()}",
               style: const TextStyle(
                 fontSize: 16,
                 color: Constants.blue, //Color(0xFF00BCD4),,
@@ -70,7 +72,7 @@ class TotalFees extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            "3EGP + 3.5%",
+            "0EGP + 0.0%",
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey.shade500,
@@ -84,16 +86,16 @@ class TotalFees extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              "Total",
-              style: TextStyle(
+             Text(
+              LocaleKeys.spare_total.tr(),
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Constants.blue, //Color(0xFF00BCD4),,
               ),
             ),
             Text(
-              "${total.toStringAsFixed(2)} EGP",
+              "${total.toStringAsFixed(2)} ${LocaleKeys.spare_EGP.tr()}",
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

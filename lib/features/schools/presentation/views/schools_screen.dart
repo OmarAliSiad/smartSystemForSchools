@@ -1,11 +1,11 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../../core/models/get_all_schools/result.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/services/school_service/school_service.dart';
 import '../../../../features/schools/presentation/views/school_view_details.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SchoolsScreen extends StatefulWidget {
   static const String id = 'SchoolsScreen';
@@ -110,21 +110,24 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(),
-            _buildSearchBar(),
-            Expanded(
-              child: _isLoading
-                  ? _buildLoadingIndicator()
-                  : _errorMessage.isNotEmpty
-                      ? _buildErrorView()
-                      : _buildSchoolsList(),
-            ),
-          ],
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF5F7FA),
+        body: SafeArea(
+          child: Column(
+            children: [
+              _buildHeader(),
+              _buildSearchBar(),
+              Expanded(
+                child: _isLoading
+                    ? _buildLoadingIndicator()
+                    : _errorMessage.isNotEmpty
+                        ? _buildErrorView()
+                        : _buildSchoolsList(),
+              ),
+            ],
+          ),
         ),
       ),
     );

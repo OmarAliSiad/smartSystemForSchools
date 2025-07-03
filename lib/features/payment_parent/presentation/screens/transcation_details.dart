@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/models/student_transcations/student_transaction_item.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 
 class TranscationDetails extends StatelessWidget {
   static const String id = '/transactionDetails';
@@ -29,51 +30,55 @@ class TranscationDetails extends StatelessWidget {
         arguments['studentTransactionItems'] ?? [];
     final String schoolTenantId = arguments['schoolTenantId'] ?? '';
 
-    return Scaffold(
-      appBar: AnimatedCustomAppBar(
-        thereIsIcon: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () {
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: AnimatedCustomAppBar(
+          thereIsIcon: false,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: LocaleKeys.transaction_details.tr(),
+          onTapBack: () {
             Navigator.pop(context);
           },
         ),
-        title: 'Transaction Details',
-        onTapBack: () {
-          Navigator.pop(context);
-        },
-      ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header section
-              _buildHeaderSection(studentName, date, moneyAmountSpended, isDark)
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 200.ms)
-                  .slideY(begin: 0.2, end: 0),
-
-              const SizedBox(height: 24),
-
-              // Transaction details
-              _buildTransactionDetailsSection(
-                      schoolTenantId, createdOn, cashierName, isDark)
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 400.ms)
-                  .slideY(begin: 0.2, end: 0),
-
-              const SizedBox(height: 24),
-
-              // Items section
-              if (studentTransactionItems.isNotEmpty)
-                _buildItemsSection(studentTransactionItems, isDark)
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header section
+                _buildHeaderSection(
+                        studentName, date, moneyAmountSpended, isDark)
                     .animate()
-                    .fadeIn(duration: 600.ms, delay: 600.ms)
+                    .fadeIn(duration: 600.ms, delay: 200.ms)
                     .slideY(begin: 0.2, end: 0),
-            ],
+
+                const SizedBox(height: 24),
+
+                // Transaction details
+                _buildTransactionDetailsSection(
+                        schoolTenantId, createdOn, cashierName, isDark)
+                    .animate()
+                    .fadeIn(duration: 600.ms, delay: 400.ms)
+                    .slideY(begin: 0.2, end: 0),
+
+                const SizedBox(height: 24),
+
+                // Items section
+                if (studentTransactionItems.isNotEmpty)
+                  _buildItemsSection(studentTransactionItems, isDark)
+                      .animate()
+                      .fadeIn(duration: 600.ms, delay: 600.ms)
+                      .slideY(begin: 0.2, end: 0),
+              ],
+            ),
           ),
         ),
       ),
@@ -160,15 +165,17 @@ class TranscationDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Transaction Details",
+              LocaleKeys.transaction_details.tr(),
               style: AppStyles.styleSemiBold14(),
             ),
             const SizedBox(height: 16),
-            _buildDetailRow("school Name", schoolTenantId),
+            _buildDetailRow(
+                LocaleKeys.transaction_schoolName.tr(), schoolTenantId),
             const Divider(height: 24),
-            _buildDetailRow("Date & Time", dateStr),
+            _buildDetailRow(LocaleKeys.transaction_DateAndTime.tr(), dateStr),
             const Divider(height: 24),
-            _buildDetailRow("Staff Member", cashierName),
+            _buildDetailRow(
+                LocaleKeys.transaction_staffMember.tr(), cashierName),
           ],
         ),
       ),
@@ -189,7 +196,7 @@ class TranscationDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Items Purchased",
+              LocaleKeys.transaction_itemsPurchased.tr(),
               style: AppStyles.styleSemiBold14(),
             ),
             const SizedBox(height: 16),
@@ -209,7 +216,7 @@ class TranscationDetails extends StatelessWidget {
                             style: AppStyles.styleMedium15(),
                           ),
                           Text(
-                            'quantity: ${item.quantity}',
+                            '${LocaleKeys.transaction_quantity.tr()}: ${item.quantity}',
                             style: AppStyles.styleRegular12().copyWith(
                               color: Colors.grey,
                             ),
@@ -238,7 +245,7 @@ class TranscationDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Total",
+                    LocaleKeys.transaction_total.tr(),
                     style: AppStyles.styleSemiBold14(),
                   ),
                   Text(

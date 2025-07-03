@@ -1,11 +1,11 @@
 import 'package:country_flags/country_flags.dart';
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/core/methods/show_scaffold_messanger.dart';
 import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/custom_app_bar.dart';
 import '../../../../generated/locale_keys.g.dart';
 import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 
@@ -20,6 +20,7 @@ class LanguageSelectionPage extends StatefulWidget {
 class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
   static const String _languageKey = 'selected_language';
   String selectedLanguage = 'en'; // Default language is English
+  String _tempSelectedLanguage = 'en'; // Temporary selection before saving
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
@@ -67,14 +68,33 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
     setState(() {
       selectedLanguage =
           prefs.getString(_languageKey) ?? context.locale.languageCode;
+      _tempSelectedLanguage = selectedLanguage;
     });
-    context.setLocale(Locale(selectedLanguage));
   }
 
   Future<void> _saveLanguage(String languageCode) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_languageKey, languageCode);
-    context.setLocale(Locale(languageCode));
+
+    // Update both selected and temp
+    setState(() {
+      selectedLanguage = languageCode;
+      _tempSelectedLanguage = languageCode;
+    });
+
+    // Apply the language change
+    if (mounted) {
+      context.setLocale(Locale(languageCode));
+    }
+    // Show success message
+    if (mounted) {
+      dispalySnackBar(
+        context,
+        title: LocaleKeys.Settings_saveLanguage.tr(),
+        color: Colors.green,
+        duration: 2000,
+      );
+    }
   }
 
   @override
@@ -96,65 +116,110 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
           final theme = context.read<ThemeModeCubit>().currentTheme;
           final isDarkMode = theme == ThemeMode.dark;
 
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey[800] : Colors.grey[200],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: TextField(
-                    cursorColor: Colors.black,
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search languages',
-                      prefixIcon: const Icon(Icons.search),
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                      hintStyle: TextStyle(
-                        color: isDarkMode ? Colors.white60 : Colors.grey[600],
-                      ),
-                    ),
-                    style: TextStyle(
-                      color: isDarkMode ? Colors.white : Colors.black,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Language list
-                Expanded(
-                  child: _filteredLanguages.isEmpty
-                      ? Center(
-                          child: Text(
-                            'No languages found',
-                            style: AppStyles.styleRegular16().copyWith(
+          return Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Search bar
+                      Container(
+                        decoration: BoxDecoration(
+                          color:
+                              isDarkMode ? Colors.grey[800] : Colors.grey[200],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: TextField(
+                          cursorColor: Colors.black,
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            hintText: LocaleKeys.Settings_searchLanguages.tr(),
+                            prefixIcon: const Icon(Icons.search),
+                            border: InputBorder.none,
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 12),
+                            hintStyle: TextStyle(
                               color: isDarkMode
-                                  ? Colors.white70
-                                  : Colors.grey[700],
+                                  ? Colors.white60
+                                  : Colors.grey[600],
                             ),
                           ),
-                        )
-                      : ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: _filteredLanguages.length,
-                          itemBuilder: (context, index) {
-                            final languageCode = _filteredLanguages[index];
-                            final languageInfo =
-                                _languageOptions[languageCode]!;
-                            return _buildLanguageOption(
-                              languageCode: languageCode,
-                              languageName: languageInfo['name']!,
-                              countryCode: languageInfo['countryCode']!,
-                              isDarkMode: isDarkMode,
-                            );
-                          },
+                          style: TextStyle(
+                            color: isDarkMode ? Colors.white : Colors.black,
+                          ),
                         ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Language list
+                      Expanded(
+                        child: _filteredLanguages.isEmpty
+                            ? Center(
+                                child: Text(
+                                  LocaleKeys.Settings_noLanguagesFound.tr(),
+                                  style: AppStyles.styleRegular16().copyWith(
+                                    color: isDarkMode
+                                        ? Colors.white70
+                                        : Colors.grey[700],
+                                  ),
+                                ),
+                              )
+                            : ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: _filteredLanguages.length,
+                                itemBuilder: (context, index) {
+                                  final languageCode =
+                                      _filteredLanguages[index];
+                                  final languageInfo =
+                                      _languageOptions[languageCode]!;
+                                  return _buildLanguageOption(
+                                    languageCode: languageCode,
+                                    languageName: languageInfo['name']!,
+                                    countryCode: languageInfo['countryCode']!,
+                                    isDarkMode: isDarkMode,
+                                  );
+                                },
+                              ),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+              // Save button at bottom
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: isDarkMode ? Colors.grey[900] : Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, -2),
+                    ),
+                  ],
+                ),
+                child: ElevatedButton(
+                  onPressed: _tempSelectedLanguage != selectedLanguage
+                      ? () => _saveLanguage(_tempSelectedLanguage)
+                      : () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff1A0F91),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 2,
+                  ),
+                  child: Text(
+                    LocaleKeys.Settings_save.tr(),
+                    style:
+                        AppStyles.styleMedium16().copyWith(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),
@@ -167,15 +232,14 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
     required String countryCode,
     required bool isDarkMode,
   }) {
-    final isSelected = selectedLanguage == languageCode;
+    final isSelected = _tempSelectedLanguage == languageCode;
 
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () {
         setState(() {
-          selectedLanguage = languageCode;
+          _tempSelectedLanguage = languageCode;
         });
-        _saveLanguage(languageCode);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),

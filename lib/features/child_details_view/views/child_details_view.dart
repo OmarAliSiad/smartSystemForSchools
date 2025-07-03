@@ -1,9 +1,9 @@
+import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartsystemforschools/core/services/school_service/school_service.dart';
 import 'package:smartsystemforschools/features/child_details_view/widgets/custom_card_spending_limits.dart';
 import '../../../core/models/get_child_details/result.dart';
 import '../../../core/models/money_recharge_model/money_recharge_model.dart';
@@ -73,147 +73,156 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
         });
       }
     } catch (e) {
-      print("Error loading spending limit: $e");
+      log("Error loading spending limit: $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AnimatedCustomAppBar(
-        waveColor: Colors.blue,
-        backgroundColor: Colors.blue.shade900,
-        leading: IconButton(
-          color: Colors.white,
-          onPressed: () {
-            Navigator.pop(context);
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: AnimatedCustomAppBar(
+          waveColor: Colors.blue,
+          backgroundColor: Colors.blue.shade900,
+          leading: IconButton(
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
+          title: LocaleKeys.childDetailsView_title.tr(),
+          thereIsIcon: false,
+          textStyle: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        body: RefreshIndicator(
+          backgroundColor: Colors.white,
+          color: Colors.blue.shade900,
+          onRefresh: () async {
+            await loadData();
           },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-        title: 'Child Details View',
-        thereIsIcon: false,
-        textStyle: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-      body: RefreshIndicator(
-        backgroundColor: Colors.white,
-        color: Colors.blue.shade900,
-        onRefresh: () async {
-          await loadData();
-        },
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.only(start: 18, end: 19),
-                    child: CardDetailsChildWidget(
-                        balance: widget.resultForChildDetails.amountOfMoney!,
-                        dailylimit:
-                            getSendingLimit?.result?.dailySpendingLimit ?? 0,
-                        receviedData: widget.resultForChildDetails),
-                  )
-                      .animate()
-                      .fadeIn(duration: 300.ms, delay: 200.ms)
-                      .slideY(begin: 0.05, end: 0),
-                  const SizedBox(
-                    height: 28,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.only(start: 18, end: 22),
-                    child: Column(
-                      children: [
-                        CustomCardSpendingLimits(
-                          studentId: widget.resultForChildDetails.id.toString(),
-                          onUpdateLimits: () {
-                            // Reload the data when limits are updated
-                            loadData();
-                          },
-                        )
-                            .animate()
-                            .fadeIn(duration: 300.ms, delay: 300.ms)
-                            .slideY(begin: 0.05, end: 0),
-                        const SizedBox(
-                          height: 18,
-                        ),
-                        if (getSendingLimit != null) _buildLimitsSection(),
-                        const SizedBox(
-                          height: 18,
-                        ),
-                        BlocBuilder<ThemeModeCubit, ThemeModeState>(
-                          builder: (context, state) {
-                            return CustomCardForSpendingAndRecharge(
-                              title: LocaleKeys.childDetails_recharge.tr(),
-                              price: widget.resultForChildDetails.amountOfMoney
-                                  .toString(),
-                              imagePath: Assets.imagesTrasnfer,
-                              titleButton:
-                                  LocaleKeys.childDetails_rechargeButton.tr(),
-                              onPressed: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                prefs.setString(Constants.studentId,
-                                    widget.resultForChildDetails.id.toString());
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) {
-                                    return ChooseBalanceForChild(
-                                      balance: widget
-                                          .resultForChildDetails.amountOfMoney!,
-                                      studentId: widget.resultForChildDetails.id
-                                          .toString(),
-                                    );
-                                  }),
-                                );
-                              },
-                            )
-                                .animate()
-                                .fadeIn(duration: 300.ms, delay: 500.ms)
-                                .slideY(begin: 0.2, end: 0);
-                          },
-                        ),
-                        const SizedBox(
-                          height: 26,
-                        ),
-                        RestrictedProducts(
-                          resultForChildDetails: widget.resultForChildDetails,
-                        )
-                            .animate()
-                            .fadeIn(duration: 300.ms, delay: 600.ms)
-                            .slideY(begin: 0.05, end: 0),
-                        const SizedBox(
-                          height: 26,
-                        ),
-                        CustomAllergiesWidget(
-                          childDetails: widget.resultForChildDetails,
-                        )
-                            .animate()
-                            .fadeIn(duration: 300.ms, delay: 700.ms)
-                            .slideY(begin: 0.05, end: 0),
-                        const SizedBox(
-                          height: 26,
-                        ),
-                      ],
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    const SizedBox(
+                      height: 24,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const CustomBottomContainer(
-                    color: Colors.black,
-                  )
-                ],
-              ),
-            ],
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.only(start: 18, end: 19),
+                      child: CardDetailsChildWidget(
+                          balance: widget.resultForChildDetails.amountOfMoney!,
+                          dailylimit:
+                              getSendingLimit?.result?.dailySpendingLimit ?? 0,
+                          receviedData: widget.resultForChildDetails),
+                    )
+                        .animate()
+                        .fadeIn(duration: 300.ms, delay: 200.ms)
+                        .slideY(begin: 0.05, end: 0),
+                    const SizedBox(
+                      height: 28,
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.only(start: 18, end: 22),
+                      child: Column(
+                        children: [
+                          CustomCardSpendingLimits(
+                            studentId:
+                                widget.resultForChildDetails.id.toString(),
+                            onUpdateLimits: () {
+                              // Reload the data when limits are updated
+                              loadData();
+                            },
+                          )
+                              .animate()
+                              .fadeIn(duration: 300.ms, delay: 300.ms)
+                              .slideY(begin: 0.05, end: 0),
+                          const SizedBox(
+                            height: 18,
+                          ),
+                          if (getSendingLimit != null) _buildLimitsSection(),
+                          const SizedBox(
+                            height: 18,
+                          ),
+                          BlocBuilder<ThemeModeCubit, ThemeModeState>(
+                            builder: (context, state) {
+                              return CustomCardForSpendingAndRecharge(
+                                title:
+                                    LocaleKeys.childDetailsView_recharge.tr(),
+                                price: widget
+                                    .resultForChildDetails.amountOfMoney
+                                    .toString(),
+                                imagePath: Assets.imagesTrasnfer,
+                                titleButton:
+                                    LocaleKeys.childDetailsView_recharge.tr(),
+                                onPressed: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  prefs.setString(
+                                      Constants.studentId,
+                                      widget.resultForChildDetails.id
+                                          .toString());
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) {
+                                      return ChooseBalanceForChild(
+                                        balance: widget.resultForChildDetails
+                                            .amountOfMoney!,
+                                        studentId: widget
+                                            .resultForChildDetails.id
+                                            .toString(),
+                                      );
+                                    }),
+                                  );
+                                },
+                              )
+                                  .animate()
+                                  .fadeIn(duration: 300.ms, delay: 500.ms)
+                                  .slideY(begin: 0.2, end: 0);
+                            },
+                          ),
+                          const SizedBox(
+                            height: 26,
+                          ),
+                          RestrictedProducts(
+                            resultForChildDetails: widget.resultForChildDetails,
+                          )
+                              .animate()
+                              .fadeIn(duration: 300.ms, delay: 600.ms)
+                              .slideY(begin: 0.05, end: 0),
+                          const SizedBox(
+                            height: 26,
+                          ),
+                          CustomAllergiesWidget(
+                            childDetails: widget.resultForChildDetails,
+                          )
+                              .animate()
+                              .fadeIn(duration: 300.ms, delay: 700.ms)
+                              .slideY(begin: 0.05, end: 0),
+                          const SizedBox(
+                            height: 26,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const CustomBottomContainer(
+                      color: Colors.black,
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -247,22 +256,23 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Limits', style: AppStyles.styleMedium16()),
+              Text(LocaleKeys.childDetailsView_limits.tr(),
+                  style: AppStyles.styleMedium16()),
               const SizedBox(height: 24),
               _buildLimitProgressBar(
-                'Day',
+                LocaleKeys.childDetailsView_day.tr(),
                 getSendingLimit?.result?.dailySpendingLimit ?? 0,
                 const Color(0xff1A0F91),
               ),
               const SizedBox(height: 16),
               _buildLimitProgressBar(
-                'Week',
+                LocaleKeys.childDetailsView_week.tr(),
                 getSendingLimit?.result?.weeklySpendingLimit ?? 0,
                 Colors.orange,
               ),
               const SizedBox(height: 16),
               _buildLimitProgressBar(
-                'Month',
+                LocaleKeys.childDetailsView_month.tr(),
                 getSendingLimit?.result?.monthlySpendingLimit ?? 0,
                 Colors.green,
               ),
@@ -285,7 +295,8 @@ class _ChildDetailsViewState extends State<ChildDetailsView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(label, style: AppStyles.styleRegular14()),
-            Text('${amount.toStringAsFixed(2)} Remaining',
+            Text(
+                '${amount.toStringAsFixed(2)} ${LocaleKeys.childDetailsView_remaining.tr()}',
                 style: AppStyles.styleRegular14()),
           ],
         ),

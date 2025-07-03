@@ -1,0 +1,383 @@
+{
+    "PageView1": {
+        "title": "Bienvenido al Portal para Padres",
+        "subtitle": "Supervise fácilmente las necesidades de su hijo y administre todos sus detalles desde un solo lugar, brindando una experiencia fluida e integrada.",
+        "button": "Siguiente"
+    },
+    "PageView2": {
+        "title": "Fácil de controlar",
+        "subtitle": "Establezca un presupuesto diario para su hijo y realice un seguimiento de sus actividades para garantizar una gestión fluida y eficaz.",
+        "button": "Siguiente"
+    },
+    "PageView3": {
+        "title": "Mantente conectado",
+        "subtitle": "Reciba informes instantáneos y actualizaciones periódicas sobre los gastos de su hijo para mantenerse informado y en control en todo momento.",
+        "button": "Empezar"
+    },
+    "RestrictedProducts": {
+        "RestrictedProducts": "Productos restringidos",
+        "SelectedProducts": "Seleccionar productos",
+        "ApplyChanges": "Aplicar cambios",
+        "LoadingCategories": "Cargando categorías...",
+        "NoCategoriesAvailable": "No hay categorías disponibles",
+        "Unknown": "Desconocido",
+        "LoadingProducts": "Cargando productos...",
+        "FailedToLoadProducts": "Error al cargar los productos",
+        "Blocked": "Bloqueado",
+        "Allowed": "Permitido",
+        "SELECTED": "SELECCIONADO",
+        "RESTRICTED": "RESTRINGIDO"
+    },
+    "Auth": {
+        "title": "Iniciar sesión en su cuenta",
+        "register": "Registrarse en su cuenta",
+        "labelUserName": "Nombre de usuario",
+        "email": "Correo electrónico",
+        "confirmPassword": "Confirmar contraseña",
+        "userNameHintText": "Ingrese su nombre de usuario",
+        "userEmailHintText": "Ingrese su correo electrónico",
+        "labelPassword": "Contraseña",
+        "passwordHintText": "Ingrese su contraseña",
+        "confirmPasswordHintText": "Confirme su contraseña",
+        "forgotPassword": "¿Olvidó su contraseña?",
+        "login": "Iniciar sesión",
+        "singup": "Registrarse",
+        "invalidUserDataReceived": "Datos de usuario no válidos recibidos",
+        "loginSuccessfully": "Inicio de sesión exitoso",
+        "loginFailed": "Error de inicio de sesión",
+        "Ok": "Ok",
+        "loggingIn": "Iniciando sesión..."
+    },
+    "spare": {
+        "Account": "Cuenta",
+        "FamilyBalance": "Saldo familiar",
+        "Recharge": "Recargar",
+        "Transactions": "Transacciones",
+        "transactions": "transacciones",
+        "selectDate": "Seleccionar fecha",
+        "noTransactionsFound": "No se encontraron transacciones",
+        "ok": "ok",
+        "missingSessionInformation": "Falta información de la sesión de pago",
+        "Other": "otro",
+        "creditRechargesAreNonRefundable": "Las recargas de crédito no son reembolsables.",
+        "byTappingRecharge": "Al pulsar recargar, aceptas los",
+        "creditCardLoadUpTermsAndConditions": "términos y condiciones de carga con tarjeta de crédito.",
+        "enterAmount": "Ingresar monto",
+        "total": "Total",
+        "Subtotal": "Subtotal",
+        "processingFees": "Tarifas de procesamiento",
+        "pleaseEnterAWholeNumberBetween1And10000": "Por favor, introduce un número entero entre 1 y 10000",
+        "EGP": "EGP",
+        "MoneyRechargedSuccessfully": "Saldo recargado con éxito"
+    },
+    "common": {
+        "loading": "Cargando",
+        "details": "detalles...",
+        "transcations": "transacciones",
+        "childs": "niños",
+        "noTransFound": "No se encontraron transacciones",
+        "noChildrenAddedYet": "Aún no se han agregado niños",
+        "Error": "Error"
+    },
+    "valdation": {
+        "valdationText": "Por favor ingrese algún texto"
+    },
+    "SendCode": {
+        "forgotPassword": "Olvidé mi contraseña",
+        "subtitle": "No se preocupe, sucede. Por favor, ingrese el correo electrónico asociado a su cuenta",
+        "email": "Correo electrónico",
+        "emailHint": "Ingrese su correo electrónico",
+        "button": "Enviar código"
+    },
+    "VerifyCode": {
+        "checkEmail": "Por favor, revise su correo electrónico",
+        "description": "Ingrese el código de verificación que se ha enviado a su correo electrónico",
+        "button": "Verificar",
+        "resend": "Enviar código de nuevo",
+        "time": "00:20"
+    },
+    "ForgotPassword": {
+        "title": "Por favor, ingrese una nueva contraseña",
+        "subtitle": "Esta contraseña debe ser diferente de la contraseña anterior",
+        "newPassword": "Nueva contraseña",
+        "newPasswordHint": "Nueva contraseña",
+        "confirmPassword": "Confirmar contraseña",
+        "confirmPasswordHint": "Confirmar contraseña",
+        "button": "Restablecer contraseña"
+    },
+    "bottomNavigationBar": {
+        "home": "Inicio",
+        "family": "Familia",
+        "attendance": "Asistencia",
+        "wallet": "Billetera",
+        "mealsPlanner": "comidas",
+        "chatBot": "ChatBot"
+    },
+    "aiChatBot": {
+        "aiChatBot": "ChatBot de IA",
+        "typing": "Escribiendo",
+        "typeAMessage": "Escriba un mensaje..."
+    },
+    "cameraAndGallery": {
+        "gallery": "Galería",
+        "camera": "Cámara"
+    },
+    "homeView": {
+        "appBarTitle": "Buenos días,",
+        "appBarName": "Omar",
+        "nameShahd": "Shahd",
+        "nameAhmed": "Ahmed",
+        "status": "Estado del inventario",
+        "family": "Mi familia"
+    },
+    "balanceCardDetails": {
+        "balance": "Saldo",
+        "balancePrice": "1.299,33 EGP"
+    },
+    "transactions": {
+        "transactions": "Transacciones",
+        "title": "Transferencia de su billetera a Shahd",
+        "subTitle": "Disponible en la billetera Shahd 100 EGP",
+        "price": "10 EGP"
+    },
+    "paymentMethodBottomSheet": {
+        "pickPaymentMethod": "Seleccione un método de pago",
+        "addCard": "Agregar una tarjeta de crédito o débito",
+        "debitCard": "Tarjeta de débito",
+        "creditCard": "Tarjeta de crédito"
+    },
+    "Settings": {
+        "name": "Mohamed Ammen",
+        "settings": "Configuración",
+        "schoolDetails": "Detalles de la escuela",
+        "confirmation": "Confirmación",
+        "accountSettings": "Configuración de la cuenta",
+        "editProfile": "Editar perfil",
+        "changePassword": "Cambiar contraseña",
+        "darkMode": "Modo oscuro",
+        "language": "Idioma",
+        "saveLanguage": "Guardar idioma",
+        "more": "Más",
+        "termsAndConditions": "Términos y condiciones",
+        "privacyPolicy": "Política de privacidad",
+        "logout": "Cerrar sesión",
+        "save": "Guardar",
+        "searchLanguages": "Buscar idiomas",
+        "noLanguagesFound": "No se encontraron idiomas"
+    },
+    "editProfile": {
+        "editProfile": "Editar perfil",
+        "name": "Nombre",
+        "hintName": "Ingresar nombre",
+        "phone": "Teléfono",
+        "hintPhone": "Ingresar número de teléfono",
+        "email": "Correo electrónico",
+        "hintEmail": "Ingresar correo electrónico",
+        "save": "Guardar"
+    },
+    "policy": {
+        "ok": "Ok"
+    },
+    "wallet": {
+        "wallet": "Billetera",
+        "cardNumber": "Número de tarjeta",
+        "expiry": "Vencimiento",
+        "CVC": "CVC",
+        "country": "País",
+        "postalCode": "Código postal",
+        "Transfer": "Transferir"
+    },
+    "allegries": {
+        "allegries_des": "Administre las alergias y condiciones médicas de su hijo",
+        "allegries_Remove": "Eliminar alergia",
+        "allegries_RemoveConfirm": "¿Está seguro de que desea eliminar la alergia?",
+        "cancel": "Cancelar",
+        "remove": "Eliminar",
+        "allegries_Allergies": "Alergias",
+        "allegries_headline": "Seleccione todas las alergias que apliquen a su hijo. Esta información se utilizará para ayudar a mantener a su hijo seguro y asegurarse de que evite cualquier alérgeno.",
+        "allegries_button": "Confirmar",
+        "allegries_saving": "Guardando...",
+        "allegries_success": "Alergias guardadas con éxito",
+        "allegries_no_selection": "Por favor, seleccione al menos una categoría de alergia",
+        "loading_categories": "Cargando categorías de alergias...",
+        "retry": "Reintentar",
+        "no_allergies_found": "No se encontraron categorías de alergias",
+        "student_details": "Detalles del estudiante",
+        "edit": "Editar",
+        "no_allergies": "No hay alergias registradas",
+        "Allergies": "Alergias",
+        "chocolate": "Chocolate",
+        "biscuit": "Galleta",
+        "milk": "Leche",
+        "softDrinks": "Bebidas Gaseosas",
+        "banana": "Plátano",
+        "nuts": "Frutos Secos",
+        "headline": "Especifique cualquier alergia para ayudarnos a adaptar las opciones de alimentos en consecuencia.",
+        "button": "Confirmar",
+        "des": "Administre la información de alergias de su hijo para garantizar opciones de alimentos seguras y adecuadas."
+    },
+    "addedChild": {
+        "studentID": "ID de estudiante",
+        "name": "Nombre",
+        "hintName": "Ingresar nombre",
+        "schoolName": "Nombre de la escuela",
+        "added": "Añadido",
+        "buttonText": "Agregar",
+        "addedSuccessfully": "Agregado exitosamente",
+        "uploadImage": {
+            "pleaseUploadImage": "Por favor, cargue una imagen",
+            "oK": "OK"
+        }
+    },
+    "notifacation": {
+        "appBarText": "Notificaciones",
+        "today": "Hoy",
+        "yesterday": "Ayer",
+        "lastWeek": "La semana pasada",
+        "7h": "Hace 7h",
+        "5h": "Hace 5h",
+        "des": "Ahmed Khalid intentó una compra, pero el saldo era insuficiente"
+    },
+    "childDetailsView": {
+        "title": "Vista de detalles del niño",
+        "limits": "Límites",
+        "day": "Día",
+        "week": "Semana",
+        "month": "Mes",
+        "remaining": "Restante",
+        "recharge": "Recargar",
+        "dailySpendingLimit": "Límite diario de gasto",
+        "dailyLimit": "Límite diario",
+        "price": "Precio",
+        "cancel": "Cancelar",
+        "edit": "Editar",
+        "enterDailyLimit": "Ingresar límite diario",
+        "ok": "OK",
+        "spendingLimits": "límites de gasto",
+        "spendingLimitsUpdated": "Límites de gasto actualizados",
+        "restrictedProducts": "Productos restringidos",
+        "manageRestrictions": "Gestionar restricciones"
+    },
+    "spendingLimitsView": {
+        "title": "Límite de gasto",
+        "spendingLimits": "Límites de gastos",
+        "description": "Habilite límites diarios, semanales o mensuales para fomentar hábitos de gasto saludables",
+        "daily": "Diario",
+        "weekly": "Semanal",
+        "monthly": "Mensual",
+        "dailyReset": "Se reinicia cada medianoche",
+        "weeklyReset": "Se reinicia cada domingo",
+        "monthlyReset": "Se reinicia cada mes",
+        "enterAmount": "Ingrese la cantidad",
+        "save": "Guardar",
+        "spendingLimitsLoaded": "Límites de gastos cargados exitosamente",
+        "loadingSpendingLimits": "Límites de gastos"
+    },
+    "errors": {
+        "loadingSpendingLimit": "Error al cargar el límite de gasto"
+    },
+    "messages": {
+        "dataRefreshed": "Datos actualizados correctamente"
+    },
+    "tracking": {
+        "title": "Seguimiento del estudiante",
+        "studentLocation": "Ubicación del estudiante",
+        "bottomNavLabel": "Seguimiento"
+    },
+    "account": {
+        "donotHaveAccount": "¿Si no tiene cuenta?",
+        "haveAccount": "¿Tiene cuenta?",
+        "singup": "Registrarse",
+        "login": "Iniciar sesión"
+    },
+    "transaction": {
+        "details": "Detalles de la transacción",
+        "transferFromWallet": "Transferir de su billetera a",
+        "date": "Seleccionar fecha",
+        "schoolName": "Nombre de la escuela",
+        "DateAndTime": "Fecha y hora",
+        "staffMember": "Miembro del personal",
+        "itemsPurchased": "Artículos comprados",
+        "quantity": "Cantidad",
+        "total": "Total"
+    },
+    "family": {
+        "family": "familia",
+        "noChildrenAddedYet": "Aún no se han agregado niños",
+        "failedToLoadingChildren": "Error al cargar los niños",
+        "tryAgain": "Intentar de nuevo",
+        "AddChild": "Agregar niño",
+        "Balance": "Saldo",
+        "dailySpendingLimit": "Límite de gasto diario"
+    },
+    "attendanceDetails": {
+        "attendance": "Asistencia",
+        "TryAgain": "Intentar de nuevo",
+        "failedToLoadAttendanceData": "Error al cargar los datos de asistencia",
+        "SelectAnotherDate": "Seleccionar otra fecha",
+        "noAttendanceRecordsFoundForThisDate": "No se encontraron registros de asistencia para esta fecha",
+        "attendanceDetailsView": {
+            "appBarTitle": "Detalles de asistencia",
+            "attendanceStatus": {
+                "absent": "Ausente",
+                "present": "Presente",
+                "recordedMessage": "Asistencia registrada para el día"
+            },
+            "studentInformationCard": {
+                "title": "Información del estudiante",
+                "name": "Nombre",
+                "grade": "Grado",
+                "gender": "Género",
+                "date": "Fecha",
+                "birthDate": "Fecha de nacimiento",
+                "city": "Ciudad"
+            },
+            "weeklyAttendanceChart": {
+                "title": "Asistencia semanal",
+                "noData": {
+                    "message": "No hay datos de asistencia disponibles para esta semana"
+                },
+                "daysOfWeek": {
+                    "mon": "Lun",
+                    "tue": "Mar",
+                    "wed": "Mié",
+                    "thu": "Jue",
+                    "fri": "Vie",
+                    "sat": "Sáb",
+                    "sun": "Dom"
+                },
+                "tooltip": {
+                    "noData": "Sin datos",
+                    "present": "Presente",
+                    "absent": "Ausente"
+                }
+            },
+            "detailedAttendanceInfo": {
+                "title": "Detalles de asistencia",
+                "status": "Estado",
+                "statusAbsent": "Ausente por el día",
+                "statusPresent": "Presente",
+                "arrivalTime": "Hora de llegada",
+                "leavingTime": "Hora de salida",
+                "timeSpent": "Tiempo transcurrido"
+            }
+        },
+        "attendanceCharts": {
+            "attendanceTrendLineChart": {
+                "title": "Gráfico de tendencia de asistencia"
+            }
+        }
+    },
+    "internetConnection": {
+        "noInternetConnection": "Sin conexión a Internet",
+        "pleaseYourNetworkSettings": "Por favor, revise la configuración de su red",
+        "internetConnectionRestored": "Conexión a Internet restaurada"
+    },
+    "showDialogLogin": {
+        "info": "información",
+        "goToGmailAndResetYourPassword": "vaya a Gmail y restablezca su contraseña",
+        "error": "error",
+        "sessionExpired": "Sesión caducada",
+        "yourSessionHasExpiredPleaseLogInAgain": "Su sesión ha caducado. Por favor, inicie sesión de nuevo."
+    }
+}

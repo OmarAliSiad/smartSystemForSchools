@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/attendance_model/attendance.dart';
 import '../../../../core/models/attendance_model/attendance_model.dart';
 import '../../../../core/models/attendance_model/result.dart';
@@ -14,6 +15,7 @@ import '../../../settings_view/presentation/manager/themeMode/theme_mode_cubit.d
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/animated_app_bar.dart';
 import '../../../main_screen/presentation/views/main_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AttendanceDetailsView extends StatefulWidget {
   static const String id = 'AttendanceDetailsView';
@@ -127,115 +129,121 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AnimatedCustomAppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () {
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: AnimatedCustomAppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          waveColor: Colors.blue.shade700,
+          backgroundColor: Colors.blue.shade900,
+          thereIsIcon: false,
+          title: LocaleKeys.attendanceDetails_attendanceDetailsView_appBarTitle
+              .tr(),
+          textStyle: AppStyles.styleSemiBold20().copyWith(color: Colors.white),
+          onTapBack: () {
             Navigator.of(context).pop();
           },
         ),
-        waveColor: Colors.blue.shade700,
-        backgroundColor: Colors.blue.shade900,
-        thereIsIcon: false,
-        title: 'Attendance Details',
-        textStyle: AppStyles.styleSemiBold20().copyWith(color: Colors.white),
-        onTapBack: () {
-          Navigator.of(context).pop();
-        },
-      ),
-      body: isLoading
-          ? buildLoadingView('attendance', context)
-          : BlocBuilder<ThemeModeCubit, ThemeModeState>(
-              builder: (context, state) {
-                final themeMode = context.read<ThemeModeCubit>().currentTheme;
-                return RefreshIndicator(
-                  backgroundColor: Colors.white,
-                  color: Colors.blue.shade900,
-                  onRefresh: refreshData,
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Attendance Status
-                          _buildAttendanceStatusCard()
-                              .animate()
-                              .fade(duration: 600.ms, delay: 200.ms)
-                              .slideX(begin: 0.1, end: 0),
+        body: isLoading
+            ? buildLoadingView('attendance', context)
+            : BlocBuilder<ThemeModeCubit, ThemeModeState>(
+                builder: (context, state) {
+                  final themeMode = context.read<ThemeModeCubit>().currentTheme;
+                  return RefreshIndicator(
+                    backgroundColor: Colors.white,
+                    color: Colors.blue.shade900,
+                    onRefresh: refreshData,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Attendance Status
+                            _buildAttendanceStatusCard()
+                                .animate()
+                                .fade(duration: 600.ms, delay: 200.ms)
+                                .slideX(begin: 0.1, end: 0),
 
-                          const SizedBox(height: 20),
+                            const SizedBox(height: 20),
 
-                          // Student Information Card
-                          _buildStudentInfoCard(themeMode)
-                              .animate()
-                              .fade(duration: 600.ms)
-                              .slideX(begin: -0.1, end: 0),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Weekly Attendance',
-                            style: AppStyles.styleSemiBold20(),
-                          )
-                              .animate()
-                              .fade(duration: 600.ms, delay: 400.ms)
-                              .slideY(begin: 0.2, end: 0),
-                          const SizedBox(height: 8),
-                          SizedBox(
-                            height: 200,
-                            child: Container(
-                              decoration: ShapeDecoration(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                color: context
-                                            .read<ThemeModeCubit>()
-                                            .currentTheme ==
-                                        ThemeMode.light
-                                    ? Colors.white
-                                    : const Color(0xFF1E1E1E),
-                                shadows: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    spreadRadius: 1,
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 2),
+                            // Student Information Card
+                            _buildStudentInfoCard(themeMode)
+                                .animate()
+                                .fade(duration: 600.ms)
+                                .slideX(begin: -0.1, end: 0),
+                            const SizedBox(height: 20),
+                            Text(
+                              LocaleKeys
+                                  .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_title
+                                  .tr(),
+                              style: AppStyles.styleSemiBold20(),
+                            )
+                                .animate()
+                                .fade(duration: 600.ms, delay: 400.ms)
+                                .slideY(begin: 0.2, end: 0),
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              height: 200,
+                              child: Container(
+                                decoration: ShapeDecoration(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                ],
+                                  color: context
+                                              .read<ThemeModeCubit>()
+                                              .currentTheme ==
+                                          ThemeMode.light
+                                      ? Colors.white
+                                      : const Color(0xFF1E1E1E),
+                                  shadows: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: _buildWeeklyAttendanceChart(),
+                                ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: _buildWeeklyAttendanceChart(),
-                              ),
-                            ),
-                          )
-                              .animate()
-                              .fade(duration: 600.ms, delay: 200.ms)
-                              .slideY(begin: 0.2, end: 0),
-                          const SizedBox(height: 20),
+                            )
+                                .animate()
+                                .fade(duration: 600.ms, delay: 200.ms)
+                                .slideY(begin: 0.2, end: 0),
+                            const SizedBox(height: 20),
 
-                          // Attendance Charts
-                          AttendanceCharts(
-                                  themeMode: themeMode,
-                                  attendanceData: attendanceHistoryData)
-                              .animate()
-                              .fade(duration: 600.ms, delay: 400.ms)
-                              .slideX(begin: 0.1, end: 0),
+                            // Attendance Charts
+                            AttendanceCharts(
+                                    themeMode: themeMode,
+                                    attendanceData: attendanceHistoryData)
+                                .animate()
+                                .fade(duration: 600.ms, delay: 400.ms)
+                                .slideX(begin: 0.1, end: 0),
 
-                          const SizedBox(height: 20),
+                            const SizedBox(height: 20),
 
-                          // Detailed Attendance Information
-                          _buildDetailedAttendanceInfo(themeMode)
-                              .animate()
-                              .fade(duration: 600.ms, delay: 600.ms)
-                              .slideY(begin: 0.1, end: 0),
-                        ],
+                            // Detailed Attendance Information
+                            _buildDetailedAttendanceInfo(themeMode)
+                                .animate()
+                                .fade(duration: 600.ms, delay: 600.ms)
+                                .slideY(begin: 0.1, end: 0),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
+      ),
     );
   }
 
@@ -261,16 +269,42 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Student Information',
+              LocaleKeys
+                  .attendanceDetails_attendanceDetailsView_studentInformationCard_title
+                  .tr(),
               style: AppStyles.styleSemiBold14().copyWith(fontSize: 18),
             ),
             const SizedBox(height: 10),
-            _buildInfoRow('Name', widget.childData.fullName ?? 'N/A'),
-            _buildInfoRow('Grade', widget.childData.grade?.toString() ?? 'N/A'),
-            _buildInfoRow('Gender', widget.childData.gender ?? 'N/A'),
-            _buildInfoRow('Date', widget.dateFormated),
-            _buildInfoRow('Birth Date', widget.childData.birthDate ?? 'N/A'),
-            _buildInfoRow('City', widget.childData.city ?? 'N/A'),
+            _buildInfoRow(
+                LocaleKeys
+                    .attendanceDetails_attendanceDetailsView_studentInformationCard_name
+                    .tr(),
+                widget.childData.fullName ?? 'N/A'),
+            _buildInfoRow(
+                LocaleKeys
+                    .attendanceDetails_attendanceDetailsView_studentInformationCard_grade
+                    .tr(),
+                widget.childData.grade?.toString() ?? 'N/A'),
+            _buildInfoRow(
+                LocaleKeys
+                    .attendanceDetails_attendanceDetailsView_studentInformationCard_gender
+                    .tr(),
+                widget.childData.gender ?? 'N/A'),
+            _buildInfoRow(
+                LocaleKeys
+                    .attendanceDetails_attendanceDetailsView_studentInformationCard_date
+                    .tr(),
+                widget.dateFormated),
+            _buildInfoRow(
+                LocaleKeys
+                    .attendanceDetails_attendanceDetailsView_studentInformationCard_birthDate
+                    .tr(),
+                widget.childData.birthDate ?? 'N/A'),
+            _buildInfoRow(
+                LocaleKeys
+                    .attendanceDetails_attendanceDetailsView_studentInformationCard_city
+                    .tr(),
+                widget.childData.city ?? 'N/A'),
           ],
         ),
       ),
@@ -299,7 +333,13 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    isAbsent ? 'Absent' : 'Present',
+                    isAbsent
+                        ? LocaleKeys
+                            .attendanceDetails_attendanceDetailsView_attendanceStatus_absent
+                            .tr()
+                        : LocaleKeys
+                            .attendanceDetails_attendanceDetailsView_attendanceStatus_present
+                            .tr(),
                     style: AppStyles.styleSemiBold14().copyWith(
                       color: isAbsent ? Colors.red : Colors.white,
                       fontSize: 18,
@@ -307,7 +347,9 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
                   ),
                   if (!isAbsent)
                     Text(
-                      'Attendance recorded for the day',
+                      LocaleKeys
+                          .attendanceDetails_attendanceDetailsView_attendanceStatus_recordedMessage
+                          .tr(),
                       style: AppStyles.styleRegular12().copyWith(
                         color: isAbsent ? Colors.red : Colors.white,
                       ),
@@ -343,18 +385,38 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Attendance Details',
+              LocaleKeys
+                  .attendanceDetails_attendanceDetailsView_detailedAttendanceInfo_title
+                  .tr(),
               style: AppStyles.styleSemiBold14().copyWith(fontSize: 18),
             ),
             const SizedBox(height: 10),
             if (isAbsent)
-              _buildInfoRow('Status', 'Absent for the day')
+              _buildInfoRow(
+                  LocaleKeys
+                      .attendanceDetails_attendanceDetailsView_detailedAttendanceInfo_status
+                      .tr(),
+                  LocaleKeys
+                      .attendanceDetails_attendanceDetailsView_detailedAttendanceInfo_statusAbsent
+                      .tr())
             else ...[
-              _buildInfoRow('Status', 'Present'),
               _buildInfoRow(
-                  'Arrival Time', _formatTime(todayAttendance?.attendanceDate)),
+                  LocaleKeys
+                      .attendanceDetails_attendanceDetailsView_detailedAttendanceInfo_status
+                      .tr(),
+                  LocaleKeys
+                      .attendanceDetails_attendanceDetailsView_detailedAttendanceInfo_statusPresent
+                      .tr()),
               _buildInfoRow(
-                  'Leaving Time', _formatTime(todayAttendance?.leavingDate)),
+                  LocaleKeys
+                      .attendanceDetails_attendanceDetailsView_detailedAttendanceInfo_arrivalTime
+                      .tr(),
+                  _formatTime(todayAttendance?.attendanceDate)),
+              _buildInfoRow(
+                  LocaleKeys
+                      .attendanceDetails_attendanceDetailsView_detailedAttendanceInfo_leavingTime
+                      .tr(),
+                  _formatTime(todayAttendance?.leavingDate)),
               if (todayAttendance?.leavingDate != null)
                 _buildDurationCalculation(),
             ],
@@ -375,7 +437,10 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
       DateTime leavingTime = DateTime.parse(todayAttendance!.leavingDate!);
       Duration duration = leavingTime.difference(arrivalTime);
 
-      return _buildInfoRow('Time Spent',
+      return _buildInfoRow(
+          LocaleKeys
+              .attendanceDetails_attendanceDetailsView_detailedAttendanceInfo_timeSpent
+              .tr(),
           '${duration.inHours} hours ${duration.inMinutes % 60} minutes');
     } catch (e) {
       return const SizedBox.shrink();
@@ -402,7 +467,29 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
   }
 
   Widget _buildWeeklyAttendanceChart() {
-    final daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final daysOfWeek = [
+      LocaleKeys
+          .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_daysOfWeek_sat
+          .tr(),
+      LocaleKeys
+          .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_daysOfWeek_sun
+          .tr(),
+      LocaleKeys
+          .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_daysOfWeek_mon
+          .tr(),
+      LocaleKeys
+          .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_daysOfWeek_tue
+          .tr(),
+      LocaleKeys
+          .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_daysOfWeek_wed
+          .tr(),
+      LocaleKeys
+          .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_daysOfWeek_thu
+          .tr(),
+      LocaleKeys
+          .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_daysOfWeek_fri
+          .tr(),
+    ];
     final now = DateTime.now();
     final dayIndices = List.generate(7, (index) {
       final date = now.subtract(Duration(days: 6 - index));
@@ -418,7 +505,9 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
             const Icon(Icons.bar_chart_outlined, size: 48, color: Colors.grey),
             const SizedBox(height: 8),
             Text(
-              'No attendance data available for this week',
+              LocaleKeys
+                  .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_noData_message
+                  .tr(),
               style: AppStyles.styleRegular14().copyWith(color: Colors.grey),
               textAlign: TextAlign.center,
             ),
@@ -455,10 +544,17 @@ class _AttendanceDetailsViewState extends State<AttendanceDetailsView> {
             tooltipPadding: const EdgeInsets.all(8),
             tooltipMargin: 8,
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
-              String status = 'No Data';
+              String status = LocaleKeys
+                  .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_tooltip_noData
+                  .tr();
               if (attendanceByDay.containsKey(groupIndex)) {
-                status =
-                    attendanceByDay[groupIndex] == true ? 'Present' : 'Absent';
+                status = attendanceByDay[groupIndex] == true
+                    ? LocaleKeys
+                        .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_tooltip_present
+                        .tr()
+                    : LocaleKeys
+                        .attendanceDetails_attendanceDetailsView_weeklyAttendanceChart_tooltip_absent
+                        .tr();
               }
               return BarTooltipItem(
                 '${dayIndices[groupIndex]}\n$status',
@@ -582,7 +678,9 @@ class AttendanceCharts extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Attendance Trend Line Chart',
+              LocaleKeys
+                  .attendanceDetails_attendanceCharts_attendanceTrendLineChart_title
+                  .tr(),
               style: AppStyles.styleSemiBold14().copyWith(fontSize: 18),
             ),
             const SizedBox(height: 10),

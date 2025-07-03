@@ -3,9 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/allegries_products/allegries_products.dart';
 import '../../models/allegry_details/allegry_details.dart';
-import '../../models/get_all_products/get_all_products.dart';
 import '../../utils/Constants.dart';
-import '../../models/catogry_details/catgory_details.dart';
 
 class AllergiesService {
   Dio dio = Dio();

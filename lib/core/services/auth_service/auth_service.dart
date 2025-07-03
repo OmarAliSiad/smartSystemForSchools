@@ -1,8 +1,11 @@
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import '../../../generated/locale_keys.g.dart';
 import '../../utils/Constants.dart';
 import '../../widgets/show_dialog.dart';
 import '../../../features/login/data/models/user_info_model.dart';
@@ -92,19 +95,24 @@ class AuthService {
         ),
       );
       if (response.statusCode == 200) {
-        showAswemoDialog(
-            dialogType: DialogType.success,
-            context: context,
-            title: 'info',
-            desc: 'go to gmail and reset your password');
+        if (context.mounted) {
+          showAswemoDialog(
+              dialogType: DialogType.success,
+              context: context,
+              title: LocaleKeys.showDialogLogin_info.tr(),
+              desc: LocaleKeys.showDialogLogin_goToGmailAndResetYourPassword
+                  .tr());
+        }
       }
     } catch (e) {
-      showAswemoDialog(
-        context: context,
-        dialogType: DialogType.error,
-        title: 'Error',
-        desc: e.toString(),
-      );
+      if (context.mounted) {
+        showAswemoDialog(
+          context: context,
+          dialogType: DialogType.error,
+          title: LocaleKeys.showDialogLogin_error.tr(),
+          desc: e.toString(),
+        );
+      }
     }
   }
 
@@ -140,9 +148,73 @@ class AuthService {
     log('token after removed ${(token).isEmpty} ');
   }
 
-  // Method to get the token for authenticated requests
+  // Method to check if the token is expired
+  Future<bool> isTokenExpired() async {
+    final token = await _getToken();
+    if (token == null || token.isEmpty) {
+      return true;
+    }
+
+    try {
+      // Use JwtDecoder to check if token is expired
+      return JwtDecoder.isExpired(token);
+    } catch (e) {
+      log('Error checking token expiration: $e');
+      return true; // Consider token invalid if there's an error
+    }
+  }
+
+  // Method to validate token and logout if expired
+  Future<bool> validateTokenAndLogoutIfNeeded(BuildContext context) async {
+    if (await isTokenExpired()) {
+      await logout();
+
+      // Navigate to login screen
+      if (context.mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/login', // Replace with your actual login route name
+            (route) => false);
+
+        // Show expiration message
+        showAswemoDialog(
+          context: context,
+          dialogType: DialogType.info,
+          title: LocaleKeys.showDialogLogin_sessionExpired.tr(),
+          desc: LocaleKeys.showDialogLogin_yourSessionHasExpiredPleaseLogInAgain
+              .tr(),
+        );
+      }
+
+      return false;
+    }
+    return true; // Token is valid
+  }
+
+  // Get token's remaining time in seconds
+  Future<int> getTokenRemainingTime() async {
+    final token = await _getToken();
+    if (token == null || token.isEmpty) {
+      return 0;
+    }
+
+    try {
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+      DateTime expiryDate = JwtDecoder.getExpirationDate(token);
+      final remaining = expiryDate.difference(DateTime.now()).inSeconds;
+      return remaining > 0 ? remaining : 0;
+    } catch (e) {
+      log('Error getting token expiration time: $e');
+      return 0;
+    }
+  }
+
+  // Updated getAuthHeaders with token validation
   Future<Map<String, String>> getAuthHeaders() async {
     final token = await _getToken();
+    if (token == null || await isTokenExpired()) {
+      log('Token is expired or null when trying to get auth headers');
+    }
     return {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
@@ -154,16 +226,34 @@ class AuthService {
   }) async {
     log('user is set in local storage');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(Constants.username, userModel.username!);
-    log(userModel.username.toString());
-    prefs.setString(Constants.email, userModel.email!);
-    prefs.setString(Constants.token, userModel.token!);
-    prefs.setString(Constants.id, userModel.userId!);
-    prefs.setString(Constants.schoolTenantId, userModel.schoolTenantId!);
-    prefs.getString(Constants.schoolTenantId)!;
+
+    // Validate username before saving
+    if (userModel.username == null || userModel.username!.trim().isEmpty) {
+      throw Exception('Username cannot be null or empty');
+    }
+
+    await prefs.setString(Constants.username, userModel.username!.trim());
+    log('Saved username: ${userModel.username}');
+
+    // Validate and save other user data
+    if (userModel.email != null && userModel.email!.isNotEmpty) {
+      prefs.setString(Constants.email, userModel.email!);
+    }
+    if (userModel.token != null && userModel.token!.isNotEmpty) {
+      prefs.setString(Constants.token, userModel.token!);
+    }
+    if (userModel.userId != null && userModel.userId!.isNotEmpty) {
+      prefs.setString(Constants.id, userModel.userId!);
+    }
+    if (userModel.schoolTenantId != null &&
+        userModel.schoolTenantId!.isNotEmpty) {
+      prefs.setString(Constants.schoolTenantId, userModel.schoolTenantId!);
+    }
+
     prefs.setStringList(Constants.roles,
         userModel.roles?.map((e) => e.toString()).toList() ?? []);
-    prefs.setBool(Constants.isAuthenticated, userModel.isAuthenticated!);
+    prefs.setBool(
+        Constants.isAuthenticated, userModel.isAuthenticated ?? false);
   }
 
   Future<UserInfoModel> getUserInfo() async {

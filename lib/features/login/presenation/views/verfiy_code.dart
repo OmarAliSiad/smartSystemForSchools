@@ -22,98 +22,103 @@ class _VerifyCodeState extends State<VerifyCode> {
   final bool _onEditing = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: [
-          Column(
-            children: [
-              const SizedBox(
-                height: 76,
-              ),
-              const CustomLogo(),
-              const SizedBox(
-                height: 92,
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.only(start: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        body: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
+            Column(
+              children: [
+                const SizedBox(
+                  height: 76,
+                ),
+                const CustomLogo(),
+                const SizedBox(
+                  height: 92,
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        LocaleKeys.VerifyCode_checkEmail.tr(),
+                        style: AppStyles.styleSemiBold20(),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        LocaleKeys.VerifyCode_description.tr(),
+                        style: AppStyles.styleMedium12().copyWith(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsetsDirectional.symmetric(horizontal: 20),
+                  child: PinCodeWidget(
+                    otpController: otpController,
+                  ),
+                ),
+                const SizedBox(
+                  height: 29,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsetsDirectional.symmetric(horizontal: 14),
+                  child: CustomButton(
+                    padding:
+                        const EdgeInsetsDirectional.symmetric(vertical: 14.5),
+                    text: LocaleKeys.VerifyCode_button.tr(),
+                    textStyle: AppStyles.styleSemiBold14(),
+                    borderRadius: 20,
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(ForgotPassword.id);
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 26,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      LocaleKeys.VerifyCode_checkEmail.tr(),
-                      style: AppStyles.styleSemiBold20(),
+                      LocaleKeys.VerifyCode_resend.tr(),
+                      style: AppStyles.styleMedium12().copyWith(
+                        fontSize: 13,
+                      ),
                     ),
                     const SizedBox(
-                      height: 5,
+                      width: 10,
                     ),
                     Text(
-                      LocaleKeys.VerifyCode_description.tr(),
+                      LocaleKeys.VerifyCode_time.tr(),
                       style: AppStyles.styleMedium12().copyWith(
                         fontSize: 13,
                       ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 20),
-                child: PinCodeWidget(
-                  otpController: otpController,
-                ),
-              ),
-              const SizedBox(
-                height: 29,
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 14),
-                child: CustomButton(
-                  padding:
-                      const EdgeInsetsDirectional.symmetric(vertical: 14.5),
-                  text: LocaleKeys.VerifyCode_button.tr(),
-                  textStyle: AppStyles.styleSemiBold14(),
-                  borderRadius: 20,
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(ForgotPassword.id);
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 26,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    LocaleKeys.VerifyCode_resend.tr(),
-                    style: AppStyles.styleMedium12().copyWith(
-                      fontSize: 13,
-                    ),
+                const SizedBox(height: 206),
+                Transform.translate(
+                  offset: const Offset(0, 30),
+                  child: const CustomBottomContainer(
+                    color: Colors.black,
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    LocaleKeys.VerifyCode_time.tr(),
-                    style: AppStyles.styleMedium12().copyWith(
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 206),
-              Transform.translate(
-                offset: const Offset(0, 30),
-                child: const CustomBottomContainer(
-                  color: Colors.black,
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

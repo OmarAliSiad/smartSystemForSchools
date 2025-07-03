@@ -1,11 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
 import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'package:smartsystemforschools/features/payment_parent/data/cubit/parent_childs_transcations_cubit.dart';
+import 'package:smartsystemforschools/features/payment_parent/presentation/screens/transcation_details.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+
+import '../../../../generated/locale_keys.g.dart';
 
 class TransactionsListWidget extends StatelessWidget {
   final String? date;
@@ -19,27 +21,28 @@ class TransactionsListWidget extends StatelessWidget {
       builder: (context, state) {
         if (state is PaymentTransactionsLoading) {
           return SliverFillRemaining(
-            child: buildLoadingView('transcations', context),
+            child:
+                buildLoadingView(LocaleKeys.common_transcations.tr(), context),
           );
         } else if (state is PaymentTransactionsLoaded) {
           final transactions = state.transactions.result;
           if (transactions == null || transactions.isEmpty) {
-            return const SliverFillRemaining(
+            return SliverFillRemaining(
                 hasScrollBody: false,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.search,
                       size: 80,
                       color: Colors.grey,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
-                      "No Transactions Found",
-                      style: TextStyle(
+                      LocaleKeys.common_noTransFound.tr(),
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.grey,
                       ),
@@ -62,7 +65,7 @@ class TransactionsListWidget extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(
                       context,
-                      '/transactionDetails',
+                      TranscationDetails.id,
                       arguments: {
                         'transactionId': tx.id,
                         'studentName': tx.studentName,
@@ -96,25 +99,31 @@ class TransactionsListWidget extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsetsDirectional.only(
-                          start: 15, top: 15, bottom: 25, end: 10),
+                          start: 15, top: 15, bottom: 25, end: 15),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Transfer from your wallet to ${tx.studentName.toString()}',
-                                style: AppStyles.styleRegular14(),
+                              // Use Expanded to prevent overflow
+                              Expanded(
+                                child: Text(
+                                  '${LocaleKeys.transaction_transferFromWallet.tr()} ${tx.studentName.toString()}',
+                                  style: AppStyles.styleRegular14(),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2, // Allow up to 2 lines
+                                ),
                               ),
-                              const Spacer(),
+                              const SizedBox(width: 18), // Add some spacing
+                              // Use Flexible for the amount to prevent overflow
                               Text(
                                 '${tx.moneyAmountSpended.toString()}\$',
                                 style: AppStyles.styleSemiBold14()
                                     .copyWith(color: const Color(0xff5CC2F2)),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.end,
                               ),
-                              const SizedBox(
-                                width: 10,
-                              )
                             ],
                           ),
                           const SizedBox(
@@ -123,6 +132,7 @@ class TransactionsListWidget extends StatelessWidget {
                           Text(
                             dateStr,
                             style: AppStyles.styleRegular12(),
+                            overflow: TextOverflow.ellipsis,
                           )
                         ],
                       ),

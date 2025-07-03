@@ -1,17 +1,17 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/features/payment_parent/presentation/widgets/custom_app_bar_spare_recharge_widget.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../core/methods/show_scaffold_messanger.dart';
 import '../../../core/models/money_recharge_model/money_recharge_model.dart';
 import '../../../core/utils/Constants.dart';
-import '../../../core/utils/app_styles.dart';
 import '../../../core/widgets/build_loading_view.dart';
 import '../../payment_parent/presentation/widgets/total_fees.dart';
 import '../../payment/presentation/manager/cubit/payment_cubit.dart';
 import '../../settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ChooseBalanceForChild extends StatefulWidget {
   final double balance;
@@ -33,6 +33,9 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
   final TextEditingController customAmountController = TextEditingController();
   bool isCustomAmount = false;
   late MoneyRechargeModel checkoutPaymentModel;
+  PaymentCubit? _paymentCubit;
+  ThemeModeCubit? _themeModeCubit;
+  bool _isDisposed = false;
   double get processingFee {
     final amount = selectedAmount ?? 0;
     return amount + 0.000;
@@ -46,14 +49,41 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // Ensure we're not accessing context during animation setup
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {}); // Safely trigger a rebuild when mounted
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _paymentCubit = context.read<PaymentCubit>();
+    _themeModeCubit = context.read<ThemeModeCubit>();
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    customAmountController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<PaymentCubit, PaymentState>(
       listener: (context, state) {
+        if (!mounted || _isDisposed) return;
+
         if (state is SetMoneySuccess) {
           dispalySnackBar(
             context,
-            title: "Money recharged successfully",
-            titleActionButton: "OK",
+            title: LocaleKeys.spare_MoneyRechargedSuccessfully.tr(),
+            titleActionButton: LocaleKeys.spare_ok.tr(),
             color: Colors.green,
           );
           Navigator.pop(context);
@@ -61,18 +91,19 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
           dispalySnackBar(
             context,
             title: state.errorMessage,
-            titleActionButton: "OK",
+            titleActionButton: LocaleKeys.spare_ok.tr(),
             color: Colors.red,
           );
         }
       },
       child: Scaffold(
-          appBar: const CustomAppBarSpareAndRechargeWidget(title: 'Recharge'),
+          appBar: CustomAppBarSpareAndRechargeWidget(
+              title: LocaleKeys.spare_Recharge.tr()),
           body: BlocBuilder<PaymentCubit, PaymentState>(
             builder: (context, state) {
               if (state is SetMoneyLoading) {
                 return buildLoadingView(
-                  "recharge",
+                  LocaleKeys.spare_Recharge.tr(),
                   context,
                 );
               }
@@ -101,15 +132,28 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                   mainAxisSpacing: 12,
                   children: [
                     ...amountOptions.map(
-                      (amount) => _buildAmountOption(amount)
-                          .animate()
-                          .fade(
-                              duration: 600.ms,
-                              delay: 200.ms * amountOptions.indexOf(amount))
-                          .slideY(begin: 0.2, end: 0),
+                      (amount) {
+                        if (!mounted) return Container(); // Safety check
+                        return _buildAmountOption(amount)
+                            .animate(
+                              // Set onPlay and other animation properties safely
+                              onPlay: (controller) {
+                                if (!mounted || _isDisposed) controller.stop();
+                              },
+                            )
+                            .fade(
+                                duration: 600.ms,
+                                delay: 200.ms * amountOptions.indexOf(amount))
+                            .slideY(begin: 0.2, end: 0);
+                      },
                     ),
-                    _buildAmountOption("other", isText: true)
-                        .animate()
+                    _buildAmountOption(LocaleKeys.spare_Other.tr(),
+                            isText: true)
+                        .animate(
+                          onPlay: (controller) {
+                            if (!mounted || _isDisposed) controller.stop();
+                          },
+                        )
                         .fade(duration: 600.ms, delay: 1200.ms)
                         .slideY(begin: 0.2, end: 0),
                   ],
@@ -119,7 +163,11 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                   selectedAmount: selectedAmount,
                   processingFee: processingFee,
                 )
-                    .animate()
+                    .animate(
+                      onPlay: (controller) {
+                        if (!mounted) controller.stop();
+                      },
+                    )
                     .fade(duration: 600.ms, delay: 1400.ms)
                     .slideY(begin: 0.2, end: 0),
               ],
@@ -132,20 +180,20 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Credit recharges are non-refundable.",
-                style: TextStyle(fontSize: 14),
+              Text(
+                LocaleKeys.spare_creditRechargesAreNonRefundable.tr(),
+                style: const TextStyle(fontSize: 14),
               ),
-              const Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "By tapping recharge you agree to the",
-                    style: TextStyle(fontSize: 14),
+                    LocaleKeys.spare_byTappingRecharge.tr(),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   Text(
-                    "credit card load-up terms and conditions.",
-                    style: TextStyle(
+                    LocaleKeys.spare_creditCardLoadUpTermsAndConditions.tr(),
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Constants.blue, //Color(0xFF00BCD4),,
                     ),
@@ -159,11 +207,15 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (selectedAmount != null) {
-                      context.read<PaymentCubit>().setMoneyForChild(
+                    if (selectedAmount != null &&
+                        mounted &&
+                        _paymentCubit != null) {
+                      _paymentCubit!
+                          .setMoneyForChild(
                             amountOfMoney: selectedAmount!.toDouble(),
                             studentId: widget.studentId,
-                          );
+                          )
+                          .then((value) {});
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -172,16 +224,20 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    "Recharge at Repton",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  child: Text(
+                    LocaleKeys.spare_Recharge.tr(),
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
               ),
             ],
           ),
         )
-            .animate()
+            .animate(
+              onPlay: (controller) {
+                if (!mounted) controller.stop();
+              },
+            )
             .fade(duration: 600.ms, delay: 1400.ms)
             .slideY(begin: 0.2, end: 0),
       ],
@@ -189,8 +245,7 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
   }
 
   Widget _buildCustomAmountView(BuildContext context) {
-    final isDark =
-        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+    final isDark = _themeModeCubit?.currentTheme == ThemeMode.dark;
     return Column(
       children: [
         Expanded(
@@ -222,15 +277,18 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                     controller: customAmountController,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Amount",
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                    decoration: InputDecoration(
+                      hintText: LocaleKeys.spare_enterAmount.tr(),
+                      hintStyle: const TextStyle(color: Colors.grey),
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
                     ),
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                     ],
                     onChanged: (value) {
+                      if (!mounted || _isDisposed) return;
+
                       if (value.isNotEmpty) {
                         final amount = int.tryParse(value);
                         if (amount != null) {
@@ -246,7 +304,11 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                     },
                   ),
                 )
-                    .animate()
+                    .animate(
+                      onPlay: (controller) {
+                        if (!mounted) controller.stop();
+                      },
+                    )
                     .fade(duration: 600.ms, delay: 200.ms)
                     .slideY(begin: 0.2, end: 0),
                 const SizedBox(height: 20),
@@ -256,8 +318,7 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                     (int.tryParse(customAmountController.text) ?? 0) > 2000)
                   Container(
                     padding: const EdgeInsetsDirectional.symmetric(
-                      vertical: 30,
-                    ),
+                        vertical: 30, horizontal: 10),
                     decoration: BoxDecoration(
                       color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -271,9 +332,10 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                         ),
                       ],
                     ),
-                    child: const Text(
-                      "Please enter a whole number between 1 and 2000",
-                      style: TextStyle(
+                    child: Text(
+                      LocaleKeys.spare_pleaseEnterAWholeNumberBetween1And10000
+                          .tr(),
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.red,
                         fontWeight: FontWeight.w500,
@@ -281,7 +343,11 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                       textAlign: TextAlign.center,
                     ),
                   )
-                      .animate()
+                      .animate(
+                        onPlay: (controller) {
+                          if (!mounted) controller.stop();
+                        },
+                      )
                       .fade(duration: 600.ms, delay: 200.ms)
                       .slideY(begin: 0.2, end: 0),
                 if (customAmountController.text.isNotEmpty &&
@@ -292,7 +358,11 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                     selectedAmount: selectedAmount,
                     processingFee: processingFee,
                   )
-                      .animate()
+                      .animate(
+                        onPlay: (controller) {
+                          if (!mounted) controller.stop();
+                        },
+                      )
                       .fade(duration: 600.ms, delay: 200.ms)
                       .slideY(begin: 0.2, end: 0),
               ],
@@ -304,24 +374,24 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Text(
-                "Credit recharges are non-refundable.",
-                style: TextStyle(fontSize: 14),
+              Text(
+                LocaleKeys.spare_creditRechargesAreNonRefundable.tr(),
+                style: const TextStyle(fontSize: 14),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "By tapping recharge you agree to the ",
-                    style: TextStyle(fontSize: 14),
+                  Text(
+                    LocaleKeys.spare_byTappingRecharge.tr(),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   GestureDetector(
                     onTap: () {
                       // Open terms and conditions
                     },
-                    child: const Text(
-                      "credit card load-up terms and conditions.",
-                      style: TextStyle(
+                    child: Text(
+                      LocaleKeys.spare_creditCardLoadUpTermsAndConditions.tr(),
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Constants.blue, //Color(0xFF00BCD4),,
                       ),
@@ -339,18 +409,22 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                     if (customAmountController.text.isNotEmpty &&
                         (int.tryParse(customAmountController.text) ?? 0) >= 1 &&
                         (int.tryParse(customAmountController.text) ?? 0) <=
-                            2000) {
-                      context.read<PaymentCubit>().setMoneyForChild(
-                            studentId: widget.studentId,
-                            amountOfMoney: double.parse(
-                              customAmountController.text.trim(),
-                            ),
-                          );
-                    } else {
+                            2000 &&
+                        mounted &&
+                        _paymentCubit != null) {
+                      _paymentCubit!.setMoneyForChild(
+                        studentId: widget.studentId,
+                        amountOfMoney: double.parse(
+                          customAmountController.text.trim(),
+                        ),
+                      );
+                    } else if (mounted) {
                       dispalySnackBar(
                         context,
-                        title: "Please enter a whole number between 1 and 2000",
-                        titleActionButton: "OK",
+                        title: LocaleKeys
+                            .spare_pleaseEnterAWholeNumberBetween1And10000
+                            .tr(),
+                        titleActionButton: LocaleKeys.spare_ok.tr(),
                         color: Colors.red,
                       );
                     }
@@ -361,15 +435,19 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    "Recharge at Repton",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  child: Text(
+                    LocaleKeys.spare_Recharge.tr(),
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
               )
             ],
           )
-              .animate()
+              .animate(
+                onPlay: (controller) {
+                  if (!mounted) controller.stop();
+                },
+              )
               .fade(duration: 600.ms, delay: 400.ms)
               .slideY(begin: 0.2, end: 0),
         ),
@@ -379,17 +457,18 @@ class _ChooseBalanceForChildState extends State<ChooseBalanceForChild> {
 
   Widget _buildAmountOption(dynamic amount, {bool isText = false}) {
     final isSelected = !isText && selectedAmount == amount;
-    final isDark =
-        context.read<ThemeModeCubit>().currentTheme == ThemeMode.dark;
+    final isDark = _themeModeCubit?.currentTheme == ThemeMode.dark;
     return GestureDetector(
         onTap: () {
-          setState(() {
-            if (isText) {
-              isCustomAmount = true;
-            } else {
-              selectedAmount = amount;
-            }
-          });
+          if (mounted && !_isDisposed) {
+            setState(() {
+              if (isText) {
+                isCustomAmount = true;
+              } else {
+                selectedAmount = amount;
+              }
+            });
+          }
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),

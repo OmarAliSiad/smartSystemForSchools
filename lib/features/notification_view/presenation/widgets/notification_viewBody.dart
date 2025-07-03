@@ -70,31 +70,62 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NotificationCubit, NotificationState>(
-      buildWhen: (context, state) =>
-          state is NotificationLoading ||
-          state is GetAllNotificationLoadedSuccessfully ||
-          state is NotificationDeleted,
+      buildWhen: (previous, current) =>
+          current is NotificationLoading ||
+          current is GetAllNotificationLoadedSuccessfully ||
+          current is NotificationDeleted,
+      listenWhen: (previous, current) =>
+          current is NotificationFailure ||
+          current is NotificationDeleted ||
+          current is GetAllNotificationLoadedSuccessfully,
       listener: (context, state) {
-        if (state is NotificationFailure || state is NotificationDeleted) {
-          String message = '';
-          if (state is NotificationDeleted) {
-            message = state.message;
-          }
-          if (state is NotificationFailure) {
-            message = state.error;
-          }
-          dispalySnackBar(context, title: message, color: Colors.red);
+        // Ensure we're still mounted before proceeding
+        if (!mounted) return;
+
+        String? message;
+        Color? color;
+
+        if (state is NotificationFailure) {
+          message = state.error;
+          color = Colors.red;
+        } else if (state is NotificationDeleted) {
+          message = state.message;
+          color = Colors.green;
         } else if (state is GetAllNotificationLoadedSuccessfully) {
           if (state.notificationModel.result!.isEmpty) {
-            dispalySnackBar(context,
-                title: 'No notifications found', color: Colors.red);
-          } else {
-            dispalySnackBar(context,
-                title: 'Notifications loaded successfully',
-                color: Colors.green);
+            message = 'No notifications found';
+            color = Colors.red;
           }
-        } else if (state is NotificationDeleted) {
-          dispalySnackBar(context, title: state.message, color: Colors.green);
+          // Only show success message on explicit success states
+          // Removed the "Notifications loaded successfully" message to reduce noise
+        }
+
+        // Only show SnackBar if we have a message to display
+        if (message != null && color != null && context.mounted) {
+          final messenger = ScaffoldMessenger.of(context);
+          messenger.clearSnackBars();
+
+          // Schedule the SnackBar for the next frame
+          Future.microtask(() {
+            if (context.mounted) {
+              messenger.showSnackBar(
+                SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  margin: const EdgeInsets.all(8),
+                  content: Text(message!),
+                  backgroundColor: color,
+                  duration: const Duration(seconds: 2),
+                  action: SnackBarAction(
+                    label: 'Ok',
+                    textColor: Colors.white,
+                    onPressed: () {
+                      messenger.hideCurrentSnackBar();
+                    },
+                  ),
+                ),
+              );
+            }
+          });
         }
       },
       builder: (context, state) {
@@ -144,7 +175,7 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
                             createdOn:
                                 notificationModel.result![index].createdOn!,
                           ),
-                          notificationId: 
+                          notificationId:
                               notificationModel.result![index].id.toString(),
                           date: f.format(
                               notificationModel.result![index].createdOn!),

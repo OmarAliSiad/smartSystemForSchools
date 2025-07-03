@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smartsystemforschools/core/widgets/build_loading_view.dart';
 import 'package:smartsystemforschools/features/settings_view/presentation/manager/themeMode/theme_mode_cubit.dart';
 import '../../../../core/utils/app_styles.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MapPickerScreen extends StatefulWidget {
   final Function(String) onLocationSelected;
@@ -79,56 +80,59 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          ),
+          title: Text(
+            'Select Location',
+            style: AppStyles.styleBold20().copyWith(color: Colors.white),
+          ),
+          backgroundColor: const Color(0xff1A0F91),
         ),
-        title: Text(
-          'Select Location',
-          style: AppStyles.styleBold20().copyWith(color: Colors.white),
+        body: Stack(
+          children: [
+            if (_selectedLocation != null)
+              GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition: CameraPosition(
+                  target: _selectedLocation!,
+                  zoom: 15,
+                ),
+                onMapCreated: (controller) {
+                  _mapController.complete(controller);
+                  _getAddressFromLatLng(_selectedLocation!);
+                },
+                onTap: (LatLng position) {
+                  setState(() => _selectedLocation = position);
+                  _getAddressFromLatLng(position);
+                  _showBottomSheet();
+                },
+                markers: _selectedLocation == null
+                    ? {}
+                    : {
+                        Marker(
+                          markerId: const MarkerId('selected'),
+                          position: _selectedLocation!,
+                        ),
+                      },
+              )
+            else if (_isLoading)
+              Center(
+                child: buildLoadingView(
+                  'map',
+                  context,
+                ),
+              ),
+          ],
         ),
-        backgroundColor: const Color(0xff1A0F91),
-      ),
-      body: Stack(
-        children: [
-          if (_selectedLocation != null)
-            GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: CameraPosition(
-                target: _selectedLocation!,
-                zoom: 15,
-              ),
-              onMapCreated: (controller) {
-                _mapController.complete(controller);
-                _getAddressFromLatLng(_selectedLocation!);
-              },
-              onTap: (LatLng position) {
-                setState(() => _selectedLocation = position);
-                _getAddressFromLatLng(position);
-                _showBottomSheet();
-              },
-              markers: _selectedLocation == null
-                  ? {}
-                  : {
-                      Marker(
-                        markerId: const MarkerId('selected'),
-                        position: _selectedLocation!,
-                      ),
-                    },
-            )
-          else if (_isLoading)
-            Center(
-              child: buildLoadingView(
-                'map',
-                context,
-              ),
-            ),
-        ],
       ),
     );
   }

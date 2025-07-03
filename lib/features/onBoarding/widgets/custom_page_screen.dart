@@ -29,7 +29,7 @@ class CustomPageScreen extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(
-          height: 164,
+          height: 200,
         ),
         FadeInRight(
           duration: const Duration(seconds: 1),
@@ -88,7 +88,7 @@ class CustomPageScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 22,
+          height: 20,
         ),
         const CustomBottomContainer(
           color: Colors.black,

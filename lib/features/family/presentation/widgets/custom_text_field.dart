@@ -37,6 +37,7 @@ class SectionTextFiledForAddChild extends StatelessWidget {
           controller: controller,
           hintText: hintText,
           validator: validator,
+          
           prefixIcon: Padding(
             padding: const EdgeInsetsDirectional.all(15),
             child: Image.asset(

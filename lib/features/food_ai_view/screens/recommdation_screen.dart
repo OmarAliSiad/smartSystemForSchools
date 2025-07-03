@@ -2,35 +2,37 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/animated_app_bar.dart';
 import '../../../core/utils/app_styles.dart';
 import '../data/models/meal_recommendation.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RecommendationsScreen extends StatelessWidget {
   final List<MealRecommendation> recommendations;
-  final String mealType;
   final bool isDarkMode;
   const RecommendationsScreen({
     super.key,
     required this.recommendations,
     required this.isDarkMode,
-    required this.mealType,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AnimatedCustomAppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
+    return KeyedSubtree(
+      key: ValueKey(context.locale.toString()),
+      child: Scaffold(
+        appBar: AnimatedCustomAppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () => Navigator.pop(context),
+          ),
+          waveColor: Colors.blue,
+          thereIsIcon: false,
+          backgroundColor: Colors.blue.shade900,
+          title: 'Not Recommended Meals',
+          textStyle: AppStyles.styleSemiBold20(),
         ),
-        waveColor: Colors.blue,
-        thereIsIcon: false,
-        backgroundColor: Colors.blue.shade900,
-        title: 'Not Recommended Meals',
-        textStyle: AppStyles.styleSemiBold20(),
+        body: recommendations.isEmpty
+            ? _buildEmptyState(context)
+            : _buildRecommendationsList(context),
       ),
-      body: recommendations.isEmpty
-          ? _buildEmptyState(context)
-          : _buildRecommendationsList(context),
     );
   }
 
@@ -129,50 +131,7 @@ class RecommendationsScreen extends StatelessWidget {
               recommendation.name,
               style: AppStyles.styleBold16(),
             ),
-            subtitle: const Text('Tap to see details'),
-            childrenPadding: EdgeInsets.zero,
-            expandedCrossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildSectionHeader(context, 'Ingredients:', Icons.egg_alt),
-                    const SizedBox(height: 8),
-                    ...recommendation.ingredients.map((ingredient) => Padding(
-                          padding:
-                              const EdgeInsets.only(left: 8.0, bottom: 8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Icon(Icons.fiber_manual_record,
-                                  size: 12, color: Colors.blue),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  ingredient,
-                                  style: const TextStyle(fontSize: 16),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )),
-                    const SizedBox(height: 20),
-                    _buildSectionHeader(
-                        context, 'Disadvantages:', Icons.warning_amber_rounded),
-                    const SizedBox(height: 8),
-                    Text(
-                      recommendation.disadvantageDescription,
-                      style: AppStyles.styleMedium16(),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            subtitle: const SizedBox(),
           ),
         );
       },

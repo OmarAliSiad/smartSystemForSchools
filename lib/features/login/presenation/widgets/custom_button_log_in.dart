@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/services/fcm_token_service/fcm_token_service.dart';
 import '../../../../core/utils/Constants.dart';
 import '../../../main_screen/presentation/views/main_screen.dart';
@@ -12,7 +14,7 @@ import '../../data/models/user_info_model.dart';
 
 class CustomButtonLogIn extends StatefulWidget {
   final TextEditingController userName;
-  final Function(bool login) callback;
+  final Function(bool) callback; // Changed to accept bool parameter
   final TextEditingController password;
   final GlobalKey<FormState> formState;
   final String text;
@@ -66,10 +68,10 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
           ? null
           : () async {
               if (widget.formState.currentState!.validate()) {
-                widget.callback(true);
                 setState(() {
                   loading = true;
                 });
+                widget.callback(true);
                 late Response response;
                 try {
                   SharedPreferences sharedPreferences =
@@ -81,11 +83,11 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
                         sharedPreferences.getString(Constants.username)!;
                     log('email $email');
                     log('username $username');
-                  } else {
-                    log('email not found in SharedPreferences');
                   }
+
                   log('email ${widget.userName.text}');
                   log('password ${widget.password.text}');
+
                   response = await AuthService().login(
                     url: 'https://school-api.runasp.net/api/Account/login',
                     body: {
@@ -93,35 +95,90 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
                       "password": widget.password.text.trim(),
                     },
                   );
-                  if (response.statusCode == 200) {
-                    FCMTokenService().saveToken();
-                    log('set user');
+
+                  if (response.statusCode == 200 && response.data != null) {
                     UserInfoModel userInfo =
                         UserInfoModel.fromJson(response.data);
-                    log(userInfo.toJson().toString());
-                    AuthService().setUser(userModel: userInfo);
-                    log('user is set');
-                    if (mounted) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => const MainScreen()),
-                          (route) => false);
-                      dispalySnackBar(
-                        context,
-                        title: 'Login Successfully',
-                        titleActionButton: 'Ok',
-                        color: Colors.green,
+                    if (userInfo.username == null ||
+                        userInfo.username!.trim().isEmpty) {
+                      if (context.mounted) {
+                        dispalySnackBar(
+                          context,
+                          title: LocaleKeys.Auth_invalidUserDataReceived.tr(),
+                          titleActionButton: LocaleKeys.Auth_Ok.tr(),
+                          color: Colors.red,
+                        );
+                      }
+                      return;
+                    }
+
+                    FCMTokenService().saveToken();
+                    log('Setting user info');
+                    await AuthService().setUser(userModel: userInfo);
+                    log('User info set successfully');
+
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(LocaleKeys.Auth_loginSuccessfully.tr()),
+                          backgroundColor: Colors.green,
+                          action: SnackBarAction(
+                            label: LocaleKeys.Auth_Ok.tr(),
+                            textColor: Colors.white,
+                            onPressed: () {},
+                          ),
+                        ),
                       );
+
+                      await Future.delayed(const Duration(milliseconds: 500));
+
+                      if (context.mounted) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const MainScreen()),
+                            (route) => false);
+                      }
                     }
                   } else {
-                    if (mounted) {
-                      dispalySnackBar(
-                        context,
-                        title: response.data.toString(),
-                        titleActionButton: 'Ok',
-                        color: Colors.red,
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            response.data?.toString() ??
+                                LocaleKeys.Auth_loginFailed.tr(),
+                          ),
+                          backgroundColor: Colors.red,
+                          action: SnackBarAction(
+                            label: LocaleKeys.Auth_Ok.tr(),
+                            textColor: Colors.white,
+                            onPressed: () {},
+                          ),
+                        ),
                       );
                     }
+                  }
+                } catch (e) {
+                  log('Login error: $e');
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          LocaleKeys.Auth_loginFailed.tr(),
+                        ),
+                        backgroundColor: Colors.red,
+                        action: SnackBarAction(
+                          label: LocaleKeys.Auth_Ok.tr(),
+                          textColor: Colors.white,
+                          onPressed: () {},
+                        ),
+                      ),
+                    );
                   }
                 } finally {
                   if (mounted) {
@@ -153,7 +210,7 @@ class _CustomButtonLogInState extends State<CustomButtonLogIn>
                 FadeTransition(
                   opacity: _fadeAnimation,
                   child: Text(
-                    'Logging in...',
+                    LocaleKeys.Auth_loggingIn.tr(),
                     style: AppStyles.styleMedium18(),
                   ),
                 ),
