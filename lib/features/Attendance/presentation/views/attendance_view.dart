@@ -191,11 +191,16 @@ class _AttendanceViewState extends State<AttendanceView> {
                                 ),
                                 const SizedBox(height: 8),
                                 ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue.shade900,
+                                  ),
                                   onPressed: () => _selectDate(context),
                                   child: Text(
                                     LocaleKeys
                                         .attendanceDetails_SelectAnotherDate
                                         .tr(),
+                                    style: AppStyles.styleMedium13()
+                                        .copyWith(color: Colors.white),
                                   ),
                                 ),
                               ],
@@ -218,11 +223,16 @@ class _AttendanceViewState extends State<AttendanceView> {
                                 ),
                                 const SizedBox(height: 8),
                                 ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue.shade900,
+                                  ),
                                   onPressed: () => _selectDate(context),
                                   child: Text(
                                     LocaleKeys
                                         .attendanceDetails_SelectAnotherDate
                                         .tr(),
+                                    style: AppStyles.styleMedium13()
+                                        .copyWith(color: Colors.white),
                                   ),
                                 ),
                               ],

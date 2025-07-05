@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:smartsystemforschools/core/utils/animated_app_bar.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/get_all_schools/result.dart';
 import '../../../../core/models/get_school_details_by_id/get_school_details_by_id.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -110,7 +111,8 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
               onPressed: () => Navigator.pop(context),
             ),
             thereIsIcon: false,
-            title: widget.school.name ?? 'School Details',
+            title: widget.school.name ??
+                LocaleKeys.schoolDetails_schoolDetails.tr(),
           ),
           body: RefreshIndicator(
             backgroundColor: cardColor,
@@ -140,7 +142,7 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
           ),
           const SizedBox(height: 20),
           Text(
-            'Loading school details...',
+            LocaleKeys.schoolDetails_loadingSchoolDetails.tr(),
             style: AppStyles.styleRegular14(),
           ),
         ],
@@ -161,7 +163,7 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
           ),
           const SizedBox(height: 20),
           Text(
-            'Error Loading Details',
+            LocaleKeys.schoolDetails_errorLoadingDetails.tr(),
             style: AppStyles.styleSemiBold20().copyWith(color: textColor),
           ),
           const SizedBox(height: 10),
@@ -185,7 +187,7 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
               ),
             ),
             child: Text(
-              'Try Again',
+              LocaleKeys.schoolDetails_tryAgain.tr(),
               style: AppStyles.styleRegular14().copyWith(color: Colors.white),
             ),
           )
@@ -315,12 +317,13 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'About School',
+            LocaleKeys.schoolDetails_aboutSchool.tr(),
             style: AppStyles.styleSemiBold20().copyWith(color: textColor),
           ),
           const SizedBox(height: 10),
           Text(
-            widget.school.description ?? 'No description available',
+            widget.school.description ??
+                LocaleKeys.schoolDetails_noDescriptionAvailable.tr(),
             style: AppStyles.styleRegular14().copyWith(
               color: secondaryTextColor,
             ),
@@ -351,21 +354,27 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Contact Information',
+            LocaleKeys.schoolDetails_contactInfo.tr(),
             style: AppStyles.styleSemiBold20().copyWith(color: textColor),
           ),
           const SizedBox(height: 16),
-          _buildInfoRow(Icons.email_outlined, widget.school.email ?? 'N/A',
-              primaryColor, secondaryTextColor),
-          const SizedBox(height: 12),
           _buildInfoRow(
-              Icons.phone_outlined,
-              widget.school.phoneNumber ?? 'N/A',
+              Icons.email_outlined,
+              widget.school.email ?? LocaleKeys.schoolDetails_NA.tr(),
               primaryColor,
               secondaryTextColor),
           const SizedBox(height: 12),
-          _buildInfoRow(Icons.location_on_outlined,
-              widget.school.address ?? 'N/A', primaryColor, secondaryTextColor),
+          _buildInfoRow(
+              Icons.phone_outlined,
+              widget.school.phoneNumber ?? LocaleKeys.schoolDetails_NA.tr(),
+              primaryColor,
+              secondaryTextColor),
+          const SizedBox(height: 12),
+          _buildInfoRow(
+              Icons.location_on_outlined,
+              widget.school.address ?? LocaleKeys.schoolDetails_NA.tr(),
+              primaryColor,
+              secondaryTextColor),
         ],
       ),
     );
@@ -392,20 +401,20 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Additional Information',
+            LocaleKeys.schoolDetails_additionalInformation.tr(),
             style: AppStyles.styleSemiBold20().copyWith(color: textColor),
           ),
           const SizedBox(height: 16),
           _buildInfoRow(
             Icons.calendar_today_outlined,
-            'Established: ${_getFormattedDate(widget.school.createdOn)}',
+            '${LocaleKeys.schoolDetails_established.tr()}: ${_getFormattedDate(widget.school.createdOn)}',
             primaryColor,
             secondaryTextColor,
           ),
           const SizedBox(height: 12),
           _buildInfoRow(
             Icons.location_city_outlined,
-            'Country: ${widget.school.country ?? 'N/A'}',
+            '${LocaleKeys.schoolDetails_country.tr()}: ${widget.school.country ?? LocaleKeys.schoolDetails_NA.tr()}',
             primaryColor,
             secondaryTextColor,
           ),
@@ -437,7 +446,7 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
   }
 
   String _getFormattedDate(DateTime? date) {
-    if (date == null) return 'N/A';
+    if (date == null) return LocaleKeys.schoolDetails_NA.tr();
     return '${date.day}/${date.month}/${date.year}';
   }
 
@@ -452,7 +461,7 @@ class _SchoolViewDetailsState extends State<SchoolViewDetails>
       child: showButton
           ? CustomButton(
               padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-              text: 'Confirm',
+              text: LocaleKeys.schoolDetails_confirm.tr(),
               textStyle: AppStyles.styleMedium16(),
               onPressed: () {
                 Navigator.of(context).pop();

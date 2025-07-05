@@ -18,11 +18,7 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
     try {
       emit(MealRecommendationLoading());
 
-      // Get blocked products first
-      final blockedProducts = _getBlockedProducts(profile, products);
-
-      // Prepare the prompt for Gemini
-      final prompt = _buildPrompt(profile, mealType, products, blockedProducts);
+      final prompt = _buildPrompt(profile, mealType, products);
 
       // Call Gemini API
       final recommendations = await _callGeminiApi(prompt);
@@ -34,47 +30,20 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
     }
   }
 
-  /// Returns a list of blocked product names based on child's profile
-  List<String> _getBlockedProducts(
-      ChildProfile profile, GetAllProducts? products) {
-    if (products?.result == null || products!.result!.isEmpty) {
-      return [];
-    }
-    List<String> blockedProducts = [];
-    if (blockedProducts.length < 2 && products.result!.length >= 2) {
-      // Add more products to reach minimum of 2
-      for (var product in products.result!) {
-        if (product.name != null && !blockedProducts.contains(product.name!)) {
-          blockedProducts.add(product.name!);
-          if (blockedProducts.length >= 2) break;
-        }
-      }
-    }
-
-    log('Blocked products: $blockedProducts');
-    return blockedProducts;
-  }
-
   String _buildPrompt(
     ChildProfile profile,
     String mealType,
     GetAllProducts? products,
-    List<String> blockedProducts,
   ) {
-    final blockedProductsText = blockedProducts.isEmpty
-        ? 'no specific blocked products'
-        : blockedProducts.join(', ');
-
     return """
     My child is ${profile.age} years old. 
     And he is weight ${profile.weight} kg and height ${profile.height} cm and his blood type ${profile.bloodType}.
-    BLOCKED PRODUCTS (DO NOT RECOMMEND): $blockedProductsText
     Please provide a comprehensive list of food products that are forbidden or not recommended for this child.
+    blocked from ${products?.result?.map((e) => e.name).join(', ')}
     For each blocked product, include:
     - Name
     - Why it's harmful for this specific child
     - Alternative suggestions if applicable
-    The blocked products are: $blockedProductsText
     """;
   }
 
@@ -225,8 +194,4 @@ class MealRecommendationCubit extends Cubit<MealRecommendationState> {
   }
 
   /// Public method to get blocked product names
-  List<String> getBlockedProductNames(
-      ChildProfile profile, GetAllProducts? products) {
-    return _getBlockedProducts(profile, products);
-  }
 }

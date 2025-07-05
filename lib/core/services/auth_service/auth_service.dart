@@ -118,7 +118,6 @@ class AuthService {
 
   // Method to log out the user
   Future<void> logout() async {
-    // Remove the token from SharedPreferences
     await _removeToken();
   }
 

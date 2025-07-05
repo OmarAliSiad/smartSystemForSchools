@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:smartsystemforschools/core/models/get_all_products/get_all_products.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../core/methods/show_scaffold_messanger.dart';
 import '../../../core/services/product_catogry_service/product_catogry_service.dart';
 import '../../../core/utils/animated_app_bar.dart';
@@ -103,7 +104,13 @@ class _FoodAiScreenState extends State<FoodAiScreen>
         _isLoadingChildren = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load children: $e')),
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            '${LocaleKeys.foodAiScreen_failedToLoadChildren.tr()} $e',
+            style: AppStyles.styleMedium13(),
+          ),
+        ),
       );
     }
   }
@@ -203,18 +210,18 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                     width: 1,
                   ),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.restaurant_menu,
                       color: Colors.white,
                       size: 20,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
-                      'Nutritionist',
-                      style: TextStyle(
+                      LocaleKeys.foodAiScreen_nutritionist.tr(),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -226,9 +233,9 @@ class _FoodAiScreenState extends State<FoodAiScreen>
             ],
           ),
           const SizedBox(height: 30),
-          const Text(
-            'Smart Meal Planning',
-            style: TextStyle(
+          Text(
+            LocaleKeys.foodAiScreen_smartMealPlanning.tr(),
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -237,7 +244,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
           ).animate().fadeIn(duration: 800.ms).slideY(begin: -0.5, end: 0),
           const SizedBox(height: 10),
           Text(
-            'Personalized nutrition for your child',
+            LocaleKeys.foodAiScreen_personalizedNutrition.tr(),
             style: TextStyle(
               color: Colors.white.withOpacity(0.8),
               fontSize: 16,
@@ -287,7 +294,8 @@ class _FoodAiScreenState extends State<FoodAiScreen>
         child: BlocBuilder<MealRecommendationCubit, MealRecommendationState>(
           builder: (context, state) {
             if (state is MealRecommendationLoading) {
-              return buildLoadingView('meals', context);
+              return buildLoadingView(
+                  LocaleKeys.foodAiScreen_meals.tr(), context);
             }
 
             return Form(
@@ -305,10 +313,13 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildSectionTitle(
-                              'Child Information', Icons.child_care),
+                              LocaleKeys.foodAiScreen_childInformation.tr(),
+                              Icons.child_care),
                           const SizedBox(height: 16),
                           _isLoadingChildren
-                              ? buildLoadingView('Children', context)
+                              ? buildLoadingView(
+                                  LocaleKeys.foodAiScreen_Children.tr(),
+                                  context)
                               : _buildChildSelector(isDarkMode),
                         ],
                       ),
@@ -326,26 +337,31 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildSectionTitle(
-                              'Physical Details', Icons.accessibility_new),
+                              LocaleKeys.foodAiScreen_physicalDetails.tr(),
+                              Icons.accessibility_new),
                           const SizedBox(height: 16),
 
                           // Age Field
                           _buildStyledTextField(
                             controller: _ageController,
-                            label: 'Age',
-                            hint: 'Enter child\'s age',
+                            label: LocaleKeys.foodAiScreen_age.tr(),
+                            hint: LocaleKeys.foodAiScreen_enterChildAge.tr(),
                             icon: Icons.cake,
                             keyboardType: TextInputType.number,
                             isDarkMode: isDarkMode,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your child\'s age';
+                                return LocaleKeys.foodAiScreen_enterChildAge
+                                    .tr();
                               } else if (double.tryParse(value) == null ||
                                   double.parse(value) > 18 ||
                                   double.parse(value) <= 0) {
-                                return 'enter vaild age for child';
+                                return LocaleKeys.foodAiScreen_enterValidAge
+                                    .tr();
                               } else if (value.length > 2) {
-                                return "enter vaild age for child";
+                                return LocaleKeys
+                                    .foodAiScreen_enterValidAgeLength
+                                    .tr();
                               }
                               return null;
                             },
@@ -357,18 +373,21 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                               Expanded(
                                 child: _buildStyledTextField(
                                   controller: _weightController,
-                                  label: 'Weight (kg)',
-                                  hint: 'Weight',
+                                  label: LocaleKeys.foodAiScreen_weight.tr(),
+                                  hint: LocaleKeys.foodAiScreen_weightHint.tr(),
                                   icon: Icons.monitor_weight,
                                   keyboardType: TextInputType.number,
                                   isDarkMode: isDarkMode,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter weight';
+                                      return LocaleKeys.foodAiScreen_enterWeight
+                                          .tr();
                                     } else if (double.tryParse(value) == null ||
                                         double.parse(value) <= 0 ||
                                         value.length > 2) {
-                                      return 'Please enter a valid weight';
+                                      return LocaleKeys
+                                          .foodAiScreen_enterValidWeight
+                                          .tr();
                                     }
                                     return null;
                                   },
@@ -378,19 +397,22 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                               Expanded(
                                 child: _buildStyledTextField(
                                   controller: _heightController,
-                                  label: 'Height (cm)',
-                                  hint: 'Height',
+                                  label: LocaleKeys.foodAiScreen_height.tr(),
+                                  hint: LocaleKeys.foodAiScreen_heightHint.tr(),
                                   icon: Icons.height,
                                   keyboardType: TextInputType.number,
                                   isDarkMode: isDarkMode,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter height';
+                                      return LocaleKeys.foodAiScreen_enterHeight
+                                          .tr();
                                     }
                                     if (double.tryParse(value) == null ||
                                         double.parse(value) <= 0 ||
                                         value.length > 3) {
-                                      return 'Please enter a valid height';
+                                      return LocaleKeys
+                                          .foodAiScreen_enterValidHeight
+                                          .tr();
                                     }
                                     return null;
                                   },
@@ -400,7 +422,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                           ),
                           const SizedBox(height: 16),
                           _buildStyledDropdown(
-                            label: 'Blood Type',
+                            label: LocaleKeys.foodAiScreen_bloodType.tr(),
                             value: _selectedBloodType,
                             items: _bloodTypes,
                             onChanged: (value) {
@@ -412,7 +434,8 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                             isDarkMode: isDarkMode,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please select a blood type';
+                                return LocaleKeys.foodAiScreen_selectBloodType
+                                    .tr();
                               }
                               return null;
                             },
@@ -432,7 +455,8 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSectionTitle('Allergies & Dietary Restrictions',
+                          _buildSectionTitle(
+                              LocaleKeys.foodAiScreen_allergiesAndDietary.tr(),
                               Icons.warning_amber),
                           const SizedBox(height: 16),
                           _buildAllergiesSection(isDarkMode),
@@ -653,7 +677,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'No children found. Please add children first.',
+                LocaleKeys.foodAiScreen_noChildrenFound.tr(),
                 style: TextStyle(
                   color: Colors.orange.shade700,
                   fontSize: 14,
@@ -668,7 +692,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
     return DropdownButtonFormField<ResultForChildDetails>(
       value: _selectedChild,
       decoration: InputDecoration(
-        labelText: 'Select Child',
+        labelText: LocaleKeys.foodAiScreen_selectChild.tr(),
         prefixIcon: Icon(
           Icons.child_care,
           color: Colors.blue.shade600,
@@ -698,7 +722,8 @@ class _FoodAiScreenState extends State<FoodAiScreen>
       items: _children.map((child) {
         return DropdownMenuItem<ResultForChildDetails>(
           value: child,
-          child: Text(child.fullName ?? 'Unknown'),
+          child:
+              Text(child.fullName ?? LocaleKeys.foodAiScreen_unknownChild.tr()),
         );
       }).toList(),
       onChanged: (value) {
@@ -713,7 +738,8 @@ class _FoodAiScreenState extends State<FoodAiScreen>
     return BlocBuilder<GetAllCatogriesCubit, GetAllCatogriesState>(
       builder: (context, state) {
         if (state is GetAllCatogriesLoading) {
-          return buildLoadingView('allergies', context);
+          return buildLoadingView(
+              LocaleKeys.foodAiScreen_allergies.tr(), context);
         } else if (state is GetAllCatogriesLoaded) {
           final products = state.catgoryDetails.result ?? [];
 
@@ -729,7 +755,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                   Icon(Icons.info, color: Colors.grey.shade600),
                   const SizedBox(width: 12),
                   Text(
-                    'No allergies data available',
+                    LocaleKeys.foodAiScreen_noAllergiesData.tr(),
                     style: TextStyle(
                       color: Colors.grey.shade600,
                       fontSize: 14,
@@ -744,7 +770,8 @@ class _FoodAiScreenState extends State<FoodAiScreen>
             spacing: 10,
             runSpacing: 10,
             children: products.map((allergy) {
-              final allergyName = allergy.name ?? 'Unknown';
+              final allergyName =
+                  allergy.name ?? LocaleKeys.foodAiScreen_unknown.tr();
               final isSelected = _selectedAllergies.contains(allergyName);
               return GestureDetector(
                 onTap: () async {
@@ -825,7 +852,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Failed to load allergies: ${state.errMessage}',
+                        '${LocaleKeys.foodAiScreen_failedToLoadAllergies.tr()} ${state.errMessage}',
                         style: TextStyle(
                           color: Colors.red.shade700,
                           fontSize: 14,
@@ -838,7 +865,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
                 ElevatedButton.icon(
                   onPressed: () => _loadAllergies(),
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Retry'),
+                  label: Text(LocaleKeys.foodAiScreen_retry.tr()),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red.shade600,
                     foregroundColor: Colors.white,
@@ -859,7 +886,7 @@ class _FoodAiScreenState extends State<FoodAiScreen>
               ),
               const SizedBox(width: 12),
               Text(
-                'Loading allergies...',
+                LocaleKeys.foodAiScreen_loadingAllergies.tr(),
                 style: TextStyle(
                   color:
                       isDarkMode ? Colors.grey.shade300 : Colors.grey.shade600,
@@ -878,19 +905,21 @@ class _FoodAiScreenState extends State<FoodAiScreen>
       onTap: () {
         if (_formKey.currentState!.validate()) {
           final profile = ChildProfile(
-            name: _selectedChild?.fullName ?? "Unknown",
+            name: _selectedChild?.fullName ??
+                LocaleKeys.foodAiScreen_unknownChild.tr(),
             age: int.parse(_ageController.text),
             allergies: _selectedAllergies,
-            time: "Breakfast",
-            bloodType: _selectedBloodType ?? "Unknown",
+            time: LocaleKeys.foodAiScreen_mealType.tr(),
+            bloodType:
+                _selectedBloodType ?? LocaleKeys.foodAiScreen_unknown.tr(),
             weight: double.parse(_weightController.text),
             height: double.parse(_heightController.text),
           );
           context.read<MealRecommendationCubit>().getRecommendations(
                 profile: profile,
                 products: products,
-                mealType:
-                    "Breakfast", // Default value since we removed meal type selection
+                mealType: LocaleKeys.foodAiScreen_mealType
+                    .tr(), // Default value since we removed meal type selection
               );
         }
       },
@@ -908,9 +937,9 @@ class _FoodAiScreenState extends State<FoodAiScreen>
               ],
             ),
           ),
-          child: const Text(
-            'Recommdations',
-            style: TextStyle(
+          child: Text(
+            LocaleKeys.foodAiScreen_recommendations.tr(),
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,

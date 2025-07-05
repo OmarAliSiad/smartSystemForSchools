@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/utils/custom_wave_widget.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/methods/show_scaffold_messanger.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/services/notification_service/get_notificatoin_details/get_notificatoin_details.dart';
@@ -49,7 +50,7 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
         centerTitle: true,
         elevation: 0,
         title: Text(
-          'Notification Details',
+          LocaleKeys.notificationDetails_NotificationDetails.tr(),
           style: AppStyles.styleSemiBold20().copyWith(color: Colors.white),
         ),
         forceMaterialTransparency: true,
@@ -79,13 +80,15 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
           if (state is NotificationDetailsLoaded) {
             final details = state.notificationDetails;
             if (details.isSuccess == false) {
-              return const Center(
-                child: Text("No details available"),
+              return Center(
+                child: Text(
+                    LocaleKeys.notificationDetails_NoDetailsAvailable.tr()),
               );
             }
             return _buildDetailsContent(details);
           } else if (state is NotificationDetailsLoading) {
-            return buildLoadingView('notification', context);
+            return buildLoadingView(
+                LocaleKeys.notificationDetails_Notification.tr(), context);
           } else {
             String message = '';
             if (state is NotificationFailure) {
@@ -116,8 +119,8 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
               CircleAvatar(
                 radius: 28,
                 backgroundColor: const Color(0xff1A0F91).withOpacity(.10),
-                child: _getNotificationIcon(
-                    notificationDetails.message ?? "Notification"),
+                child: _getNotificationIcon(notificationDetails.message ??
+                    LocaleKeys.notificationDetails_Notification.tr()),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -125,12 +128,13 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.notificationModel.result![0].title ?? "No Title",
+                      widget.notificationModel.result![0].title ??
+                          LocaleKeys.notificationDetails_NoTitle.tr(),
                       style: AppStyles.styleSemiBold20(),
                     ),
                     if (notificationDetails.result!.createdOn != null)
                       Text(
-                        'created At ${DateFormat.yMMMd().add_jm().format(notificationDetails.result!.createdOn!.add(const Duration(hours: 1)))}',
+                        '${LocaleKeys.notificationDetails_createdAt.tr()} ${DateFormat.yMMMd().add_jm().format(notificationDetails.result!.createdOn!.add(const Duration(hours: 1)))}',
                         style: TextStyle(color: textColor.withOpacity(0.7)),
                       ),
                   ],
@@ -149,8 +153,8 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
-              'studentName : ${notificationDetails.result!.studentName}' ??
-                  "Unknown Status",
+              '${LocaleKeys.notificationDetails_studentName.tr()} : ${notificationDetails.result!.studentName}' ??
+                  LocaleKeys.notificationDetails_UnknownStatus.tr(),
               style: TextStyle(
                 color: _getStatusColor(
                     notificationDetails.result!.studentName ?? ""),
@@ -181,7 +185,7 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Message",
+                  LocaleKeys.notificationDetails_Message.tr(),
                   style: AppStyles.styleMedium16().copyWith(
                     color: const Color(0xff1A0F91),
                   ),
@@ -189,7 +193,7 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
                 const SizedBox(height: 8),
                 Text(
                   widget.notificationModel.result![0].message ??
-                      "No message content",
+                      LocaleKeys.notificationDetails_NoMessageContent.tr(),
                   style: AppStyles.styleRegular16(),
                 ),
               ],
@@ -198,57 +202,67 @@ class _NotificationDetailsViewState extends State<NotificationDetailsView> {
           const SizedBox(height: 24),
           // Additional Info Section
           Text(
-            "Additional Information",
+            LocaleKeys.notificationDetails_AdditionalInformation.tr(),
             style: AppStyles.styleSemiBold20().copyWith(fontSize: 18),
           ),
           const SizedBox(height: 16),
           if (notificationDetails.result!.studentId != null)
-            _buildInfoItem("Student ID",
-                notificationDetails.result!.studentId ?? "Not Available"),
+            _buildInfoItem(
+                LocaleKeys.notificationDetails_StudentID.tr(),
+                notificationDetails.result!.studentId ??
+                    LocaleKeys.notificationDetails_NotAvailable.tr()),
           if (notificationDetails.result!.studentName != null)
-            _buildInfoItem("Student Name",
-                notificationDetails.result!.studentName ?? "Not Available"),
+            _buildInfoItem(
+                LocaleKeys.notificationDetails_StudentName.tr(),
+                notificationDetails.result!.studentName ??
+                    LocaleKeys.notificationDetails_NotAvailable.tr()),
           if (notificationDetails.result!.cashierId != null)
-            _buildInfoItem("cashierId",
-                notificationDetails.result!.cashierId ?? "Not Available"),
+            _buildInfoItem(
+                LocaleKeys.notificationDetails_cashierId.tr(),
+                notificationDetails.result!.cashierId ??
+                    LocaleKeys.notificationDetails_NotAvailable.tr()),
           if (notificationDetails.result!.cashierName != null)
-            _buildInfoItem("cashierName",
-                notificationDetails.result!.cashierName ?? "Not Available"),
+            _buildInfoItem(
+                LocaleKeys.notificationDetails_cashierName.tr(),
+                notificationDetails.result!.cashierName ??
+                    LocaleKeys.notificationDetails_NotAvailable.tr()),
           if (notificationDetails.result!.createdOn != null)
             _buildInfoItem(
-                "created at",
+                LocaleKeys.notificationDetails_createdat.tr(),
                 DateFormat('yyyy-MM-dd hh:mm')
                         .format(notificationDetails.result!.createdOn!) ??
-                    "Not Available"),
+                    LocaleKeys.notificationDetails_NotAvailable.tr()),
           if (notificationDetails.result!.schoolTenantId != null)
-            _buildInfoItem("school Name",
-                notificationDetails.result!.schoolTenantId ?? "Not Available"),
+            _buildInfoItem(
+                LocaleKeys.notificationDetails_schoolName.tr(),
+                notificationDetails.result!.schoolTenantId ??
+                    LocaleKeys.notificationDetails_NotAvailable.tr()),
           const SizedBox(height: 16),
           Text(
-            "product Information",
+            LocaleKeys.notificationDetails_productInformation.tr(),
             style: AppStyles.styleSemiBold20().copyWith(fontSize: 18),
           ),
           _buildInfoItem(
-              "Product Names",
+              LocaleKeys.notificationDetails_ProductNames.tr(),
               notificationDetails.result!.studentTransactionItems!
                       .map((e) => e.productName!)
                       .toList()
                       .toString() ??
-                  "Not Available"),
+                  LocaleKeys.notificationDetails_NotAvailable.tr()),
           _buildInfoItem(
-              "Product prices",
+              LocaleKeys.notificationDetails_Productprices.tr(),
               notificationDetails.result!.studentTransactionItems!
                   .map((e) => e.price!)
                   .toList()
                   .toString()),
           _buildInfoItem(
-              "Product quantities",
+              LocaleKeys.notificationDetails_Productquantities.tr(),
               notificationDetails.result!.studentTransactionItems!
                   .map((e) => e.quantity!)
                   .toList()
                   .toString()),
           _buildInfoItem(
-              "total amount of money",
+              LocaleKeys.notificationDetails_TotalAmountOfMoney.tr(),
               notificationDetails.result!.studentTransactionItems!
                   .map((e) => e.quantity! * e.price!)
                   .reduce((a, b) => a + b)

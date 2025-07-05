@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smartsystemforschools/core/utils/app_styles.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/get_child_details/result.dart';
 import '../../data/cubit/notification_cubit.dart';
 
@@ -35,7 +37,7 @@ void showFilterBottomSheet({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Filter Notifications',
+                  LocaleKeys.notificationDetails_FilterNotifications.tr(),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -50,7 +52,8 @@ void showFilterBottomSheet({
                     color: isDark ? Colors.white : Colors.black,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Select Student',
+                    labelText:
+                        LocaleKeys.notificationDetails_SelectStudent.tr(),
                     labelStyle: TextStyle(
                       color: isDark ? Colors.white70 : Colors.black54,
                     ),
@@ -74,7 +77,8 @@ void showFilterBottomSheet({
                   items: childDetails.map((student) {
                     return DropdownMenuItem<String>(
                       value: student.id,
-                      child: Text(student.fullName ?? 'Unknown Student'),
+                      child: Text(student.fullName ??
+                          LocaleKeys.notificationDetails_UnknownStudent.tr()),
                     );
                   }).toList(),
                   onChanged: (value) {
@@ -92,7 +96,7 @@ void showFilterBottomSheet({
                     color: isDark ? Colors.white : Colors.black,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Select Date',
+                    labelText: LocaleKeys.notificationDetails_SelectDate.tr(),
                     labelStyle: TextStyle(
                       color: isDark ? Colors.white70 : Colors.black54,
                     ),
@@ -156,7 +160,8 @@ void showFilterBottomSheet({
                     color: isDark ? Colors.white : Colors.black,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Notification Status',
+                    labelText:
+                        LocaleKeys.notificationDetails_NotificationStatus.tr(),
                     labelStyle: TextStyle(
                       color: isDark ? Colors.white70 : Colors.black54,
                     ),
@@ -177,18 +182,18 @@ void showFilterBottomSheet({
                     ),
                   ),
                   value: selectedStatus,
-                  items: const [
+                  items: [
                     DropdownMenuItem<int>(
                       value: null,
-                      child: Text('All'),
+                      child: Text(LocaleKeys.notificationDetails_All.tr()),
                     ),
                     DropdownMenuItem<int>(
                       value: 0,
-                      child: Text('Failed'),
+                      child: Text(LocaleKeys.notificationDetails_Failed.tr()),
                     ),
                     DropdownMenuItem<int>(
                       value: 1,
-                      child: Text('Success'),
+                      child: Text(LocaleKeys.notificationDetails_Success.tr()),
                     ),
                   ],
                   onChanged: (value) {
@@ -205,7 +210,8 @@ void showFilterBottomSheet({
                     color: isDark ? Colors.white : Colors.black,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Notification Type',
+                    labelText:
+                        LocaleKeys.notificationDetails_NotificationType.tr(),
                     labelStyle: TextStyle(
                       color: isDark ? Colors.white70 : Colors.black54,
                     ),
@@ -226,18 +232,19 @@ void showFilterBottomSheet({
                     ),
                   ),
                   value: selectedTitle,
-                  items: const [
+                  items: [
                     DropdownMenuItem<int>(
                       value: null,
-                      child: Text('All'),
+                      child: Text(LocaleKeys.notificationDetails_All.tr()),
                     ),
                     DropdownMenuItem<int>(
                       value: 0,
-                      child: Text('Payment'),
+                      child: Text(LocaleKeys.notificationDetails_Payment.tr()),
                     ),
                     DropdownMenuItem<int>(
                       value: 1,
-                      child: Text('Attendance'),
+                      child:
+                          Text(LocaleKeys.notificationDetails_Attendance.tr()),
                     ),
                   ],
                   onChanged: (value) {
@@ -266,7 +273,7 @@ void showFilterBottomSheet({
                         });
                       },
                       child: Text(
-                        'Reset',
+                        LocaleKeys.notificationDetails_Reset.tr(),
                         style: AppStyles.styleMedium16(),
                       ),
                     ),
@@ -288,7 +295,7 @@ void showFilterBottomSheet({
                         Navigator.pop(context);
                       },
                       child: Text(
-                        'Apply',
+                        LocaleKeys.notificationDetails_Apply.tr(),
                         style: AppStyles.styleMedium16(),
                       ),
                     ),

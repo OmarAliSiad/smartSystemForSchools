@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/get_all_schools/result.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/services/school_service/school_service.dart';
@@ -51,7 +52,7 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
       // If we get null or empty results from the API
       if (schools.result == null || schools.result!.isEmpty) {
         setState(() {
-          _errorMessage = 'No schools found. Please try again later.';
+          _errorMessage = LocaleKeys.schoolsScreen_noSchoolsFound.tr();
           _isLoading = false;
         });
         return;
@@ -66,7 +67,8 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
 
       if (filteredByCountry.isEmpty) {
         setState(() {
-          _errorMessage = 'No schools found in ${widget.countryName}';
+          _errorMessage =
+              '${LocaleKeys.schoolsScreen_noSchoolsFoundIn.tr()} ${widget.countryName}';
           _isLoading = false;
         });
         return;
@@ -143,7 +145,7 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Schools',
+                LocaleKeys.schoolsScreen_Schools.tr(),
                 style: AppStyles.styleSemiBold20().copyWith(
                   fontSize: 28,
                   color: const Color(0xFF1A0F91),
@@ -151,7 +153,7 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
               ),
               const SizedBox(height: 5),
               Text(
-                'Find the best school for your child',
+                LocaleKeys.schoolsScreen_findTheBestSchoolForYourChild.tr(),
                 style: AppStyles.styleRegular14().copyWith(
                   color: Colors.grey[600],
                 ),
@@ -203,7 +205,7 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
         controller: _searchController,
         onChanged: _filterSchools,
         decoration: InputDecoration(
-          hintText: 'Search schools...',
+          hintText: LocaleKeys.schoolsScreen_searchSchools.tr(),
           hintStyle: TextStyle(color: Colors.grey[400]),
           prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
           border: InputBorder.none,
@@ -224,7 +226,7 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
           ),
           const SizedBox(height: 20),
           Text(
-            'Loading schools...',
+            LocaleKeys.schoolsScreen_loadingSchools.tr(),
             style: AppStyles.styleRegular14(),
           ),
         ],
@@ -244,7 +246,7 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
           ),
           const SizedBox(height: 20),
           Text(
-            'Failed to load schools',
+            LocaleKeys.schoolsScreen_failedToLoadSchools.tr(),
             style: AppStyles.styleSemiBold20(),
           ),
           const SizedBox(height: 10),
@@ -267,7 +269,7 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
               ),
             ),
             child: Text(
-              'Try Again',
+              LocaleKeys.schoolsScreen_tryAgain.tr(),
               style: AppStyles.styleRegular14().copyWith(color: Colors.white),
             ),
           ),
@@ -289,12 +291,12 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              'No schools found',
+              LocaleKeys.schoolsScreen_noSchoolsFound.tr(),
               style: AppStyles.styleSemiBold20(),
             ),
             const SizedBox(height: 10),
             Text(
-              'Try adjusting your search',
+              LocaleKeys.schoolsScreen_tryAdjustingYourSearch.tr(),
               style: AppStyles.styleRegular14(),
             ),
           ],
@@ -420,7 +422,8 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
                       children: [
                         Expanded(
                           child: Text(
-                            school.name ?? 'Unknown School',
+                            school.name ??
+                                LocaleKeys.schoolsScreen_unknownSchool.tr(),
                             style: AppStyles.styleSemiBold20(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -466,7 +469,8 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            school.address ?? 'Unknown Location',
+                            school.address ??
+                                LocaleKeys.schoolsScreen_unknownLocation.tr(),
                             style: AppStyles.styleRegular14().copyWith(
                               color: Colors.grey[600],
                             ),
@@ -481,14 +485,15 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
                       children: [
                         _buildInfoChip(
                           Icons.email_outlined,
-                          school.email ?? 'No email',
+                          school.email ?? LocaleKeys.schoolsScreen_Noemail.tr(),
                           Colors.blue[100]!,
                           Colors.blue[700]!,
                         ),
                         const SizedBox(width: 10),
                         _buildInfoChip(
                           Icons.school_outlined,
-                          school.country ?? 'School',
+                          school.country ??
+                              LocaleKeys.schoolsScreen_School.tr(),
                           Colors.green[100]!,
                           Colors.green[700]!,
                         ),
@@ -536,25 +541,25 @@ class _SchoolsScreenState extends State<SchoolsScreen> {
   // Helper method to safely get the school age
   String _getSchoolAge(DateTime? createdOn) {
     if (createdOn == null) {
-      return 'New';
+      return LocaleKeys.schoolsScreen_New.tr();
     }
     try {
       final days = DateTime.now().difference(createdOn).inDays;
       if (days < 0) {
-        return 'New';
+        return LocaleKeys.schoolsScreen_New.tr();
       } else if (days == 0) {
-        return 'Today';
+        return LocaleKeys.schoolsScreen_Today.tr();
       } else if (days < 30) {
-        return '$days days';
+        return '$days ${LocaleKeys.schoolsScreen_days.tr()}';
       } else if (days < 365) {
         final months = (days / 30).floor();
-        return '$months ${months == 1 ? 'month' : 'months'}';
+        return '$months ${months == 1 ? LocaleKeys.schoolsScreen_month.tr() : LocaleKeys.schoolsScreen_months.tr()}';
       } else {
         final years = (days / 365).floor();
-        return '$years ${years == 1 ? 'year' : 'years'}';
+        return '$years ${years == 1 ? LocaleKeys.schoolsScreen_year.tr() : LocaleKeys.schoolsScreen_years.tr()}';
       }
     } catch (e) {
-      return 'New';
+      return LocaleKeys.schoolsScreen_New.tr();
     }
   }
 

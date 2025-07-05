@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartsystemforschools/core/utils/custom_wave_widget.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/models/get_child_details/result.dart';
 import '../../data/cubit/notification_cubit.dart';
 import '../../data/cubit/notification_state.dart';
@@ -119,7 +121,7 @@ class _NotificationViewState extends State<NotificationView>
         ],
         elevation: 0,
         title: Text(
-          'Notifications',
+          LocaleKeys.notifacation_appBarText.tr(),
           style: AppStyles.styleSemiBold20().copyWith(color: Colors.white),
         ),
         forceMaterialTransparency: true,

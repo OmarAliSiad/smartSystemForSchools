@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../methods/show_scaffold_messanger.dart';
 import '../../utils/app_styles.dart';
 import 'notification_service.dart';
@@ -85,7 +86,8 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: Text(
-            'Purchase Confirmation',
+            LocaleKeys.fireBaseConfirmationAndNotification_PurchaseConfirmation
+                .tr(),
             style: AppStyles.styleBold20(),
           ),
         ),
@@ -103,7 +105,9 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
                 _buildConfirmationHeader(context),
                 const SizedBox(height: 24),
                 Text(
-                  'Products to Purchase',
+                  LocaleKeys
+                      .fireBaseConfirmationAndNotification_ProductsToPurchase
+                      .tr(),
                   style: AppStyles.styleBold20(),
                 ),
                 const SizedBox(height: 16),
@@ -135,17 +139,18 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Confirmation Request',
+              LocaleKeys.fireBaseConfirmationAndNotification_ConfirmationRequest
+                  .tr(),
               style: AppStyles.styleBold20(),
             ),
             const SizedBox(height: 8),
             Text(
-              '$studentName is requesting to make a purchase',
+              '$studentName ${LocaleKeys.fireBaseConfirmationAndNotification_isRequestingToMakeaPurchase.tr()}',
               style: AppStyles.styleMedium16(),
             ),
             const SizedBox(height: 4),
             Text(
-              'Student ID: $studentId',
+              '${LocaleKeys.fireBaseConfirmationAndNotification_StudentID.tr()}: $studentId',
               style: AppStyles.styleMedium13(),
             ),
           ],
@@ -176,14 +181,14 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Quantity: ${product['quantity']}',
+                    '${LocaleKeys.fireBaseConfirmationAndNotification_Quantity.tr()}: ${product['quantity']}',
                     style: AppStyles.styleMedium13(),
                   ),
                 ],
               ),
             ),
             Text(
-              '${product['price']} EGP',
+              '${product['price']} ${LocaleKeys.fireBaseConfirmationAndNotification_EGP.tr()}',
               style: AppStyles.styleBold16(),
             ),
           ],
@@ -206,11 +211,11 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Total Amount:',
+              LocaleKeys.fireBaseConfirmationAndNotification_TotalAmount.tr(),
               style: AppStyles.styleBold16(),
             ),
             Text(
-              '$amountOfMoney EGP',
+              '$amountOfMoney ${LocaleKeys.fireBaseConfirmationAndNotification_EGP.tr()}',
               style: AppStyles.styleBold20().copyWith(
                 color: Colors.blue.shade900,
               ),
@@ -232,7 +237,7 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
             child: Text(
-              'Deny',
+              LocaleKeys.fireBaseConfirmationAndNotification_Deny.tr(),
               style: AppStyles.styleBold16().copyWith(color: Colors.white),
             ),
           ),
@@ -246,7 +251,7 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
             child: Text(
-              'Approve',
+              LocaleKeys.fireBaseConfirmationAndNotification_Approve.tr(),
               style: AppStyles.styleBold16().copyWith(color: Colors.white),
             ),
           ),
@@ -276,7 +281,11 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
         messenger.showSnackBar(
           SnackBar(
             content: Text(
-              status == "approved" ? 'Purchase approved' : 'Purchase denied',
+              status == "approved"
+                  ? LocaleKeys
+                      .fireBaseConfirmationAndNotification_PurchaseApproved
+                  : LocaleKeys
+                      .fireBaseConfirmationAndNotification_PurchaseDenied,
               style: AppStyles.styleMedium13(),
             ),
             backgroundColor: status == "approved" ? Colors.green : Colors.red,
@@ -290,7 +299,7 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
         messenger.showSnackBar(
           SnackBar(
             content: Text(
-              'Error: $e',
+              '${LocaleKeys.fireBaseConfirmationAndNotification_Error.tr()}: $e',
               style: AppStyles.styleMedium13(),
             ),
             backgroundColor: Colors.red,
@@ -324,7 +333,8 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Time Remaining',
+                  LocaleKeys.fireBaseConfirmationAndNotification_TimeRemaining
+                      .tr(),
                   style: AppStyles.styleBold16().copyWith(
                     color: timerColor,
                   ),
@@ -352,7 +362,9 @@ class _ConfirmationRequestScreenState extends State<ConfirmationRequestScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'This request will automatically expire after the timer ends',
+              LocaleKeys
+                  .fireBaseConfirmationAndNotification_ThisRequestWillAutomaticallyExpireAfterTheTimerEnds
+                  .tr(),
               style: AppStyles.styleMedium13().copyWith(
                 color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade700,
               ),

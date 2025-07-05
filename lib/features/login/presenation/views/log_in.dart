@@ -163,10 +163,12 @@ class _LogInState extends State<LogIn> {
                                   String email = sharedPreferences
                                       .getString(Constants.email)!;
                                   log(email);
-                                  AuthService().forgotPassword(
+                                 if(email.isNotEmpty){
+                                   AuthService().forgotPassword(
                                     context: context,
                                     email: email,
                                   );
+                                 }
                                   // Navigator.of(context).pushNamed(SendCode.id);
                                 },
                                 child: Text(

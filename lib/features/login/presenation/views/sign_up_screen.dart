@@ -127,7 +127,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           height: 12,
                         ),
                         OpcaityText(
-                          text: 'school',
+                          text: LocaleKeys.Auth_school.tr(),
                           textStyle: AppStyles.styleRegular14(),
                           opacity: .7,
                         ),
@@ -139,7 +139,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Expanded(
                               child: CustomTextField(
                                 isReadOnly: true,
-                                hintText: 'choose school',
+                                hintText: LocaleKeys.Auth_school.tr(),
                                 borderRaduis: 10,
                                 prefixIcon: Padding(
                                   padding: const EdgeInsetsDirectional.all(10),

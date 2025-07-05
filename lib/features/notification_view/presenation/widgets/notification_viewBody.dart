@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/methods/show_scaffold_messanger.dart';
 import '../../../../core/models/get_child_details/result.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -57,11 +59,11 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
     DateTime createdDate =
         DateTime(createdOn.year, createdOn.month, createdOn.day);
     if (createdDate == today) {
-      return 'Today';
+      return LocaleKeys.notifacation_lastWeek.tr();
     } else if (createdDate == yesterday) {
-      return 'Yesterday';
+      return LocaleKeys.notifacation_yesterday.tr();
     } else if (today.difference(createdDate).inDays <= 7) {
-      return 'Last Week';
+      return LocaleKeys.notifacation_lastWeek.tr();
     } else {
       return '${createdOn.year}-${createdOn.month}-${createdOn.day}';
     }
@@ -93,7 +95,7 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
           color = Colors.green;
         } else if (state is GetAllNotificationLoadedSuccessfully) {
           if (state.notificationModel.result!.isEmpty) {
-            message = 'No notifications found';
+            message = LocaleKeys.notificationDetails_Nonotificationsfound.tr();
             color = Colors.red;
           }
           // Only show success message on explicit success states
@@ -116,7 +118,7 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
                   backgroundColor: color,
                   duration: const Duration(seconds: 2),
                   action: SnackBarAction(
-                    label: 'Ok',
+                    label: LocaleKeys.notificationDetails_Ok.tr(),
                     textColor: Colors.white,
                     onPressed: () {
                       messenger.hideCurrentSnackBar();
@@ -130,7 +132,7 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
       },
       builder: (context, state) {
         if (state is NotificationLoading) {
-          return buildLoadingView('Notification', context);
+          return buildLoadingView(LocaleKeys.notificationDetails_Notification.tr(), context);
         } else if (state is GetAllNotificationLoadedSuccessfully) {
           NotificationModel notificationModel = state.notificationModel;
           if (notificationModel.result!.isEmpty) {
@@ -144,7 +146,7 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
                     color: Colors.grey,
                   ),
                   Text(
-                    'No Notifications found',
+                    LocaleKeys.notificationDetails_Nonotificationsfound.tr(),
                     style: AppStyles.styleMedium18(),
                   ),
                 ],
@@ -206,7 +208,7 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Select Notification Filters',
+                  LocaleKeys.notificationDetails_SelectNotificationFilters.tr(),
                   style: AppStyles.styleMedium20(),
                 ),
               ],

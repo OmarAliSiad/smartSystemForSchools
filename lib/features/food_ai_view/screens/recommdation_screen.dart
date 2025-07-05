@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../core/utils/animated_app_bar.dart';
 import '../../../core/utils/app_styles.dart';
 import '../data/models/meal_recommendation.dart';
@@ -32,7 +33,7 @@ class RecommendationsScreen extends StatelessWidget {
           waveColor: Colors.red.shade400,
           thereIsIcon: false,
           backgroundColor: Colors.red.shade600,
-          title: 'Dietary Restrictions',
+          title: LocaleKeys.RecommendationsScreen_DietaryRestrictions.tr(),
           textStyle: AppStyles.styleSemiBold20().copyWith(color: Colors.white),
         ),
         body: recommendations.isEmpty
@@ -72,7 +73,7 @@ class RecommendationsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 32),
           Text(
-            'No Restrictions Found',
+            LocaleKeys.RecommendationsScreen_NoRestrictionsFound.tr(),
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: isDarkMode ? Colors.white : Colors.grey.shade800,
@@ -83,7 +84,7 @@ class RecommendationsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 42),
             child: Text(
-              'Great news! No dietary restrictions were found for your child based on their profile.',
+              LocaleKeys.RecommendationsScreen_greateNewsNoDieatary.tr(),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -110,8 +111,8 @@ class RecommendationsScreen extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () => Navigator.of(context).pop(),
               icon: const Icon(Icons.arrow_back, color: Colors.white),
-              label: const Text('Go Back',
-                  style: TextStyle(color: Colors.white, fontSize: 16)),
+              label: Text(LocaleKeys.RecommendationsScreen_GoBack.tr(),
+                  style: const TextStyle(color: Colors.white, fontSize: 16)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
@@ -170,7 +171,7 @@ class RecommendationsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Blocked Products',
+                      LocaleKeys.RecommendationsScreen_BlockedProducts.tr(),
                       style: AppStyles.styleBold16().copyWith(
                         color: Colors.white,
                         fontSize: 18,
@@ -178,7 +179,7 @@ class RecommendationsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${recommendations.length} products not recommended',
+                      '${recommendations.length} ${LocaleKeys.RecommendationsScreen_productsnotrecommended.tr()}',
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 14,
@@ -271,7 +272,7 @@ class RecommendationsScreen extends StatelessWidget {
                       border: Border.all(color: Colors.red.shade200, width: 1),
                     ),
                     child: Text(
-                      'Not Recommended',
+                      LocaleKeys.RecommendationsScreen_NotRecommended.tr(),
                       style: TextStyle(
                         color: Colors.red.shade700,
                         fontSize: 12,

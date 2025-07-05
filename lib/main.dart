@@ -95,13 +95,14 @@ void main() async {
         'en',
       ),
       assetLoader: const CodegenLoader(),
+      useOnlyLangCode: true,
+      saveLocale: true,
       child: MyApp(connectivity: Connectivity()),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  // Use the shared navigator key from AppNavigatorKeys singleton
   final Connectivity connectivity;
   const MyApp({super.key, required this.connectivity});
 

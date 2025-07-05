@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:smartsystemforschools/generated/locale_keys.g.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/services/school_service/school_service.dart';
 import 'schools_screen.dart';
@@ -38,7 +39,7 @@ class _PickCountryState extends State<PickCountry> {
 
       if (schools?.result == null || schools!.result!.isEmpty) {
         setState(() {
-          _errorMessage = 'No schools found. Please try again later.';
+          _errorMessage = LocaleKeys.chooseCountry_noSchoolsFound.tr();
           _isLoading = false;
         });
         return;
@@ -128,7 +129,7 @@ class _PickCountryState extends State<PickCountry> {
           ),
           const SizedBox(height: 20),
           Text(
-            'Loading countries...',
+            LocaleKeys.chooseCountry_loadingCountries.tr(),
             style: AppStyles.styleRegular14(),
           ),
         ],
@@ -148,7 +149,7 @@ class _PickCountryState extends State<PickCountry> {
           ),
           const SizedBox(height: 20),
           Text(
-            'Error Loading Countries',
+            LocaleKeys.chooseCountry_errorLoadingCountries.tr(),
             style: AppStyles.styleSemiBold20(),
           ),
           const SizedBox(height: 10),
@@ -171,7 +172,7 @@ class _PickCountryState extends State<PickCountry> {
               ),
             ),
             child: Text(
-              'Try Again',
+              LocaleKeys.chooseCountry_tryAgain.tr(),
               style: AppStyles.styleRegular14().copyWith(color: Colors.white),
             ),
           ),
@@ -193,7 +194,7 @@ class _PickCountryState extends State<PickCountry> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Select Country',
+                LocaleKeys.chooseCountry_selectCountry.tr(),
                 style: AppStyles.styleSemiBold20().copyWith(
                   fontSize: 28,
                   color: const Color(0xFF1A0F91),
@@ -201,7 +202,7 @@ class _PickCountryState extends State<PickCountry> {
               ),
               const SizedBox(height: 5),
               Text(
-                'Choose your country to find schools',
+                LocaleKeys.chooseCountry_chooseYourCountryToFindSchools.tr(),
                 style: AppStyles.styleRegular14().copyWith(
                   color: Colors.grey[600],
                 ),
@@ -232,7 +233,7 @@ class _PickCountryState extends State<PickCountry> {
         controller: _searchController,
         onChanged: _filterCountries,
         decoration: InputDecoration(
-          hintText: 'Search countries...',
+          hintText: LocaleKeys.chooseCountry_searchCountries.tr(),
           hintStyle: TextStyle(color: Colors.grey[400]),
           prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
           border: InputBorder.none,
@@ -255,12 +256,12 @@ class _PickCountryState extends State<PickCountry> {
             ),
             const SizedBox(height: 20),
             Text(
-              'No Countries Found',
+              LocaleKeys.chooseCountry_noCountriesFound.tr(),
               style: AppStyles.styleSemiBold20(),
             ),
             const SizedBox(height: 10),
             Text(
-              'Try adjusting your search',
+              LocaleKeys.chooseCountry_tryAdjustingYourSearch.tr(),
               style: AppStyles.styleRegular14(),
             ),
           ],
