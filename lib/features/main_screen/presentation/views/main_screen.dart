@@ -104,82 +104,84 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     final secondaryColor = isDarkMode ? Colors.white : Colors.grey;
     final shadowColor = isDarkMode ? Colors.white12 : Colors.white;
 
-    return Container(
-      height: 80,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        boxShadow: [
-          BoxShadow(
-            color: shadowColor,
-            blurRadius: 10,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            height: 2,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  primaryColor.withOpacity(0.1),
-                  primaryColor,
-                  primaryColor.withOpacity(0.1),
+    return SafeArea(
+      child: Container(
+        height: 80,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: shadowColor,
+              blurRadius: 10,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 2,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    primaryColor.withOpacity(0.1),
+                    primaryColor,
+                    primaryColor.withOpacity(0.1),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildNavItem(
+                    index: 0,
+                    iconPath: Assets.imagesHome,
+                    label: LocaleKeys.bottomNavigationBar_home.tr(),
+                    primaryColor: primaryColor,
+                    secondaryColor: secondaryColor,
+                  ),
+                  _buildNavItem(
+                    index: 1,
+                    iconPath: Assets.imagesFamily,
+                    label: LocaleKeys.bottomNavigationBar_family.tr(),
+                    primaryColor: primaryColor,
+                    secondaryColor: secondaryColor,
+                  ),
+                  _buildNavItem(
+                    index: 2,
+                    iconPath: Assets.imagesAttendence,
+                    label: LocaleKeys.bottomNavigationBar_attendance.tr(),
+                    primaryColor: primaryColor,
+                    secondaryColor: secondaryColor,
+                  ),
+                  // _buildNavItem(
+                  //   index: 3,
+                  //   iconPath: Assets.imagesWallet,
+                  //   label: LocaleKeys.bottomNavigationBar_wallet.tr(),
+                  //   primaryColor: primaryColor,
+                  //   secondaryColor: secondaryColor,
+                  // ),
+                  _buildNavItem(
+                    index: 3,
+                    iconPath: Assets.imagesHelp,
+                    label: LocaleKeys.bottomNavigationBar_mealsPlanner.tr(),
+                    primaryColor: primaryColor,
+                    secondaryColor: secondaryColor,
+                  ),
+                  _buildNavItem(
+                    index: 4,
+                    iconPath: Assets.imagesChatbot,
+                    label: LocaleKeys.bottomNavigationBar_chatBot.tr(),
+                    primaryColor: primaryColor,
+                    secondaryColor: secondaryColor,
+                  )
                 ],
               ),
             ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavItem(
-                  index: 0,
-                  iconPath: Assets.imagesHome,
-                  label: LocaleKeys.bottomNavigationBar_home.tr(),
-                  primaryColor: primaryColor,
-                  secondaryColor: secondaryColor,
-                ),
-                _buildNavItem(
-                  index: 1,
-                  iconPath: Assets.imagesFamily,
-                  label: LocaleKeys.bottomNavigationBar_family.tr(),
-                  primaryColor: primaryColor,
-                  secondaryColor: secondaryColor,
-                ),
-                _buildNavItem(
-                  index: 2,
-                  iconPath: Assets.imagesAttendence,
-                  label: LocaleKeys.bottomNavigationBar_attendance.tr(),
-                  primaryColor: primaryColor,
-                  secondaryColor: secondaryColor,
-                ),
-                // _buildNavItem(
-                //   index: 3,
-                //   iconPath: Assets.imagesWallet,
-                //   label: LocaleKeys.bottomNavigationBar_wallet.tr(),
-                //   primaryColor: primaryColor,
-                //   secondaryColor: secondaryColor,
-                // ),
-                _buildNavItem(
-                  index: 3,
-                  iconPath: Assets.imagesHelp,
-                  label: LocaleKeys.bottomNavigationBar_mealsPlanner.tr(),
-                  primaryColor: primaryColor,
-                  secondaryColor: secondaryColor,
-                ),
-                _buildNavItem(
-                  index: 4,
-                  iconPath: Assets.imagesChatbot,
-                  label: LocaleKeys.bottomNavigationBar_chatBot.tr(),
-                  primaryColor: primaryColor,
-                  secondaryColor: secondaryColor,
-                )
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
