@@ -101,8 +101,7 @@ class _FamilyViewState extends State<FamilyView> with WidgetsBindingObserver {
                       : BlocBuilder<AddChildCubit, AddChildCubitState>(
                           builder: (context, state) {
                             if (state is AddChildCubitInitial ||
-                                state is AddChildCubitLAddedSuccess ||
-                                state is AddChildCubitRemovedSuccess) {
+                                state is AddChildCubitLAddedSuccess) {
                               final childDetailsModel = context
                                   .read<AddChildCubit>()
                                   .listchildDetails;
