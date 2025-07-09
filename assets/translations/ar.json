@@ -79,7 +79,12 @@
     "childs": "الأطفال",
     "noTransFound": "لم يتم العثور على معاملات",
     "noChildrenAddedYet": "لم يتم إضافة أطفال بعد",
-    "Error": "خطأ"
+    "Error": "خطأ",
+    "areYouSureYouWantToDelete": "هل أنت متأكد أنك تريد حذف",
+    "Cancel": "إلغاء",
+    "Delete": "حذف",
+    "ChildDeletedSuccessfully": "تم حذف الطفل بنجاح",
+    "ErrorDeletingChild": "خطأ في حذف الطفل"
   },
   "valdation": {
     "valdationText": "الرجاء إدخال بعض النصوص"

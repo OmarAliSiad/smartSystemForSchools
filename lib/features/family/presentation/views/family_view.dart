@@ -33,7 +33,6 @@ class _FamilyViewState extends State<FamilyView> with WidgetsBindingObserver {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Refresh data when the screen is shown
     loadChildDetails();
   }
 
@@ -46,7 +45,6 @@ class _FamilyViewState extends State<FamilyView> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // Refresh data when app comes to foreground
       loadChildDetails();
     }
   }
@@ -103,7 +101,8 @@ class _FamilyViewState extends State<FamilyView> with WidgetsBindingObserver {
                       : BlocBuilder<AddChildCubit, AddChildCubitState>(
                           builder: (context, state) {
                             if (state is AddChildCubitInitial ||
-                                state is AddChildCubitLAddedSuccess) {
+                                state is AddChildCubitLAddedSuccess ||
+                                state is AddChildCubitRemovedSuccess) {
                               final childDetailsModel = context
                                   .read<AddChildCubit>()
                                   .listchildDetails;

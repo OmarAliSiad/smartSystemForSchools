@@ -38,7 +38,12 @@ ThemeData lightTheme(BuildContext context) {
             WidgetStateProperty.all(Colors.black), // OK button text in black
       ),
     ),
-    dialogBackgroundColor: Colors.white,
+    dialogTheme: const DialogThemeData(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+    ),
     textTheme: TextTheme(
       titleLarge: blackedStyleColor,
       titleMedium: blackedStyleColor,

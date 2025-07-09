@@ -79,7 +79,12 @@
     "childs": "enfants",
     "noTransFound": "Aucune transaction trouvée",
     "noChildrenAddedYet": "Aucun enfant ajouté pour le moment",
-    "Error": "Erreur"
+    "Error": "Erreur",
+    "areYouSureYouWantToDelete": "Êtes-vous sûr de vouloir supprimer",
+    "Cancel": "Annuler",
+    "Delete": "Supprimer",
+    "ChildDeletedSuccessfully": "Enfant supprimé avec succès",
+    "ErrorDeletingChild": "Erreur lors de la suppression de l'enfant"
   },
   "valdation": {
     "valdationText": "Veuillez entrer du texte"

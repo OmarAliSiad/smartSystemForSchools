@@ -77,6 +77,11 @@ abstract class  LocaleKeys {
   static const common_noTransFound = 'common.noTransFound';
   static const common_noChildrenAddedYet = 'common.noChildrenAddedYet';
   static const common_Error = 'common.Error';
+  static const common_areYouSureYouWantToDelete = 'common.areYouSureYouWantToDelete';
+  static const common_Cancel = 'common.Cancel';
+  static const common_Delete = 'common.Delete';
+  static const common_ChildDeletedSuccessfully = 'common.ChildDeletedSuccessfully';
+  static const common_ErrorDeletingChild = 'common.ErrorDeletingChild';
   static const common = 'common';
   static const valdation_valdationText = 'valdation.valdationText';
   static const valdation = 'valdation';

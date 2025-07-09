@@ -33,7 +33,12 @@ ThemeData darkTheme(BuildContext context) {
         foregroundColor: WidgetStateProperty.all(Colors.white),
       ),
     ),
-    dialogBackgroundColor: Colors.black,
+    dialogTheme: const DialogThemeData(
+      backgroundColor: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+    ),
     textTheme: TextTheme(
       titleLarge: whiteStyleColor,
       titleMedium: whiteStyleColor,

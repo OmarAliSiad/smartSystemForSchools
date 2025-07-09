@@ -165,6 +165,36 @@ class SchoolService {
     }
   }
 
+  Future<Map<String, dynamic>> removeChild({required String id}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(Constants.token);
+      if (token == null) {
+        log('No auth token found');
+      }
+      Response response = await dio.delete(
+        'https://school-api.runasp.net/api/Parent/RemoveChild/$id',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        log("Unexpected exception when removing child: ${response.data}");
+        return {
+          'isSuccess': false,
+          'message': 'Failed to remove child: ${response.data}'
+        };
+      }
+    } catch (e) {
+      log("Unexpected exception when removing child: $e");
+      throw Exception("Failed to remove child: $e");
+    }
+  }
+
   Future<ResultForChildDetails> getChildDetails() async {
     try {
       final prefs = await SharedPreferences.getInstance();

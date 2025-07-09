@@ -95,7 +95,12 @@ class CodegenLoader extends AssetLoader{
     "childs": "الأطفال",
     "noTransFound": "لم يتم العثور على معاملات",
     "noChildrenAddedYet": "لم يتم إضافة أطفال بعد",
-    "Error": "خطأ"
+    "Error": "خطأ",
+    "areYouSureYouWantToDelete": "هل أنت متأكد أنك تريد حذف",
+    "Cancel": "إلغاء",
+    "Delete": "حذف",
+    "ChildDeletedSuccessfully": "تم حذف الطفل بنجاح",
+    "ErrorDeletingChild": "خطأ في حذف الطفل"
   },
   "valdation": {
     "valdationText": "الرجاء إدخال بعض النصوص"
@@ -634,7 +639,12 @@ static const Map<String,dynamic> _en = {
     "childs": "childs",
     "noTransFound": "No Transactions Found",
     "noChildrenAddedYet": "No children added yet",
-    "Error": "Error"
+    "Error": "Error",
+    "areYouSureYouWantToDelete": "Are you sure you want to delete",
+    "Cancel": "Cancel",
+    "Delete": "Delete",
+    "ChildDeletedSuccessfully": "Child deleted successfully",
+    "ErrorDeletingChild": "Error deleting child"
   },
   "valdation": {
     "valdationText": "Please enter some text"
@@ -1173,7 +1183,12 @@ static const Map<String,dynamic> _es = {
     "childs": "niños",
     "noTransFound": "No se encontraron transacciones",
     "noChildrenAddedYet": "Aún no se han agregado niños",
-    "Error": "Error"
+    "Error": "Error",
+    "areYouSureYouWantToDelete": "¿Está seguro de que desea eliminar",
+    "Cancel": "Cancelar",
+    "Delete": "Eliminar",
+    "ChildDeletedSuccessfully": "Niño eliminado con éxito",
+    "ErrorDeletingChild": "Error al eliminar el niño"
   },
   "valdation": {
     "valdationText": "Por favor ingrese algún texto"
@@ -1712,7 +1727,12 @@ static const Map<String,dynamic> _fr = {
     "childs": "enfants",
     "noTransFound": "Aucune transaction trouvée",
     "noChildrenAddedYet": "Aucun enfant ajouté pour le moment",
-    "Error": "Erreur"
+    "Error": "Erreur",
+    "areYouSureYouWantToDelete": "Êtes-vous sûr de vouloir supprimer",
+    "Cancel": "Annuler",
+    "Delete": "Supprimer",
+    "ChildDeletedSuccessfully": "Enfant supprimé avec succès",
+    "ErrorDeletingChild": "Erreur lors de la suppression de l'enfant"
   },
   "valdation": {
     "valdationText": "Veuillez entrer du texte"

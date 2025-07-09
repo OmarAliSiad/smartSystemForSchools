@@ -20,115 +20,129 @@ class AddChildView extends StatefulWidget {
 }
 
 class _AddChildViewState extends State<AddChildView> {
-  GlobalKey<FormState> formState = GlobalKey();
-  TextEditingController studentID = TextEditingController();
-  TextEditingController name = TextEditingController();
-  TextEditingController schoolName = TextEditingController();
-  bool _isLoading = false;
+  final GlobalKey<FormState> formState = GlobalKey();
+  final TextEditingController studentID = TextEditingController();
+  bool _isNavigating = false;
+
+  @override
+  void dispose() {
+    studentID.dispose();
+    super.dispose();
+  }
+
+  void _handleSuccessfulAddition(BuildContext context) {
+    if (_isNavigating) return;
+    _isNavigating = true;
+
+    // Show success message
+    dispalySnackBar(
+      context,
+      title: LocaleKeys.addedChild_addedSuccessfully.tr(),
+      titleActionButton: LocaleKeys.policy_ok.tr(),
+      color: Colors.green,
+    );
+
+    // Refresh child data in the cubit
+    context.read<AddChildCubit>().refreshChildData();
+
+    // Navigate back to MainScreen
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      MainScreen.id,
+      (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return KeyedSubtree(
       key: ValueKey(context.locale.toString()),
-      child: Scaffold(
-        appBar: CustomAppBarAddChildView(
-          textStyle: AppStyles.styleSemiBold20(),
-          ThereIsicon: false,
-          title: LocaleKeys.family_AddChild.tr(),
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        body: BlocConsumer<AddChildCubit, AddChildCubitState>(
-          listener: (context, state) {
-            if (state is AddChildCubitLoading) {
-              setState(() {
-                _isLoading = true;
-              });
-            } else {
-              setState(() {
-                _isLoading = false;
-              });
-              if (state is AddChildCubitLAddedSuccess) {
-                dispalySnackBar(context,
-                    title: LocaleKeys.addedChild_addedSuccessfully.tr(),
-                    titleActionButton: LocaleKeys.policy_ok.tr(),
-                    color: Colors.green);
-                // Refresh child data in the cubit
-                context.read<AddChildCubit>().refreshChildData();
-                // Navigate back to FamilyView after successful addition
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  MainScreen.id,
-                  (route) => false,
-                );
-              } else if (state is AddChildCubitAddedFailure) {
-                dispalySnackBar(context,
-                    title: state.errorMessage,
-                    titleActionButton: LocaleKeys.policy_ok.tr(),
-                    color: Colors.red);
+      child: WillPopScope(
+        onWillPop: () async {
+          if (_isNavigating) return false;
+          return true;
+        },
+        child: Scaffold(
+          appBar: CustomAppBarAddChildView(
+            textStyle: AppStyles.styleSemiBold20(),
+            ThereIsicon: false,
+            title: LocaleKeys.family_AddChild.tr(),
+            onTap: () {
+              if (!_isNavigating) {
+                Navigator.of(context).pop();
               }
-            }
-          },
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 18),
-              child: AbsorbPointer(
-                absorbing: state is AddChildCubitLoading,
-                child: Form(
-                  key: formState,
-                  child: SingleChildScrollView(
-                    clipBehavior: Clip.none,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 35),
-                        SectionTextFiledForAddChild(
-                          keyboardType: TextInputType.emailAddress,
-                          image: Assets.imagesStudentId,
-                          imageColor: Colors.black.withOpacity(.40),
-                          controller: studentID,
-                          validator: (p0) {
-                            if (p0!.isEmpty) {
-                              return LocaleKeys.addedChild_studentID.tr();
-                            }
-                            return null;
-                          },
-                          hintText: LocaleKeys.addedChild_studentID.tr(),
-                          labelText: LocaleKeys.addedChild_studentID.tr(),
-                        ),
-                        const SizedBox(height: 40),
-                        CustomButton(
-                          isLoading: state is AddChildCubitLoading,
-                          padding: const EdgeInsetsDirectional.only(
-                            top: 15,
-                            bottom: 18,
-                            end: 123,
-                            start: 124,
+            },
+          ),
+          body: BlocConsumer<AddChildCubit, AddChildCubitState>(
+            listener: (context, state) {
+              if (state is AddChildCubitLAddedSuccess) {
+                _handleSuccessfulAddition(context);
+              } else if (state is AddChildCubitAddedFailure) {
+                dispalySnackBar(
+                  context,
+                  title: state.errorMessage,
+                  titleActionButton: LocaleKeys.policy_ok.tr(),
+                  color: Colors.red,
+                );
+              }
+            },
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 18),
+                child: AbsorbPointer(
+                  absorbing: state is AddChildCubitLoading || _isNavigating,
+                  child: Form(
+                    key: formState,
+                    child: SingleChildScrollView(
+                      clipBehavior: Clip.none,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 35),
+                          SectionTextFiledForAddChild(
+                            keyboardType: TextInputType.emailAddress,
+                            image: Assets.imagesStudentId,
+                            imageColor: Colors.black.withOpacity(.40),
+                            controller: studentID,
+                            validator: (p0) {
+                              if (p0!.isEmpty) {
+                                return LocaleKeys.addedChild_studentID.tr();
+                              }
+                              return null;
+                            },
+                            hintText: LocaleKeys.addedChild_studentID.tr(),
+                            labelText: LocaleKeys.addedChild_studentID.tr(),
                           ),
-                          text: LocaleKeys.addedChild_buttonText.tr(),
-                          textStyle: AppStyles.styleSemiBold14(),
-                          borderRadius: 20,
-                          onPressed: () async {
-                            if (formState.currentState!.validate()) {
-                              await context.read<AddChildCubit>().addedChild(
-                                    id: studentID.text.trim(),
-                                  );
-                            }
-                          },
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Image.asset(
-                          Assets.imagesRafiki,
-                        )
-                      ],
+                          const SizedBox(height: 40),
+                          CustomButton(
+                            isLoading: state is AddChildCubitLoading,
+                            padding: const EdgeInsetsDirectional.only(
+                              top: 15,
+                              bottom: 18,
+                              end: 123,
+                              start: 124,
+                            ),
+                            text: LocaleKeys.addedChild_buttonText.tr(),
+                            textStyle: AppStyles.styleSemiBold14(),
+                            borderRadius: 20,
+                            onPressed: () async {
+                              if (!_isNavigating &&
+                                  formState.currentState!.validate()) {
+                                await context.read<AddChildCubit>().addedChild(
+                                      id: studentID.text.trim(),
+                                    );
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          Image.asset(Assets.imagesRafiki),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

@@ -13,3 +13,11 @@ final class AddChildCubitAddedFailure extends AddChildCubitState {
   final String errorMessage;
   AddChildCubitAddedFailure({required this.errorMessage});
 }
+
+final class AddChildCubitRemovedSuccess extends AddChildCubitState {}
+
+final class AddChildCubitRemovedFailure extends AddChildCubitState {
+  final String errorMessage;
+  AddChildCubitRemovedFailure({required this.errorMessage});
+}
+

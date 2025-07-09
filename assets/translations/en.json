@@ -79,7 +79,12 @@
         "childs": "childs",
         "noTransFound": "No Transactions Found",
         "noChildrenAddedYet": "No children added yet",
-        "Error": "Error"
+        "Error": "Error",
+        "areYouSureYouWantToDelete": "Are you sure you want to delete",
+        "Cancel": "Cancel",
+        "Delete": "Delete",
+        "ChildDeletedSuccessfully": "Child deleted successfully",
+        "ErrorDeletingChild": "Error deleting child"
     },
     "valdation": {
         "valdationText": "Please enter some text"
