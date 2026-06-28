@@ -1,10 +1,6 @@
-# 🏫 Smart System for Schools
+# 🏫 smartSystemForSchools
 
-[![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)](https://flutter.dev)
-[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white)](https://tensorflow.org)
-[![Firebase](https://img.linkedin.com/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)](https://firebase.google.com)
-[![Stripe](https://img.shields.io/badge/Stripe-5433FF?style=for-the-badge&logo=Stripe&logoColor=white)](https://stripe.com)
+![GitHub stars](https://img.shields.io/github/stars/OmarAliSiad/smartSystemForSchools?style=for-the-badge&logo=github) ![GitHub forks](https://img.shields.io/github/forks/OmarAliSiad/smartSystemForSchools?style=for-the-badge&logo=github) ![GitHub issues](https://img.shields.io/github/issues/OmarAliSiad/smartSystemForSchools?style=for-the-badge&logo=github) ![Last commit](https://img.shields.io/github/last-commit/OmarAliSiad/smartSystemForSchools?style=for-the-badge&logo=github) ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white) ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white) ![Java (Gradle)](https://img.shields.io/badge/Java%20(Gradle)-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white) ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
 A comprehensive, state-of-the-art Flutter mobile application and AI-backend ecosystem designed to bridge the gap between school administration, canteens, and parents. The system offers parent control over child nutrition, health parameters, school payments, real-time location tracking, and instant school-parent communication.
 
@@ -87,13 +83,195 @@ smartsystemforschools/
 │   │   ├── services/            # Stripe, Firebase, and Auth integrations
 │   │   └── themes/              # Light & Dark Theme specs
 │   │
-│   └── features/                # Domain-Driven Feature Modules (Clean Architecture)
-│       ├── Allergies/           # Allergens catalog & student allergy binding
-│       ├── Attendance/          # Attendance list and tracking UI
-│       ├── chatbot/             # Gemini 1.5 interactive helper chat
-│       ├── food_ai_view/        # Gemini 2.0 diet plans and camera analyser
-│       ├── payment_parent/      # Transactions history & statements
-│       └── splash/              # Animated introductory landing
+│   └───├── features
+│   │   ├── Allergies
+│   │   │   ├── data
+│   │   │   │   ├── food_ai_service.dart
+│   │   │   │   └── manager
+│   │   │   │       └── ...
+│   │   │   └── presentation
+│   │   │       ├── views
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   ├── Attendance
+│   │   │   ├── attendance_ai_service.dart
+│   │   │   ├── data
+│   │   │   │   └── manager
+│   │   │   │       └── ...
+│   │   │   └── presentation
+│   │   │       ├── views
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   ├── chatbot
+│   │   │   ├── data
+│   │   │   │   ├── cubit
+│   │   │   │   │   └── ...
+│   │   │   │   ├── model
+│   │   │   │   │   └── ...
+│   │   │   │   └── services
+│   │   │   │       └── ...
+│   │   │   └── presentation
+│   │   │       ├── chat_bot_screen.dart
+│   │   │       └── chat_history_screen.dart
+│   │   ├── child_details_view
+│   │   │   ├── manager
+│   │   │   │   ├── checkout_payment_cubit
+│   │   │   │   │   └── ...
+│   │   │   │   ├── models
+│   │   │   │   │   └── ...
+│   │   │   │   └── spending_limit_cubit.dart
+│   │   │   │       └── ...
+│   │   │   ├── views
+│   │   │   │   ├── child_details_view.dart
+│   │   │   │   ├── choose_balance_for_child.dart
+│   │   │   │   └── spending_limits_view.dart
+│   │   │   └── widgets
+│   │   │       ├── CardDetailsChildWidget.dart
+│   │   │       ├── CustomCardForSpendingAndRecharge.dart
+│   │   │       ├── CustomSpendingDailyLimitWidget.dart
+│   │   │       ├── buildAllegryChip.dart
+│   │   │       ├── custom_allgeries_widget.dart
+│   │   │       ├── custom_balance_widget.dart
+│   │   │       ├── custom_button.dart
+│   │   │       ├── custom_card_spending_limits.dart
+│   │   │       ├── custom_card_spending_limits_new.dart
+│   │   │       └── restricted_products_widget.dart
+│   │   ├── family
+│   │   │   ├── data
+│   │   │   │   └── manager
+│   │   │   │       └── ...
+│   │   │   └── presentation
+│   │   │       ├── views
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   ├── food_ai_view
+│   │   │   ├── data
+│   │   │   │   ├── api_handler.dart
+│   │   │   │   ├── cubit
+│   │   │   │   │   └── ...
+│   │   │   │   └── models
+│   │   │   │       └── ...
+│   │   │   ├── screens
+│   │   │   │   ├── food_ai_screen.dart
+│   │   │   │   └── recommdation_screen.dart
+│   │   │   └── widgets
+│   │   │       └── loading_indicator_widget.dart
+│   │   ├── home
+│   │   │   ├── data
+│   │   │   │   └── models
+│   │   │   │       └── ...
+│   │   │   └── presentation
+│   │   │       ├── views
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   ├── login
+│   │   │   ├── data
+│   │   │   │   └── models
+│   │   │   │       └── ...
+│   │   │   └── presenation
+│   │   │       ├── views
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   ├── main_screen
+│   │   │   └── presentation
+│   │   │       └── views
+│   │   │           └── ...
+│   │   ├── notification_view
+│   │   │   ├── data
+│   │   │   │   ├── cubit
+│   │   │   │   │   └── ...
+│   │   │   │   └── models
+│   │   │   │       └── ...
+│   │   │   └── presenation
+│   │   │       ├── views
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   ├── onBoarding
+│   │   │   ├── views
+│   │   │   │   └── pageview.dart
+│   │   │   └── widgets
+│   │   │       ├── custom_button.dart
+│   │   │       ├── custom_page_screen.dart
+│   │   │       ├── dot_indicator.dart
+│   │   │       └── dots_indicator.dart
+│   │   ├── payment
+│   │   │   ├── data
+│   │   │   │   └── models
+│   │   │   │       └── ...
+│   │   │   └── presentation
+│   │   │       ├── manager
+│   │   │       │   └── ...
+│   │   │       ├── views
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   ├── payment_parent
+│   │   │   ├── data
+│   │   │   │   ├── cubit
+│   │   │   │   │   └── ...
+│   │   │   │   ├── models
+│   │   │   │   │   └── ...
+│   │   │   │   └── services
+│   │   │   │       └── ...
+│   │   │   └── presentation
+│   │   │       ├── screens
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   ├── schools
+│   │   │   └── presentation
+│   │   │       └── views
+│   │   │           └── ...
+│   │   ├── settings
+│   │   │   ├── data
+│   │   │   │   └── manager
+│   │   │   │       └── ...
+│   │   │   └── presentation
+│   │   │       ├── views
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   ├── settings_view
+│   │   │   ├── data
+│   │   │   │   └── models
+│   │   │   │       └── ...
+│   │   │   └── presentation
+│   │   │       ├── manager
+│   │   │       │   └── ...
+│   │   │       ├── views
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   ├── splash
+│   │   │   └── presenation
+│   │   │       ├── views
+│   │   │       │   └── ...
+│   │   │       └── widgets
+│   │   │           └── ...
+│   │   └── tracking
+│   │       ├── data
+│   │       │   └── models
+│   │       │       └── ...
+│   │       └── presentation
+│   │           └── views
+│   │               └── ...
+│   ├── firebase_options.dart
+│   ├── generated
+│   │   ├── codegen_loader.g.dart
+│   │   ├── intl
+│   │   │   ├── messages_all.dart
+│   │   │   └── messages_en.dart
+│   │   ├── l10n.dart
+│   │   └── locale_keys.g.dart
+│   ├── l10n
+│   │   └── intl_en.arb
+│   └── main.dart
 │
 ├── food_ai_service.py           # FastAPI Web Application Entrypoint
 ├── food_recognition_model.py    # TensorFlow ML Model Engine
@@ -139,5 +317,29 @@ smartsystemforschools/
 
 ---
 
-## 📝 License
-This project is private and distributed under **None** license. See `pubspec.yaml` (`publish_to: 'none'`) for details.
+## 👥 Contributors
+
+Thanks to everyone who has contributed to this project:
+
+<p align="left">
+<a href="https://github.com/OmarAliSiad" title="OmarAliSiad"><img src="https://avatars.githubusercontent.com/u/105920279?v=4&s=64" width="64" height="64" alt="OmarAliSiad" style="border-radius:50%" /></a>
+</p>
+
+[See the full list of contributors →](https://github.com/OmarAliSiad/smartSystemForSchools/graphs/contributors)
+
+---
+
+## 👥 Contributing
+
+Contributions are welcome! Here's the standard flow:
+
+1. **Fork** the repository
+2. **Clone** your fork: `git clone https://github.com/OmarAliSiad/smartSystemForSchools.git`
+3. **Branch**: `git checkout -b feature/your-feature`
+4. **Commit**: `git commit -m 'feat: add some feature'`
+5. **Push**: `git push origin feature/your-feature`
+6. **Open** a pull request
+
+Please follow the existing code style and include tests for new behavior where applicable.
+
+---
